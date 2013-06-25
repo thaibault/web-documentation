@@ -72,7 +72,7 @@ this.window.require([
                 legalNotesLink: 'a[href="#about-this-website"]'
                 homeLink: 'a[href="#"]'
                 legalNotesContent: 'section.about-this-website'
-                mainContent: 'section#main_content'
+                mainContent: 'section.main-content'
             trackingCode: 'UA-0-0'
         ###*
             Holds all needed dom nodes.

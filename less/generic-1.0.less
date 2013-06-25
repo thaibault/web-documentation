@@ -1,0 +1,144 @@
+// region vim modline
+
+// vim: set tabstop=4 shiftwidth=4 expandtab:
+// vim: foldmethod=marker foldmarker=region,endregion:
+
+// endregion
+
+// region header
+
+/*
+Copyright Torben Sickert 16.12.2012
+
+License
+    This library written by Torben Sickert stand under a creative commons
+    naming 3.0 unported license.
+    see http://creativecommons.org/licenses/by/3.0/deed.de
+*/
+
+// endregion
+
+// region special selectors
+
+// InternetExplorer6-: * html
+// InternetExplorer7+: *+ html
+
+// endregion
+
+#generic {
+
+// region effects
+
+    @-webkit-keyframes rotate {
+        from {
+            .transform-rotate(0deg);
+        } to {
+            .transform-rotate(360deg);
+        }
+    }
+
+// endregion
+
+// region mixins
+
+    .transform-rotate(@degree) {
+        // webkit
+        -webkit-transform: rotate(@degree);
+        // internetExplorer 9+
+            -ms-transform: rotate(@degree);
+        // css3
+                transform: rotate(@degree);
+    }
+    .gradient(@from: black, @to: white) {
+        // fallback
+        background-color: @from;
+        // safari 4-5, chrome 1-9
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@from), to(@to));
+        // safari 5.1, chrome 10+
+        background: -webkit-linear-gradient(top, @from, @to);
+        // firefox 3.6+
+        background:    -moz-linear-gradient(top, @from, @to);
+        // internetExplorer 10
+        background:     -ms-linear-gradient(top, @from, @to);
+        // opera 11.10+
+        background:      -o-linear-gradient(top, @from, @to);
+        // css3
+        background:         linear-gradient(@from, @to);
+    }
+    .round-corner(@size: 4px) {
+        // safari, chrome
+        -webkit-border-radius: @arguments;
+        // konqueror
+         -khtml-border-radius: @arguments;
+        // firefox
+           -moz-border-radius: @arguments;
+        // css3
+                border-radius: @arguments;
+    }
+    .shadow(
+        @horizontalPosition: 2px, @verticalPosition: 2px, @size: 2px,
+        @color: black
+    ) {
+        // safari, chrome
+        -webkit-box-shadow: @arguments;
+        // firefox
+           -moz-box-shadow: @arguments;
+        // css3
+                box-shadow: @arguments;
+    }
+    .opacity(@opacity) {
+        @opacityInPercent: @opacity * 100;
+        // internetExplorer 8
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=@{opacityInPercent})";
+        // internetExplorer 5 - 7
+            filter: alpha(opacity=@opacityInPercent);
+        // safari 1.x
+        -khtml-opacity: @arguments;
+        // netscape
+          -moz-opacity: @arguments;
+        // css3
+               opacity: @arguments;
+    }
+    .image-rotate(
+        @imagePath, @duration: 2s, @iterationNumber: infinite,
+        @timingFunction: linear
+    ) {
+        // chrom, safari, other webkit browsers
+        -webkit-mask-image: url(~'@{imagePath}');
+        -webkit-animation-name: rotate;
+        -webkit-animation-duration: @duration;
+        -webkit-animation-iteration-count: @iterationNumber;
+        -webkit-animation-timing-function: @timingFunction;
+    }
+
+    // endregion
+
+    // region classes
+
+    .ellipsis-by-text-overflow {
+        // opera
+        -o-text-overflow: ellipsis;
+        // css3
+           text-overflow: ellipsis;
+
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+    .reflect {
+        // internetExplorer 9
+        -ms-filter: "FlipH";
+        // internetExplorer 4 - 8
+            filter: FlipH;
+        // safari, chrome, other webkit browsers
+        -webkit-transform: scaleX(-1);
+        // mozilla
+           -moz-transform: scaleX(-1);
+        // opera
+             -o-transform: scaleX(-1);
+        // css3
+                transform: scaleX(-1);
+    }
+
+// endregion
+
+}

@@ -29,6 +29,8 @@ endregion -->
 <% COFFEE_SCRIPT_PATH = 'coffeeScript/'
 <% JAVA_SCRIPT_PATH = 'javaScript/'
 
+<% DISTRIBUTION_BUNDLE_FILE_PATH = 'distributionBundle.zip'
+
 <% # endregion
 
 <!-- region browser sniffing -->
@@ -94,28 +96,35 @@ endregion -->
 
     <!-- region header -->
 
-        <div id="header_wrap" class="outer">
+        <div class="header-wrap outer">
             <header class="inner">
                 <% START_UP_ANIMATION_NUMBER += 1
-                <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>" id="forkme_banner" href="https://github.com/thaibault/<%name%>">
+                <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> forkme-banner" href="https://github.com/thaibault/<%name%>">
                     View on GitHub
                 </a>
                 <% START_UP_ANIMATION_NUMBER += 1
-                <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>" id="project_title">
-                    <a href="http://thaibault.github.io/<%name%>">
-                        <%name%>
-                    </a>
+                <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>" class="project-title">
+                    <a href="http://thaibault.github.io/<%name%>">i<%name%></a>
                 </h1>
                 <% START_UP_ANIMATION_NUMBER += 1
-                <h2 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>" id="project_tagline">
+                <h2 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-tagline">
                     <%tagline%>
                 </h2>
-                <section id="downloads">
-                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER + 2%> zip_download_link" href="https://github.com/thaibault/<%name%>/zipball/master">
-                        Download this project as a .zip file
+                <section class="downloads">
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download-link" href="https://github.com/thaibault/<%name%>/zipball/master">
+                        Download this project sources as a .zip file.
                     </a>
-                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER + 1%> tar_download_link" href="https://github.com/thaibault/<%name%>/tarball/master">Download this project as a tar.gz file</a>
-                    <% START_UP_ANIMATION_NUMBER += 2
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <% if FileHandler(location=DISTRIBUTION_BUNDLE_FILE_PATH, must_exist=False):
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-distribution-bundle-download-link" href="<%DISTRIBUTION_BUNDLE_FILE_PATH%>">
+                            Download the pre compiled version, which is ready to
+                            use as a .zip file.
+                        </a>
+                    <% else:
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download-link" href="https://github.com/thaibault/<%name%>/tarball/master%>">
+                            Download this project sources as .tar.gz file.
+                        </a>
                 </section>
             </header>
         </div>
@@ -124,12 +133,12 @@ endregion -->
 
     <!-- region sections -->
 
-        <div id="main_content_wrap" class="outer">
+        <div class="main-content-wrap outer">
 
         <!-- region main content -->
 
             <% START_UP_ANIMATION_NUMBER += 1
-            <section id="main_content" class="main-content inner start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>">
+            <section class="main-content inner start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>">
                 <%rendered_markdown%>
             </section>
 
@@ -165,11 +174,14 @@ endregion -->
 
     <!-- region footer -->
 
-        <div id="footer_wrap" class="outer">
+        <div class="footer-wrap outer">
             <footer class="inner">
                 <% START_UP_ANIMATION_NUMBER += 1
                 <p class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> copyright">
-                    <%name%> maintained by <a href="https://github.com/thaibault">thaibault</a> &middot; &copy; 2013 Torben Sickert, Inc. &middot; <a href="#about-this-website">about this website</a>
+                    <%name%> maintained by
+                    <a href="https://github.com/thaibault">thaibault</a>
+                    &middot; &copy; 2013 Torben Sickert, Inc. &middot;
+                    <a href="#about-this-website">about this website</a>
                 </p>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <p class="pull-right"><a href="#top">top</a></p>
