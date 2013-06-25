@@ -18,7 +18,7 @@ License
 
 // endregion
 
-// region special selectors
+// region special selectors 
 
 // InternetExplorer6-: * html
 // InternetExplorer7+: *+ html
@@ -27,8 +27,9 @@ License
 
 #generic {
 
-// region effects
+// region effects 
 
+    // Performs an rotation animation.
     @-webkit-keyframes rotate {
         from {
             .transform-rotate(0deg);
@@ -41,6 +42,7 @@ License
 
 // region mixins
 
+    // Rotate a dom node for given degree.
     .transform-rotate(@degree) {
         // webkit
         -webkit-transform: rotate(@degree);
@@ -49,6 +51,7 @@ License
         // css3
                 transform: rotate(@degree);
     }
+    // Renders a gradient from given color to another given color.
     .gradient(@from: black, @to: white) {
         // fallback
         background-color: @from;
@@ -65,6 +68,7 @@ License
         // css3
         background:         linear-gradient(@from, @to);
     }
+    // Shows rounded corners at the dom nodes.
     .round-corner(@size: 4px) {
         // safari, chrome
         -webkit-border-radius: @arguments;
@@ -75,6 +79,7 @@ License
         // css3
                 border-radius: @arguments;
     }
+    // Shows shadows on dom nodes.
     .shadow(
         @horizontalPosition: 2px, @verticalPosition: 2px, @size: 2px,
         @color: black
@@ -86,6 +91,7 @@ License
         // css3
                 box-shadow: @arguments;
     }
+    // Make a dom node transprarent.
     .opacity(@opacity) {
         @opacityInPercent: @opacity * 100;
         // internetExplorer 8
@@ -99,11 +105,12 @@ License
         // css3
                opacity: @arguments;
     }
+    // Rotate a given image in webkit browsers.
     .image-rotate(
         @imagePath, @duration: 2s, @iterationNumber: infinite,
         @timingFunction: linear
     ) {
-        // chrom, safari, other webkit browsers
+        // chrome, safari, other webkit browsers
         -webkit-mask-image: url(~'@{imagePath}');
         -webkit-animation-name: rotate;
         -webkit-animation-duration: @duration;
@@ -115,6 +122,16 @@ License
 
     // region classes
 
+    // Apply a natural box layout model to a dom node.
+    .box-sizing-border-box {
+        // chrome, safari, other webkit browsers
+        -webkit-box-sizing: border-box;
+        // netscape
+           -moz-box-sizing: border-box;
+        // css3
+                box-sizing: border-box;
+    }
+    // Shows dots for word which are too long.
     .ellipsis-by-text-overflow {
         // opera
         -o-text-overflow: ellipsis;
@@ -124,6 +141,7 @@ License
         overflow: hidden;
         word-wrap: break-word;
     }
+    // Performs a reflection on provided dom node.
     .reflect {
         // internetExplorer 9
         -ms-filter: "FlipH";

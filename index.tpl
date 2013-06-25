@@ -122,7 +122,7 @@ endregion -->
                             use as a .zip file.
                         </a>
                     <% else:
-                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download-link" href="https://github.com/thaibault/<%name%>/tarball/master%>">
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download-link" href="https://github.com/thaibault/<%name%>/tarball/master">
                             Download this project sources as .tar.gz file.
                         </a>
                 </section>
