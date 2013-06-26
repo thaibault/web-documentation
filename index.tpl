@@ -111,18 +111,21 @@ endregion -->
                     <%tagline%>
                 </h2>
                 <section class="downloads">
-                    <% START_UP_ANIMATION_NUMBER += 1
-                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%name%>/zipball/master">
-                        src.zip
-                    </a>
-                    <% START_UP_ANIMATION_NUMBER += 1
                     <% if FileHandler(location=DISTRIBUTION_BUNDLE_FILE_PATH, must_exist=False):
+                        <% START_UP_ANIMATION_NUMBER += 1
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%name%>/zipball/master">
+                            src.zip
+                        </a>
+                        <% START_UP_ANIMATION_NUMBER += 1
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-distribution-bundle-download" href="<%DISTRIBUTION_BUNDLE_FILE_PATH%>">
                             app.zip
                         </a>
                     <% else:
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%name%>/zipball/master">
+                            .zip
+                        </a>
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download" href="https://github.com/thaibault/<%name%>/tarball/master">
-                            src.tar.gz
+                            .tar.gz
                         </a>
                 </section>
             </header>
