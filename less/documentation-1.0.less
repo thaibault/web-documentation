@@ -456,26 +456,30 @@ body.documentation {
         height: 70px;
         background: url('../image/icon_download.png') no-repeat 0% 90%;
     }
-    .zip-source-download-link, .zip-distribution-bundle-download-link,
-    .tar-gz-source-download-link {
+    a.zip-source-download, a.zip-distribution-bundle-download,
+    a.tar-gz-source-download {
+        box-sizing: border-box;
+        padding-top: 29px;
+        padding-left: 17px;
+        color: #fff;
+        font-weight: bolder;
         display: block;
         float: right;
         width: 90px;
-        height:70px;
-        text-indent: -5000px;
+        height: 70px;
         overflow: hidden;
         background: url(../image/sprite_download.png) no-repeat bottom left;
     }
-    .zip-distribution-bundle-download-link, .tar-gz-source-download-link {
+    a.zip-distribution-bundle-download, a.tar-gz-source-download {
         margin-left: 10px;
     }
-    .tar-gz-source-download-link {
+    a.tar-gz-source-download {
         background: url(../image/sprite_download.png) no-repeat bottom right;
     }
-    .tar-gz-source-download-link:hover {
+    a.tar-gz-source-download:hover {
         background: url(../image/sprite_download.png) no-repeat top right;
     }
-    .zip-source-download-link:hover, .zip-distribution-bundle-download-link:hover {
+    a.zip-source-download:hover, a.zip-distribution-bundle-download:hover {
         background: url(../image/sprite_download.png) no-repeat top left;
     }
     .main-content-wrap {

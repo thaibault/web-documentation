@@ -112,18 +112,17 @@ endregion -->
                 </h2>
                 <section class="downloads">
                     <% START_UP_ANIMATION_NUMBER += 1
-                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download-link" href="https://github.com/thaibault/<%name%>/zipball/master">
-                        Download this project sources as a .zip file.
+                    <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%name%>/zipball/master">
+                        src.zip
                     </a>
                     <% START_UP_ANIMATION_NUMBER += 1
                     <% if FileHandler(location=DISTRIBUTION_BUNDLE_FILE_PATH, must_exist=False):
-                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-distribution-bundle-download-link" href="<%DISTRIBUTION_BUNDLE_FILE_PATH%>">
-                            Download the pre compiled version, which is ready to
-                            use as a .zip file.
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-distribution-bundle-download" href="<%DISTRIBUTION_BUNDLE_FILE_PATH%>">
+                            app.zip
                         </a>
                     <% else:
-                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download-link" href="https://github.com/thaibault/<%name%>/tarball/master">
-                            Download this project sources as .tar.gz file.
+                        <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download" href="https://github.com/thaibault/<%name%>/tarball/master">
+                            src.tar.gz
                         </a>
                 </section>
             </header>
