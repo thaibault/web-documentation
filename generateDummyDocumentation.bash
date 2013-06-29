@@ -20,7 +20,7 @@
 
 # Prints a dummy documentation content.
 function printDummyDocumentationContent() {
-    sed ':a;N;$!ba;s/ *\n */ /g' << EOF
+    cat << EOF
 <h1 id="inhalt">Inhalt</h1>
 <div class="toc">
     <ul>
@@ -61,6 +61,33 @@ function printDummyDocumentationContent() {
 <p>
     Lorem ipsum dolor sit amet...
 </p>
+<table class="codehilitetable">
+    <tbody>
+        <tr>
+            <td class="linenos">
+                <div class="linenodiv">
+                    <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6</pre>
+                </div>
+            </td>
+            <td class="code">
+                <div class="codehilite">
+                    <pre><span class="err">#</span><span class="o">!</span><span class="err">/usr/bin/env javaScript</span>
+
+<span class="kd">var</span> <span class="nx">tools</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">Tools</span><span class="p">({</span><span class="s1">&#39;logging&#39;</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
+<span class="c1">// An 80 chars comment: mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</span>
+<span class="c1">// A 120 chars comment: mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</span>
+<span class="nx">tools</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">);</span>
+</pre></div></td></tr></table><p>Use as extension for object orientated jquery plugin using inheritance and<br/>dom node reference. This plugin pattern gives their instance back.</p><table class=codehilitetable><tr><td class=linenos><div class=linenodiv></pre>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <h3 id="e">e</h2>
 <p>
     Lorem ipsum dolor sit amet...
@@ -68,7 +95,7 @@ function printDummyDocumentationContent() {
 EOF
     }
 
-template -l debug index.tpl --scope-variables \
-    tagline?tagline name?productName google_traking_code?google_traking_code \
-    rendered_markdown?"$(printDummyDocumentationContent)" \
+template --log-level info index.tpl --scope-variables \
+    tagline=tagline name=productName google_traking_code=google_traking_code \
+    rendered_markdown="$(printDummyDocumentationContent)" \
 1>index.html

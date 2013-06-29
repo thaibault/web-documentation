@@ -73,6 +73,8 @@ this.window.require([
                 homeLink: 'a[href="#"]'
                 legalNotesContent: 'section.about-this-website'
                 mainContent: 'section.main-content'
+                codeLines:
+                    'table.codehilitetable tr td.code div.codehilite pre span'
             trackingCode: 'UA-0-0'
         ###*
             Holds all needed dom nodes.
@@ -97,6 +99,7 @@ this.window.require([
         initialize: (options) ->
             super options
             this._domNodes.legalNotesContent.hide()
+            this._makeCodeEllipsis()
             this.on this._domNodes.tableOfContentLinks, 'click', ->
                 jQuery.scrollTo jQuery(this).attr('href'), 'slow'
             this.on this._domNodes.legalNotesLink, 'click', =>
@@ -140,6 +143,13 @@ this.window.require([
             super()
 
         # endregion
+
+        _makeCodeEllipsis: ->
+            this._domNodes.codeLines.each(->
+                if jQuery(this).text().length > 80
+                    jQuery(this).text(
+                        "#{jQuery(this).text().substr(0, 76)}..."))
+            this
 
     # endregion
 
