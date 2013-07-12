@@ -18,6 +18,7 @@
 ## this.jQuery.noConflict(true) (jQuery) ->
 ##     jQuery.Documentation window.OPTIONS
 this.require.noConflict = true
+#this.require.logging = true
 this.require.asyncronModulePatternHandling =
     '^.+\.coffee$': (coffeeScriptCode, module) =>
         module = if module[0] then module[0] else module[1]

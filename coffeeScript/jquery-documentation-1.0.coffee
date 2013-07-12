@@ -111,7 +111,7 @@ this.window.require([
 
         # endregion
 
-        # region event handler
+         # region event handler
 
         ###*
             @description This method triggers if we change the current section.
@@ -144,6 +144,12 @@ this.window.require([
 
         # endregion
 
+        ###*
+            @description This method makes dotes after code lines which are too
+                         long. This prevents line wrapping.
+
+            @returns {jQuery.Tools} Returns the current instance.
+        ###
         _makeCodeEllipsis: ->
             this._domNodes.codeLines.each(->
                 if jQuery(this).text().length > 80
