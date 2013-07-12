@@ -3,9 +3,9 @@
 vim: set tabstop=4 shiftwidth=4 expandtab:
 vim: foldmethod=marker foldmarker=region,endregion:
 
-endregion
+endregion -->
 
-region header
+<!-- region header
 
 Copyright Torben Sickert 16.12.2012
 
@@ -16,8 +16,8 @@ License
 
 endregion -->
 
-documentationWebsite
-====================
+website
+=======
 
-This is my central development for all of my documentation or project
-presentation webpages.
+Here's my website development hosted (no security by obscurity :-)).
+See the gh-pages branch for the page load optimized version.
