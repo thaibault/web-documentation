@@ -33,5 +33,5 @@ this.require(
     ###
     jQuery.noConflict(true) (jQuery) -> jQuery.Documentation(
         googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'
-        logging: true)
+        logging: true))
 ##

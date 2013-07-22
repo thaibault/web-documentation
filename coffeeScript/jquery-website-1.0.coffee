@@ -40,7 +40,7 @@ this.window.require([
     ['jQuery.fn.spin', 'jquery-spin-1.2.8'],
 
     ['jQuery.fn.hashchange', 'jquery-observeHashChange-1.0']],
-(less, jQuery, Tools) ->
+(less, jQuery) ->
 ##
 
 # endregion
@@ -51,7 +51,7 @@ this.window.require([
         @memberOf jQuery
         @class
     ###
-    class Website extends Tools.class
+    class Website extends jQuery.Tools.class
 
     # region private properties
 
