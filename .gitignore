@@ -41,6 +41,3 @@ nosetests.xml
 
 # Rendered main page.
 index.html
-
-# Rendered coffee main script.
-main.coffee
