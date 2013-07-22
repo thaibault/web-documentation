@@ -39,5 +39,8 @@ nosetests.xml
 # Vim temporary file
 *.swp
 
-# Rendered page.
-*.html
+# Rendered main page.
+index.html
+
+# Rendered coffee main script.
+main.coffee

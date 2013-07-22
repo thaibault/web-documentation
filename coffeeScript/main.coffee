@@ -31,6 +31,7 @@ this.require(
         The global scope is clean after this sequence. The given
         function is called when the dom-tree was loaded.
     ###
-    # Production mode:
-    jQuery.noConflict(true) (jQuery) -> jQuery.Documentation window.OPTIONS)
+    jQuery.noConflict(true) (jQuery) -> jQuery.Documentation(
+        googleTrackingCode: 'google_traking_code'
+        logging: true)
 ##

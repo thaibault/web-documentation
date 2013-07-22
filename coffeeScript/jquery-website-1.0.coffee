@@ -90,7 +90,7 @@ ga('create', '{1}', 'github.io');ga('send', 'pageview');"
             onStartUpAnimationComplete: jQuery.noop()
             addtionalPageLoadingTimeInMilliseconds: 0
             mediaQueryCssIndicatorStyleType: 'border-left-style'
-            trackingCode: 'UA-0-0'
+            googleTrackingCode: 'UA-0-0'
             scrollInLinearTime: false
             mediaQueryCssIndicator:
                 desktop: 'dashed'

@@ -95,7 +95,11 @@ function printDummyDocumentationContent() {
 EOF
     }
 
-template --log-level info index.tpl --scope-variables \
-    tagline=tagline name=productName google_traking_code=google_traking_code \
-    rendered_markdown="$(printDummyDocumentationContent)" \
-1>index.html
+for render_file_path in index.html.tpl coffeeScript/main.coffee.tpl; do
+    template "$render_file_path" --scope-variables \
+        TAGLINE='tagline' NAME='productName' \
+        GOOGLE_TRACKING_CODE='google_traking_code' \
+        RENDERED_MARKDOWN="$(printDummyDocumentationContent)" \
+    1>"$(sed --regexp-extended 's/^(.+)\.[^\.]+$/\1/g' <<< \
+        "$render_file_path")"
+done
