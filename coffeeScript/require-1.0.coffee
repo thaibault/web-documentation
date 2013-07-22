@@ -135,12 +135,12 @@ Structure of dependencies
 
 # endregion
 
-# region objects
+# region classes
 
 ###*
     This class can be used as function for defining dependencies for
     modules.
-    Note that this function searches in the same ressource as the first
+    Note that this function searches in the same resource as the first
     javascript include tag in your markup if given dependency resource
     doesn't start with "http://".
     You can manually change this behavior by adding a search base via
@@ -163,15 +163,15 @@ class Require
 
     ###
         @ignore
-        
+
         This variable saves a static reference to this class to make self
-        referncing via introspection possible.
+        referencing via introspection possible.
     ###
     self = Require
     ###*
-        If setted all ressources will be appended by a timestamp string to
+        If setted all resources will be appended by a timestamp string to
         make each request unique.
-        This is usefull to workaround some browsers caching mechanisms
+        This is useful to workaround some browsers caching mechanisms
         which aren't required.
 
         @property {Boolean}
@@ -206,14 +206,14 @@ class Require
     ###
     this.headNode
     ###*
-        Saves all loaded script ressources to prevent double script
+        Saves all loaded script resources to prevent double script
         loading.
 
         @property {String[]}
     ###
     this.initializedLoadings
     ###*
-        Indicates if require should load ressource on its own.
+        Indicates if require should load resource on its own.
 
         @property {Boolean}
     ###
@@ -233,8 +233,8 @@ class Require
     ###
     this.scriptTypes
     ###*
-        Describes a mapping from regex pattern which detects all modules
-        to load via ajax to their corresponding handler functions.
+        Describes a mapping from regular expression pattern which detects all
+        modules to load via ajax to their corresponding handler functions.
 
         @property {Object}
     ###
@@ -259,6 +259,43 @@ class Require
         @property {Object[]}
     ###
     this._callQueue
+    ###*
+        Handles all default asynchron module pattern handler.
+
+        @property {Object}
+    ###
+    this._defaultAsynchronModulePatternHandler =
+        '^.+\.css$': (cssContent) ->
+            styleNode = document.createElement 'style'
+            styleNode.type = 'text/css'
+            styleNode.appendChild document.createTextNode cssContent
+            self.headNode.appendChild styleNode
+        '^.+\.coffee$': (coffeeScriptCode, module) ->
+            sourceRootPath = self.basePath.default
+            if self.basePath.coffee
+                sourceRootPath = self.basePath.coffee
+            coffeeScriptCompilerOptions =
+                sourceMap: true
+                filename: module[1]
+                header: false
+                generatedFile: module[1].substr(
+                    0, module[1].lastIndexOf('.') + 1
+                ) + 'js'
+                sourceRoot: sourceRootPath
+                sourceFiles: [module[1]]
+            if window.btoa? and window.JSON? and window.unescape? and
+               window.encodeURIComponent?
+                # NOTE: Workaround to enable source maps for asynchron loaded
+                # coffee scripts.
+                {js, v3SourceMap} = window.CoffeeScript.compile(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                window.eval(
+                    "#{js}\n//@ sourceMappingURL=data:application/json;" +
+                    "base64," + btoa unescape encodeURIComponent v3SourceMap +
+                    "\n//@ sourceURL=" + coffeeScriptCompilerOptions.filename)
+            else
+                window.CoffeeScript.run(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
 
     # endregion
 
@@ -322,15 +359,9 @@ class Require
             self.scriptTypes = '.js': 'text/javascript'
         if not self.asyncronModulePatternHandling?
             self.asyncronModulePatternHandling = {}
-        cssFilePathPattern = '^.+\.css$'
-        if not self.asyncronModulePatternHandling[cssFilePathPattern]?
-            self.asyncronModulePatternHandling[cssFilePathPattern] = (
-                cssContent
-            ) ->
-                styleNode = document.createElement 'style'
-                styleNode.type = 'text/css'
-                styleNode.appendChild document.createTextNode cssContent
-                self.headNode.appendChild styleNode
+        for pattern, handler of self._defaultAsynchronModulePatternHandler
+            if not self.asyncronModulePatternHandling[pattern]?
+                self.asyncronModulePatternHandling[pattern] = handler
         if not self._callQueue?
             self._callQueue = []
         self::_load.apply require, arguments
@@ -361,7 +392,7 @@ class Require
             Because of declaration of arguments the parser things that
             arguments is a local variable and could be renamed.
             It doesn't care about that the magic arguments object is
-            neccessary to generate the arguments array in this context.
+            necessary to generate the arguments array in this context.
 
             var arguments = Array.prototype.slice.call(arguments);
 
@@ -394,7 +425,7 @@ class Require
             )
                 ###
                     If module is currently not loading put current function
-                    call initialize loading needed ressource.
+                    call initialize loading needed resource.
                 ###
                 if typeof(module) is 'string'
                     module = ['', module]
@@ -403,7 +434,7 @@ class Require
                         "Prevent loading module \"#{module[0]}\" in passiv " +
                         "mode.")
                 else
-                    self::_initializeRessourceLoading module, parameter
+                    self::_initializeResourceLoading module, parameter
         else
             ###
                 Call a given event handler (if provided as second argument)
@@ -425,7 +456,7 @@ class Require
             return self::_handleNoConflict()
         self
     ###*
-        @description Initialize loading of needed ressources.
+        @description Initialize loading of needed resources.
 
         @param {String[]} module A tuple (consisting of module indicator
                                  and module file path) which should be
@@ -435,7 +466,7 @@ class Require
 
         @returns {require} Returns the current instance.
     ###
-    _initializeRessourceLoading: (module, parameter) ->
+    _initializeResourceLoading: (module, parameter) ->
         isAsyncronRequest = false
         shortcut = self.asyncronModulePatternHandling
         for asyncronModulePattern, callback of shortcut
@@ -443,12 +474,12 @@ class Require
                 if window.XMLHttpRequest
                     ajaxObject = new XMLHttpRequest
                 else
-                    ajaxObject = new ActiveXObject(
-                        'Microsoft.XMLHTTP')
+                    ajaxObject = new ActiveXObject 'Microsoft.XMLHTTP'
                 ajaxObject.open(
                     'GET', self::_getScriptFilePath module[1], true)
                 ajaxObject.onreadystatechange = ->
-                    if ajaxObject.readyState is 4 and ajaxObject.status is 200
+                    if ajaxObject.readyState is 4 and
+                       ajaxObject.status in [0, 200]
                         shortcut[asyncronModulePattern](
                             ajaxObject.responseText, module, parameter)
                         self::_scriptLoaded module, parameter
@@ -456,14 +487,14 @@ class Require
                         ajaxObject.onreadystatechange = null
                     else if ajaxObject.status isnt 200
                         self::_log(
-                            "Loading ressource \"#{module[1]}\" failed via " +
+                            "Loading resource \"#{module[1]}\" failed via " +
                             "ajax with status \"#{ajaxObject.status}\" in " +
                             "state \"#{ajaxObject.readyState}\".")
                 ajaxObject.send null
                 isAsyncronRequest = true
                 break
         if not isAsyncronRequest
-            self::_appendRessourceDomNode(
+            self::_appendResourceDomNode(
                 self::_createScriptLoadingNode(module[1]), module, parameter)
         type = 'header dom node'
         if isAsyncronRequest
@@ -497,7 +528,7 @@ class Require
                      tree.
 
         @param {DomNode} ScriptNode Dom node where to append script
-                         loading node.
+                                    loading node.
         @param {String[]} module A tuple (consisting of module indicator
                                  and module file path) which should be
                                  loaded.
@@ -506,7 +537,7 @@ class Require
 
         @returns {require} Returns the current instance.
     ###
-    _appendRessourceDomNode: (scriptNode, module, parameters) ->
+    _appendResourceDomNode: (scriptNode, module, parameters) ->
         ###
             Internet explorer workaround for capturing event when
             script is loaded.
@@ -528,9 +559,9 @@ class Require
     ###*
         @description Creates a new script loading tag.
 
-        @param {String} scriptFilePath Path pointing to the file ressource.
+        @param {String} scriptFilePath Path pointing to the file resource.
 
-        @returns {String} The absolute path to needed ressource.
+        @returns {String} The absolute path to needed resource.
     ###
     _getScriptFilePath: (scriptFilePath) ->
         if scriptFilePath.substring(0, 'http://'.length) is 'http://'
@@ -543,10 +574,10 @@ class Require
     ###*
         @description Creates a new script loading tag.
 
-        @param {String} scriptFilePath Path pointing to the file ressource.
+        @param {String} scriptFilePath Path pointing to the file resource.
 
         @returns {DomNode} Returns script node needed to load given script
-                           ressource.
+                           resource.
     ###
     _createScriptLoadingNode: (scriptFilePath) ->
         scriptNode = document.createElement 'script'
@@ -566,12 +597,12 @@ class Require
         @description If script was loaded it will be deleted from the
                      "initializedLoading" array. If all dependencies for
                      this module are available the sequence could continue
-                     oterwise the current sequence status
+                     otherwise the current sequence status
                      (the parameter array) will be saved in a queue for
                      continue later.
 
         @param {String[]} module A tuple of module name to indicate if a
-                          module is presence and its file path ressource.
+                          module is presence and its file path resource.
         @param {Object[]} parameters Saves arguments indented to be given
                                      to the onload function.
 
@@ -598,7 +629,7 @@ class Require
     ###
     _handleNoConflict: ->
         if self._callQueue.length is 0 and self.initializedLoadings.length is 0
-            self::_log 'All ressources are loaded so far.'
+            self::_log 'All resources are loaded so far.'
             if require and self.noConflict
                 if self.noConflict is true
                     ###
@@ -613,7 +644,7 @@ class Require
                     callback[0].apply self.context, callback.slice 1
         self
     ###*
-        @description Determines if the given moduleObject is currently
+        @description Determines if the given "moduleObject" is currently
                      loading. If the given module is currently loading
                      the current sequence status will be stored in the
                      "callQueue" for continuing later.
@@ -635,7 +666,7 @@ class Require
             self.initializedLoadings.push moduleName
         false
     ###*
-        @description Determines if the given moduleObject is present in the
+        @description Determines if the given "moduleObject" is present in the
                      global (window) scope.
 
         @param {String[]} module A tuple of module name to indicate if a

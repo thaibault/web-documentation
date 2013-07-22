@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <!-- region vim modline
 
@@ -71,7 +71,7 @@ endregion -->
 
     <!-- endregion -->
 
-    <!-- region ressources -->
+    <!-- region resources -->
 
         <link type="text/css" rel="stylesheet/less" media="screen" href="<%LESS_PATH%>documentation-1.0.less">
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -79,7 +79,7 @@ endregion -->
         <script type="text/javascript" src="<%JAVA_SCRIPT_PATH%>coffeeScript-1.6.2.js"></script>
         <script type="text/coffeescript" src="<%COFFEE_SCRIPT_PATH%>require-1.0.coffee"></script>
         <script type="text/javascript">
-            window.OPTIONS = {'trackingCode': '<%google_traking_code%>', 'logging': true};
+            this.OPTIONS = {'trackingCode': '<%google_traking_code%>', 'logging': true};
         </script>
         <script type="text/coffeescript" src="<%COFFEE_SCRIPT_PATH%>main.coffee"></script>
 
