@@ -1,4 +1,4 @@
-## require
+#!/usr/bin/env require
 
 # region modline
 
@@ -90,7 +90,7 @@ this.window.require([
         # region special methods
 
         ###*
-            @description Initializes the interactive web app.
+            @description Initializes the interactive web application.
 
             @param {Object} options An options object.
 

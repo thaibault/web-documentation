@@ -1,4 +1,4 @@
-## require
+#!/usr/bin/env coffee
 
 # region vim modline
 
@@ -20,7 +20,7 @@
 
 ## standalone
 ## this.jQuery.noConflict(true) (jQuery) ->
-##     jQuery.Documentation window.OPTIONS
+##     jQuery.Documentation googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'
 this.require.noConflict = true
 this.require(
     [['jQuery.Documentation', 'jquery-documentation-1.0.coffee']],
@@ -32,6 +32,5 @@ this.require(
         function is called when the dom-tree was loaded.
     ###
     jQuery.noConflict(true) (jQuery) -> jQuery.Documentation(
-        googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'
-        logging: true))
+        googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'))
 ##
