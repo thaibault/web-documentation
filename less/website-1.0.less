@@ -16,8 +16,9 @@ License
     see http://creativecommons.org/licenses/by/3.0/deed.de
 */
 
-@import url(../styleSheet/normalize-2.1.2.css);
 @import url(../styleSheet/bootstrap-3.0.0.css);
+
+@import 'bootstrap-glyphicons-1.0.0';
 
 @import 'generic-1.0';
 
@@ -26,6 +27,7 @@ License
 // region constants
 
 @imagePath: '../image/';
+@fontPath: '../font/';
 
 @maximumSmartphoneWidth: 767px;
 @maximumTabletWidth: 979px;
@@ -34,6 +36,21 @@ License
 @color2: #1b1b1b;
 
 // endregion
+
+/* region font */
+
+@font-face {
+    // TODO check if necessary to define second time the font-family or can we
+    // merge the old one.
+    font-family: 'Glyphicons Halflings';
+    src: url('@{fontPath}glyphiconshalflings-regular.eot');
+    src: url('@{fontPath}glyphiconshalflings-regular.eot?#iefix') format('embedded-opentype'),
+         url('@{fontPath}glyphiconshalflings-regular.woff') format('woff'),
+         url('@{fontPath}glyphiconshalflings-regular.ttf') format('truetype'),
+         url('@{fontPath}glyphiconshalflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+/* endregion */
 
 /* region stylesheets */
 
@@ -51,33 +68,6 @@ body {
         border-left-style: dotted;
     }
 
-    /* endregion */
-    
-    /* region icons */
-    
-    [class^="icon-"], [class*=" icon-"] {
-        background-image: url('@{imagePath}icons-black.png');
-    }
-    .icon-white,
-    .nav-pills > .active > a > [class^="icon-"],
-    .nav-pills > .active > a > [class*=" icon-"],
-    .nav-list > .active > a > [class^="icon-"],
-    .nav-list > .active > a > [class*=" icon-"],
-    .navbar-inverse .nav > .active > a > [class^="icon-"],
-    .navbar-inverse .nav > .active > a > [class*=" icon-"],
-    .dropdown-menu > li > a:hover > [class^="icon-"],
-    .dropdown-menu > li > a:focus > [class^="icon-"],
-    .dropdown-menu > li > a:hover > [class*=" icon-"],
-    .dropdown-menu > li > a:focus > [class*=" icon-"],
-    .dropdown-menu > .active > a > [class^="icon-"],
-    .dropdown-menu > .active > a > [class*=" icon-"],
-    .dropdown-submenu:hover > a > [class^="icon-"],
-    .dropdown-submenu:focus > a > [class^="icon-"],
-    .dropdown-submenu:hover > a > [class*=" icon-"],
-    .dropdown-submenu:focus > a > [class*=" icon-"] {
-        background-image: url('@{imagePath}icons-white.png');
-    }
-    
     /* endregion */
 
 }

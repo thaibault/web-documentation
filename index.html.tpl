@@ -33,15 +33,6 @@ endregion -->
 
 <% # endregion
 
-<!-- region browser sniffing -->
-
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
-<!--[if gt IE 8]><!--><html class="no-js"><!--<![endif]-->
-
-<!-- endregion -->
-
 <% # region runtime
 
 <% START_UP_ANIMATION_NUMBER = 1
@@ -50,13 +41,13 @@ endregion -->
 
 <!-- region header -->
 
+<html lang="<%LANGUAGE%>">
     <head>
         <title><%NAME%></title>
 
     <!-- region meta informations -->
 
-        <meta charset='utf-8' />
-        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="<%TAGLINE%>" />
 
     <!-- endregion -->
@@ -162,7 +153,8 @@ endregion -->
                     <br />
                     Website: <a href="http://thaibault.github.io/website">http://thaibault.github.io/website</a>
                     <br />
-                    <i class="icon-arrow-home icon-arrow-left"></i><a href="#">home</a>
+                    <span class="glyphicon glyphicon-arrow-left arrow-left-home"></span>
+                    <a href="#">home</a>
                 </p>
             </section>
         </div>
