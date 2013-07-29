@@ -16,43 +16,15 @@ License
     see http://creativecommons.org/licenses/by/3.0/deed.de
 */
 
-@import url(../styleSheet/normalize-2.1.2.css);
-@import url(../styleSheet/bootstrap-3.0.0.css);
-
-@import 'generic-1.0';
+@import 'website-1.0';
 
 @import 'pygment-vim-like-highlighting';
-
-// endregion
-
-// region constants
-
-@imagePath: '../image/';
-
-@maximumSmartphoneWidth: 767px;
-@maximumTabletWidth: 979px;
-
-@color1: #1b1b1b;
 
 // endregion
 
 /* region stylesheets */
 
 body.documentation {
-
-    /* region media query change indicator */
-
-    border-left-width: 0;
-    /* desktop mode */
-    border-left-style: dashed;
-    @media (max-width: @maximumTabletWidth) {
-        border-left-style: solid;
-    }
-    @media (max-width: @maximumSmartphoneWidth) {
-        border-left-style: dotted;
-    }
-
-    /* endregion */
 
     /* region global */
 
@@ -65,28 +37,6 @@ body.documentation {
 
         /* region icons */
 
-    [class^="icon-"], [class*=" icon-"] {
-        background-image: url('@{imagePath}icons-black.png');
-    }
-    .icon-white,
-    .nav-pills > .active > a > [class^="icon-"],
-    .nav-pills > .active > a > [class*=" icon-"],
-    .nav-list > .active > a > [class^="icon-"],
-    .nav-list > .active > a > [class*=" icon-"],
-    .navbar-inverse .nav > .active > a > [class^="icon-"],
-    .navbar-inverse .nav > .active > a > [class*=" icon-"],
-    .dropdown-menu > li > a:hover > [class^="icon-"],
-    .dropdown-menu > li > a:focus > [class^="icon-"],
-    .dropdown-menu > li > a:hover > [class*=" icon-"],
-    .dropdown-menu > li > a:focus > [class*=" icon-"],
-    .dropdown-menu > .active > a > [class^="icon-"],
-    .dropdown-menu > .active > a > [class*=" icon-"],
-    .dropdown-submenu:hover > a > [class^="icon-"],
-    .dropdown-submenu:focus > a > [class^="icon-"],
-    .dropdown-submenu:hover > a > [class*=" icon-"],
-    .dropdown-submenu:focus > a > [class*=" icon-"] {
-        background-image: url('@{imagePath}icons-white.png');
-    }
     .icon-arrow-home {
         margin-right: 10px;
         margin-top: 10px;
@@ -394,7 +344,6 @@ body.documentation {
     .outer {
         width: 100%;
     }
-
     .inner {
         position: relative;
         width: 650px;
