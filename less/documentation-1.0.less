@@ -16,9 +16,8 @@ License
     see http://creativecommons.org/licenses/by/3.0/deed.de
 */
 
-@import url(styleSheet/normalize-1.1.0.css);
-@import url(styleSheet/bootstrap-2.3.1/bootstrap.css);
-@import url(styleSheet/bootstrap-2.3.1/bootstrap-responsive.css);
+@import url(../styleSheet/normalize-2.1.2.css);
+@import url(../styleSheet/bootstrap-3.0.0.css);
 
 @import 'generic-1.0';
 
@@ -67,7 +66,7 @@ body.documentation {
         /* region icons */
 
     [class^="icon-"], [class*=" icon-"] {
-        background-image: url('@{imagePath}bootstrap-2.3.1/glyphicons-halflings.png');
+        background-image: url('@{imagePath}icons-black.png');
     }
     .icon-white,
     .nav-pills > .active > a > [class^="icon-"],
@@ -86,7 +85,7 @@ body.documentation {
     .dropdown-submenu:focus > a > [class^="icon-"],
     .dropdown-submenu:hover > a > [class*=" icon-"],
     .dropdown-submenu:focus > a > [class*=" icon-"] {
-        background-image: url('@{imagePath}bootstrap-2.3.1/glyphicons-halflings-white.png');
+        background-image: url('@{imagePath}icons-white.png');
     }
     .icon-arrow-home {
         margin-right: 10px;
