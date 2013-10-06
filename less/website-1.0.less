@@ -29,8 +29,8 @@ License
 @imagePath: '../image/';
 @fontPath: '../font/';
 
-@maximumSmartphoneWidth: 767px;
-@maximumTabletWidth: 979px;
+@minimumTabletWidth: 767px;
+@minimumDesktopWidth: 979px;
 
 @color1: #1b1b1b;
 @color2: #1b1b1b;
@@ -40,8 +40,6 @@ License
 /* region font */
 
 @font-face {
-    // TODO check if necessary to define second time the font-family or can we
-    // merge the old one.
     font-family: 'Glyphicons Halflings';
     src: url('@{fontPath}glyphiconshalflings-regular.eot');
     src: url('@{fontPath}glyphiconshalflings-regular.eot?#iefix') format('embedded-opentype'),
@@ -52,20 +50,20 @@ License
 
 /* endregion */
 
-/* region stylesheets */
+/* region styles heets */
 
 body {
 
-    /* region media query change indicator */
+    /* region med ia query change indicator */
 
     border-left-width: 0;
-    /* desktop mode */
-    border-left-style: dashed;
-    @media (max-width: @maximumTabletWidth) {
+    /* smartphone mode */
+    border-left-style: dotted;
+    @media (min-width: @minimumTabletWidth) {
         border-left-style: solid;
     }
-    @media (max-width: @maximumSmartphoneWidth) {
-        border-left-style: dotted;
+    @media (min-width: @minimumDesktopWidth) {
+        border-left-style: dashed;
     }
 
     /* endregion */

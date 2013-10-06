@@ -24,7 +24,7 @@ endregion -->
 <% IMAGE_APPLE_TOUCH_ICON_PATH = IMAGE_PATH + 'appleTouchIcon/'
 
 <% LESS_PATH = 'less/'
-<% STYLE_SHEET_PATH = 'styleSheet/'
+<% STYLE_SHEET_PATH = 'cascardingStyleSheet/'
 
 <% COFFEE_SCRIPT_PATH = 'coffeeScript/'
 <% JAVA_SCRIPT_PATH = 'javaScript/'
@@ -43,10 +43,10 @@ endregion -->
 
 <html lang="<%LANGUAGE%>">
     <head>
-        <title><%NAME%></title>
 
     <!-- region meta informations -->
 
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="<%TAGLINE%>" />
 
@@ -72,6 +72,8 @@ endregion -->
         <script type="text/coffeescript" src="<%COFFEE_SCRIPT_PATH%>main.coffee"></script>
 
     <!-- endregion -->
+
+        <title><%NAME%></title>
 
     </head>
 

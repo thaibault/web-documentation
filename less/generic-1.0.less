@@ -27,50 +27,91 @@ License
 
 #generic {
 
-// region effects 
-
-    // Performs an rotation animation.
-    @-webkit-keyframes rotate {
-        from {
-            .transform-rotate(0deg);
-        } to {
-            .transform-rotate(360deg);
-        }
-    }
-
-// endregion
-
 // region mixins
 
-    // Rotate a dom node for given degree.
-    .transform-rotate(@degree) {
-        // webkit
-        -webkit-transform: rotate(@degree);
-        // internetExplorer 9+
-            -ms-transform: rotate(@degree);
-        // css3
-                transform: rotate(@degree);
-    }
     // Renders a gradient from given color to another given color.
-    .gradient(@from: black, @to: white) {
+    .linear-gradient(
+        @direction: top, @fallback: gray, @from: black, @to: white
+    ) {
+        .direction() when (@direction = top) {
+            background-image: linear-gradient(to bottom, @from, @to);
+        }
+        .direction() when (@direction = left) {
+            background-image: linear-gradient(to right, @from, @to);
+        }
         // fallback
-        background-color: @from;
+        background-color: @fallback;
         // safari 4-5, chrome 1-9
-        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@from), to(@to));
+        background: -webkit-gradient(
+            linear, 0% 0%, 0% 100%, from(@from), to(@to));
         // safari 5.1, chrome 10+
-        background: -webkit-linear-gradient(top, @from, @to);
+        background: -webkit-linear-gradient(@direction, @from, @to);
         // firefox 3.6+
-        background:    -moz-linear-gradient(top, @from, @to);
+        background:    -moz-linear-gradient(@direction, @from, @to);
         // internetExplorer 10
-        background:     -ms-linear-gradient(top, @from, @to);
+        background:     -ms-linear-gradient(@direction, @from, @to);
         // opera 11.10+
-        background:      -o-linear-gradient(top, @from, @to);
+        background:      -o-linear-gradient(@direction, @from, @to);
         // css3
         background:         linear-gradient(@from, @to);
+        .direction;
+        // NOTE: Won't parse sometimes.
+        // filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)", @to, @from));
+    }
+    // Shows a border around given dom node.
+    .bordered(
+        @topColor: #EEE, @rightColor: #EEE, @bottomColor: #EEE,
+        @leftColor: #EEE, @thickness: 1px, @type: solid
+    ) {
+        border-top: @type @thickness @top-color;
+        border-left: @type @thickness @left-color;
+        border-right: @type @thickness @right-color;
+        border-bottom: @type @thickness @bottom-color;
+    }
+    // Mixin for CSS-property "tab-size", generates cross-browser-compatible
+    // "tab-size" output.
+    .tab-size(@value: 4) {
+        -moz-tab-size: @arguments;
+          -o-tab-size: @arguments;
+             tab-size: @arguments;
+    }
+    // Generates cross browser compatible "transform" for a given element.
+    .transform(@arguments) {
+        // Chrome, Safari, iOS Safari, Android Stock
+        -webkit-transform: @arguments;
+        // Opera 12
+             -o-transform: @arguments;
+        // internetExplorer
+            -ms-transform: @arguments;
+        // IE9
+                transform: @arguments;
+    }
+    // Rotate current dom node.
+    .rotation(@degree:5deg){
+        .transform(rotate(@arguments));
+    }
+    // Scales current dom node.
+    .scale(@ratio:1.5){
+        .transform(scale(@arguments));
+    }
+    // Generates cross-browser-compatible "transition" output for a given
+    // element.
+    .transition(@duration: 0.2s, @ease: ease-out) {
+        -webkit-transition: @arguments;
+           -moz-transition: @arguments;
+             -o-transition: @arguments;
+                transition: @arguments;
+    }
+    // Disables or enables selection of content of a given element.
+    .user-select(@value: none) {
+        -webkit-user-select: @arguments;
+           -moz-user-select: @arguments;
+            -ms-user-select: @arguments;
+                user-select: @arguments;
     }
     // Shows rounded corners at the dom nodes.
-    .round-corner(@size: 4px) {
-        // safari, chrome
+    .border-radius(@size: 4px) {
+        // safari, chrome, iOS Safari 3.2, Android 2.1
         -webkit-border-radius: @arguments;
         // konqueror
          -khtml-border-radius: @arguments;
@@ -79,8 +120,29 @@ License
         // css3
                 border-radius: @arguments;
     }
+    // Defines rounded border in a detailed way.
+    .rounded-border(
+        @topRight: 0, @bottomRight: 0, @bottomLeft: 0, @topLeft: 0
+    ) {
+        -webkit-border-top-right-radius: @topRight;
+        -webkit-border-bottom-right-radius: @bottomRight;
+        -webkit-border-bottom-left-radius: @bottomLeft;
+        -webkit-border-top-left-radius: @topLeft;
+
+        -moz-border-radius-topright: @topRight;
+        -moz-border-radius-bottomright: @bottomRight;
+        -moz-border-radius-bottomleft: @bottomLeft;
+        -moz-border-radius-topleft: @topLeft;
+
+        border-top-right-radius: @topRight;
+        border-bottom-right-radius: @bottomRight;
+        border-bottom-left-radius: @bottomLeft;
+        border-top-left-radius: @topLeft;
+
+        .background-clip(padding-box);
+    }
     // Shows shadows on dom nodes.
-    .shadow(
+    .box-shadow(
         @horizontalPosition: 2px, @verticalPosition: 2px, @size: 2px,
         @color: black
     ) {
@@ -95,19 +157,67 @@ License
         // css3
                 box-shadow: @arguments;
     }
-    // Make a dom node transprarent.
+    // Performs an inner shadow on current dom node.
+    .inner-shadow(@horizontal: 0, @vertical: 1px, @blur: 2px, @alpha: 0.4) {
+        -webkit-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+           -moz-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+                box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
+    }
+    // Allows you to make columns in a text.
+    .columns(
+        @columnWidth: 250px, @columnCount: 0, @columnGap: 50px,
+        @columnRuleColor: #EEE, @columnRuleStyle: solid,
+        @columnRuleWidth: 1px
+    ) {
+        -moz-column-width: @columnWidth;
+        -moz-column-count: @columnCount;
+        -moz-column-gap: @columnGap;
+        -moz-column-rule-color: @columnRuleColor;
+        -moz-column-rule-style: @columnRuleStyle;
+        -moz-column-rule-width: @columnRuleWidth;
+
+        -webkit-column-width: @columnWidth;
+        -webkit-column-count: @columnCount;
+        -webkit-column-gap: @columnGap;
+        -webkit-column-rule-color: @columnRuleColor;
+        -webkit-column-rule-style: @columnRuleStyle;
+        -webkit-column-rule-width: @columnRuleWidth;
+
+        column-width: @columnWidth;
+        column-count: @columnCount;
+        column-gap: @columnGap;
+        column-rule-color: @columnRuleColor;
+        column-rule-style: @columnRuleStyle;
+        column-rule-width: @columnRuleWidth;
+    }
+    // This property is used to determine whether the backgrounds extends
+    // into the border or not.
+    .background-clip(@value: padding-box) {
+        -webkit-background-clip: @arguments;
+           -moz-background-clip: @arguments;
+                background-clip: @arguments;
+    }
+    // Make a dom node transparent.
     .opacity(@opacity) {
+        -webkit-opacity: @arguments;
+        // safari 1.x
+         -khtml-opacity: @arguments;
+        // netscape
+           -moz-opacity: @arguments;
+        // css3
+                opacity: @arguments;
         @opacityInPercent: @opacity * 100;
         // internetExplorer 8
         -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=@{opacityInPercent})";
         // internetExplorer 5 - 7
             filter: alpha(opacity=@opacityInPercent);
-        // safari 1.x
-        -khtml-opacity: @arguments;
-        // netscape
-          -moz-opacity: @arguments;
-        // css3
-               opacity: @arguments;
+    }
+    // Defines a transition duration in an animation effect.
+    .transition-duration(@duration: 0.2s) {
+        -webkit-transition-duration: @arguments;
+           -moz-transition-duration: @arguments;
+             -o-transition-duration: @arguments;
+                transition-duration: @arguments;
     }
     // Rotate a given image in webkit browsers.
     .image-rotate(
@@ -121,20 +231,20 @@ License
         -webkit-animation-iteration-count: @iterationNumber;
         -webkit-animation-timing-function: @timingFunction;
     }
+    // Apply a box layout model to a dom node.
+    .box-sizing(@type: border-box) {
+        // chrome, safari, other webkit browsers
+        -webkit-box-sizing: @type;
+        // netscape, firefox 2.0+
+           -moz-box-sizing: @type;
+        // css3, InternetExplorer 8+, Opera 9.5+
+                box-sizing: @type;
+    }
 
     // endregion
 
     // region classes
 
-    // Apply a natural box layout model to a dom node.
-    .box-sizing-border-box {
-        // chrome, safari, other webkit browsers
-        -webkit-box-sizing: border-box;
-        // netscape
-           -moz-box-sizing: border-box;
-        // css3
-                box-sizing: border-box;
-    }
     // Shows dots for word which are too long.
     .ellipsis-by-text-overflow {
         // opera

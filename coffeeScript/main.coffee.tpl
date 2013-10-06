@@ -31,6 +31,11 @@ this.require(
         The global scope is clean after this sequence. The given
         function is called when the dom-tree was loaded.
     ###
+    ###
+        NOTE: "jQuery.noConflict()" should become "true" for parameter
+        "removeAll", because we will end up in race conditions by finishing
+        tests and removing the main jQuery object.
+    ###
     jQuery.noConflict(true) (jQuery) -> jQuery.Documentation(
         googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'))
 ##

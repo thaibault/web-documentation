@@ -28,7 +28,7 @@ body.documentation {
 
     /* region global */
 
-    #generic > .box-sizing-border-box;
+    #generic > .box-sizing();
     color: #373737;
     background: #212121;
     font-size: 16px;
@@ -152,7 +152,7 @@ body.documentation {
 
     section.main-content {
         table.codehilitetable tbody tr td.code div.codehilite pre {
-            width: 568px;
+            width: 591px;
         }
     }
 
@@ -164,7 +164,7 @@ body.documentation {
         }
         a[href="#"] {
             float: left;
-            margin-top: 7px;
+            margin-top: 9px;
         }
         a:hover {
             color: #0069ba;
@@ -256,7 +256,7 @@ body.documentation {
         margin: 10px 0 10px 0;
         border: 1px solid #ebebeb;
 
-        #generic > .shadow(0 0 5px #ebebeb);
+        #generic > .box-shadow(0 0 5px #ebebeb);
     }
     pre, code {
         width: 100%;
@@ -266,7 +266,7 @@ body.documentation {
         font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
         font-size: 12px;
 
-        #generic > .round-corner(2px);
+        #generic > .border-radius(2px);
     }
     pre {
         width: 100%;
@@ -274,7 +274,7 @@ body.documentation {
         box-shadow: 0 0 10px rgba(0,0,0,.1);
         overflow: auto;
         white-space: pre;
-        box-sizing: content-box;
+        #generic > .box-sizing();
         margin: 0;
     }
     code {
@@ -374,12 +374,7 @@ body.documentation {
         border-bottom-right-radius: 2px;
     }
     .header-wrap {
-        background: #212121;
-        background: -moz-linear-gradient(top, #373737, #212121);
-        background: -webkit-linear-gradient(top, #373737, #212121);
-        background: -ms-linear-gradient(top, #373737, #212121);
-        background: -o-linear-gradient(top, #373737, #212121);
-        background: linear-gradient(top, #373737, #212121);
+        #generic > .linear-gradient(top, #212121, #373737, #212121);
     }
     .header-wrap .inner {
         padding: 50px 10px 30px 10px;
@@ -411,7 +406,7 @@ body.documentation {
     a.tar-gz-source-download {
         text-align: center;
         padding-top: 28px;
-        box-sizing: border-box;
+        #generic > .box-sizing(border-box);
         padding-top: 29px;
         color: #f2f2f2;
         font-weight: bolder;

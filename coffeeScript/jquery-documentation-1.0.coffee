@@ -34,9 +34,7 @@
 ###
 ## standalone
 ## ((jQuery) ->
-this.window.require([
-    ['jQuery.Website', 'jquery-website-1.0.coffee'],
-    ['jQuery.fn.carousel', 'bootstrap-3.0.0']],
+this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
 (jQuery) ->
 ##
 
@@ -103,7 +101,8 @@ this.window.require([
             this.on this._domNodes.legalNotesLink, 'click', =>
                 this._domNodes.mainContent.fadeOut 'slow', =>
                     this._domNodes.legalNotesContent.fadeIn 'slow'
-            this.on this._domNodes.homeLink, 'click', =>
+            this.on this._domNodes.homeLink, 'click', (event) =>
+                event.preventDefault()
                 this._domNodes.legalNotesContent.fadeOut 'slow', =>
                     this._domNodes.mainContent.fadeIn 'slow'
 
