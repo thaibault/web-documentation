@@ -19,12 +19,13 @@
 # endregion
 
 ## standalone
-## this.jQuery.noConflict(true) (jQuery) ->
-##     jQuery.Documentation googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'
+## #this.jQuery.noConflict(true) ($) ->
+## this.jQuery(($) ->
+##     $.Documentation googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>')
 this.require.noConflict = true
 this.require(
     [['jQuery.Documentation', 'jquery-documentation-1.0.coffee']],
-(jQuery) ->
+($) ->
     ###
         Embed jQuery and require full compatible to all other
         JavaScripts.
@@ -36,6 +37,6 @@ this.require(
         "removeAll", because we will end up in race conditions by finishing
         tests and removing the main jQuery object.
     ###
-    jQuery.noConflict(true) (jQuery) -> jQuery.Documentation(
-        googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>'))
+    $.noConflict(true) ($) -> $.Documentation(
+        googleTrackingCode: '<%GOOGLE_TRACKING_CODE%>', logging: true))
 ##

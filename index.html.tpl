@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <!-- region vim modline
 
@@ -91,22 +91,34 @@ endregion -->
                 <% START_UP_ANIMATION_NUMBER += 1
                 <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> forkme-banner" href="https://github.com/thaibault/<%NAME%>">
                     View on GitHub
+                    <!--deDE:GitHub-Projekt-->
+                    <!--frFR:GitHub-Project-->
+                    <i class="icon-github"></i>
                 </a>
                 <% START_UP_ANIMATION_NUMBER += 1
-                <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>" class="project-title">
+                <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-title">
                     <a href="http://thaibault.github.io/<%NAME%>"><%NAME%></a>
                 </h1>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <h2 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-tagline">
                     <%TAGLINE%>
+                    <br />
                 </h2>
-                <section class="downloads">
+                <section class="header-links">
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <a href="#language-deDE" class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>">de</a>
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <a href="#language-enUS" class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>">en</a>
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <a href="#language-frFR" class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%>">fr</a>
+                    <% START_UP_ANIMATION_NUMBER += 1
+                    <i class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> icon-download-tarball"></i>
+                    <% START_UP_ANIMATION_NUMBER += 2
                     <% if FileHandler(location=DISTRIBUTION_BUNDLE_FILE_PATH, must_exist=False):
-                        <% START_UP_ANIMATION_NUMBER += 1
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%NAME%>/zipball/master">
                             src.zip
                         </a>
-                        <% START_UP_ANIMATION_NUMBER += 1
+                        <% START_UP_ANIMATION_NUMBER -= 1
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-distribution-bundle-download" href="<%DISTRIBUTION_BUNDLE_FILE_PATH%>">
                             app.zip
                         </a>
@@ -114,6 +126,7 @@ endregion -->
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> zip-source-download" href="https://github.com/thaibault/<%NAME%>/zipball/master">
                             .zip
                         </a>
+                        <% START_UP_ANIMATION_NUMBER -= 1
                         <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> tar-gz-source-download" href="https://github.com/thaibault/<%NAME%>/tarball/master">
                             .tar.gz
                         </a>
@@ -139,9 +152,18 @@ endregion -->
         <!-- region legal notes -->
 
             <section class="about-this-website inner">
-                <h1>About this website</h1>
+                <h1>
+                    About this website
+                    <!--deDE:Impressum-->
+                    <!--frFR:Mentions légales-->
+                </h1>
                 <p>
-                    Provider of <a href="http://thaibault.github.io/<%NAME%>">http://thaibault.github.io/<%NAME%></a>:
+                    Provider of
+                    <!--deDE:Anbieter von-->
+                    <!--frFR:Fournisseur de-->
+                    <a href="http://thaibault.github.io/<%NAME%>">
+                        http://thaibault.github.io/<%NAME%>
+                    </a>:
                     <br />
                     Torben Sickert
                     <br />
@@ -151,12 +173,20 @@ endregion -->
                     <br />
                     Tel. 0049 (0) 176 / 10248185
                     <br />
-                    Email: <a href="mailto:t.sickert@gmail.com">t.sickert@gmail.com</a>
+                    Email:
+                    <a href="mailto:t.sickert@gmail.com">t.sickert@gmail.com</a>
                     <br />
-                    Website: <a href="http://thaibault.github.io/website">http://thaibault.github.io/website</a>
+                    Website:
+                    <!--deDE:Webseite:-->
+                    <!--frFR:Site:-->
+                    <a href="http://thaibault.github.io/website">http://thaibault.github.io/website</a>
                     <br />
                     <span class="glyphicon glyphicon-arrow-left arrow-left-home"></span>
-                    <a href="#">home</a>
+                    <a href="#home">
+                        home
+                        <!--deDE:Startseite-->
+                        <!--frFR:Maison-->
+                    </a>
                 </p>
             </section>
         </div>
@@ -172,9 +202,15 @@ endregion -->
                 <% START_UP_ANIMATION_NUMBER += 1
                 <p class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> copyright">
                     <%NAME%> maintained by
+                    <!--deDE:<%NAME%> betrieben von-->
+                    <!--frFR:<%NAME%> exploité par-->
                     <a href="https://github.com/thaibault">thaibault</a>
                     &middot; &copy; 2013 Torben Sickert, Inc. &middot;
-                    <a href="#about-this-website">about this website</a>
+                    <a href="#about-this-website">
+                        about this website
+                        <!--deDE:Impressum-->
+                        <!--frFR:Mentions légales-->
+                    </a>
                 </p>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <p class="pull-right"><a href="#top">top</a></p>

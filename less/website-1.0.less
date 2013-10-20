@@ -16,7 +16,7 @@ License
     see http://creativecommons.org/licenses/by/3.0/deed.de
 */
 
-@import url(../styleSheet/bootstrap-3.0.0.css);
+@import url(../cascadingStyleSheet/bootstrap-3.0.0.css);
 
 @import 'bootstrap-glyphicons-1.0.0';
 
@@ -29,8 +29,8 @@ License
 @imagePath: '../image/';
 @fontPath: '../font/';
 
-@minimumTabletWidth: 767px;
-@minimumDesktopWidth: 979px;
+@minimumTabletWidthInPX: 767px;
+@minimumDesktopWidthInPX: 979px;
 
 @color1: #1b1b1b;
 @color2: #1b1b1b;
@@ -50,19 +50,19 @@ License
 
 /* endregion */
 
-/* region styles heets */
+/* region style sheets */
 
 body {
 
-    /* region med ia query change indicator */
+    /* region media query change indicator */
 
     border-left-width: 0;
     /* smartphone mode */
     border-left-style: dotted;
-    @media (min-width: @minimumTabletWidth) {
+    @media (min-width: @minimumTabletWidthInPX) {
         border-left-style: solid;
     }
-    @media (min-width: @minimumDesktopWidth) {
+    @media (min-width: @minimumDesktopWidthInPX) {
         border-left-style: dashed;
     }
 

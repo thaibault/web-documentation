@@ -56,11 +56,11 @@
                3. now import your own modules or packages.
                4. Sort import names alphabetically and separate the previous
                   defined parts with blank lines.
-    - rc11 Import everything by its whole name and reference path and use it by
-           its full reference path (even builtin units).
+    - rc11 Prefix global reference from global context with "this" and with
+           "window" in none global contexts.
     - rc12 Don't use any abbreviations.
-    - rc13 Try to use small cyclomatic complexity in all units.
-           (e.g. less than 20 or 30).
+    - rc13 Try to use small cyclomatic complexity in all units (less then eight
+           is a good measurement).
     - rc14 Use one of the plugin pattern described in "jQuery.Tools".
     - rc15 Use the area statement syntax to structure your code and make it
            possible to fold them in many IDE's
@@ -99,11 +99,11 @@ Structure of meta documenting classes. (see rc15)
 
         var A = function() {
 
-        // region (Public|Protected) (properties|methods)
+        // region (public|protected|private) (properties|methods)
 
-            // region Property of method or property group
+            // region property or method group
 
-                // region Subproperty of method or property group
+                // region subproperty of method or property group
 
             ...
 
@@ -281,7 +281,7 @@ class Require
                 sourceRootPath = self.basePath.coffee
             coffeeScriptCompilerOptions =
                 header: false
-                sourceMap: true
+                sourceMap: false
                 filename: module[1]
                 generatedFile: module[1].substr(
                     0, module[1].lastIndexOf('.') + 1
@@ -290,15 +290,18 @@ class Require
                 sourceFiles: [module[1]]
             if window.btoa? and window.JSON? and window.unescape? and
                window.encodeURIComponent?
+                coffeeScriptCompilerOptions.sourceMap = true
                 # NOTE: Workaround to enable source maps for asynchron loaded
                 # coffee scripts.
                 {js, v3SourceMap} = window.CoffeeScript.compile(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
+                # NOTE: Additional commend syntax with "/*...*/" is necessary
+                # to support internet explorer.
                 window.eval(
-                    js + '\n//@ sourceMappingURL=data:application/json;' +
+                    js + '\n/*//@ sourceMappingURL=data:application/json;' +
                     'base64,' +
                     (btoa unescape encodeURIComponent v3SourceMap) + '\n//@ ' +
-                    'sourceURL=' + module[1])
+                    'sourceURL=' + module[1] + '*/')
             else
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
@@ -484,8 +487,15 @@ class Require
                 ajaxObject.open(
                     'GET', self::_getScriptFilePath module[1], true)
                 ajaxObject.onreadystatechange = ->
-                    if ajaxObject.readyState is 4 and
-                       ajaxObject.status in [0, 200]
+                    # NOTE: Internet explorer throws an exception here instead
+                    # of showing the error code in the "status" property.
+                    try
+                        readyState = ajaxObject.readyState
+                    catch error
+                        throw new Error(
+                            "Running resource \"#{module[1]}\" failed via " +
+                            "ajax cased by exception: \"#{error}\".")
+                    if readyState is 4 and ajaxObject.status in [0, 200]
                         shortcut[asyncronModulePattern](
                             ajaxObject.responseText, module, parameter)
                         self::_scriptLoaded module, parameter
@@ -493,9 +503,9 @@ class Require
                         ajaxObject.onreadystatechange = null
                     else if ajaxObject.status isnt 200
                         self::_log(
-                            "Loading resource \"#{module[1]}\" failed via " +
-                            "ajax with status \"#{ajaxObject.status}\" in " +
-                            "state \"#{ajaxObject.readyState}\".")
+                            "Loading resource \"#{module[1]}\" failed " +
+                            "via ajax with status \"#{ajaxObject.status}" +
+                            "\" in state \"#{ajaxObject.readyState}\".")
                 ajaxObject.send null
                 isAsyncronRequest = true
                 break

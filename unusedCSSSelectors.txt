@@ -1,14 +1,1 @@
-.image-data-image-bootstrap-2-3-1-glyphicons-halflings-png
-.image-data-image-bootstrap-2-3-1-glyphicons-halflings-white-png
-.image-data-image-socialMedia-github-png
-.image-data-image-socialMedia-google-png
-.image-data-image-socialMedia-email-png
-.image-data-image-socialMedia-twitter-png
-.image-data-image-socialMedia-facebook-png
-.image-data-image-socialMedia-xing-png
-.image-data-image-socialMedia-linkedin-png
-.image-data-image-socialMedia-skype-png
-.image-data-image-carousel-references-png
-.image-data-image-carousel-contact-png
-.image-data-image-carousel-skills-png
-.image-data-image-carousel-about-png
+

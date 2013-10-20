@@ -28,14 +28,12 @@
     web page.
 ###
 
-###*
-    @name jQuery
-    @see www.jquery.com
-###
 ## standalone
-## ((jQuery) ->
-this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
-(jQuery) ->
+## do ($=this.jQuery) ->
+this.require([
+    ['jQuery.Website', 'jquery-website-1.0.coffee'],
+    ['jQuery.Lang', 'jquery-lang-1.0.coffee']
+], ($) ->
 ##
 
 # endregion
@@ -43,18 +41,12 @@ this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
 # region plugins
 
     ###*
-        @memberOf jQuery
+        @memberOf $
         @class
     ###
-    class Documentation extends jQuery.Website.class
+    class Documentation extends $.Website.class
 
-    # region private properties
-
-        __name__: 'Documentation'
-
-    # endregion
-
-    # region protected properties 
+    # region properties
 
         ###*
             Saves default options for manipulating the default behaviour.
@@ -64,40 +56,51 @@ this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
         _options:
             domNodeSelectorPrefix: 'body.{1}'
             domNodes:
+                changeLanguageLinks: 'a[href^="#language-"]'
                 tableOfContentLinks: 'div.toc a[href^="#"]'
                 legalNotesLink: 'a[href="#about-this-website"]'
-                homeLink: 'a[href="#"]'
+                homeLink: 'a[href="#home"]'
                 legalNotesContent: 'section.about-this-website'
                 mainContent: 'section.main-content'
                 codeLines:
                     'table.codehilitetable tr td.code div.codehilite pre span'
             trackingCode: 'UA-0-0'
+            language: {}
         ###*
             Holds all needed dom nodes.
 
             @property {Object}
         ###
         _domNodes: {}
+        _languageHandler: {}
+        __name__: 'Documentation'
 
     # endregion
 
     # region public methods
 
-        # region special methods
+        # region special
 
         ###*
             @description Initializes the interactive web application.
 
             @param {Object} options An options object.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         initialize: (options) ->
             super options
             this._domNodes.legalNotesContent.hide()
+            if not this._options.language.logging?
+                this._options.language.logging = this._options.logging
+            this._languageHandler = $.Lang this._options.language
+            this.on this._domNodes.changeLanguageLinks, 'click', (event) =>
+                this._languageHandler.switch $(event.target).attr(
+                    'href'
+                ).substr('language-'.length + 1)
             this._makeCodeEllipsis()
             this.on this._domNodes.tableOfContentLinks, 'click', ->
-                jQuery.scrollTo jQuery(this).attr('href'), 'slow'
+                $.scrollTo $(this).attr('href'), 'slow'
             this.on this._domNodes.legalNotesLink, 'click', =>
                 this._domNodes.mainContent.fadeOut 'slow', =>
                     this._domNodes.legalNotesContent.fadeIn 'slow'
@@ -113,7 +116,7 @@ this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
         ###*
             @description This method triggers if we change the current section.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         _onSwitchSection: (hash) ->
             if hash isnt '#about-this-website'
@@ -127,7 +130,7 @@ this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
             @description This method triggers if all startup animations are
                          ready.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         _onStartUpAnimationComplete: ->
             # All start up effects are ready. Handle direct
@@ -145,25 +148,25 @@ this.window.require([['jQuery.Website', 'jquery-website-1.0.coffee']],
             @description This method makes dotes after code lines which are too
                          long. This prevents line wrapping.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         _makeCodeEllipsis: ->
             this._domNodes.codeLines.each(->
-                if jQuery(this).text().length > 80
-                    jQuery(this).text(
-                        "#{jQuery(this).text().substr(0, 76)}..."))
+                if $(this).text().length > 80
+                    $(this).text(
+                        "#{$(this).text().substr(0, 76)}..."))
             this
 
     # endregion
 
     ###* @ignore ###
-    jQuery.Documentation = ->
+    $.Documentation = ->
         self = new Documentation
         self._controller.apply self, arguments
     ###* @ignore ###
-    jQuery.Documentation.class = Documentation
+    $.Documentation.class = Documentation
 
 # endregion
 
-## standalone ).call this, this.jQuery
+## standalone
 )
