@@ -202,8 +202,8 @@ endregion -->
                 <% START_UP_ANIMATION_NUMBER += 1
                 <p class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> copyright">
                     <%NAME%> maintained by
-                    <!--deDE:<%NAME%> betrieben von-->
-                    <!--frFR:<%NAME%> exploité par-->
+                    <!--deDE:<%NAME%> betrieben von -->
+                    <!--frFR:<%NAME%> exploité par -->
                     <a href="https://github.com/thaibault">thaibault</a>
                     &middot; &copy; 2013 Torben Sickert, Inc. &middot;
                     <a href="#about-this-website">
