@@ -97,7 +97,7 @@ endregion -->
                 </a>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-title">
-                    <a href="http://thaibault.github.io/<%NAME.lower()%>"><%NAME%></a>
+                    <a href="http://thaibault.github.io/<%NAME%>"><%NAME%></a>
                 </h1>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <h2 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-tagline">
