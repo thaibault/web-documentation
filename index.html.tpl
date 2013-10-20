@@ -91,13 +91,13 @@ endregion -->
                 <% START_UP_ANIMATION_NUMBER += 1
                 <a class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> forkme-banner" href="https://github.com/thaibault/<%NAME%>">
                     View on GitHub
-                    <!--deDE:GitHub-Projekt-->
-                    <!--frFR:GitHub-Project-->
+                    <!--deDE: GitHub-Projekt -->
+                    <!--frFR: GitHub-Project -->
                     <i class="icon-github"></i>
                 </a>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <h1 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-title">
-                    <a href="http://thaibault.github.io/<%NAME%>"><%NAME%></a>
+                    <a href="http://thaibault.github.io/<%NAME.lower()%>"><%NAME%></a>
                 </h1>
                 <% START_UP_ANIMATION_NUMBER += 1
                 <h2 class="start-up-animation-number-<%START_UP_ANIMATION_NUMBER%> project-tagline">
