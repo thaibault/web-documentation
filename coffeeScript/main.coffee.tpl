@@ -18,6 +18,18 @@
 
 # endregion
 
+this.less =
+    env: 'development'
+    async: false
+    fileAsync: false
+    poll: 1000
+    functions: {}
+    dumpLineNumbers: 'all'
+    relativeUrls: false
+    rootpath: ''
+    logLevel: 2
+    #sourceMap: true
+
 ## standalone
 ## #this.jQuery.noConflict(true) ($) ->
 ## this.jQuery(($) ->

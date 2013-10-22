@@ -28,13 +28,8 @@
     web page.
 ###
 
-## standalone
-## do ($=this.jQuery) ->
-this.require([
-    ['jQuery.Website', 'jquery-website-1.0.coffee'],
-    ['jQuery.Lang', 'jquery-lang-1.0.coffee']
-], ($) ->
-##
+## standalone do ($=this.jQuery) ->
+this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
 
 # endregion
 
@@ -56,7 +51,6 @@ this.require([
         _options:
             domNodeSelectorPrefix: 'body.{1}'
             domNodes:
-                changeLanguageLinks: 'a[href^="#language-"]'
                 tableOfContentLinks: 'div.toc a[href^="#"]'
                 legalNotesLink: 'a[href="#about-this-website"]'
                 homeLink: 'a[href="#home"]'
@@ -65,14 +59,6 @@ this.require([
                 codeLines:
                     'table.codehilitetable tr td.code div.codehilite pre span'
             trackingCode: 'UA-0-0'
-            language: {}
-        ###*
-            Holds all needed dom nodes.
-
-            @property {Object}
-        ###
-        _domNodes: {}
-        _languageHandler: {}
         __name__: 'Documentation'
 
     # endregion
@@ -86,18 +72,11 @@ this.require([
 
             @param {Object} options An options object.
 
-            @returns {$.Tools} Returns the current instance.
+            @returns {$.Documentation} Returns the current instance.
         ###
         initialize: (options) ->
             super options
             this._domNodes.legalNotesContent.hide()
-            if not this._options.language.logging?
-                this._options.language.logging = this._options.logging
-            this._languageHandler = $.Lang this._options.language
-            this.on this._domNodes.changeLanguageLinks, 'click', (event) =>
-                this._languageHandler.switch $(event.target).attr(
-                    'href'
-                ).substr('language-'.length + 1)
             this._makeCodeEllipsis()
             this.on this._domNodes.tableOfContentLinks, 'click', ->
                 $.scrollTo $(this).attr('href'), 'slow'
@@ -116,7 +95,7 @@ this.require([
         ###*
             @description This method triggers if we change the current section.
 
-            @returns {$.Tools} Returns the current instance.
+            @returns {$.Documentation} Returns the current instance.
         ###
         _onSwitchSection: (hash) ->
             if hash isnt '#about-this-website'
@@ -130,7 +109,7 @@ this.require([
             @description This method triggers if all startup animations are
                          ready.
 
-            @returns {$.Tools} Returns the current instance.
+            @returns {$.Documentation} Returns the current instance.
         ###
         _onStartUpAnimationComplete: ->
             # All start up effects are ready. Handle direct
@@ -148,7 +127,7 @@ this.require([
             @description This method makes dotes after code lines which are too
                          long. This prevents line wrapping.
 
-            @returns {$.Tools} Returns the current instance.
+            @returns {$.Documentation} Returns the current instance.
         ###
         _makeCodeEllipsis: ->
             this._domNodes.codeLines.each(->

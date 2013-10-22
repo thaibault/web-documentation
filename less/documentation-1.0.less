@@ -133,6 +133,7 @@ body.documentation {
         .icon-blacktocat;
         margin-bottom: -2px;
         margin-top: -6px;
+        margin-left: 8px;
     }
     i.icon-download-tarball {
         .icon-download;
@@ -188,6 +189,7 @@ body.documentation {
                 text-shadow: #111 0px 0px 10px;
             }
             section.header-links {
+                padding: 0;
                 position: absolute;
                 width: 290px;
                 z-index: 10;
@@ -195,13 +197,16 @@ body.documentation {
                 right: 0;
                 height: 70px;
 
-                a[href^="#language-"] {
+                a[href^="#lang-"] {
                     padding-right: 10px;
                     padding-top: 35px;
                     float: left;
                     color: #ababab;
                 }
-                a[href^="#language-"]:hover {
+                a[href^="#lang-"].current {
+                    color: #5a5a5a;
+                }
+                a[href^="#lang-"]:hover {
                     color: #898989;
                 }
                 a.zip-source-download, a.zip-distribution-bundle-download,
@@ -261,6 +266,9 @@ body.documentation {
 
         /*  region content */
 
+        section {
+            padding-top: 40px;
+        }
         section.main-content {
             padding-top: 40px;
 
