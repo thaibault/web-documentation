@@ -19,6 +19,7 @@ License
 @import url(../cascadingStyleSheet/bootstrap-3.0.0.css);
 
 @import 'bootstrap-glyphicons-1.0.0';
+@import 'glyphicons-social-1.8';
 
 @import 'generic-1.0';
 
@@ -29,8 +30,9 @@ License
 @imagePath: '../image/';
 @fontPath: '../font/';
 
-@minimumTabletWidthInPX: 767px;
-@minimumDesktopWidthInPX: 979px;
+@minimumSmallWidthInPixel: 768px;
+@minimumMediumWidthInPixel: 992px;
+@minimumLargeWidthInPixel: 1200px;
 
 @color1: #1b1b1b;
 @color2: #1b1b1b;
@@ -47,27 +49,13 @@ License
          url('@{fontPath}glyphiconshalflings-regular.ttf') format('truetype'),
          url('@{fontPath}glyphiconshalflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
-
-/* endregion */
-
-/* region style sheets */
-
-body {
-
-    /* region media query change indicator */
-
-    border-left-width: 0;
-    /* smartphone mode */
-    border-left-style: dotted;
-    @media (min-width: @minimumTabletWidthInPX) {
-        border-left-style: solid;
-    }
-    @media (min-width: @minimumDesktopWidthInPX) {
-        border-left-style: dashed;
-    }
-
-    /* endregion */
-
+@font-face {
+    font-family: 'Glyphicons Social Regular';
+    src: url('@{fontPath}glyphiconshalflings-social-regular.eot');
+    src: url('@{fontPath}glyphiconshalflings-social-regular.eot?#iefix') format('embedded-opentype'),
+         url('@{fontPath}glyphiconshalflings-social-regular.woff') format('woff'),
+         url('@{fontPath}glyphiconshalflings-social-regular.ttf') format('truetype'),
+         url('@{fontPath}glyphiconshalflings-social-regular.svg#glyphicons_socialregular') format('svg');
 }
 
 /* endregion */

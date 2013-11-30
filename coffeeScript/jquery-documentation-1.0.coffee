@@ -28,8 +28,11 @@
     web page.
 ###
 
-## standalone do ($=this.jQuery) ->
-this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
+## standalone
+## do ($=this.jQuery) ->
+this.require.scopeIndicator = 'jQuery.Documentation'
+this.require 'jquery-website-1.0.coffee', ($) ->
+##
 
 # endregion
 
@@ -44,21 +47,10 @@ this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
     # region properties
 
         ###*
-            Saves default options for manipulating the default behaviour.
+            Holds the class name to provide inspection features.
 
-            @property {Object}
+            @property {String}
         ###
-        _options:
-            domNodeSelectorPrefix: 'body.{1}'
-            domNodes:
-                tableOfContentLinks: 'div.toc a[href^="#"]'
-                legalNotesLink: 'a[href="#about-this-website"]'
-                homeLink: 'a[href="#home"]'
-                legalNotesContent: 'section.about-this-website'
-                mainContent: 'section.main-content'
-                codeLines:
-                    'table.codehilitetable tr td.code div.codehilite pre span'
-            trackingCode: 'UA-0-0'
         __name__: 'Documentation'
 
     # endregion
@@ -74,35 +66,99 @@ this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
 
             @returns {$.Documentation} Returns the current instance.
         ###
-        initialize: (options) ->
+        initialize: (
+            options={}, @_startUpAnimationIsComplete=false,
+            @_activateLanguageSupport=false, @_languageHandler=null
+        ) ->
+            this._options =
+                onExamplesLoaded: $.noop()
+                domNodeSelectorPrefix: 'body.{1}'
+                showExample:
+                    pattern: '^ *showExample(: *([^ ]+))? *$'
+                    domNodeName: '#comment'
+                    htmlWrapper: '''
+                        <div class="show-example-wrapper">
+                            <h3>
+                                Example:
+                                <!--deDE:Beispiel:-->
+                                <!--frFR:Exemple:-->
+                            </h3>
+                        </div>
+                    '''
+                domNode:
+                    tableOfContentLinks: 'div.toc > ul > li a[href^="#"]'
+                    aboutThisWebsiteLink: 'a[href="#about-this-website"]'
+                    homeLink: 'a[href="#home"]'
+                    aboutThisWebsiteSection: 'section.about-this-website'
+                    mainSection: 'section.main-content'
+                    codeWrapper: 'div.codehilite'
+                    codeChildren: 'pre'
+                trackingCode: 'UA-0-0'
+                section:
+                    aboutThisWebsite:
+                        fadeOut: duration: 'slow'
+                        fadeIn: duration: 'slow'
+                    main:
+                        fadeOut: duration: 'slow'
+                        fadeIn: duration: 'slow'
+            # NOTE: We will initialize language support after examples are
+            # injected if activated via options.
+            this._activateLanguageSupport = options.activateLanguageSupport
+            options.activateLanguageSupport = false
             super options
-            this._domNodes.legalNotesContent.hide()
-            this._makeCodeEllipsis()
-            this.on this._domNodes.tableOfContentLinks, 'click', ->
+            if not this._activateLanguageSupport?
+                this._activateLanguageSupport =
+                    this._parentOptions.activateLanguageSupport
+            if not window.location.hash
+                window.location.hash = this.$domNodes.homeLink.attr 'href'
+            this.$domNodes.aboutThisWebsiteSection.hide()
+            # NOTE: We have to render examples first to avoid having dots in
+            # example code.
+            this._showExamples()._makeCodeEllipsis()
+            this.on this.$domNodes.tableOfContentLinks, 'click', ->
                 $.scrollTo $(this).attr('href'), 'slow'
-            this.on this._domNodes.legalNotesLink, 'click', =>
-                this._domNodes.mainContent.fadeOut 'slow', =>
-                    this._domNodes.legalNotesContent.fadeIn 'slow'
-            this.on this._domNodes.homeLink, 'click', (event) =>
-                event.preventDefault()
-                this._domNodes.legalNotesContent.fadeOut 'slow', =>
-                    this._domNodes.mainContent.fadeIn 'slow'
+            # Handle section switch between documentation and
+            # "about this website".
+            this._options.section.aboutThisWebsite.fadeOut.always = =>
+                this.$domNodes.mainSection.fadeIn(
+                    this._options.section.main.fadeIn)
+            this._options.section.main.fadeOut.always = =>
+                this.$domNodes.aboutThisWebsiteSection.fadeIn(
+                    this._options.section.aboutThisWebsite.fadeIn)
+            this.on this.$domNodes.aboutThisWebsiteLink, 'click', =>
+                this.$domNodes.mainSection.fadeOut(
+                    this._options.section.main.fadeOut)
+            this.on this.$domNodes.homeLink, 'click', (event) =>
+                this.$domNodes.aboutThisWebsiteSection.fadeOut(
+                    this._options.section.aboutThisWebsite.fadeOut)
+            this
 
         # endregion
 
          # region event handler
 
         ###*
+            @description This method triggers if all examples loaded.
+
+            @returns {$.Documentation} Returns the current instance.
+        ###
+        _onExamplesLoaded: ->
+            # NOTE: After injecting new dom nodes we have to grab them for
+            # further controller logic.
+            this.$domNodes = this.grabDomNode this._options.domNode
+            # New injected dom nodes may take affect on language handler.
+            if(this._startUpAnimationIsComplete and
+               this._activateLanguageSupport)
+                this._languageHandler = $.Lang this._options.language
+            this
+        ###*
             @description This method triggers if we change the current section.
 
             @returns {$.Documentation} Returns the current instance.
         ###
         _onSwitchSection: (hash) ->
-            if hash isnt '#about-this-website'
-                this._domNodes.legalNotesContent.fadeOut 'slow', =>
-                    this._domNodes.mainContent.fadeIn 'slow'
-            this._domNodes.tableOfContentLinks.add(
-                this._domNodes.legalNotesLink
+            this.$domNodes.tableOfContentLinks.add(
+                this.$domNodes.aboutThisWebsiteLink
             ).filter("a[href=\"#{hash}\"]").trigger 'click'
             super()
         ###*
@@ -112,13 +168,16 @@ this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
             @returns {$.Documentation} Returns the current instance.
         ###
         _onStartUpAnimationComplete: ->
+            if this._activateLanguageSupport and not this._languageHandler?
+                this._languageHandler = $.Lang this._options.language
             # All start up effects are ready. Handle direct
             # section links.
-            this._domNodes.tableOfContentLinks.add(
-                this._domNodes.legalNotesLink
+            this._startUpAnimationIsComplete = true
+            this.$domNodes.tableOfContentLinks.add(
+                this.$domNodes.aboutThisWebsiteLink
             ).filter("a[href=\"#{window.location.href.substr(
                 window.location.href.indexOf '#'
-            )}\"]").trigger 'click',
+            )}\"]").trigger 'click'
             super()
 
         # endregion
@@ -130,22 +189,116 @@ this.require([['jQuery.Website', 'jquery-website-1.0.coffee']], ($) ->
             @returns {$.Documentation} Returns the current instance.
         ###
         _makeCodeEllipsis: ->
-            this._domNodes.codeLines.each(->
-                if $(this).text().length > 80
-                    $(this).text(
-                        "#{$(this).text().substr(0, 76)}..."))
+            self = this
+            this.$domNodes.codeWrapper.children(
+                this.$domNodes.codeChildren
+            ).each ->
+                $this = $ this
+                newContent = ''
+                codeLines = $this.html().split '\n'
+                $.each codeLines, (index, value) ->
+                    # NOTE: Wrap a div object tu grantee that $ will accept the
+                    # input.
+                    excess = $("<div>#{value}</div>").text().length - 79
+                    if excess > 0
+                        newContent += self._replaceExcessWithDots value, excess
+                    else
+                        newContent += value
+                    if index + 1 isnt codeLines.length
+                        newContent += "\n"
+                $this.html newContent
+            this
+        ###*
+            @description Replaces given html content with a shorter version
+                         trimmed by given amount of excess.
+
+            @param {String} content String to trim.
+            @param {Number} excess Amount of excess.
+
+            @returns {String} Returns the trimmed content.
+        ###
+        _replaceExcessWithDots: (content, excess) ->
+            # Add space for ending dots.
+            excess += 3
+            newContent = ''
+            try
+                content = $ content
+            catch error
+                # NOTE: Wrap an element around to grantee that $ will accept
+                # the input. We don't wrap an element in general to iterate
+                # through separate dom nodes in next step if possible.
+                content = $ "<wrapper>#{content}</wrapper>"
+                wrapped = true
+            $(content.get().reverse()).each ->
+                # Wrap element to get not only the inner html. Wrap only if not
+                # wrapped already.
+                if wrapped
+                    $wrapper = $ this
+                else
+                    $wrapper = $(this).wrap('<wrapper>').parent()
+                contentSnippet = $wrapper.html()
+                if not contentSnippet
+                    contentSnippet = this.textContent
+                if excess
+                    if this.textContent.length < excess
+                        excess -= this.textContent.length
+                        contentSnippet = ''
+                    else if this.textContent.length >= excess
+                        this.textContent = "#{this.textContent.substr(
+                            0, this.textContent.length - excess - 1
+                        )}..."
+                        excess = 0
+                        contentSnippet = $wrapper.html()
+                        if not contentSnippet
+                            contentSnippet = this.textContent
+                newContent = contentSnippet + newContent
+            newContent
+        ###*
+            @description Shows marked example codes directly in browser.
+
+            @returns {$.Documentation} Returns the current instance.
+        ###
+        _showExamples: ->
+            self = this
+            this.$domNodes.parent.find(':not(iframe)').contents().each ->
+                if this.nodeName is self._options.showExample.domNodeName
+                    match = this.textContent.match(new RegExp(
+                        self._options.showExample.pattern))
+                    if match
+                        $codeDomNode = $(this).next()
+                        code = $codeDomNode.find(
+                            self.$domNodes.codeWrapper
+                        ).text()
+                        if not code
+                            code = $codeDomNode.text()
+                        if $.inArray(
+                            match[2]?.toLowerCase(), ['javascript', 'js']
+                        ) isnt -1
+                            $codeDomNode.after($('<script>').attr(
+                                'type', 'text/javascript'
+                            ).text code)
+                        else if match[2]? and $.inArray(
+                            match[2].toLowerCase(), [
+                                'css', 'cascadingstylesheets', 'stylesheets',
+                                'sheets', 'style']
+                        ) isnt -1
+                            $codeDomNode.after($('<style>').attr(
+                                'type', 'text/css'
+                            ).text code)
+                        else
+                            $codeDomNode.after $(
+                                self._options.showExample.htmlWrapper
+                            ).append code
+            this.fireEvent 'examplesLoaded'
             this
 
     # endregion
 
-    ###* @ignore ###
-    $.Documentation = ->
-        self = new Documentation
-        self._controller.apply self, arguments
-    ###* @ignore ###
+    # region handle $ extending
+
+    $.Documentation = -> $.Tools().controller Documentation, arguments
     $.Documentation.class = Documentation
 
-# endregion
+    # endregion
 
-## standalone
-)
+# endregion
