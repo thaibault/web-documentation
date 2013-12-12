@@ -88,9 +88,11 @@ this.require [
                 onSwitchSection: $.noop()
                 onStartUpAnimationComplete: $.noop()
                 additionalPageLoadingTimeInMilliseconds: 0
-                googleTrackingCode: 'UA-0-0'
-                mediaQueryCssIndicator:
-                    extraSmall: 'xs', small: 'sm', medium: 'md', large: 'lg'
+                trackingCode: 'UA-0-0'
+                mediaQueryCssIndicator: [
+                    ['extraSmall', 'xs'], ['small', 'sm'], ['medium', 'md']
+                    ['large', 'lg']
+                ],
                 domNode:
                     top: 'div.navigation-bar'
                     scrollToTopButtons: 'a[href="#top"]'
@@ -124,22 +126,16 @@ this.require [
                 language: {}
                 scrollInLinearTime: false
                 scrollToTop: duration: 'slow'
+                domain: 'auto'
             }, @_viewportIsOnTop=true, @_currentMediaQueryMode='',
             @languageHandler=null, @__googleAnalyticsCode='''
-                var _gaq = _gaq || [];
-                  _gaq.push(['_setAccount', '{1}']);
-                  _gaq.push(['_trackPageview']);
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-                  (function() {
-                    var ga = document.createElement('script');
-                    ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' === document.location.protocol ?
-                              'https://ssl' : 'http://www') +
-                              '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0];
-                    s.parentNode.insertBefore(ga, s);
-                  })();
-            '''
+ga('create', '{1}', '{2}');
+ga('send', 'pageview');'''
         ) ->
             ###
                 Initializes the interactive web application.
@@ -165,8 +161,7 @@ this.require [
             this.$domNodes.window.ready this.getMethod(
                 this._removeLoadingCover)
             this._addNavigationEvents()._addMediaQueryChangeEvents(
-            )._triggerWindowResizeEvents()._handleGoogleAnalytics(
-                this._options.trackingCode)
+            )._triggerWindowResizeEvents()._handleGoogleAnalytics()
             if not this._options.language.logging?
                 this._options.language.logging = this._options.logging
             if this._options.activateLanguageSupport
@@ -237,8 +232,8 @@ this.require [
             this
         _onChangeToMediumMode: (oldMode, newMode) ->
             ###
-                This method triggers if the responsive design switches to medium
-                mode.
+                This method triggers if the responsive design switches to
+                medium mode.
 
                 **oldMode {String}**    - Saves the previous mode.
 
@@ -309,26 +304,28 @@ this.require [
 
                 **returns {$.Website}** - Returns the current instance.
             ###
-            $.each this._options.mediaQueryCssIndicator, (name, value) =>
-                this.$domNodes.parent.addClass "hidden-#{value}"
+            $.each this._options.mediaQueryCssIndicator, (key, value) =>
+                this.$domNodes.parent.addClass "hidden-#{value[1]}"
                 if(this.$domNodes.parent.is(':hidden') and
-                   name isnt this._currentMediaQueryMode)
+                   value[0] isnt this._currentMediaQueryMode)
                     this.fireEvent.apply(
                         this, [
-                            this.stringFormat('changeMediaQueryMode',
-                            name.substr(0, 1).toUpperCase() + name.substr 1),
-                            false, this, this._currentMediaQueryMode, name
+                            'changeMediaQueryMode', false, this,
+                            this._currentMediaQueryMode, value[0]
                         ].concat this.argumentsObjectToArray arguments
                     )
                     this.fireEvent.apply(
                         this, [
-                            this.stringFormat('changeTo{1}Mode',
-                            name.substr(0, 1).toUpperCase() + name.substr 1),
-                            false, this, this._currentMediaQueryMode, name
+                            this.stringFormat(
+                                'changeTo{1}Mode',
+                                value[0].substr(0, 1).toUpperCase() +
+                                value[0].substr 1
+                            ), false, this, this._currentMediaQueryMode,
+                            value[0]
                         ].concat this.argumentsObjectToArray arguments
                     )
-                    this._currentMediaQueryMode = name
-                this.$domNodes.parent.removeClass "hidden-#{value}"
+                    this._currentMediaQueryMode = value[0]
+                this.$domNodes.parent.removeClass "hidden-#{value[1]}"
             this
         _bindScrollEvents: ->
             ###
@@ -434,19 +431,19 @@ this.require [
             else
                 $.scrollTo {top: 0, left: 0}, this._options.scrollToTop
             this
-        _handleGoogleAnalytics: (trackingCode) ->
+        _handleGoogleAnalytics: () ->
             ###
-                Scrolls to top of page. Runs the given function after viewport
-                arrives.
-
-                **trackingCode {String}** - Google's javaScript embedding code
-                                            snippet.
+                Executes the page tracking code.
 
                 **returns {$.Website}**   - Returns the current instance.
             ###
+            this.debug(
+                "Run analytics code: \"#{this.__googleAnalyticsCode}\"",
+                this._options.trackingCode, this._options.domain)
             try
                 (new Function(this.stringFormat(
-                    this.__googleAnalyticsCode, trackingCode
+                    this.__googleAnalyticsCode, this._options.trackingCode,
+                    this._options.domain
                 )))()
             catch exception
                 this.warn(

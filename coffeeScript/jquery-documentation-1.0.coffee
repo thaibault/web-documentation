@@ -93,7 +93,6 @@ this.require 'jquery-website-1.0.coffee', ($) ->
                     mainSection: 'section.main-content'
                     codeWrapper: 'div.codehilite'
                     codeChildren: 'pre'
-                trackingCode: 'UA-0-0'
                 section:
                     aboutThisWebsite:
                         fadeOut: duration: 'slow'

@@ -219,6 +219,7 @@ body.documentation {
             h1.project-title, h2.project-tagline {
                 color: @brightFontColor;
                 text-shadow: #111 0px 0px 10px;
+                a { text-shadow: #111 0px 0px 10px; }
             }
             h1.project-title {
                 margin: 0;
@@ -233,7 +234,6 @@ body.documentation {
                 padding: 0;
                 right: 0;
                 position: absolute;
-                width: 706px;
                 z-index: 10;
                 bottom: -40px;
                 height: 70px;
@@ -414,6 +414,9 @@ body.documentation {
         div.show-example-wrapper { width: 447px; }
     }
     a[href="#top"] { visibility: hidden; }
+    div.header-wrap.outer > header.inner > section.header-links {
+        width: 451px;
+    }
 
         /* endregion */
 
@@ -431,6 +434,9 @@ body.documentation {
 
             /* endregion */
 
+        div.header-wrap.outer > header.inner > section.header-links {
+            width: 706px;
+        }
         .inner { width: 715px; }
         div.main-content-wrap section.main-content {
             pre { font-size: 13px; }
