@@ -1,4 +1,22 @@
 #!/usr/bin/env coffee
+# -*- coding: utf-8 -*-
+
+# region header
+
+# Copyright Torben Sickert 16.12.2012
+
+# License
+# -------
+
+# This library written by Torben Sickert stand under a creative commons naming
+# 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
+
+# endregion
+
+this.jQuery.noConflict() ($) ->
+    $.Documentation trackingCode: '<%GOOGLE_TRACKING_CODE%>', language:
+        allowedLanguages: <% "['" + "', '".join(LANGUAGES) + "']" if length(LANGUAGES) else '[]' %>
+        sessionDescription: 'documentationWebsite{1}'
 
 # region vim modline
 
@@ -6,55 +24,3 @@
 # vim: foldmethod=marker foldmarker=region,endregion:
 
 # endregion
-
-# region header
-
-# Copyright Torben Sickert 16.12.2012
-
-# License
-#    This library written by Torben Sickert stand under a creative commons
-#    naming 3.0 unported license.
-#    see http://creativecommons.org/licenses/by/3.0/deed.de
-
-# endregion
-
-# TODO adapt to support less source maps.
-## standalone
-##
-this.less =
-    env: 'development'
-    async: false
-    fileAsync: false
-    poll: 1000
-    functions: {}
-    dumpLineNumbers: 'all'
-    relativeUrls: false
-    rootpath: ''
-    logLevel: 0
-    #sourceMap: true
-##
-
-# TODO logging should be "false" after tracking code ist debugged.
-
-## standalone
-## this.jQuery ($) ->
-##     $.Documentation trackingCode: '<%GOOGLE_TRACKING_CODE%>', logging: true
-this.require.noConflict = true
-this.require(
-    [['jQuery.Documentation', 'jquery-documentation-1.0.coffee']],
-($) ->
-    ###
-        Embed $ and require full compatible to all other
-        JavaScripts.
-        The global scope is clean after this sequence. The given
-        function is called when the dom-tree was loaded.
-    ###
-    ###
-        NOTE: "jQuery.noConflict()" should become "true" for parameter
-        "removeAll", because we will end up in race conditions by finishing
-        tests and removing the main $ object.
-    ###
-    $.noConflict(true) ($) -> $.Documentation
-        trackingCode: '<%GOOGLE_TRACKING_CODE%>', logging: true
-)
-##

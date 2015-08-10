@@ -1,4 +1,20 @@
-body.documentation .codehilite {
+//!/usr/bin/env lessc
+// -*- coding: utf-8 -*-
+
+/* region header
+
+Copyright Torben Sickert 16.12.2012
+
+License
+-------
+
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
+*/
+
+/* endregion */
+
+#codehilite() {
     .hll { background-color: #222222 }
     .c { color: #000080 } /* Comment */
     .err { color: #666666; border: 1px solid #FF0000 } /* Error */
@@ -69,3 +85,10 @@ body.documentation .codehilite {
     .vi { color: #00cdcd } /* Name.Variable.Instance */
     .il { color: #cd00cd } /* Literal.Number.Integer.Long */
 }
+
+// region vim modline
+
+// vim: set tabstop=4 shiftwidth=4 expandtab:
+// vim: foldmethod=marker foldmarker=region,endregion:
+
+// endregion
