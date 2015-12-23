@@ -4,7 +4,7 @@
 # region header
 
 ###
-[Project page](https://thaibault.github.com/jQuery-website)
+[Project page](http://torben.website/jQuery-website)
 
 This module provides common logic for the whole web page.
 

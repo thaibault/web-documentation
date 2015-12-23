@@ -302,18 +302,6 @@ endregion */
         // css3, internetExplorer 9+
                 transition-duration: @arguments;
     }
-    // Rotate a given image in webkit browsers.
-    .image-rotate(
-        @imagePath, @duration: 2s, @iterationNumber: infinite,
-        @timingFunction: linear
-    ) {
-        // chrome, safari, other webkit browsers
-        -webkit-mask-image: url(~'@{imagePath}');
-        -webkit-animation-name: rotate;
-        -webkit-animation-duration: @duration;
-        -webkit-animation-iteration-count: @iterationNumber;
-        -webkit-animation-timing-function: @timingFunction;
-    }
 
     // endregion
 

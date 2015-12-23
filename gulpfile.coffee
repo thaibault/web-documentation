@@ -21,10 +21,16 @@ gulpSource = ->
 
 # region configuration
 
-loadConfiguration = (debugBuild=true, rootPath='./', buildPath='./build/') ->
+loadConfiguration = (metaOptions={}) ->
+    options = extend true, {
+        debugBuild: false
+        rootPath: './'
+        buildPath: './build/'
+    }, metaOptions
     configuration =
-        rootPath: rootPath, debugBuild: debugBuild, buildPath: buildPath
-        jade: compile_debug: false, debug: false, pretty: debugBuild
+        rootPath: options.rootPath, debugBuild: options.debugBuild
+        buildPath: options.buildPath
+        jade: compile_debug: false, debug: false, pretty: options.debugBuild
         coffee: {}
         htmlMinifier:
             caseSensitive: false, collapseBooleanAttributes: true
@@ -52,14 +58,14 @@ loadConfiguration = (debugBuild=true, rootPath='./', buildPath='./build/') ->
             advanced: true, aggressiveMerging: true, compatibility: 'ie8'
             keepBreaks: false, keepSpecialComments: 0, mediaMerging: true
             processImport: true, restructuring: true, roundingPrecision: -1
-            shorthandCompacting: true, relativeTo: buildPath, rebase: true
-            target: rootPath
+            shorthandCompacting: true, relativeTo: options.buildPath
+            rebase: true, target: options.rootPath
         imagemin: multipass: true, optimization_level: 7
-        sass: paths: [rootPath]
-        less: paths: [rootPath]
+        sass: paths: [options.rootPath]
+        less: paths: [options.rootPath]
         hash:
-            src_path: rootPath, build_dir: buildPath, verbose: true
-            query_name: 'md5', hash: 'md5', exts: [
+            src_path: options.rootPath, build_dir: options.buildPath
+            verbose: true, query_name: 'md5', hash: 'md5', exts: [
                 '.jpg', '.jpeg', '.png', '.svg', '.ico', '.gif', '.tiff'
                 '.bmp', '.webp', '.midi', '.mpeg', '.ogg', '.m4a', '.webm'
                 '.3gpp', '.mp2t', '.mp4', '.mpeg', '.mov', '.qt', '.flv'
@@ -74,7 +80,10 @@ loadConfiguration = (debugBuild=true, rootPath='./', buildPath='./build/') ->
             less: ['less/main.less']
             javaScript: []
             coffeeScript: []
-            jade: ['*.jade', '!*aboutThisWebsite.jade', '!**/node_modules/**', '!**/.*/**']
+            jade: [
+                '*.jade', '!*aboutThisWebsite.jade', '!**/node_modules/**'
+                '!**/.*/**'
+            ]
             html: ['*.html', '!**/node_modules/**', '!**/.*/**']
             data: [
                 'data/**/*.@(json|xml|pdf|txt|vcf)', '!**/node_modules/**'
@@ -188,6 +197,9 @@ loadConfiguration = (debugBuild=true, rootPath='./', buildPath='./build/') ->
             suffix: ''
         }
     extend true, configuration, require './configuration.coffee'
+    if Object.keys(metaOptions).length isnt 0
+        extend true, configuration, metaOptions
+    configuration
 global.CONFIGURATION = loadConfiguration()
 
 # endregion
@@ -356,7 +368,7 @@ gulp.task 'compressImage', ->
 
 gulp.task 'developmentServer', ->
     global.CONFIGURATION = loadConfiguration(
-        true, CONFIGURATION.rootPath, CONFIGURATION.rootPath)
+        debugBuild: true, buildPath: CONFIGURATION.rootPath)
     developmentServer CONFIGURATION.developmentServer
 
 # endregion

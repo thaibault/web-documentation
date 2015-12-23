@@ -21,7 +21,7 @@ This library written by Torben Sickert stand under a creative commons naming
 
 //// endregion
 
-//// region smartphone dimension
+//// region extra small dimension
 
 @minimumExtraExtraSmallWidthInPixel: 360px;
 @minimumExtraSmallWidthInPixel: 500px;
@@ -381,13 +381,13 @@ This library written by Torben Sickert stand under a creative commons naming
             border-bottom-left-radius: 0;
         }
     }
-    .form-horizontal .select-styled-wrapper, .select-styled-wrapper {
+    .select-styled-wrapper {
         position: relative;
 
         > .select-styled-arrow {
             position: absolute;
-            right: 15px;
             top: 3px;
+            right: 15px;
             pointer-events: none;
 
             span {
@@ -406,9 +406,6 @@ This library written by Torben Sickert stand under a creative commons naming
             /* hide default down arrow in IE10 */
             &::-ms-expand { display: none; }
         }
-    }
-    form:not(.form-horizontal) .select-styled-wrapper > .select-styled-arrow {
-        top: 12px;
     }
 
     /** endregion */
@@ -498,7 +495,7 @@ div.website-window-loading-cover {
     position: fixed;
     height: 100%;
     width: 100%;
-    z-index: 100;
+    z-index: 1002;
 
     // Positioning the loading spinner in center in the loading
     // overlay.

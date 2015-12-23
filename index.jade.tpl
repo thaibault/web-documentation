@@ -34,7 +34,7 @@ doctype html
 
 <% # region runtime
 
-<% URL = URL if URL else 'http://thaibault.github.com/%s' % NAME
+<% URL = URL if URL else 'http://torben.website/%s' % NAME
 <% if not SOURCE_URL:
     <% SOURCE_URL = 'https://github.com/thaibault/%s' % NAME
 <% START_UP_ANIMATION_NUMBER = 0
