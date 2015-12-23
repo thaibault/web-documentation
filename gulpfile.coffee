@@ -23,9 +23,7 @@ gulpSource = ->
 
 loadConfiguration = (metaOptions={}) ->
     options = extend true, {
-        debugBuild: false
-        rootPath: './'
-        buildPath: './build/'
+        debugBuild: false, rootPath: './', buildPath: './build/'
     }, metaOptions
     configuration =
         rootPath: options.rootPath, debugBuild: options.debugBuild
@@ -59,7 +57,7 @@ loadConfiguration = (metaOptions={}) ->
             keepBreaks: false, keepSpecialComments: 0, mediaMerging: true
             processImport: true, restructuring: true, roundingPrecision: -1
             shorthandCompacting: true, relativeTo: options.buildPath
-            rebase: true, target: options.rootPath
+            rebase: options.debugBuild, target: options.rootPath
         imagemin: multipass: true, optimization_level: 7
         sass: paths: [options.rootPath]
         less: paths: [options.rootPath]
@@ -86,7 +84,7 @@ loadConfiguration = (metaOptions={}) ->
             ]
             html: ['*.html', '!**/node_modules/**', '!**/.*/**']
             data: [
-                'data/**/*.@(json|xml|pdf|txt|vcf)', '!**/node_modules/**'
+                './data/**/*.@(json|xml|pdf|txt|vcf)', '!**/node_modules/**'
                 '!**/.*/**'
             ]
             # NOTE: All simple asset types (with no preprocessing) have this

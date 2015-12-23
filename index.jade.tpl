@@ -223,6 +223,7 @@ html(lang='<% LANGUAGE %>')
                     | <% NAME %> maintained by
                     //deDE:<% NAME %> betrieben von
                     //frFR:<% NAME %> exploité par
+                    = ' '
                     a(href='https://github.com/thaibault') thaibault
                     = ' '
                     | &middot; &copy; 2013 Torben Sickert &middot;
