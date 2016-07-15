@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Generated runtime bytecode files.
-__pycache__
-*.py[cod]
-
-# Generated documentations
-documentation/build
-api
-
 ## Generic
 
 # Ignore profiling data.
@@ -69,7 +61,7 @@ nosetests.xml
 # Node Modules
 node_modules/
 .npm/
-v8flags.*
+.v8flags.*
 /.cache
 /.config
 .npm-debug.log
