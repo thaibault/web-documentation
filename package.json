@@ -1,65 +1,77 @@
 {
-    "name": "documentationWebsite",
+    "name": "documentation-website",
     "version": "1.0.0",
     "keywords": ["documentation", "website", "project", "homepage", "page"],
-    "description": "documentationWebsite",
+    "description": "Declarative multilanguage documentation website generator",
     "license": "CC-BY-3.0",
-    "files": ["source", "dummyDocumentation.pug"],
-    "main": "build/index.html",
+    "bin": {
+      "documentationWebsite": "index.py"
+    },
+    "files": ["source", "index.py"],
+    "main": "source/index.pug",
     "repository": {
         "type": "git",
         "url": "git@github.io:thaibault/documentationWebsite.git"
     },
     "dependencies": {
-        "webOptimizer": "git+ssh://git@github.com/thaibault/webOptimizer.git",
-        "jQuery-website": "git+ssh://git@github.com/thaibault/jQuery-website.git",
-        "legalNotes": "git+ssh://git@github.com/thaibault/legalNotes.git"
+        "bootstrap": "3.3.6",
+        "website-utilities": "latest"
     },
     "devDependencies": {
-        "jsdom": ">=9.4.0",
-        "qunitjs": ">=2.0.0",
-        "qunit-cli": ">=0.2.0*",
-        "source-map-support": ">=0.4.0"
+        "jsdom": "latest",
+        "legalNotes": "git+ssh://git@github.com/thaibault/legalNotes.git",
+        "source-map-support": "latest",
+        "weboptimizer": "latest"
     },
     "webOptimizer": {
         "buildDefinition": {
-            "GOOGLE_TRACKING_CODE": "''",
+            "ANALYTICS_CODE": {
+                "__evaluate__": "`'${self.module.preprocessor.pug.locals.ANALYTICS_CODE}'`"
+            },
             "LANGUAGES": {
                 "__evaluate__": "`['${self.module.preprocessor.pug.locals.LANGUAGES.join(\"', '\")}']`"
             }
         },
         "injection": {"internal": {
             "vendor": {
-                "__evaluate__": "self.debug || 2 < self.givenCommandLineArguments.length && ['buildDLL', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['jQuery-website', 'offline-plugin/runtime'] : []"
+                "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []"
             },
             "index": {
-                "__evaluate__": "['less/index'].concat(self.debug ? [] : 'babel-polyfill').concat('index').concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?${self.development.server.protocol}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : [])"
+                "__evaluate__": "[`${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.debug ? [] : 'babel-polyfill').concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?${self.development.server.protocol}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('index')"
             }
         }},
         "library": false,
         "module": {
             "aliases": {
+                "bootstrap$": "bootstrap/dist/css/bootstrap.css",
                 "babel-polyfill$": "babel-polyfill/dist/polyfill.min",
-                "bootstrap.less$": "bootstrap/less/bootstrap",
                 "jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo",
-                "jQuery-spin$": "spin.js/jquery.spin",
-                "genericStyle.less$": "genericStyle/index.less",
-                "jQuery-website.less$": "jQuery-website/index.less"
+                "jQuery-spin$": "spin.js/jquery.spin"
             },
+            "optimizer": {"htmlMinifier": {"ignoreCustomComments": [
+                {"__evaluate__": "/^\\|?[a-z]{2}[A-Z]{2}:/"},
+                {"__evaluate__": "/^[a-z]{2}[A-Z]{2}$/"},
+                {"__evaluate__": "/^showExample(?::[a-zA-Z]+)?$/"}
+            ]}},
             "preprocessor": {"pug": {"locals": {
+                "API_DOCUMENTATION_PATH": "/apiDocumentation/",
                 "CONTENT_FILE_PATH": "dummyDocumentation.pug",
+                "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
                 "LANGUAGES": ["deDE", "enUS", "frFR"],
-                "NAME": "productName",
+                "NAME": "documentationWebsite",
                 "RENDER_CONTENT": true,
-                "TAGLINE": "tagline",
-                "SOURCE_URL": "https://github.com/thaibault/documentationWebsite",
-                "URL": "https://github.com/thaibault/documentationWebsite"
+                "TAGLINE": "generic documentation website pattern"
             }}},
             "skipParseRegularExpression": {
-                "__evaluate__": "/\\/(?:(?:jquery)|(?:module)|(?:spin)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+                "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|(?:spin)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
             }
         },
-        "path": {"asset": {"javaScript": "./"}}
+        "path": {
+            "source": {"asset": {"javaScript": "./"}},
+            "target": {"asset": {
+                "javaScript": "./", "cascadingStyleSheet": "./"
+            }}
+        }
     },
     "scripts": {
         "build": "webOptimizer build",
@@ -68,12 +80,9 @@
         "clear": "webOptimizer clear",
         "document": "webOptimizer document",
         "lint": "webOptimizer typeCheck && webOptimizer lint",
-        "postinstall": "npm run build",
-        "preinstall": "mkdir --parents build && touch build/index.html",
         "serve": "webOptimizer serve",
         "start": "npm run serve",
-        "test": "webOptimizer test",
-        "testInBrowser": "webOptimizer testInBrowser",
+        "update": "npm version patch && npm publish",
         "watch": "webOptimizer build --watch",
         "watchDLL": "webOptimizer buildDLL --watch"
     }

@@ -14,19 +14,6 @@ doctype html
     if (!LANGUAGES)
         LANGUAGES = ['enUS']
     // endregion
-    // region location
-    IMAGE_PATH = 'image/'
-
-    LESS_PATH = 'less/'
-    CASCADING_STYLE_SHEET_PATH = 'cascadingStyleSheet/'
-
-    COFFEE_SCRIPT_PATH = 'coffeeScript/'
-    JAVA_SCRIPT_PATH = 'javaScript/'
-
-    DATA_PATH = 'data/'
-
-    DISTRIBUTION_BUNDLE_FILE_PATH = `${DATA_PATH}distributionBundle.zip`
-    // endregion
     // region runtime
     if (!URL)
         URL = `http://torben.website/${NAME}`
@@ -34,7 +21,7 @@ doctype html
         SOURCE_URL = `https://github.com/thaibault/${NAME}`
     START_UP_ANIMATION_NUMBER = 0
     // endregion
-html.no-javascript(lang=LANGUAGE || 'en')
+html.no-javascript(lang=en)
     // region head
     head
         // region meta informations
@@ -71,32 +58,38 @@ html.no-javascript(lang=LANGUAGE || 'en')
             - START_UP_ANIMATION_NUMBER += 1
             h1.project-title(
                 class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
-            )
-                a(href=URL) #{NAME}
+            ): a(href=URL) #{NAME}
             - START_UP_ANIMATION_NUMBER += 1
             h2.project-tagline(
                 class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
             )
-                | #{TAGLINE}
+                != TAGLINE
                 br
             section.header-links
                 //NOTE: This elements are shown in reverse order.
-                if (API_DIRECTORY_PATH)
-                    - START_UP_ANIMATION_NUMBER += 5 + LANGUAGES.length
+                - numberOfLanguageLinks = 0
+                if 1 < LANGUAGES.length
+                    - numberOfLanguageLinks = LANGUAGES.length
+                    - START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
+                if API_DOCUMENTATION_PATH
+                    - START_UP_ANIMATION_NUMBER += 4
                 else
-                    - START_UP_ANIMATION_NUMBER += 3 + LANGUAGES.length
-                // TODO
-                if (DISTRIBUTION_BUNDLE_FILE_PATH && false)
+                    - START_UP_ANIMATION_NUMBER += 2
+                if typeof BUNDLE === 'undefined' || BUNDLE === true
+                    - START_UP_ANIMATION_NUMBER += 1
+                if DISTRIBUTION_BUNDLE_FILE_PATH
                     a.zip-source-download(
                         href=`https://github.com/thaibault/${NAME}/zipball/master`
                         class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
                     ) src.zip
-                    - START_UP_ANIMATION_NUMBER -= 1
-                    a.zip-distribution-bundle-download(
-                        href=DISTRIBUTION_BUNDLE_FILE_PATH
-                        class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
-                    ) app.zip
+                    if typeof BUNDLE === 'undefined' || BUNDLE === true
+                        - START_UP_ANIMATION_NUMBER -= 1
+                        a.zip-distribution-bundle-download(
+                            href=URL + '/' + DISTRIBUTION_BUNDLE_FILE_PATH
+                            class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
+                        ) app.zip
                 else
+                    - START_UP_ANIMATION_NUMBER += 1
                     a.zip-source-download(
                         href=`https://github.com/thaibault/${NAME}/zipball/master`
                         class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
@@ -109,19 +102,20 @@ html.no-javascript(lang=LANGUAGE || 'en')
                 - START_UP_ANIMATION_NUMBER -= 1
                 i.icon-download-arrow(
                     class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`)
-                for language in LANGUAGES
-                    - START_UP_ANIMATION_NUMBER -= 1
-                    a.tools-visible-on-javascript-enabled(
-                        href=`#lang-${language}`
-                        class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
-                    ) #{language.slice(0, 2)}
-                if (API_DIRECTORY_PATH)
+                if numberOfLanguageLinks
+                    for language in LANGUAGES
+                        - START_UP_ANIMATION_NUMBER -= 1
+                        a.tools-visible-on-javascript-enabled(
+                            href=`#language-${language}`
+                            class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
+                        ) #{language.slice(0, 2)}
+                if API_DOCUMENTATION_PATH
                     - START_UP_ANIMATION_NUMBER -= 1
                     span.glyphicon.glyphicon-arrow-left.arrow-left-api(
                         class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`)
                     - START_UP_ANIMATION_NUMBER -= 1
                     a.api-link(
-                        href=`${URL}${API_DIRECTORY_PATH}`
+                        href=`${URL}${API_DOCUMENTATION_PATH}`
                         class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
                     )
                         langreplace
@@ -131,9 +125,9 @@ html.no-javascript(lang=LANGUAGE || 'en')
                                 | Documentation
                         //deDE:API<span>-Dokumentation</span>
                         //frFR:<span>Documentation de l'</span>API
-                    - START_UP_ANIMATION_NUMBER += 4 + LANGUAGES.length
+                    - START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
                 else
-                    - START_UP_ANIMATION_NUMBER += 2 + LANGUAGES.length
+                    - START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
         // endregion
         // region sections
         .main-content-wrap.outer
@@ -141,7 +135,7 @@ html.no-javascript(lang=LANGUAGE || 'en')
             section.main-content.inner
                 if (CONTENT_FILE_PATH)
                     // NOTE: Dynamic pug file includes aren't possible yet.
-                    != require(`${CONTENT_FILE_PATH}?${JSON.stringify(locals)}`)
+                    != require(CONTENT_FILE_PATH)
                     //- Right indenting with
                         ".replace(/\n/g, '\n                ')"
                         would break nested pre blocks.
@@ -150,7 +144,10 @@ html.no-javascript(lang=LANGUAGE || 'en')
                     if (RENDER_CONTENT)
                         - content = compile(CONTENT)(locals)
                     if (content)
-                        != content.replace(/\n/g, '\n                ')
+                        != content
+                        //- Right indenting with
+                            ".replace(/\n/g, '\n                ')"
+                            would break nested pre blocks.
             // endregion
             // region about this website
             section.about-this-website.inner
@@ -163,8 +160,9 @@ html.no-javascript(lang=LANGUAGE || 'en')
                     //deDE:Anbieter von
                     //frFR:Fournisseur de
                     //- NOTE: JavaScript Templatestrings doesn't work here.
-                    a(href='http://thaibault.github.io/' + NAME)
-                        | http://thaibault.github.io/#{NAME}
+                    = ' '
+                    a(href='http://torben.website/' + NAME)
+                        | http://torben.website/#{NAME}
                     | :
                     br
                     | Torben Sickert
@@ -185,15 +183,15 @@ html.no-javascript(lang=LANGUAGE || 'en')
                     | Email:
                     //deDE:E-Mail:
                     = ' '
-                    a(href='mailto:t.sickert@gmail.com')
-                        | t.sickert@gmail.com
+                    a(href='mailto:info@torben.website')
+                        | info@torben.website
                     br
                     | Website:
                     = ' '
                     //deDE:Webseite:
                     //frFR:Site:
-                    a(href='http://thaibault.github.io/website')
-                        | http://thaibault.github.io/website
+                    = ' '
+                    a(href='http://torben.website') http://torben.website
                     br
                     span.glyphicon.glyphicon-arrow-left.arrow-left-home.tools-visible-on-javascript-enabled
                     a.tools-visible-on-javascript-enabled(href='#home')
@@ -211,8 +209,8 @@ html.no-javascript(lang=LANGUAGE || 'en')
                     class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
                 )
                     | #{NAME} maintained by
-                    //deDE:#{NAME} betrieben von
-                    //frFR:#{NAME} exploité par
+                    | <!--deDE:#{NAME} betrieben von-->
+                    | <!--frFR:#{NAME} exploité par-->
                     = ' '
                     a(href='http://torben.website') thaibault
                     = ' '
@@ -227,8 +225,8 @@ html.no-javascript(lang=LANGUAGE || 'en')
             | top
             //deDE:nach oben
             //frFR:ascendant
-    if includeManifest
-        noscript: iframe(src='/manifest.html' style='display: none')
+    if configuration.offline
+        noscript: iframe(src='manifest.html' style='display: none')
     // endregion
 //-
     region vim modline

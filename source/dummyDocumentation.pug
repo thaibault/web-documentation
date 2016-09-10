@@ -1,14 +1,14 @@
-h2(id="content")
-    | Content
-    //deDE:Inhalt
+h2(id="headline")
+    | Headline
+    //deDE:Überschrift
 //|frFR:franz
 //|deDE:deutsch
 h3(id="a") english
 div.toc: ul
     li: a(href="#") english
     li: a(href="#") english
-    li: a(href="#content")
-        | Content
+    li: a(href="#headline")
+        | Überschrift
         //deDE:Inhalt
     li
         //|deDE:JAU
@@ -124,3 +124,28 @@ table.codehilitetable: tr
 
         <span class="c"># test...</span>
 p Lorem ipsum dolor sit amet...
+
+//showExample
+div.codehilite: pre.
+    &lt;style&gt;
+        body form div.incrementer &gt; input.form-control {
+            width: 61px;
+            float: left;
+        }
+        body form div.incrementer &gt; a.plus,
+        body form div.incrementer &gt; a.minus {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+    &lt;/style&gt;
+
+    &lt;script&gt;
+        documentationWebsiteJQuery.getScript(
+            'https://code.jquery.com/jquery-3.1.0.js'
+        ).then(() =&gt {
+            window.jquery = $
+            return $.getScript(
+                'http://torben.website/clientNode/data/distributionBundle/index.compiled.js')
+        }).then(() =&gt console.log($.Tools.class._name))
+    &lt;/script&gt;
