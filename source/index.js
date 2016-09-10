@@ -24,7 +24,7 @@ import type {DomNode} from 'weboptimizer/type'
 import type {$DomNode} from 'clientnode'
 // endregion
 // region declaration
-declare var GOOGLE_TRACKING_CODE:string
+declare var ANALYTICS_CODE:string
 declare var LANGUAGES:Array<string>
 declare var OFFLINE:boolean
 // endregion
