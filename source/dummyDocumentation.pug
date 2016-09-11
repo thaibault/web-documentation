@@ -141,11 +141,9 @@ div.codehilite: pre.
     &lt;/style&gt;
 
     &lt;script&gt;
-        documentationWebsiteJQuery.getScript(
+        $documentationWebsite.getScript(
             'https://code.jquery.com/jquery-3.1.0.js'
-        ).then(() =&gt {
-            window.jquery = $
-            return $.getScript(
-                'http://torben.website/clientNode/data/distributionBundle/index.compiled.js')
-        }).then(() =&gt console.log($.Tools.class._name))
+        ).then(() =&gt $.getScript(
+            'http://torben.website/clientNode/data/distributionBundle/index.compiled.js'
+        )).then(() =&gt console.log($.Tools.class._name))
     &lt;/script&gt;
