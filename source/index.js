@@ -279,10 +279,17 @@ export default class Documentation extends $.Website.class {
                     excess -= domNode.textContent.length
                     contentSnippet = ''
                 } else if (domNode.textContent.length >= excess) {
-                    contentSnippet = domNode.textContent.substr(
+                    /*
+                        NOTE: We have to ensure that no html tag will be
+                        shortend: We work on "textContent" property only.
+                    */
+                    domNode.textContent = domNode.textContent.substr(
                         0, domNode.textContent.length - excess - 1
                     ) + '...'
                     excess = 0
+                    contentSnippet = $wrapper.html()
+                    if (!contentSnippet)
+                        contentSnippet = domNode.textContent
                 }
             newContent = contentSnippet + newContent
         }
