@@ -268,47 +268,24 @@ export default class Documentation extends $.Website.class {
         let newContent:string = ''
         let $content:$DomNode
         let wrapped:boolean = false
-        try {
-            $content = $(content)
-            if (!$content.length)
-                throw Error('error')
-        } catch (error) {
-            /*
-                NOTE: Wrap an element around to grantee that $ will accept the
-                input. We don't wrap an element in general to iterate through
-                separate dom nodes in next step if possible.
-            */
-            $content = $(`<wrapper>${content}</wrapper>`)
-            wrapped = true
-        }
-        $($content.get().reverse()).each(function():void {
-            /*
-                Wrap element to get not only the inner html. Wrap only if not
-                wrapped already.
-            */
-            let $wrapper:$DomNode
-            if (wrapped)
-                $wrapper = $(this)
-            else
-                $wrapper = $(this).wrap('<wrapper>').parent()
+        $content = $(`<wrapper>${content}</wrapper>`)
+        for (const domNode:DomNode of $content.contents().get().reverse()) {
+            const $wrapper:$DomNode = $(domNode).wrap('<wrapper>').parent()
             let contentSnippet:string = $wrapper.html()
             if (!contentSnippet)
-                contentSnippet = this.textContent
+                contentSnippet = domNode.textContent
             if (excess)
-                if (this.textContent.length < excess) {
-                    excess -= this.textContent.length
+                if (domNode.textContent.length < excess) {
+                    excess -= domNode.textContent.length
                     contentSnippet = ''
-                } else if (this.textContent.length >= excess) {
-                    this.textContent = this.textContent.substr(
-                        0, this.textContent.length - excess - 1
+                } else if (domNode.textContent.length >= excess) {
+                    contentSnippet = domNode.textContent.substr(
+                        0, domNode.textContent.length - excess - 1
                     ) + '...'
                     excess = 0
-                    contentSnippet = $wrapper.html()
-                    if (!contentSnippet)
-                        contentSnippet = this.textContent
                 }
             newContent = contentSnippet + newContent
-        })
+        }
         return newContent
     }
     /**
