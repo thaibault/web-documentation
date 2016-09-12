@@ -80,14 +80,12 @@
             "API_DOCUMENTATION_PATH": "/apiDocumentation/",
             "CONTENT_FILE_PATH": "dummyDocumentation.pug",
             "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
-            "LANGUAGES": [
-              "deDE",
-              "enUS",
-              "frFR"
-            ],
+            "LANGUAGES": ["enUS"],
             "NAME": "documentationWebsite",
             "RENDER_CONTENT": true,
-            "TAGLINE": "generic documentation website pattern"
+            "SOURCE_URL": "`https://github.com/thaibault/${self.module.preprocessor.pug.locals.NAME}`",
+            "TAGLINE": "generic documentation website pattern",
+            "URL": {"__evaluate__": "`http://torben.website/${self.module.preprocessor.pug.locals.NAME}`"}
           }
         }
       },
