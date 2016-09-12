@@ -385,11 +385,9 @@ def generate_new_documentation_page(
 # # python3.5 def create_distribution_bundle_file() -> FileHandler:
 def create_distribution_bundle_file():
     '''Creates a distribution bundle file as zip archiv.'''
-    if Platform.run(
-        '/usr/bin/env npm run %s' % 'export' if SCOPE['scripts'].get(
-            'export'
-        ) else 'build', error=False, log=True
-    )['return_code'] == 0:
+    if Platform.run('/usr/bin/env npm run %s' % (
+        'export' if SCOPE['scripts'].get('export') else 'build'
+    ), error=False, log=True)['return_code'] == 0:
         __logger__.info('Pack to a zip archive.')
         distribution_bundle_file = FileHandler(
             location=make_secure_temporary_file()[1])
