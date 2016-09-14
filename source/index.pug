@@ -34,7 +34,7 @@ html.no-javascript(lang=en)
     body(class='documentation')
         .website-window-loading-cover.tools-hidden-on-javascript-disabled: div
         // region header
-        .header-wrap.outer: header.inner
+        header.header-wrap.outer: .inner
             - START_UP_ANIMATION_NUMBER += 1
             a.forkme-banner(
                 href=SOURCE_URL
@@ -54,7 +54,7 @@ html.no-javascript(lang=en)
             )
                 != TAGLINE
                 br
-            section.header-links
+            .header-links
                 //NOTE: This elements are shown in reverse order.
                 - numberOfLanguageLinks = 0
                 if 1 < LANGUAGES.length
@@ -116,9 +116,9 @@ html.no-javascript(lang=en)
                     - START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
         // endregion
         // region sections
-        .main-content-wrap.outer
+        section.main-content-wrap.outer
             // region main content
-            section.main-content.inner
+            .main-content.inner
                 if (CONTENT_FILE_PATH)
                     // NOTE: Dynamic pug file includes aren't possible yet.
                     != require(CONTENT_FILE_PATH)
@@ -136,7 +136,7 @@ html.no-javascript(lang=en)
                             would break nested pre blocks.
             // endregion
             // region about this website
-            section.about-this-website.inner
+            .about-this-website.inner
                 h2(id='about-this-website')
                     | About this website
                     //deDE:Impressum
@@ -188,8 +188,8 @@ html.no-javascript(lang=en)
             // endregion
         // endregion
         // region footer
-        .footer-wrap.outer
-            footer.inner
+        footer.footer-wrap.outer
+            .inner
                 - START_UP_ANIMATION_NUMBER += 1
                 p.copyright(
                     class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`

@@ -113,13 +113,13 @@ export default class Documentation extends $.Website.class {
                 `
             },
             domNode: {
-                tableOfContentLinks: 'div.toc > ul > li a[href^="#"]',
+                tableOfContentLinks: '.toc ul li a[href^="#"]',
                 aboutThisWebsiteLink: 'a[href="#about-this-website"]',
                 homeLink: 'a[href="#home"]',
-                aboutThisWebsiteSection: 'section.about-this-website',
-                mainSection: 'section.main-content',
-                codeWrapper: 'div.codehilite',
-                code: 'div.codehilite > pre, code'
+                aboutThisWebsiteSection: '.about-this-website',
+                mainSection: '.main-content',
+                codeWrapper: '.codehilite',
+                code: '.codehilite pre, code'
             },
             section: {
                 aboutThisWebsite: {
@@ -149,11 +149,16 @@ export default class Documentation extends $.Website.class {
             NOTE: We have to render examples first to avoid having dots in
             example code.
         */
-        this._showExamples()._makeCodeEllipsis()
-        this.on(this.$domNodes.tableOfContentLinks, 'click', function(
-        ):void {
-            $.scrollTo($(this).attr('href'), 'slow')
-        })
+        this._showExamples()._makeCodeEllipsis().on(
+            this.$domNodes.tableOfContentLinks, 'click', (
+                event:Object
+            ):void => {
+                const hashReference:?string = $(event.target).attr('href')
+                if (hashReference && hashReference !== '#')
+                    $.scrollTo(hashReference, 'slow')
+                else
+                    this.scrollToTop()
+            })
         // Handle section switch between documentation and legal notes section.
         this._options.section.aboutThisWebsite.fadeOut.always = ():$DomNode =>
             this.$domNodes.mainSection.fadeIn(
@@ -162,10 +167,10 @@ export default class Documentation extends $.Website.class {
             this.$domNodes.aboutThisWebsiteSection.fadeIn(
                 this._options.section.aboutThisWebsite.fadeIn)
         this.on(this.$domNodes.aboutThisWebsiteLink, 'click', ():$DomNode =>
-            this._scrollToTop().$domNodes.mainSection.fadeOut(
+            this.scrollToTop().$domNodes.mainSection.fadeOut(
                 this._options.section.main.fadeOut))
         this.on(this.$domNodes.homeLink, 'click', ():$DomNode =>
-            this._scrollToTop().$domNodes.aboutThisWebsiteSection.fadeOut(
+            this.scrollToTop().$domNodes.aboutThisWebsiteSection.fadeOut(
                 this._options.section.aboutThisWebsite.fadeOut))
         return this
     }
@@ -267,7 +272,6 @@ export default class Documentation extends $.Website.class {
         excess += 3
         let newContent:string = ''
         let $content:$DomNode
-        let wrapped:boolean = false
         $content = $(`<wrapper>${content}</wrapper>`)
         for (const domNode:DomNode of $content.contents().get().reverse()) {
             const $wrapper:$DomNode = $(domNode).wrap('<wrapper>').parent()
