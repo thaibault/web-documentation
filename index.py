@@ -136,9 +136,11 @@ def main():
             data_location = FileHandler(location=DATA_PATH)
             data_location.make_directories()
             distribution_bundle_file.directory = data_location
-        has_api_documentation = Platform.run(
-            '/usr/bin/env npm run document', error=False, log=True
-        )['return_code'] == 0
+        has_api_documentation = SCOPE['scripts'].get('document', False)
+        if has_api_documentation:
+            has_api_documentation = Platform.run(
+                '/usr/bin/env npm run document', error=False, log=True
+            )['return_code'] == 0
         if Platform.run(
             ('/usr/bin/env git checkout gh-pages', '/usr/bin/env git pull'),
             error=False, log=True
