@@ -398,45 +398,26 @@ def create_distribution_bundle_file():
         __logger__.info('Pack to a zip archive.')
         distribution_bundle_file = FileHandler(
             location=make_secure_temporary_file()[1])
-        build_directory = FileHandler(location=DOCUMENTATION_BUILD_PATH)
-        if build_directory.is_directory():
-            with zipfile.ZipFile(
-                distribution_bundle_file.path, 'w'
-            ) as zip_file:
-                for file in build_directory:
-                    __logger__.debug(
-                        'Add "%s" to distribution bundle.', file.path)
-                    zip_file.write(file._path, file.name)
-                    if file.is_directory():
-                        for sub_file in file:
-                            __logger__.debug(
-                                'Add "%s" to distribution bundle.',
-                                sub_file.path)
-                            zip_file.write(sub_file._path, '%s/%s' % (
-                                file.name, sub_file.name))
-        else:
-            with zipfile.ZipFile(
-                distribution_bundle_file.path, 'w'
-            ) as zip_file:
-                for file in FileHandler():
-# # python3.5
-# #                     if regularExpression.compile(
-# #                         '.+\\.compiled(?:\\.[^.]+(?:\\.map)?)?'
-# #                     ).fullmatch(file.name):
-                    if regularExpression.compile(
-                        '.+\\.compiled(?:\\.[^.]+(?:\\.map)?)?$'
-                    ).match(file.name):
-# #
+        current_directory_path = FileHandler()
+        file_path_list = SCOPE.get('files', [])
+        if 'main' in SCOPE:
+            file_path_list.append(SCOPE['main'])
+        with zipfile.ZipFile(
+            distribution_bundle_file.path, 'w'
+        ) as zip_file:
+            for file_path in file_path_list:
+                file = FileHandler(location=file_path)
+                __logger__.debug(
+                    'Add "%s" to distribution bundle.', file.path)
+                zip_file.write(file._path, file.name)
+                if file.is_directory():
+                    def add(sub_file):
                         __logger__.debug(
-                            'Add "%s" to distribution bundle.', file.path)
-                        zip_file.write(file._path, file.name)
-                        if file.is_directory():
-                            for sub_file in file:
-                                __logger__.debug(
-                                    'Add "%s" to distribution bundle.',
-                                    sub_file.path)
-                                zip_file.write(sub_file._path, '%s/%s' % (
-                                    file.name, sub_file.name))
+                            'Add "%s" to distribution bundle.', sub_file.path)
+                        zip_file.write(sub_file._path, sub_file._path[len(
+                            current_directory_path):])
+                        return True
+                    file.iterate_directory(function=add, recursive=True)
         return distribution_bundle_file
 
 
