@@ -343,11 +343,13 @@ def generate_new_documentation_page(
         BUILD_DOCUMENTATION_PAGE_COMMAND = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[:-1] + [
                 '-debug'
-            ] + BUILD_DOCUMENTATION_PAGE_COMMAND[-1:]
+            ] + BUILD_DOCUMENTATION_PAGE_COMMAN[-1:]
+    serialized_parameter = json.dumps(parameter)
+    __logger__.info('User parameter "%s".', serialized_parameter)
     for index, command in builtins.enumerate(BUILD_DOCUMENTATION_PAGE_COMMAND):
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
-                serializedParameter=json.dumps(parameter), **SCOPE)
+                serializedParameter=serialized_parameter, **SCOPE)
     __logger__.info('Use "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
     BUILD_DOCUMENTATION_PAGE_COMMAND[-1] = base64_encode(
         BUILD_DOCUMENTATION_PAGE_COMMAND[-1])
