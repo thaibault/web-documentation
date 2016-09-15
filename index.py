@@ -397,7 +397,7 @@ def create_distribution_bundle_file():
         __logger__.info('Pack to a zip archive.')
         distribution_bundle_file = FileHandler(
             location=make_secure_temporary_file()[1])
-        current_directory_path = FileHandler()
+        current_directory_path = FileHandler()._path
         file_path_list = SCOPE.get('files', [])
         if 'main' in SCOPE:
             file_path_list.append(SCOPE['main'])
