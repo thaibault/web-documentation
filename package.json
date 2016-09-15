@@ -84,7 +84,9 @@
             },
             "NAME": "documentationWebsite",
             "RENDER_CONTENT": true,
-            "SOURCE_URL": "`https://github.com/thaibault/${self.module.preprocessor.pug.locals.NAME}`",
+            "SOURCE_URL": {
+              "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.pug.locals.NAME}`"
+            },
             "TAGLINE": "generic documentation website pattern",
             "URL": {
               "__evaluate__": "`http://torben.website/${self.module.preprocessor.pug.locals.NAME}`"
