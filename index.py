@@ -307,7 +307,7 @@ def generate_new_documentation_page(
         favicon.copy(target='%s/source/image/favicon.ico' %
             temporary_documentation_folder.path)
     parameter = builtins.dict(builtins.map(lambda item: (
-        String(item[0]).delimited_to_camel_case.content.upper(), item[1]
+        String(item[0]).camel_case_to_delimited.content.upper(), item[1]
     ), SCOPE.get('documentationWebsite', {}).items()))
     if 'TAGLINE' not in parameter and 'description' in SCOPE:
         parameter['TAGLINE'] = SCOPE['description']
@@ -345,7 +345,7 @@ def generate_new_documentation_page(
                 '-debug'
             ] + BUILD_DOCUMENTATION_PAGE_COMMAN[-1:]
     serialized_parameter = json.dumps(parameter)
-    __logger__.info('User parameter "%s".', serialized_parameter)
+    __logger__.info('Use parameter "%s".', serialized_parameter)
     for index, command in builtins.enumerate(BUILD_DOCUMENTATION_PAGE_COMMAND):
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
