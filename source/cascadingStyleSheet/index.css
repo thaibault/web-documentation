@@ -91,7 +91,7 @@ endregion */
     @apply --codehilite;
     @apply --website;
 
-    color: var(--color6);
+    color: var(--color7);
     background: var(--color8);
     line-height: 1.5;
     /** region grid */

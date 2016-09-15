@@ -185,7 +185,8 @@ def main():
                     temporary_documentation_node_modules_directory\
                         .make_directory(right=777)
                     return_code = Platform.run(
-                        "/usr/bin/env sudo mount --bind '%s' '%s'" % (
+                        "/usr/bin/env sudo mount --bind --options ro '%s' "
+                        "'%s'" % (
                             node_modules_directory.path,
                             temporary_documentation_node_modules_directory.path
                         ), native_shell=True, error=False, log=True
