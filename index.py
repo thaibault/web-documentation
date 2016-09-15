@@ -345,7 +345,6 @@ def generate_new_documentation_page(
                 '-debug'
             ] + BUILD_DOCUMENTATION_PAGE_COMMAN[-1:]
     serialized_parameter = json.dumps(parameter)
-    __logger__.info('Use parameter "%s".', serialized_parameter)
     for index, command in builtins.enumerate(BUILD_DOCUMENTATION_PAGE_COMMAND):
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
