@@ -402,6 +402,8 @@ def create_distribution_bundle_file():
         file_path_list = SCOPE.get('files', [])
         if 'main' in SCOPE:
             file_path_list.append(SCOPE['main'])
+        if len(file_path_list) == 0:
+            return None
         with zipfile.ZipFile(
             distribution_bundle_file.path, 'w'
         ) as zip_file:
