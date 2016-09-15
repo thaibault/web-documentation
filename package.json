@@ -33,8 +33,8 @@
   },
   "webOptimizer": {
     "buildDefinition": {
-      "ANALYTICS_CODE": {
-        "__evaluate__": "`'${self.module.preprocessor.pug.locals.ANALYTICS_CODE}'`"
+      "TRACKING_CODE": {
+        "__evaluate__": "`'${self.module.preprocessor.pug.locals.TRACKING_CODE}'`"
       },
       "LANGUAGES": {
         "__evaluate__": "`['${self.module.preprocessor.pug.locals.LANGUAGES.join(\"', '\")}']`"

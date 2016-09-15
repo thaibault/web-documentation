@@ -372,7 +372,7 @@ if (typeof OFFLINE !== 'undefined' && OFFLINE) {
 // script loading simpler.
 $.global.$documentationWebsite = $
 $.noConflict(true)(($:Object):Documentation => $.Documentation({
-    trackingCode: ANALYTICS_CODE, language: {
+    trackingCode: TRACKING_CODE, language: {
         selection: LANGUAGES || [],
         sessionDescription: 'documentationWebsite{1}'
     }
