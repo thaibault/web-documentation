@@ -389,7 +389,7 @@ def generate_new_documentation_page(
 # # python3.5 def create_distribution_bundle_file() -> FileHandler:
 def create_distribution_bundle_file():
     '''Creates a distribution bundle file as zip archiv.'''
-    if not SCOPE['scripts'].get('export', SCOPE.get(
+    if not SCOPE['scripts'].get('export', SCOPE['scripts'].get(
         'build', False
     )) or Platform.run('/usr/bin/env npm run %s' % (
         'export' if SCOPE['scripts'].get('export') else 'build'
