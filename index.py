@@ -80,14 +80,13 @@ DISTRIBUTION_BUNDLE_FILE_PATH = '%sdistributionBundle.zip' % DATA_PATH
 DISTRIBUTION_BUNDLE_DIRECTORY_PATH = '%sdistributionBundle' % DATA_PATH
 ## endregion
 BUILD_DOCUMENTATION_PAGE_COMMAND = [
-    '/usr/bin/env', 'npm', 'run', 'build',
-    '{{' +
+    '/usr/bin/env', 'npm', 'run', 'build', '{parameterFilePath}']
+BUILD_DOCUMENTATION_PAGE_PARAMETER_TEMPLATE = ('{{' +
     'module:{{preprocessor:{{pug:{{locals:{serializedParameter}}}}}}},' +
     # NOTE: We habe to disable offline features since the domains cache is
-    # already in use
+    # already in use for the main home page.
     'offline:null' +
-    '}}'
-]
+    '}}')
 CONTENT = ''
 DOCUMENTATION_REPOSITORY = 'git@github.com:"thaibault/documentationWebsite"'
 MARKDOWN_EXTENSIONS = (
@@ -345,13 +344,17 @@ def generate_new_documentation_page(
                 '-debug'
             ] + BUILD_DOCUMENTATION_PAGE_COMMAND[-1:]
     serialized_parameter = json.dumps(parameter)
+    parameter_file = FileHandler(location=make_secure_temporary_file('.json')[
+        1])
+    parameter_file.content = \
+        BUILD_DOCUMENTATION_PAGE_PARAMETER_TEMPLATE.format(
+            serializedParameter=serialized_parameter, **SCOPE)
     for index, command in builtins.enumerate(BUILD_DOCUMENTATION_PAGE_COMMAND):
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
-                serializedParameter=serialized_parameter, **SCOPE)
-    __logger__.info('Use "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
-    BUILD_DOCUMENTATION_PAGE_COMMAND[-1] = base64_encode(
-        BUILD_DOCUMENTATION_PAGE_COMMAND[-1])
+                serializedParameter=serialized_parameter, **SCOPE,
+                parameterFilePath=parameter_file._path)
+    __logger__.debug('Use parameter "%s".', ' '.join(serializedParameter))
     __logger__.info('Run "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
     current_working_directory_backup = FileHandler()
     temporary_documentation_folder.change_working_directory()
