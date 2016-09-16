@@ -351,8 +351,8 @@ def generate_new_documentation_page(
     for index, command in builtins.enumerate(BUILD_DOCUMENTATION_PAGE_COMMAND):
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
-                serializedParameter=serialized_parameter, **SCOPE,
-                parameterFilePath=parameter_file._path)
+                serializedParameter=serialized_parameter,
+                parameterFilePath=parameter_file._path, **SCOPE)
     __logger__.debug('Use parameter "%s".', ' '.join(serializedParameter))
     __logger__.info('Run "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
     current_working_directory_backup = FileHandler()
