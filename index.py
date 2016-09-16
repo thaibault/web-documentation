@@ -353,7 +353,7 @@ def generate_new_documentation_page(
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
                 serializedParameter=serialized_parameter,
                 parameterFilePath=parameter_file._path, **SCOPE)
-    __logger__.debug('Use parameter "%s".', ' '.join(serializedParameter))
+    __logger__.debug('Use parameter "%s".', serialized_parameter)
     __logger__.info('Run "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
     current_working_directory_backup = FileHandler()
     temporary_documentation_folder.change_working_directory()
