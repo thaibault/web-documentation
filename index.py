@@ -27,7 +27,6 @@ __maintainer_email__ = 'info["~at~"]torben.website'
 __status__ = 'stable'
 __version__ = '1.0'
 
-from base64 import b64encode as base64_encode
 # # python3.5
 # # import builtins
 import __builtin__ as builtins
