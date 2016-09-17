@@ -28,6 +28,8 @@
   "devDependencies": {
     "jsdom": "latest",
     "legal-notes": "latest",
+    "qunitjs": "latest",
+    "qunit-cli": "latest",
     "source-map-support": "latest",
     "weboptimizer": "latest"
   },
@@ -121,6 +123,8 @@
     "lint": "webOptimizer typeCheck && webOptimizer lint",
     "serve": "webOptimizer serve",
     "start": "npm run serve",
+    "test": "webOptimizer test",
+    "testInBrowser": "webOptimizer testInBrowser",
     "update": "npm version patch && npm publish",
     "watch": "webOptimizer build --watch",
     "watchDLL": "webOptimizer buildDLL --watch"
