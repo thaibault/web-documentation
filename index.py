@@ -41,7 +41,6 @@ except builtins.ImportError:
 import os
 import re as regularExpression
 import sys
-from tempfile import mkdtemp as make_temporary_directory
 from tempfile import mkstemp as make_secure_temporary_file
 import zipfile
 
@@ -362,6 +361,7 @@ def generate_new_documentation_page(
         command_arguments=BUILD_DOCUMENTATION_PAGE_COMMAND[1:], error=False,
         log=True)
     current_working_directory_backup.change_working_directory()
+    parameter_file.remove_file()
     for file in FileHandler():
         if not (file in (temporary_documentation_folder, FileHandler(
             location='.%s' % API_DOCUMENTATION_PATH[1]
