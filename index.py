@@ -39,7 +39,6 @@ try:
 except builtins.ImportError:
     markdown = None
 import os
-import re as regularExpression
 import sys
 from tempfile import mkstemp as make_secure_temporary_file
 import zipfile
