@@ -379,9 +379,11 @@ def create_distribution_bundle_file():
 def is_file_ignored(file):
     return (
         file.basename.startswith('.') or
-        file.basename == 'dummyDocumentation' or file.is_directory() and
-        file.name in ['node_modules', 'build'] or file.is_file() and
-        file.name in ['params.json'] or file.extension in ('pyc', 'pyo'))
+        file.basename == 'dummyDocumentation' or
+        file.is_directory() and file.name in [
+            'node_modules', 'build', '__pycache__'
+        ] or file.is_file() and (
+            file.name in ['params.json'] or file.extension in ('pyc', 'pyo')))
 
 
 @JointPoint
