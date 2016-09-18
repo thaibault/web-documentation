@@ -381,7 +381,7 @@ def is_file_ignored(file):
         file.basename.startswith('.') or
         file.basename == 'dummyDocumentation' or file.is_directory() and
         file.name in ['node_modules', 'build'] or file.is_file() and
-        file.name in ['params.json'] or ('pyc', 'pyo') in file.extension)
+        file.name in ['params.json'] or file.extension in ('pyc', 'pyo'))
 
 
 @JointPoint
