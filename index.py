@@ -253,13 +253,17 @@ def generate_new_documentation_page(
     if 'NAME' not in parameter and 'name' in SCOPE:
         parameter['NAME'] = SCOPE['name']
     __logger__.debug('Found parameter "%s".', json.dumps(parameter))
+    api_documentation_path = None
+    if has_api_documentation:
+        api_documentation_path = '%s%s' % (
+            API_DOCUMENTATION_PATH[1], API_DOCUMENTATION_PATH_SUFFIX)
+        if not FileHandler(location=api_documentation_path).is_directory():
+            api_documentation_path = API_DOCUMENTATION_PATH[1]
     parameter.update({
         'CONTENT': CONTENT,
         'CONTENT_FILE_PATH': None,
         'RENDER_CONTENT': False,
-        'API_DOCUMENTATION_PATH': ('%s%s' % (
-            API_DOCUMENTATION_PATH[1], API_DOCUMENTATION_PATH_SUFFIX
-        )) if has_api_documentation else None,
+        'API_DOCUMENTATION_PATH': api_documentation_path,
         'DISTRIBUTION_BUNDLE_FILE_PATH':
             DISTRIBUTION_BUNDLE_FILE_PATH if (
                 distribution_bundle_file and
