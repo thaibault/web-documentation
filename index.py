@@ -257,10 +257,9 @@ def generate_new_documentation_page(
     if has_api_documentation:
         api_documentation_path = '%s%s' % (
             API_DOCUMENTATION_PATH[1], API_DOCUMENTATION_PATH_SUFFIX)
-        print()
-        print(FileHandler(location=api_documentation_path).path)
-        print()
-        if not FileHandler(location=api_documentation_path).is_directory():
+        if not FileHandler(location='%s%s' % (
+            FileHandler().path, api_documentation_path
+        )).is_directory():
             api_documentation_path = API_DOCUMENTATION_PATH[1]
     parameter.update({
         'CONTENT': CONTENT,
