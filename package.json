@@ -23,6 +23,7 @@
     "url": "git@github.io:thaibault/documentationWebsite.git"
   },
   "dependencies": {
+    "boostnode": "latest",
     "website-utilities": "latest"
   },
   "devDependencies": {

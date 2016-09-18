@@ -14,14 +14,14 @@ from __future__ import absolute_import, division, print_function, \
 # #
 
 '''
-    For conventions see "boostNode/__init__.py" on \
-    https://github.com/thaibault/boostNode
+    For conventions see "boostnode/__init__.py" on \
+    https://github.com/thaibault/boostnode
 '''
 
 __author__ = 'Torben Sickert'
-__copyright__ = 'see boostNode/__init__.py'
+__copyright__ = 'see boostnode/__init__.py'
 __credits__ = 'Torben Sickert',
-__license__ = 'see boostNode/__init__.py'
+__license__ = 'see boostnode/__init__.py'
 __maintainer__ = 'Torben Sickert'
 __maintainer_email__ = 'info["~at~"]torben.website'
 __status__ = 'stable'
@@ -45,12 +45,12 @@ import zipfile
 
 sys.path.append(os.environ['ILU_PUBLIC_REPOSITORY_PATH'])
 
-# # python3.5 from boostNode.aspect.signature import add_check as add_signature_check
+# # python3.5 from boostnode.aspect.signature import add_check as add_signature_check
 pass
-from boostNode.extension.file import Handler as FileHandler
-from boostNode.extension.native import Dictionary, Module, String
-from boostNode.extension.system import CommandLine, Platform
-from boostNode.paradigm.aspectOrientation import JointPoint
+from boostnode.extension.file import Handler as FileHandler
+from boostnode.extension.native import Dictionary, Module, String
+from boostnode.extension.system import CommandLine, Platform
+from boostnode.paradigm.aspectOrientation import JointPoint
 
 
 # # python3.5
@@ -430,6 +430,7 @@ __logger__ = __exception__ = __module_name__ = __file_path__ = \
 '''
 Module.default(name=__name__, frame=inspect.currentframe())
 # endregion
+
 # region vim modline
 # vim: set tabstop=4 shiftwidth=4 expandtab:
 # vim: foldmethod=marker foldmarker=region,endregion:
