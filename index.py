@@ -46,15 +46,12 @@ import zipfile
 
 sys.path.append(os.environ['ILU_PUBLIC_REPOSITORY_PATH'])
 
-from boostNode import __get_all_modules__
 # # python3.5 from boostNode.aspect.signature import add_check as add_signature_check
 pass
 from boostNode.extension.file import Handler as FileHandler
 from boostNode.extension.native import Dictionary, Module, String
 from boostNode.extension.system import CommandLine, Platform
 from boostNode.paradigm.aspectOrientation import JointPoint
-from boostNode.runnable.macro import Replace as ReplaceMacro
-from boostNode.runnable.template import Parser as TemplateParser
 
 
 # # python3.5
@@ -212,60 +209,6 @@ def main():
                     temporary_documentation_folder,
                     distribution_bundle_file, has_api_documentation,
                     temporary_documentation_node_modules_directory)
-
-
-@JointPoint
-# # python3.5
-# # def generate_api_documentation(
-# #     current_working_directory: FileHandler
-# # ) -> None:
-def generate_python_api_documentation(current_working_directory):
-# #
-    '''Generates the given language type api documentation website.'''
-    if FileHandler('documentation').is_directory():
-        index_file = FileHandler('documentation/source/index.rst')
-        modules_to_document = '\ninit'
-        FileHandler(
-            location='%sinit.rst' % index_file.directory.path
-        ).content = (
-            (79 * '=') + '\n{name}\n' + (79 * '=') + '\n\n.. automodule::' +
-            ' {name}\n    :members:'
-        ).format(name=current_working_directory.name)
-        for file in FileHandler():
-            if Module.is_package(file.path):
-                modules_to_document += '\n    %s' % file.name
-                FileHandler(location='%s%s.rst' % (
-                    index_file.directory.path, file.name
-                )).content = (
-                    (79 * '=') + '\n{name}.{package}\n' +
-                    (79 * '=') + '\n\n.. automodule:: {name}.{package}\n'
-                    '    :members:'
-                ).format(
-                    name=current_working_directory.name, package=file.name)
-                for module in __get_all_modules__(file.path):
-                    modules_to_document += '\n    %s.%s' % (file.name, module)
-                    FileHandler(location='%s%s.%s.rst' % (
-                        index_file.directory.path, file.name, module
-                    )).content = (
-                        (79 * '=') + '\n{name}.{package}.{module}\n' +
-                        (79 * '=') + '\n\n.. automodule:: {name}.{package}.'
-                        '{module}\n    :members:'
-                    ).format(
-                        name=current_working_directory.name,
-                        package=file.name, module=module)
-        index_file.content = regularExpression.compile(
-            '\n    ([a-z][a-zA-Z]+\n)+$', regularExpression.DOTALL
-        ).sub(modules_to_document, index_file.content)
-        Platform.run('/usr/bin/env git add --all', error=False, log=True)
-        FileHandler('documentation').change_working_directory()
-        makefile = FileHandler('Makefile')
-# # python3.5         FileHandler('MakefilePython3').copy(makefile)
-        FileHandler('MakefilePython2').copy(makefile)
-        Platform.run(
-            command='make html', native_shell=True, error=False, log=True)
-        makefile.remove_file()
-        FileHandler('build/html').path = '../tempAPI'
-        FileHandler('build').remove_deep()
 
 
 @JointPoint
