@@ -361,8 +361,10 @@ def create_distribution_bundle_file():
                 __logger__.debug(
                     'Add "%s" to distribution bundle.', file.path)
                 zip_file.write(file._path, file.name)
-                if file.is_directory():
+                if file.is_directory() and not is_file_ignored(file):
                     def add(sub_file):
+                        if is_file_ignored(sub_file):
+                            return None
                         __logger__.debug(
                             'Add "%s" to distribution bundle.', sub_file.path)
                         zip_file.write(sub_file._path, sub_file._path[len(
@@ -379,7 +381,7 @@ def is_file_ignored(file):
         file.basename.startswith('.') or
         file.basename == 'dummyDocumentation' or file.is_directory() and
         file.name in ['node_modules', 'build'] or file.is_file() and
-        file.name in ['params.json'])
+        file.name in ['params.json'] or ('pyc', 'pyo') in file.extension)
 
 
 @JointPoint
