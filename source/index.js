@@ -20,8 +20,7 @@
 // region imports
 import {$} from 'website-utilities'
 import Language from 'internationalisation'
-import type {DomNode} from 'weboptimizer/type'
-import type {$DomNode} from 'clientnode'
+import type {DomNode, $DomNode} from 'clientnode'
 // endregion
 // region declaration
 declare var ANALYTICS_CODE:string
@@ -207,13 +206,15 @@ export default class Documentation extends $.Website.class {
         ).add(this.$domNodes.homeLink).filter(
             `a[href="#${sectionName}"]`
         ).trigger('click')
-        return super._onSwitchSection.apply(this, arguments)
+        return super._onSwitchSection(sectionName)
     }
     /**
      * This method triggers if all startup animations are ready.
+     * @param parameter - All parameter will be forwarded to registered event
+     * handler callbacks.
      * @returns Returns the current instance.
      */
-    _onStartUpAnimationComplete():Documentation {
+    _onStartUpAnimationComplete(...parameter:Array<any>):Documentation {
         if (this._activateLanguageSupport && !this._languageHandler)
             this._languageHandler = $.Language(this._options.language)
         // All start up effects are ready. Handle direct section links.
@@ -224,7 +225,7 @@ export default class Documentation extends $.Website.class {
             ).filter('a[href="' + $.global.location.href.substr(
                 $.global.location.href.indexOf('#')
             ) + '"]').trigger('click')
-        return super._onStartUpAnimationComplete.apply(this, arguments)
+        return super._onStartUpAnimationComplete(...paramter)
     }
     // / endregion
     /**

@@ -97,7 +97,7 @@
           }
         }
       },
-      "skipParseRegularExpression": {
+      "skipParseRegularExpressions": {
         "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|(?:spin)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     },
