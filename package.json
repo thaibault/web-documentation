@@ -37,10 +37,10 @@
   "webOptimizer": {
     "buildDefinition": {
       "TRACKING_CODE": {
-        "__evaluate__": "`'${self.module.preprocessor.pug.locals.TRACKING_CODE}'`"
+        "__evaluate__": "`'${self.module.preprocessor.html.configuration.locals.TRACKING_CODE}'`"
       },
       "LANGUAGES": {
-        "__evaluate__": "`['${self.module.preprocessor.pug.locals.LANGUAGES.join(\"', '\")}']`"
+        "__evaluate__": "`['${self.module.preprocessor.html.configuration.locals.LANGUAGES.join(\"', '\")}']`"
       }
     },
     "injection": {
@@ -49,7 +49,7 @@
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []"
         },
         "index": {
-          "__evaluate__": "[`${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.debug ? [] : 'babel-polyfill').concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?${self.development.server.protocol}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('index')"
+          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.debug ? [] : 'babel-polyfill').concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?http${self.development.server.cert ? 's' : ''}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         }
       }
     },
@@ -58,6 +58,7 @@
       "aliases": {
         "bootstrap$": "bootstrap/dist/css/bootstrap.css",
         "babel-polyfill$": "babel-polyfill/dist/polyfill.min",
+        "jquery$": "jquery/dist/jquery.min",
         "jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo",
         "jQuery-spin$": "spin.js/jquery.spin"
       },
@@ -77,22 +78,24 @@
         }
       },
       "preprocessor": {
-        "pug": {
-          "locals": {
-            "API_DOCUMENTATION_PATH": "/apiDocumentation/",
-            "CONTENT_FILE_PATH": "dummyDocumentation.pug",
-            "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
-            "LANGUAGES": {
-              "__evaluate__": "self.module.preprocessor.pug.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
-            },
-            "NAME": "documentationWebsite",
-            "RENDER_CONTENT": true,
-            "SOURCE_URL": {
-              "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.pug.locals.NAME}`"
-            },
-            "TAGLINE": "generic documentation website pattern",
-            "URL": {
-              "__evaluate__": "`http://torben.website/${self.module.preprocessor.pug.locals.NAME}`"
+        "html": {
+          "configuration": {
+            "locals": {
+              "API_DOCUMENTATION_PATH": "/apiDocumentation/",
+              "CONTENT_FILE_PATH": "dummyDocumentation.pug",
+              "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
+              "LANGUAGES": {
+                "__evaluate__": "self.module.preprocessor.html.configuration.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
+              },
+              "NAME": "documentationWebsite",
+              "RENDER_CONTENT": true,
+              "SOURCE_URL": {
+                "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.configuration.locals.NAME}`"
+              },
+              "TAGLINE": "generic documentation website pattern",
+              "URL": {
+                "__evaluate__": "`http://torben.website/${self.module.preprocessor.html.configuration.locals.NAME}`"
+              }
             }
           }
         }
