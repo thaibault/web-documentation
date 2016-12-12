@@ -1,6 +1,8 @@
 {
   "name": "documentation-website",
   "version": "1.0.42",
+  "license": "CC-BY-3.0",
+  "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
     "website",
@@ -8,19 +10,32 @@
     "homepage",
     "page"
   ],
-  "description": "Declarative multilanguage documentation website generator",
-  "license": "CC-BY-3.0",
-  "bin": {
-    "documentationWebsite": "index.py"
-  },
   "files": [
     "source",
     "index.py"
   ],
   "main": "source/index.pug",
+  "bin": {
+    "documentationWebsite": "index.py"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.io:thaibault/documentationWebsite.git"
+  },
+  "scripts": {
+    "build": "webOptimizer build",
+    "buildDLL": "webOptimizer buildDLL",
+    "buildWithStats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
+    "clear": "webOptimizer clear",
+    "document": "webOptimizer document",
+    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "serve": "webOptimizer serve",
+    "start": "npm run serve",
+    "test": "webOptimizer test",
+    "testInBrowser": "webOptimizer testInBrowser",
+    "update": "npm version patch && npm publish",
+    "watch": "webOptimizer build --watch",
+    "watchDLL": "webOptimizer buildDLL --watch"
   },
   "dependencies": {
     "boostnode": "latest",
@@ -117,20 +132,5 @@
         }
       }
     }
-  },
-  "scripts": {
-    "build": "webOptimizer build",
-    "buildDLL": "webOptimizer buildDLL",
-    "buildWithStats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
-    "clear": "webOptimizer clear",
-    "document": "webOptimizer document",
-    "lint": "webOptimizer typeCheck && webOptimizer lint",
-    "serve": "webOptimizer serve",
-    "start": "npm run serve",
-    "test": "webOptimizer test",
-    "testInBrowser": "webOptimizer testInBrowser",
-    "update": "npm version patch && npm publish",
-    "watch": "webOptimizer build --watch",
-    "watchDLL": "webOptimizer buildDLL --watch"
   }
 }
