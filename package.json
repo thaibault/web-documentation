@@ -42,10 +42,7 @@
     "website-utilities": "latest"
   },
   "devDependencies": {
-    "jsdom": "latest",
     "legal-notes": "latest",
-    "qunitjs": "latest",
-    "qunit-cli": "latest",
     "source-map-support": "latest",
     "weboptimizer": "latest"
   },
@@ -71,13 +68,10 @@
     "library": false,
     "module": {
       "aliases": {
-        "bootstrap$": "bootstrap/dist/css/bootstrap.css",
-        "babel-polyfill$": "babel-polyfill/dist/polyfill.min",
-        "jquery$": "jquery/dist/jquery.min",
-        "jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo",
-        "jQuery-spin$": "spin.js/jquery.spin"
+        "bootstrap$": "bootstrap/dist/css/bootstrap.min.css"
       },
       "optimizer": {
+        "babili": null,
         "htmlMinifier": {
           "ignoreCustomComments": [
             {
@@ -113,10 +107,25 @@
               }
             }
           }
+        },
+        "javaScript": {
+          "configuration": {
+            "presets": {
+              "__evaluate__": "(self.target === 'node' ? ['es2017-node7'] : [['modern-browsers', {loose: true}], 'es2017']).concat('stage-0')"
+            }
+          }
+        }
+      },
+      "replacements": {
+        "normal": {
+          "^babel-polyfill$": "babel-polyfill/dist/polyfill.min.js",
+          "^jquery$": "jquery/dist/jquery.min.js",
+          "^jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo.js",
+          "^jQuery-spin$": "spin.js/jquery.spin.js"
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery\\/dist\\/jquery)|(?:module)|(?:spin)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     },
     "path": {
