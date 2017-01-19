@@ -125,7 +125,7 @@
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:global)|(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     },
     "path": {

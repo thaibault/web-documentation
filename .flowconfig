@@ -13,7 +13,7 @@
 .*/website-utilities/.*
 
 [options]
-esproposal.class_static_fields=enable
+unsafe.enable_getters_and_setters=true
 
 module.name_mapper='^jQuery-scrollTo$' -> 'jquery.scrollto/jquery.scrollTo'
 module.name_mapper='^jQuery-spin$' -> 'spin.js/jquery.spin'
