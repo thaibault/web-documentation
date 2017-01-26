@@ -372,8 +372,9 @@ if (typeof OFFLINE !== 'undefined' && OFFLINE) {
 // script loading simpler.
 $.global.$documentationWebsite = $
 $.noConflict(true)(($:Object):Documentation => $.Documentation({
-    trackingCode: TRACKING_CODE, language: {
-        selection: LANGUAGES || [],
+    trackingCode: typeof TRACKING_CODE === 'undefined' ? null : TRACKING_CODE,
+    language: {
+        selection: typeof LANGUAGES === 'undefined' ? [] : LANGUAGES,
         sessionDescription: 'documentationWebsite{1}'
     }
 }))
