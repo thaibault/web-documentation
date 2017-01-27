@@ -436,7 +436,6 @@ __logger__ = __exception__ = __module_name__ = __file_path__ = \
 '''
 Module.default(name=__name__, frame=inspect.currentframe())
 # endregion
-
 # region vim modline
 # vim: set tabstop=4 shiftwidth=4 expandtab:
 # vim: foldmethod=marker foldmarker=region,endregion:
