@@ -61,7 +61,7 @@
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []"
         },
         "index": {
-          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.debug ? [] : 'babel-polyfill').concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?http${self.development.server.cert ? 's' : ''}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, 'babel-polyfill'].concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?http${self.development.server.cert ? 's' : ''}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         }
       }
     },
