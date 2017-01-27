@@ -49,10 +49,10 @@
   "webOptimizer": {
     "buildDefinition": {
       "TRACKING_CODE": {
-        "__evaluate__": "`'${self.module.preprocessor.html.configuration.locals.TRACKING_CODE}'`"
+        "__evaluate__": "`'${self.module.preprocessor.html.options.locals.TRACKING_CODE}'`"
       },
       "LANGUAGES": {
-        "__evaluate__": "`['${self.module.preprocessor.html.configuration.locals.LANGUAGES.join(\"', '\")}']`"
+        "__evaluate__": "`['${self.module.preprocessor.html.options.locals.LANGUAGES.join(\"', '\")}']`"
       }
     },
     "injection": {
@@ -88,28 +88,28 @@
       },
       "preprocessor": {
         "html": {
-          "configuration": {
+          "options": {
             "locals": {
               "API_DOCUMENTATION_PATH": "/apiDocumentation/",
               "CONTENT_FILE_PATH": "dummyDocumentation.pug",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "LANGUAGES": {
-                "__evaluate__": "self.module.preprocessor.html.configuration.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
+                "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
               },
               "NAME": "documentationWebsite",
               "RENDER_CONTENT": true,
               "SOURCE_URL": {
-                "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.configuration.locals.NAME}`"
+                "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.options.locals.NAME}`"
               },
               "TAGLINE": "generic documentation website pattern",
               "URL": {
-                "__evaluate__": "`http://torben.website/${self.module.preprocessor.html.configuration.locals.NAME}`"
+                "__evaluate__": "`http://torben.website/${self.module.preprocessor.html.options.locals.NAME}`"
               }
             }
           }
         },
         "javaScript": {
-          "configuration": {
+          "options": {
             "presets": {
               "__evaluate__": "(self.target === 'node' ? ['es2017-node7'] : [['modern-browsers', {loose: true}], 'es2017']).concat('stage-0')"
             }
