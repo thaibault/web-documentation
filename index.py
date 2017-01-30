@@ -76,7 +76,7 @@ DISTRIBUTION_BUNDLE_DIRECTORY_PATH = '%sdistributionBundle' % DATA_PATH
 BUILD_DOCUMENTATION_PAGE_COMMAND = [
     '/usr/bin/env', 'npm', 'run', 'build', '{parameterFilePath}']
 BUILD_DOCUMENTATION_PAGE_PARAMETER_TEMPLATE = ('{{' +
-    'module:{{preprocessor:{{pug:{{locals:{serializedParameter}}}}}}},' +
+    'module:{{preprocessor:{{html:{{options:{{locals:{serializedParameter}}}}}}}}},' +
     # NOTE: We habe to disable offline features since the domains cache is
     # already in use for the main home page.
     'offline:null' +
@@ -266,11 +266,10 @@ def generate_new_documentation_page(
         'CONTENT_FILE_PATH': None,
         'RENDER_CONTENT': False,
         'API_DOCUMENTATION_PATH': api_documentation_path,
-        'DISTRIBUTION_BUNDLE_FILE_PATH':
-            DISTRIBUTION_BUNDLE_FILE_PATH if (
-                distribution_bundle_file and
-                distribution_bundle_file.is_file()
-            ) else None
+        'DISTRIBUTION_BUNDLE_FILE_PATH': DISTRIBUTION_BUNDLE_FILE_PATH if (
+            distribution_bundle_file and
+            distribution_bundle_file.is_file()
+        ) else None
     })
 # # python3.5
 # #     parameter = Dictionary(parameter).convert(
