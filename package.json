@@ -48,12 +48,14 @@
     "weboptimizer": "latest"
   },
   "webOptimizer": {
-    "buildDefinition": {
-      "TRACKING_CODE": {
-        "__evaluate__": "`'${self.module.preprocessor.html.options.locals.TRACKING_CODE}'`"
-      },
-      "LANGUAGES": {
-        "__evaluate__": "`['${self.module.preprocessor.html.options.locals.LANGUAGES.join(\"', '\")}']`"
+    "build": {
+      "definitions": {
+        "TRACKING_CODE": {
+          "__evaluate__": "`'${self.module.preprocessor.html.options.locals.TRACKING_CODE}'`"
+        },
+        "LANGUAGES": {
+          "__evaluate__": "`['${self.module.preprocessor.html.options.locals.LANGUAGES.join(\"', '\")}']`"
+        }
       }
     },
     "injection": {
