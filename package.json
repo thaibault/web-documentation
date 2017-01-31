@@ -42,6 +42,7 @@
     "website-utilities": "latest"
   },
   "devDependencies": {
+    "errorreporter": "latest",
     "legal-notes": "latest",
     "source-map-support": "latest",
     "weboptimizer": "latest"
@@ -111,7 +112,7 @@
         "javaScript": {
           "options": {
             "presets": {
-              "__evaluate__": "(self.target === 'node' ? ['es2017-node7'] : [['modern-browsers', {loose: true}], 'es2017']).concat('stage-0')"
+              "__evaluate__": "(self.targetTechnology === 'node' ? ['es2017-node7'] : [['modern-browsers', {loose: true}], 'es2017']).concat('stage-0')"
             }
           }
         }
