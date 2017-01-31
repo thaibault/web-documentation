@@ -23,15 +23,17 @@ html.no-javascript(lang=en)
         meta&attributes(META_TAGS || {})
         // endregion
         title #{NAME}
-        // region pre load resources
         script(type="text/javascript").
             window.document.documentElement.className =
                 window.document.documentElement.className.replace(
                     /(^|\s)no-javascript(\s|$)/, '$1javascript$2');
-        // endregion
     // endregion
     // region body
-    body(class='documentation')
+    body.no-javascript(class='documentation')
+        script(type="text/javascript").
+            window.document.body.className =
+                window.document.body.className.replace(
+                    /(^|\s)no-javascript(\s|$)/, '$1javascript$2');
         .website-window-loading-cover.tools-hidden-on-javascript-disabled: div
         // region header
         header.header-wrap.outer: .inner
@@ -91,7 +93,7 @@ html.no-javascript(lang=en)
                 if numberOfLanguageLinks
                     for language in LANGUAGES
                         - START_UP_ANIMATION_NUMBER -= 1
-                        a.tools-visible-on-javascript-enabled(
+                        a.tools-hidden-on-javascript-disabled(
                             href=`#language-${language}`
                             class=`website-start-up-animation-number-${START_UP_ANIMATION_NUMBER}`
                         ) #{language.slice(0, 2)}
