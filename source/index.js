@@ -364,7 +364,7 @@ $.Documentation.class = Documentation
 if (typeof OFFLINE !== 'undefined' && OFFLINE) {
     const offlineHandler:Object = require('offline-plugin/runtime')
     offlineHandler.install({
-        // NOTE: Tell to new SW to take control immediately.
+        // NOTE: Tell the new service worker to take control immediately.
         onUpdateReady: ():void => offlineHandler.applyUpdate()
     })
 }

@@ -45,6 +45,7 @@
     "errorreporter": "latest",
     "legal-notes": "latest",
     "source-map-support": "latest",
+    "ua-parser-js": "latest",
     "weboptimizer": "latest"
   },
   "webOptimizer": {
@@ -60,11 +61,12 @@
     },
     "injection": {
       "internal": {
-        "vendor": {
-          "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []"
-        },
+        "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, 'babel-polyfill'].concat(self.debug && self.dllManifestFilePaths.length && 2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2] === 'serve' ? [`webpack-dev-server/client?http${self.development.server.cert ? 's' : ''}://0.0.0.0:${self.development.server.port}`, 'webpack/hot/dev-server'] : []).concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, 'babel-polyfill'].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+        },
+        "vendor": {
+          "__evaluate__": "self.debug ? ['babel-polyfill', 'ua-parser-js'].concat(2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []) : []"
         }
       }
     },
