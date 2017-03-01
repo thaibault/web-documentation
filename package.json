@@ -14,7 +14,7 @@
     "source",
     "index.py"
   ],
-  "main": "source/index.pug",
+  "main": "source/index.html.ejs",
   "bin": {
     "documentationWebsite": "index.py"
   },
@@ -96,7 +96,7 @@
           "options": {
             "locals": {
               "API_DOCUMENTATION_PATH": "/apiDocumentation/",
-              "CONTENT_FILE_PATH": "dummyDocumentation.pug",
+              "CONTENT_FILE_PATH": "dummyDocumentation.html.ejs",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "LANGUAGES": {
                 "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
