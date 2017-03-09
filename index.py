@@ -76,7 +76,7 @@ DISTRIBUTION_BUNDLE_DIRECTORY_PATH = '%sdistributionBundle' % DATA_PATH
 BUILD_DOCUMENTATION_PAGE_COMMAND = [
     '/usr/bin/env', 'npm', 'run', 'build', '{parameterFilePath}']
 BUILD_DOCUMENTATION_PAGE_PARAMETER_TEMPLATE = ('{{' +
-    'module:{{preprocessor:{{html:{{options:{{locals:{serializedParameter}}}}}}}}},' +
+    'module:{{preprocessor:{{ejs:{{options:{{locals:{serializedParameter}}}}}}}}},' +
     # NOTE: We habe to disable offline features since the domains cache is
     # already in use for the main home page.
     'offline:null' +
