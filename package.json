@@ -92,7 +92,7 @@
         }
       },
       "preprocessor": {
-        "html": {
+        "ejs": {
           "options": {
             "locals": {
               "API_DOCUMENTATION_PATH": "/apiDocumentation/",
