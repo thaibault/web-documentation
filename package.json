@@ -24,29 +24,39 @@
   },
   "scripts": {
     "build": "webOptimizer build",
-    "buildDLL": "webOptimizer buildDLL",
-    "buildWithStats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
+    "build:dll": "webOptimizer build:dll",
+    "build:stats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
-    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "lint": "webOptimizer check:type; webOptimizer lint",
     "serve": "webOptimizer serve",
     "start": "npm run serve",
     "test": "webOptimizer test",
-    "testInBrowser": "webOptimizer testInBrowser",
+    "test:browser": "webOptimizer test:browser",
     "update": "npm version patch && npm publish",
     "watch": "webOptimizer build --watch",
-    "watchDLL": "webOptimizer buildDLL --watch"
+    "watch:dll": "webOptimizer build:dll --watch"
   },
   "dependencies": {
     "boostnode": "latest",
     "website-utilities": "latest"
   },
   "devDependencies": {
+    "babel-eslint": "latest",
     "errorreporter": "latest",
+    "eslint": "latest",
+    "eslint-config-google": "latest",
+    "eslint-plugin-flowtype": "latest",
+    "eslint-plugin-jsdoc": "latest",
+    "flow-bin": "latest",
+    "jsdoc": "latest",
     "legal-notes": "latest",
     "source-map-support": "latest",
+    "stylelint": "latest",
     "ua-parser-js": "latest",
-    "weboptimizer": "latest"
+    "weboptimizer": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
   },
   "webOptimizer": {
     "build": {
@@ -66,14 +76,15 @@
           "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, 'babel-polyfill'].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         },
         "vendor": {
-          "__evaluate__": "self.debug ? ['babel-polyfill', 'ua-parser-js'].concat(2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []) : []"
+          "__evaluate__": "self.debug ? ['babel-polyfill', 'ua-parser-js'].concat(2 < self.givenCommandLineArguments.length && ['build:dll', 'serve', 'watch:dll'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []) : []"
         }
       }
     },
     "library": false,
     "module": {
       "aliases": {
-        "bootstrap$": "bootstrap/dist/css/bootstrap.min.css"
+        "bootstrap$": "bootstrap/dist/css/bootstrap.min.css",
+        "website-utilities/index.css$": "website-utilities/index.compiled.css"
       },
       "optimizer": {
         "babili": null,
