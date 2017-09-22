@@ -30,9 +30,15 @@ declare var OFFLINE:boolean
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a whole documentation site.
- * @extends website-utilities:Website
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
+ *
+ * @property startUpAnimationIsComplete - Indicates whether start up animations
+ * has been completed.
+ * @property languageHandler - Saves a reference to the language handler.
+ *
+ * @property _activateLanguageSupport - Indicates whether a language switcher
+ * should be activated.
  * @property _options - Options extended by the options given to the
  * initializer method.
  * @property _options.onExamplesLoaded {Function} - Callback to trigger when
@@ -63,15 +69,12 @@ declare var OFFLINE:boolean
  * @property _options.section.main.fadeIn {Object} - Fade in configurations.
  */
 export default class Documentation extends $.Website.class {
-    // region static properties
     static _name:string = 'Documentation'
-    // endregion
-    // region dynamic properties
-    $domNodes:{[key:string]:$DomNode}
+
     startUpAnimationIsComplete:boolean
+    languageHandler:Object
+
     _activateLanguageSupport:boolean
-    languageHandler:Object;
-    // endregion
     // region public methods
     // / region special
     /**
