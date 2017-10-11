@@ -39,27 +39,27 @@
   },
   "dependencies": {
     "boostnode": "^1.0.6",
-    "website-utilities": "^1.0.36"
+    "website-utilities": "^1.0.41"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.240",
-    "errorreporter": "^1.0.24",
-    "eslint": "^4.2.0",
+    "clientnode": "^1.0.246",
+    "errorreporter": "^1.0.25",
+    "eslint": "^4.8.0",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-flowtype": "^2.35.0",
+    "eslint-plugin-flowtype": "^2.36.0",
     "eslint-plugin-jsdoc": "^3.1.1",
-    "flow-bin": "^0.50.0",
-    "internationalisation": "^1.0.23",
+    "flow-bin": "^0.56.0",
+    "internationalisation": "^1.0.26",
     "jsdoc": "^3.5.2",
     "legal-notes": "^1.0.5",
-    "source-map-support": "^0.4.15",
-    "stylelint": "^7.13.0",
+    "source-map-support": "^0.5.0",
+    "stylelint": "^8.2.0",
     "ua-parser-js": "^0.7.13",
-    "weboptimizer": "^1.0.368",
+    "weboptimizer": "^1.0.376",
     "webpack": "^3.2.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.9.1"
   },
   "webOptimizer": {
     "build": {
