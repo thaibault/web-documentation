@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "boostnode": "^1.0.6",
-    "website-utilities": "^1.0.45"
+    "website-utilities": "^1.0.46"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
