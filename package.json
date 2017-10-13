@@ -39,26 +39,26 @@
   },
   "dependencies": {
     "boostnode": "^1.0.6",
-    "website-utilities": "^1.0.41"
+    "website-utilities": "^1.0.45"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.246",
+    "clientnode": "^1.0.247",
     "errorreporter": "^1.0.25",
     "eslint": "^4.8.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.36.0",
     "eslint-plugin-jsdoc": "^3.1.1",
     "flow-bin": "^0.56.0",
-    "internationalisation": "^1.0.26",
+    "internationalisation": "^1.0.27",
     "jsdoc": "^3.5.2",
     "legal-notes": "^1.0.5",
     "source-map-support": "^0.5.0",
     "stylelint": "^8.2.0",
-    "ua-parser-js": "^0.7.13",
-    "weboptimizer": "^1.0.376",
-    "webpack": "^3.2.0",
+    "ua-parser-js": "^0.7.17",
+    "weboptimizer": "^1.0.377",
+    "webpack": "^3.7.1",
     "webpack-dev-server": "^2.9.1"
   },
   "webOptimizer": {
