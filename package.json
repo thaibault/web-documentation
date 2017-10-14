@@ -45,6 +45,7 @@
     "babel-eslint": "^8.0.1",
     "babel-polyfill": "^6.23.0",
     "clientnode": "^1.0.247",
+    "default-gateway": "^2.6.1",
     "errorreporter": "^1.0.25",
     "eslint": "^4.8.0",
     "eslint-config-google": "^0.9.1",

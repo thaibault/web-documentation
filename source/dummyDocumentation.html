@@ -28,7 +28,7 @@
     <langreplace>Getting<code>inline</code>in</langreplace>
     <!--deDE:Einstieg<code>inline code</code>-->
 </h2>
-<p>Englisch//deDE:Deutsch ipsum dolor sit amet...</p>
+<p>Englisch<!--deDE:Deutsch--> ipsum dolor sit amet...</p>
 <h3 id="a">a</h3>
 <p>
     Lorem ipsum dolor sit amet
@@ -175,7 +175,8 @@ installArchLinux <span class="s2">&quot;\$@&quot;</span>--output-system <span cl
     $documentationWebsite.getScript(
         'https://code.jquery.com/jquery-3.1.1.min.js'
     ).then(() =&gt $.getScript(
-        'http://torben.website/clientNode/data/distributionBundle/index.compiled.js'
-    )).then(() =&gt console.log($.Tools.class._name))
+        'http://torben.website/clientNode/data/distributionBundle/' +
+        'index.compiled.js'
+    )).then(() =&gt console.info('Test output:', $.Tools.class.name))
 &lt;/script&gt;</pre>
 </div>
