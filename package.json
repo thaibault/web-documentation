@@ -39,12 +39,12 @@
   },
   "dependencies": {
     "boostnode": "^1.0.6",
-    "website-utilities": "^1.0.46"
+    "website-utilities": "^1.0.47"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.247",
+    "clientnode": "^1.0.248",
     "default-gateway": "^2.6.1",
     "errorreporter": "^1.0.25",
     "eslint": "^4.8.0",
@@ -52,13 +52,13 @@
     "eslint-plugin-flowtype": "^2.36.0",
     "eslint-plugin-jsdoc": "^3.1.1",
     "flow-bin": "^0.56.0",
-    "internationalisation": "^1.0.27",
+    "internationalisation": "^1.0.28",
     "jsdoc": "^3.5.2",
     "legal-notes": "^1.0.5",
     "source-map-support": "^0.5.0",
     "stylelint": "^8.2.0",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^1.0.377",
+    "weboptimizer": "^1.0.378",
     "webpack": "^3.7.1",
     "webpack-dev-server": "^2.9.1"
   },
