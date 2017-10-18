@@ -31,8 +31,7 @@
     "lint": "webOptimizer check:type; webOptimizer lint",
     "serve": "webOptimizer serve",
     "start": "npm run serve",
-    "test": "webOptimizer test",
-    "test:browser": "webOptimizer test:browser",
+    "test": "npm run build",
     "update": "npm version patch && npm publish",
     "watch": "webOptimizer build --watch",
     "watch:dll": "webOptimizer build:dll --watch"
