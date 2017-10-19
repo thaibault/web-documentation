@@ -43,7 +43,7 @@
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.253",
+    "clientnode": "^1.0.268",
     "default-gateway": "^2.6.1",
     "errorreporter": "^1.0.25",
     "eslint": "^4.8.0",
@@ -57,7 +57,7 @@
     "source-map-support": "^0.5.0",
     "stylelint": "^8.2.0",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^1.0.382",
+    "weboptimizer": "^1.0.394",
     "webpack": "^3.7.1",
     "webpack-dev-server": "^2.9.1"
   },
@@ -131,7 +131,7 @@
         "javaScript": {
           "options": {
             "presets": {
-              "__evaluate__": "(self.targetTechnology === 'node' ? ['es2017-node7'] : [['modern-browsers', {loose: true}], 'es2017']).concat('stage-0')"
+              "__evaluate__": "[['env', {targets: self.targetTechnology === 'node' ? {node: 'current'} : {browsers: 'last 2 versions', node: 'current'}}]].concat('stage-0')"
             }
           }
         }
