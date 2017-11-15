@@ -68,7 +68,7 @@ declare var OFFLINE:boolean
  * @property _options.section.main.fadeOut {Object} - Fade out configurations.
  * @property _options.section.main.fadeIn {Object} - Fade in configurations.
  */
-export default class Documentation extends $.Website.class {
+export class Documentation extends $.Website.class {
     static _name:string = 'Documentation'
 
     startUpAnimationIsComplete:boolean
@@ -360,6 +360,7 @@ export default class Documentation extends $.Website.class {
     }
     // endregion
 }
+export default Documentation
 // endregion
 $.Documentation = (...parameter:Array<any>):any => $.Tools().controller(
     Documentation, parameter)
