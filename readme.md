@@ -19,6 +19,7 @@ endregion -->
 [![dependencies](https://img.shields.io/david/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website)
 [![devDependencies](https://img.shields.io/david/dev/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website?type=dev)
 [![peerDependencies](https://img.shields.io/david/peer/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website?type=peer)
+[![documentation-website](https://img.shields.io/website-up-down-green-red/https/www.npmjs.com/package/documentation-website.svg?label=documentation-website)](https://www.npmjs.com/package/documentation-website)
 
 Use case
 --------
