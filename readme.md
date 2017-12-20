@@ -1,8 +1,6 @@
 <!-- #!/usr/bin/env markdown
 -*- coding: utf-8 -*-
-
 region header
-
 Copyright Torben Sickert 16.12.2012
 
 License
@@ -10,7 +8,6 @@ License
 
 This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
-
 endregion -->
 
 [![npm version](https://badge.fury.io/js/documentation-website.svg)](https://www.npmjs.com/package/documentation-website)
