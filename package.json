@@ -41,12 +41,12 @@
     "website-utilities": "^1.0.61"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.3",
+    "babel-eslint": "^8.1.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.309",
+    "clientnode": "^1.0.310",
     "default-gateway": "^2.6.2",
     "errorreporter": "^1.0.36",
-    "eslint": "^4.12.0",
+    "eslint": "^4.14.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-jsdoc": "^3.3.0",
