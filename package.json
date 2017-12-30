@@ -37,20 +37,20 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "dependencies": {
-    "boostnode": "^1.0.7",
+    "boostnode": "^1.0.8",
     "website-utilities": "^1.0.61"
   },
   "devDependencies": {
     "babel-eslint": "^8.1.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.310",
+    "clientnode": "^1.0.315",
     "default-gateway": "^2.6.2",
     "errorreporter": "^1.0.36",
     "eslint": "^4.14.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-jsdoc": "^3.3.0",
-    "flow-bin": "^0.61.0",
+    "flow-bin": "^0.62.0",
     "jsdoc": "^3.5.2",
     "legal-notes": "^1.0.8",
     "source-map-support": "^0.5.0",
