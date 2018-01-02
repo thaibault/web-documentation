@@ -37,13 +37,13 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "dependencies": {
-    "boostnode": "^1.0.8",
-    "website-utilities": "^1.0.64"
+    "boostnode": "^1.0.9",
+    "website-utilities": "^1.0.65"
   },
   "devDependencies": {
     "babel-eslint": "^8.1.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.316",
+    "clientnode": "^1.0.319",
     "default-gateway": "^2.6.2",
     "errorreporter": "^1.0.39",
     "eslint": "^4.14.0",
@@ -56,7 +56,7 @@
     "source-map-support": "^0.5.0",
     "stylelint": "^8.3.1",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^1.0.459",
+    "weboptimizer": "^1.0.463",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5"
   },
