@@ -34,13 +34,13 @@ endregion */
     /* endregion */
     /* region custom properties */
     --icon: {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        vertical-align: text-top;
-        overflow: hidden;
         background-position: 0 0;
         background-repeat: no-repeat;
+        display: inline-block;
+        height: 30px;
+        overflow: hidden;
+        width: 30px;
+        vertical-align: text-top;
     }
     /*
         NOTE: We explicit inherit form ".icon" to prepare this class to be
@@ -51,16 +51,16 @@ endregion */
 
         background-image: url('../image/blacktocat.png');
         background-position: 0 0;
-        width: 30px;
         height: 30px;
+        width: 30px;
     }
 
     --icon-archiv: {
         @apply --icon;
 
         background-position: 0 0;
-        width: 82px;
         height: 64px;
+        width: 82px;
     }
 
     --icon-archiv-gray: {
@@ -80,34 +80,35 @@ endregion */
 
         background-image: url('../image/arrowDown.png');
         background-position: 0 0;
-        width: 20px;
         height: var(--defaultSpace);
+        width: 20px;
     }
     /* endregion */
 }
+
 .documentation {
     /* region global */
     @apply --codehilite;
     @apply --website;
 
-    color: var(--color7);
     background: var(--color8);
+    color: var(--color7);
     line-height: 1.5;
     /** region grid */
     & .outer { width: 100%; }
 
     & .inner {
+        margin: 0 auto;
         position: relative;
         padding: var(--defaultSpace) calc(var(--defaultSpace) / 2);
-        margin: 0 auto;
     }
     /** endregion */
     /** region symbol */
     & span {
         &.arrow-left-home,
         &.arrow-left-api {
-            margin-top: 10px;
             float: left;
+            margin-top: 10px;
         }
 
         &.arrow-left-api {
@@ -123,11 +124,11 @@ endregion */
     & h4,
     & h5,
     & h6 {
-        margin: 10px 0;
         color: var(--color8);
-        letter-spacing: -1px;
         font-family: var(--fontFamilyCondensed);
         font-size: 2em;
+        letter-spacing: -1px;
+        margin: 10px 0;
     }
     & h1 { font-size: 4em; }
     & h2 { font-size: 3em; }
@@ -135,22 +136,23 @@ endregion */
     /** region link */
     & a {
         color: var(--color10);
-        text-shadow: none;
         outline: none !important;
+        text-shadow: none;
         transition: color 0.5s ease, background-color 0.5s ease;
 
         &:hover { color: var(--color11); }
 
         &.api-link {
-            padding-top: 36px;
             float: left;
+            padding-top: 36px;
         }
 
         &[href="#top"] {
-            position: fixed;
-            z-index: 4;
             bottom: 30px;
+            position: fixed;
             right: 45px;
+            visibility: hidden;
+            z-index: 4;
         }
 
         &[href^="#language-"] {
@@ -179,46 +181,111 @@ endregion */
             @apply --icon-download;
 
             float: right;
-            margin-top: 39px;
             margin-left: var(--defaultSpace);
+            margin-top: 39px;
         }
+
         &.icon-github {
             @apply --icon-blacktocat;
 
             margin-bottom: -2px;
-            margin-top: -6px;
             margin-left: 8px;
+            margin-top: -6px;
         }
     }
     /** endregion */
     /* endregion */
+    /* region footer */
+    & footer .inner {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        width: 100%;
+
+        & p { color: var(--color3); }
+        & a:hover { color: var(--color11); }
+    }
+    /* endregion */
     /* region header */
     & header {
+        background-color: var(--color8);
         background-image:
             linear-gradient(
                 to bottom,
                 var(--color7),
                 var(--color8)
             );
-        background-color: var(--color8);
 
         & .inner {
             padding: 50px 10px 30px;
 
             & a.forkme-banner {
-                box-shadow: 0 0 10px var(--color9);
-                border-radius: 0 0 2px 2px;
-                display: block;
-                position: absolute;
-                top: 0;
-                right: 10px;
-                z-index: 10;
-                padding: 10px;
-                color: var(--color1);
                 background-color: var(--color10);
+                border-radius: 0 0 2px 2px;
+                box-shadow: 0 0 10px var(--color9);
+                color: var(--color1);
+                display: block;
                 font-weight: 700;
+                padding: 10px;
+                position: absolute;
+                right: 10px;
+                top: 0;
+                z-index: 10;
 
                 &:hover { background-color: var(--color11); }
+            }
+
+            & .header-links {
+                bottom: -40px;
+                height: 70px;
+                padding: 0;
+                position: absolute;
+                right: 0;
+                width: 100%;
+                z-index: 10;
+
+                & a {
+                    &.api-link { margin-left: 10px; }
+
+                    &[href^="#language-"] {
+                        float: right;
+                        padding-right: 10px;
+                        padding-top: 35px;
+                    }
+                    /* region download buttons */
+                    &.zip-source-download,
+                    &.zip-distribution-bundle-download,
+                    &.tar-gz-source-download {
+                        @apply --icon-archiv-gray;
+
+                        color: var(--color1);
+                        display: block;
+                        float: right;
+                        font-size: 1.2em;
+                        font-weight: bolder;
+                        height: 70px;
+                        overflow: hidden;
+                        padding-top: 29px;
+                        text-align: center;
+                        width: 90px;
+                    }
+
+                    &.zip-source-download:hover,
+                    &.zip-distribution-bundle-download:hover,
+                    &.tar-gz-source-download:hover {
+                        @apply --icon-archiv-blue;
+
+                        color: var(--color1);
+                        height: 70px;
+                        width: 90px;
+                    }
+                    /* endregion */
+                }
+                & .arrow-left-api { margin-left: 10px; }
+
+                & .arrow-left-api,
+                & .api-link span,
+                & .icon-download-arrow { display: none; }
             }
 
             & h1.project-title,
@@ -234,60 +301,9 @@ endregion */
             }
 
             & h2.project-tagline {
-                font-weight: 300;
                 background: none;
                 font-size: 2em;
-            }
-
-            & .header-links {
-                padding: 0;
-                right: 0;
-                position: absolute;
-                z-index: 10;
-                bottom: -40px;
-                height: 70px;
-
-                & a {
-                    &.api-link { margin-left: 10px; }
-
-                    &[href^="#language-"] {
-                        padding-right: 10px;
-                        padding-top: 35px;
-                        float: right;
-                    }
-                    /* region download buttons */
-                    &.zip-source-download,
-                    &.zip-distribution-bundle-download,
-                    &.tar-gz-source-download,
-                    &.zip-source-download:hover,
-                    &.zip-distribution-bundle-download:hover,
-                    &.tar-gz-source-download:hover {
-                        color: var(--color1);
-                        width: 90px;
-                        height: 70px;
-                    }
-
-                    &.zip-source-download,
-                    &.zip-distribution-bundle-download,
-                    &.tar-gz-source-download {
-                        @apply --icon-archiv-gray;
-
-                        font-size: 1.2em;
-                        text-align: center;
-                        padding-top: 29px;
-                        font-weight: bolder;
-                        display: block;
-                        float: right;
-                        overflow: hidden;
-                    }
-
-                    &.zip-source-download:hover,
-                    &.zip-distribution-bundle-download:hover,
-                    &.tar-gz-source-download:hover {
-                        @apply --icon-archiv-blue;
-                    }
-                    /* endregion */
-                }
+                font-weight: 300;
             }
         }
     }
@@ -297,6 +313,17 @@ endregion */
         background-color: var(--color1);
         overflow: auto;
         word-wrap: break-word;
+        /* region about this website */
+        & .about-this-website {
+            & p { margin-bottom: 45px; }
+
+            & a[href="#home"] {
+                float: left;
+                margin-left: 10px;
+                margin-top: 8px;
+            }
+        }
+        /* endregion */
         /* region content */
         & .inner {
             padding-top: 40px;
@@ -304,9 +331,9 @@ endregion */
             &.main-content {
                 /* region code blocks */
                 & .codehilite pre {
-                    border-radius: 0;
-                    border-color: var(--color4);
                     background-color: var(--color2);
+                    border-color: var(--color4);
+                    border-radius: 0;
                     margin: var(--defaultSpace) 0 0 0;
                     /* Don't highlight syntax errors. */
                     & .err { border: 0; }
@@ -333,24 +360,24 @@ endregion */
                         & .codehilite {
                             & pre {
                                 border-color: var(--color4);
-                                white-space: pre;
                                 margin: 0;
+                                white-space: pre;
                             }
                         }
 
                         & .linenodiv pre {
+                            background-color: var(--color3);
                             border-radius: 0;
+                            color: var(--color5);
                             padding: 10px 4px;
                             text-align: right;
-                            color: var(--color5);
-                            background-color: var(--color3);
                         }
 
                         & .codehilite pre {
-                            padding: 10px;
-                            overflow: auto;
                             background-color: var(--color2);
                             border-left: 0;
+                            overflow: auto;
+                            padding: 10px;
                             /* Don't highlight syntax errors. */
                             & .err { border: 0; }
                         }
@@ -359,17 +386,17 @@ endregion */
                 & p { margin: var(--defaultSpace) 0 0 0; }
                 /* endregion */
                 & .show-example-wrapper {
+                    background-color: var(--color2);
                     border: 1px solid var(--color4);
                     border-top: 0;
-                    background-color: var(--color2);
                     padding: var(--defaultSpace);
                     padding-top: calc(var(--defaultSpace) / 2);
 
                     & h3 {
+                        color: var(--color5);
                         font-family: var(--fontFamily);
                         font-size: 0.9em;
                         font-weight: bold;
-                        color: var(--color5);
                         letter-spacing: 1px;
                         margin-bottom: calc(var(--defaultSpace) / 2);
                         margin-top: 0;
@@ -379,44 +406,9 @@ endregion */
             }
         }
         /* endregion */
-        /* region about this website */
-        & .about-this-website {
-            & p { margin-bottom: 45px; }
-
-            & a[href="#home"] {
-                float: left;
-                margin-top: 8px;
-                margin-left: 10px;
-            }
-        }
-        /* endregion */
-    }
-    /* endregion */
-    /* region footer */
-    & footer .inner {
-        width: 100%;
-        text-align: center;
-        padding-left: 0;
-        padding-right: 0;
-
-        & p { color: var(--color3); }
-        & a:hover { color: var(--color11); }
     }
     /* endregion */
     /* region responsive */
-    /** region extra extra extra small */
-    & a[href="#top"] { visibility: hidden; }
-
-    & header .header-links {
-        width: 100%;
-
-        & .arrow-left-api { margin-left: 10px; }
-
-        & .arrow-left-api,
-        & .api-link span,
-        & .icon-download-arrow { display: none; }
-    }
-    /** endregion */
     /** region extra extra small */
     @media (--extra-extra-small) {
         & header .header-links {
@@ -431,8 +423,8 @@ endregion */
                 /* region small */
                 /** region headline */
                 & h2 {
-                    padding-bottom: 10px;
                     border-bottom: 1px dashed var(--color4);
+                    padding-bottom: 10px;
                 }
                 /** endregion */
 
@@ -464,11 +456,11 @@ endregion */
                 }
 
                 & a[href="#top"] {
-                    visibility: visible;
-                    position: fixed;
-                    z-index: 4;
                     bottom: 30px;
+                    position: fixed;
                     right: 5px;
+                    visibility: visible;
+                    z-index: 4;
                 }
                 /* endregion */
                 /* region medium */
