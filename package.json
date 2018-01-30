@@ -38,14 +38,14 @@
   },
   "dependencies": {
     "boostnode": "^1.0.9",
-    "website-utilities": "^1.0.68"
+    "website-utilities": "^1.0.70"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^1.0.325",
+    "clientnode": "^1.0.326",
     "default-gateway": "^2.6.3",
-    "errorreporter": "^1.0.42",
+    "errorreporter": "^1.0.46",
     "eslint": "^4.16.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.42.0",
@@ -56,7 +56,7 @@
     "source-map-support": "^0.5.3",
     "stylelint": "^8.3.1",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^1.0.473",
+    "weboptimizer": "^1.0.477",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1"
   },
