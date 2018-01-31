@@ -90,9 +90,12 @@ endregion */
     /* region global */
     @apply --codehilite;
     @apply --website;
-
-    background: var(--color8);
+    /*
+        NOTE: If we swap these lines to order alphabetical bodies background
+        color does not get overwritten.
+    */
     color: var(--color7);
+    background-color: var(--color8);
     line-height: 1.5;
     /** region grid */
     & .outer { width: 100%; }
@@ -170,7 +173,7 @@ endregion */
     & .icon { @apply --icon; }
 
     & .icon- {
-        &blacktocat { @apply: --icon-blacktocat; }
+        &blacktocat { @apply --icon-blacktocat; }
         &download { @apply --icon-download; }
         &gray-archiv { @apply --icon-archiv-gray; }
         &blue-archiv { @apply --icon-archiv-blue; }
@@ -208,7 +211,6 @@ endregion */
     /* endregion */
     /* region header */
     & header {
-        background-color: var(--color8);
         background-image:
             linear-gradient(
                 to bottom,
@@ -411,13 +413,13 @@ endregion */
     /* region responsive */
     /** region extra extra small */
     @media (--extra-extra-small) {
-        & header .header-links {
+        & header .inner .header-links {
             & .arrow-left-api,
             & .icon-download-arrow { display: initial; }
         }
         /** region extra small */
         @media (--extra-small) {
-            & header .header-links .api-link span { display: initial; }
+            & header .inner .header-links .api-link span { display: initial; }
 
             @media (--small) {
                 /* region small */
@@ -430,7 +432,7 @@ endregion */
 
                 & .inner { width: 715px; }
 
-                & header .header-links {
+                & header .inner .header-links {
                     width: 706px;
 
                     & .arrow-left-api { margin-left: 0; }

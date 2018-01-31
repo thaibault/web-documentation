@@ -56,9 +56,9 @@
     "source-map-support": "^0.5.3",
     "stylelint": "^8.3.1",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^1.0.477",
+    "weboptimizer": "^1.0.481",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.10.1"
+    "webpack-dev-server": "^2.11.1"
   },
   "webOptimizer": {
     "build": {

@@ -129,7 +129,7 @@ _%>
                             href="<%- URL %><%- API_DOCUMENTATION_PATH %>"
                         >
                             <langreplace>
-                                API<span>Documentation</span>
+                                API <span>Documentation</span>
                             </langreplace>
                             <!--deDE:API<span>-Dokumentation</span>-->
                             <!--frFR:<span>Documentation de l'</span>API-->
@@ -220,7 +220,11 @@ _%>
                 <%- NAME %> maintained by
                 <!--deDE:<%- NAME %> betrieben von-->
                 <!--frFR:<%- NAME %> exploité par-->
-                <a href="http://torben.website">thaibault</a>
+                <%_ /*
+                    We need an explicit whitespace here preserve whitespaces
+                    after language switches.
+                */ _%>
+                <a href="http://torben.website"> thaibault</a>
                 &middot; &copy; 2013 Torben Sickert &middot;
                 <a href="#about-this-website">
                     about this website
