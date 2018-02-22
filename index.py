@@ -204,21 +204,23 @@ def main():
                 ) % DOCUMENTATION_REPOSITORY, native_shell=True, error=False,
                 log=True)['return_code']
             if return_code == 0:
-                generate_new_documentation_page(
+                generate_and_push_new_documentation_page(
                     temporary_documentation_folder,
                     distribution_bundle_file, has_api_documentation,
                     temporary_documentation_node_modules_directory)
+            if existing_api_documentation_directory.is_directory():
+                existing_api_documentation_directory.remove_deep()
 
 
 @JointPoint
 # # python3.5
-# # def generate_new_documentation_page(
+# # def generate_and_push_new_documentation_page(
 # #     temporary_documentation_folder: FileHandler,
 # #     distribution_bundle_file: (FileHandler, builtins.type(None)),
 # #     has_api_documentation: builtins.bool,
 # #     temporary_documentation_node_modules_directory: FileHandler
 # # ) -> None:
-def generate_new_documentation_page(
+def generate_and_push_new_documentation_page(
     temporary_documentation_folder, distribution_bundle_file,
     has_api_documentation, temporary_documentation_node_modules_directory
 ):
