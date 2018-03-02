@@ -37,8 +37,8 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "dependencies": {
-    "boostnode": "^1.0.10",
-    "website-utilities": "^1.0.86"
+    "boostnode": "^1.0.11",
+    "website-utilities": "^1.0.87"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
