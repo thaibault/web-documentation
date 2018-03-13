@@ -38,14 +38,14 @@
   },
   "dependencies": {
     "boostnode": "^1.0.11",
-    "website-utilities": "^1.0.92"
+    "website-utilities": "^1.0.93"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^3.0.4",
+    "clientnode": "^3.0.5",
     "default-gateway": "^2.7.0",
-    "errorreporter": "^1.0.58",
+    "errorreporter": "^1.0.59",
     "eslint": "^4.18.2",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.46.1",
