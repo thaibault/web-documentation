@@ -43,10 +43,10 @@
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^3.0.16",
+    "clientnode": "^3.0.20",
     "default-gateway": "^2.7.0",
     "errorreporter": "^1.0.67",
-    "eslint": "^4.19.0",
+    "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-jsdoc": "^3.5.0",
@@ -56,9 +56,9 @@
     "source-map-support": "^0.5.3",
     "stylelint": "^9.1.3",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^2.0.46",
+    "weboptimizer": "^2.0.67",
     "webpack": "^4.2.0",
-    "webpack-cli": "^2.0.12",
+    "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
   },
   "webOptimizer": {
@@ -76,7 +76,7 @@
       "internal": {
         "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, 'babel-polyfill'].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         },
         "vendor": {
           "__evaluate__": "self.debug ? ['babel-polyfill', 'ua-parser-js'].concat(2 < self.givenCommandLineArguments.length && ['build:dll', 'serve', 'watch:dll'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []) : []"
