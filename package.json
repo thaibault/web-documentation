@@ -24,7 +24,6 @@
   },
   "scripts": {
     "build": "webOptimizer build",
-    "build:dll": "webOptimizer build:dll",
     "build:stats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
@@ -33,31 +32,29 @@
     "start": "npm run serve",
     "test": "npm run build",
     "update": "npm version patch && npm publish",
-    "watch": "webOptimizer build --watch",
-    "watch:dll": "webOptimizer build:dll --watch"
+    "watch": "webOptimizer build --watch"
   },
   "dependencies": {
     "boostnode": "^1.0.11",
-    "website-utilities": "^1.0.98"
+    "website-utilities": "^1.0.99"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^3.0.20",
-    "default-gateway": "^2.7.0",
-    "errorreporter": "^1.0.67",
+    "clientnode": "^3.0.30",
+    "default-gateway": "^2.7.1",
+    "errorreporter": "^1.0.70",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-jsdoc": "^3.5.0",
-    "flow-bin": "^0.68.0",
+    "flow-bin": "^0.69.0",
     "jsdoc": "^3.5.2",
     "legal-notes": "^1.0.12",
-    "source-map-support": "^0.5.3",
-    "stylelint": "^9.1.3",
+    "stylelint": "^9.2.0",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^2.0.67",
-    "webpack": "^4.2.0",
+    "weboptimizer": "^2.0.84",
+    "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
   },
@@ -77,9 +74,6 @@
         "errorreporter": "errorreporter",
         "index": {
           "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
-        },
-        "vendor": {
-          "__evaluate__": "self.debug ? ['babel-polyfill', 'ua-parser-js'].concat(2 < self.givenCommandLineArguments.length && ['build:dll', 'serve', 'watch:dll'].includes(self.givenCommandLineArguments[2]) ? 'website-utilities' : []) : []"
         }
       }
     },
