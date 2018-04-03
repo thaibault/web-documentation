@@ -36,14 +36,14 @@
   },
   "dependencies": {
     "boostnode": "^1.0.11",
-    "website-utilities": "^1.0.99"
+    "website-utilities": "^1.0.101"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^3.0.30",
+    "clientnode": "^3.0.33",
     "default-gateway": "^2.7.1",
-    "errorreporter": "^1.0.70",
+    "errorreporter": "^1.0.73",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.46.1",
@@ -53,7 +53,7 @@
     "legal-notes": "^1.0.12",
     "stylelint": "^9.2.0",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^2.0.84",
+    "weboptimizer": "^2.0.88",
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
@@ -73,7 +73,7 @@
       "internal": {
         "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "[`./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "['babel-polyfill', 'ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         }
       }
     },
