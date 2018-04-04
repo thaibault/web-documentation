@@ -265,11 +265,12 @@ endregion */
                         float: right;
                         font-size: 1.2em;
                         font-weight: bolder;
-                        height: 70px;
+                        height: 66px;
+                        margin-right: calc(var(--default-space) / 2);
                         overflow: hidden;
                         padding-top: 29px;
                         text-align: center;
-                        width: 90px;
+                        width: 80px;
                     }
 
                     &.zip-source-download:hover,
@@ -278,8 +279,8 @@ endregion */
                         @apply --icon-archiv-blue;
 
                         color: var(--color1);
-                        height: 70px;
-                        width: 90px;
+                        height: 66px;
+                        width: 80px;
                     }
                     /* endregion */
                 }
