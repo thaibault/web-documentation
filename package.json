@@ -41,7 +41,7 @@
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-polyfill": "^6.23.0",
-    "clientnode": "^3.0.35",
+    "clientnode": "^3.0.37",
     "default-gateway": "^2.7.1",
     "errorreporter": "^1.0.76",
     "eslint": "^4.19.1",
@@ -53,8 +53,8 @@
     "legal-notes": "^1.0.12",
     "stylelint": "^9.2.0",
     "ua-parser-js": "^0.7.17",
-    "weboptimizer": "^2.0.90",
-    "webpack": "^4.4.1",
+    "weboptimizer": "^2.0.93",
+    "webpack": "^4.5.0",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
   },
