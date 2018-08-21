@@ -37,14 +37,14 @@
   "dependencies": {
     "boostnode": "^1.0.12",
     "bootstrap": "^3.3.7",
-    "website-utilities": "^1.0.121"
+    "website-utilities": "^1.0.122"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
     "babel-polyfill": "^6.26.0",
     "cssnano": "^4.0.5",
     "default-gateway": "^2.7.2",
-    "errorreporter": "^1.0.95",
+    "errorreporter": "^1.0.96",
     "eslint": "^5.4.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.50.0",
@@ -60,8 +60,8 @@
     "postcss-url": "^8.0.0",
     "stylelint": "^9.5.0",
     "ua-parser-js": "^0.7.18",
-    "weboptimizer": "^2.0.189",
-    "webpack": "^4.16.5",
+    "weboptimizer": "^2.0.190",
+    "webpack": "^4.17.0",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
   },
