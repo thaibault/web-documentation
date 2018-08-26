@@ -29,9 +29,9 @@
     "document": "webOptimizer document",
     "lint": "webOptimizer check:type; webOptimizer lint",
     "serve": "webOptimizer serve",
-    "start": "npm run serve",
-    "test": "npm run build",
-    "update": "npm version patch && npm publish",
+    "start": "yarn serve",
+    "test": "yarn build",
+    "update": "yarn version --patch && yarn publish",
     "watch": "webOptimizer build --watch"
   },
   "dependencies": {
@@ -44,7 +44,7 @@
     "babel-polyfill": "^6.26.0",
     "css-loader": "^1.0.0",
     "cssnano": "^4.0.5",
-    "default-gateway": "^2.7.2",
+    "default-gateway": "^3.0.0",
     "errorreporter": "^1.0.96",
     "eslint": "^5.4.0",
     "eslint-config-google": "^0.9.1",
