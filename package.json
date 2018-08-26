@@ -1,6 +1,6 @@
 {
   "name": "documentation-website",
-  "version": "1.0.139",
+  "version": "1.0.140",
   "license": "CC-BY-3.0",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
@@ -62,8 +62,8 @@
     "postcss-preset-env": "^5.3.0",
     "postcss-sprites": "^4.2.1",
     "postcss-url": "^8.0.0",
-    "stylelint": "^9.5.0",
     "style-loader": "^0.22.1",
+    "stylelint": "^9.5.0",
     "stylelint-config-standard": "^18.2.0",
     "ua-parser-js": "^0.7.18",
     "weboptimizer": "^2.0.190",
