@@ -1,6 +1,6 @@
 {
   "name": "documentation-website",
-  "version": "1.0.141",
+  "version": "1.0.142",
   "license": "CC-BY-3.0",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
@@ -40,8 +40,8 @@
     "website-utilities": "*"
   },
   "devDependencies": {
-    "babel-eslint": "*",
     "@babel/polyfill": "*",
+    "babel-eslint": "*",
     "css-loader": "*",
     "cssnano": "*",
     "default-gateway": "*",
