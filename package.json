@@ -35,41 +35,41 @@
     "watch": "webOptimizer build --watch"
   },
   "dependencies": {
-    "boostnode": "^1.0.12",
+    "boostnode": "*",
     "bootstrap": "^3.3.7",
-    "website-utilities": "^1.0.122"
+    "website-utilities": "*"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.6",
-    "babel-polyfill": "^6.26.0",
-    "css-loader": "^1.0.0",
-    "cssnano": "^4.0.5",
-    "default-gateway": "^3.0.0",
-    "errorreporter": "^1.0.96",
-    "eslint": "^5.4.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-plugin-flowtype": "^2.50.0",
-    "eslint-plugin-jsdoc": "^3.7.1",
-    "favicons-webpack-plugin": "0.0.9",
-    "flow-bin": "^0.79.1",
-    "jsdoc": "^3.5.2",
-    "legal-notes": "^1.0.13",
-    "mini-css-extract-plugin": "^0.4.2",
-    "offline-plugin": "^5.0.5",
-    "postcss-fontpath": "^1.0.0",
-    "postcss-import": "^12.0.0",
-    "postcss-loader": "^3.0.0",
-    "postcss-preset-env": "^5.3.0",
-    "postcss-sprites": "^4.2.1",
-    "postcss-url": "^8.0.0",
-    "style-loader": "^0.22.1",
-    "stylelint": "^9.5.0",
-    "stylelint-config-standard": "^18.2.0",
-    "ua-parser-js": "^0.7.18",
-    "weboptimizer": "^2.0.190",
-    "webpack": "^4.17.0",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "babel-eslint": "*",
+    "@babel/polyfill": "*",
+    "css-loader": "*",
+    "cssnano": "*",
+    "default-gateway": "*",
+    "errorreporter": "*",
+    "eslint": "*",
+    "eslint-config-google": "*",
+    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-jsdoc": "*",
+    "favicons-webpack-plugin": "*",
+    "flow-bin": "*",
+    "jsdoc": "*",
+    "legal-notes": "*",
+    "mini-css-extract-plugin": "*",
+    "offline-plugin": "*",
+    "postcss-fontpath": "*",
+    "postcss-import": "*",
+    "postcss-loader": "*",
+    "postcss-preset-env": "*",
+    "postcss-sprites": "*",
+    "postcss-url": "*",
+    "style-loader": "*",
+    "stylelint": "*",
+    "stylelint-config-standard": "*",
+    "ua-parser-js": "*",
+    "weboptimizer": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*"
   },
   "webOptimizer": {
     "build": {
@@ -86,7 +86,7 @@
       "internal": {
         "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "['babel-polyfill', 'ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "['@babel/polyfill', 'ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         }
       }
     },
@@ -148,7 +148,7 @@
           "^clientnode$": {
             "__evaluate__": "path.resolve('./node_modules/clientnode/index.compiled.js')"
           },
-          "^babel-polyfill$": "babel-polyfill/dist/polyfill.min.js",
+          "^@babel/polyfill$": "@babel/polyfill/dist/polyfill.min.js",
           "^jquery$": {
             "__evaluate__": "path.resolve('./node_modules/jquery/dist/jquery.min.js')"
           },
@@ -156,7 +156,7 @@
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/(?:^|\\/)(?:(?:babel-polyfill\\/dist\\/polyfill)|(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/(?:^|\\/)(?:(?:@babel\\/polyfill\\/dist\\/polyfill)|(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
     },
     "path": {
