@@ -82,6 +82,17 @@
         }
       }
     },
+    "debug": {
+      "module": {
+        "optimizer": {
+          "babelMinify": {
+            "bundle": null,
+            "module": null
+          },
+          "htmlMinifier": null
+        }
+      }
+    },
     "injection": {
       "internal": {
         "errorreporter": "errorreporter",
