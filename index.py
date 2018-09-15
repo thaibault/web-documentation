@@ -74,7 +74,7 @@ DISTRIBUTION_BUNDLE_FILE_PATH = '%sdistributionBundle.zip' % DATA_PATH
 DISTRIBUTION_BUNDLE_DIRECTORY_PATH = '%sdistributionBundle' % DATA_PATH
 ## endregion
 BUILD_DOCUMENTATION_PAGE_COMMAND = [
-    '/usr/bin/env', 'npm', 'run', 'build', '{parameterFilePath}']
+    '/usr/bin/env', 'yarn', 'build', '{parameterFilePath}']
 BUILD_DOCUMENTATION_PAGE_PARAMETER_TEMPLATE = ('{{' +
     'module:{{preprocessor:{{ejs:{{options:{{locals:{serializedParameter}}}}}}}}},' +
     # NOTE: We habe to disable offline features since the domains cache is
@@ -132,7 +132,7 @@ def main():
         has_api_documentation = SCOPE['scripts'].get('document', False)
         if has_api_documentation:
             has_api_documentation = Platform.run(
-                '/usr/bin/env npm run document', error=False, log=True
+                '/usr/bin/env yarn document', error=False, log=True
             )['return_code'] == 0
         if Platform.run(
             ('/usr/bin/env git checkout gh-pages', '/usr/bin/env git pull'),
@@ -154,7 +154,7 @@ def main():
                     target=temporary_documentation_folder)
                 node_modules_directory = FileHandler(location='%s%s' % (
                     local_documentation_website_location.path, 'node_modules'))
-                if node_modules_directory.is_directory():
+                if False and node_modules_directory.is_directory():
                     '''
                         NOTE: Symlinking doesn't work since some node modules
                         need the right absolute location to work.
@@ -186,21 +186,23 @@ def main():
                     )['return_code']
                 else:
                     return_code = Platform.run(
-                        '/usr/bin/env npm update', native_shell=True,
-                        error=False, log=True
+                        '/usr/bin/env yarn --production=false',
+                        native_shell=True,
+                        error=False,
+                        log=True
                     )['return_code']
                 if return_code == 0:
                     current_working_directory_backup = FileHandler()
                     temporary_documentation_folder.change_working_directory()
                     return_code = Platform.run(
-                        '/usr/bin/env npm run clear', native_shell=True,
+                        '/usr/bin/env yarn clear', native_shell=True,
                         error=False, log=True
                     )['return_code']
                     current_working_directory_backup.change_working_directory()
             else:
                 return_code = Platform.run((
                     'unset GIT_WORK_TREE; /usr/bin/env git clone %s;'
-                    'npm update'
+                    'yarn --production=false'
                 ) % DOCUMENTATION_REPOSITORY, native_shell=True, error=False,
                 log=True)['return_code']
             if return_code == 0:
@@ -345,7 +347,7 @@ def create_distribution_bundle_file():
     '''Creates a distribution bundle file as zip archiv.'''
     if not SCOPE['scripts'].get('build:export', SCOPE['scripts'].get(
         'build', False
-    )) or Platform.run('/usr/bin/env npm run %s' % (
+    )) or Platform.run('/usr/bin/env yarn %s' % (
         'build:export' if SCOPE['scripts'].get('build:export') else 'build'
     ), error=False, log=True)['return_code'] == 0:
         __logger__.info('Pack to a zip archive.')
