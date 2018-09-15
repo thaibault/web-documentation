@@ -154,7 +154,12 @@ def main():
                     target=temporary_documentation_folder)
                 node_modules_directory = FileHandler(location='%s%s' % (
                     local_documentation_website_location.path, 'node_modules'))
-                if False and node_modules_directory.is_directory():
+                if node_modules_directory.is_directory():
+                    temporary_documentation_node_modules_directory = \
+                        FileHandler('%snode_modules' %
+                            temporary_documentation_folder.path)
+                    temporary_documentation_node_modules_directory\
+                        .make_directory(right=777)
                     '''
                         NOTE: Symlinking doesn't work since some node modules
                         need the right absolute location to work.
@@ -171,18 +176,26 @@ def main():
                         node_modules_directory.copy(target='%s%s' % (
                             temporary_documentation_folder, 'node_modules'))
                         return_code = 0
+
+                        NOTE: Mounting "node_modules" folder needs root
+                        privileges.
+
+                        return_code = Platform.run(
+                            "/usr/bin/env sudo mount --bind --options ro '%s' "
+                            "'%s'" % (
+                                node_modules_directory.path,
+                                temporary_documentation_node_modules_directory.path
+                            ), native_shell=True, error=False, log=True
+                        )['return_code']
                     '''
-                    temporary_documentation_node_modules_directory = \
-                        FileHandler('%snode_modules' %
-                            temporary_documentation_folder.path)
-                    temporary_documentation_node_modules_directory\
-                        .make_directory(right=777)
                     return_code = Platform.run(
-                        "/usr/bin/env sudo mount --bind --options ro '%s' "
-                        "'%s'" % (
+                        "/usr/bin/env cp --reflink=auto '%s' '%s'" % (
                             node_modules_directory.path,
                             temporary_documentation_node_modules_directory.path
-                        ), native_shell=True, error=False, log=True
+                        ),
+                        native_shell=True,
+                        error=False,
+                        log=True
                     )['return_code']
                 else:
                     return_code = Platform.run(
@@ -305,7 +318,8 @@ def generate_and_push_new_documentation_page(
         BUILD_DOCUMENTATION_PAGE_COMMAND[index] = \
             BUILD_DOCUMENTATION_PAGE_COMMAND[index].format(
                 serializedParameter=serialized_parameter,
-                parameterFilePath=parameter_file._path, **SCOPE)
+                parameterFilePath=parameter_file._path,
+                **SCOPE)
     __logger__.debug('Use parameter "%s".', serialized_parameter)
     __logger__.info('Run "%s".', ' '.join(BUILD_DOCUMENTATION_PAGE_COMMAND))
     current_working_directory_backup = FileHandler()
@@ -333,12 +347,18 @@ def generate_and_push_new_documentation_page(
         native_shell=True, error=False, log=True
     )['return_code'] == 0):
         temporary_documentation_folder.remove_deep()
-    Platform.run((
-        '/usr/bin/env git add --all',
-        '/usr/bin/env git commit --message "%s" --all' %
-        PROJECT_PAGE_COMMIT_MESSAGE,
-        '/usr/bin/env git push', '/usr/bin/env git checkout master'
-    ), native_shell=True, error=False, log=True)
+    Platform.run(
+        (
+            '/usr/bin/env git add --all',
+            '/usr/bin/env git commit --message "%s" --all' %
+                PROJECT_PAGE_COMMIT_MESSAGE,
+            '/usr/bin/env git push',
+            '/usr/bin/env git checkout master'
+        ),
+        native_shell=True,
+        error=False,
+        log=True
+    )
 
 
 @JointPoint
