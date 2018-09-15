@@ -158,8 +158,6 @@ def main():
                     temporary_documentation_node_modules_directory = \
                         FileHandler('%snode_modules' %
                             temporary_documentation_folder.path)
-                    temporary_documentation_node_modules_directory\
-                        .make_directory(right=777)
                     '''
                         NOTE: Symlinking doesn't work since some node modules
                         need the right absolute location to work.
@@ -180,6 +178,8 @@ def main():
                         NOTE: Mounting "node_modules" folder needs root
                         privileges.
 
+                        temporary_documentation_node_modules_directory\
+                            .make_directory(right=777)
                         return_code = Platform.run(
                             "/usr/bin/env sudo mount --bind --options ro '%s' "
                             "'%s'" % (
