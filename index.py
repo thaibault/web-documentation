@@ -206,7 +206,8 @@ def main():
             if return_code == 0:
                 generate_and_push_new_documentation_page(
                     temporary_documentation_folder,
-                    distribution_bundle_file, has_api_documentation,
+                    distribution_bundle_file,
+                    has_api_documentation,
                     temporary_documentation_node_modules_directory)
             if existing_api_documentation_directory.is_directory():
                 existing_api_documentation_directory.remove_deep()
@@ -221,8 +222,10 @@ def main():
 # #     temporary_documentation_node_modules_directory: FileHandler
 # # ) -> None:
 def generate_and_push_new_documentation_page(
-    temporary_documentation_folder, distribution_bundle_file,
-    has_api_documentation, temporary_documentation_node_modules_directory
+    temporary_documentation_folder,
+    distribution_bundle_file,
+    has_api_documentation,
+    temporary_documentation_node_modules_directory
 ):
 # #
     '''

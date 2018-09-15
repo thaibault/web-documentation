@@ -59,6 +59,7 @@
     "postcss-fontpath": "*",
     "postcss-import": "*",
     "postcss-loader": "*",
+    "postcss-mixins": "*",
     "postcss-preset-env": "*",
     "postcss-sprites": "*",
     "postcss-url": "*",
@@ -131,6 +132,15 @@
         }
       },
       "preprocessor": {
+        "cascadingStyleSheet": {
+          "additional": {
+            "plugins": {
+              "pre": [
+                "require('postcss-mixins')"
+              ]
+            }
+          }
+        },
         "ejs": {
           "options": {
             "locals": {

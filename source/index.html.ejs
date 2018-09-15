@@ -36,14 +36,14 @@ _%>
     </head>
     <!--endregion-->
     <!--region body-->
-    <body class="no-javascript documentation">
+    <body class="documentation no-javascript">
         <script>
             window.document.body.className =
                 window.document.body.className.replace(
                     /(^|\s)no-javascript(\s|$)/, '$1javascript$2');
         </script>
         <div
-            class="website-window-loading-cover tools-hidden-on-javascript-disabled"
+            class="tools-visible-on-javascript-enabled website-utilities-window-loading-cover"
         ><div></div></div>
         <!--region header-->
         <header class="header-wrap outer"><div class="inner">
@@ -82,7 +82,11 @@ _%>
                         START_UP_ANIMATION_NUMBER += 2
                     START_UP_ANIMATION_NUMBER += 1
                 _%>
-                <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH && typeof BUNDLE === 'undefined' || BUNDLE === true) { _%>
+                <%_ if (
+                    DISTRIBUTION_BUNDLE_FILE_PATH &&
+                    typeof BUNDLE === 'undefined' ||
+                    BUNDLE === true
+                ) { _%>
                     <a
                         class="zip-source-download website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="https://github.com/thaibault/<%- NAME %>/zipball/master"
@@ -121,7 +125,7 @@ _%>
                         START_UP_ANIMATION_NUMBER -= 1
                 _%>
                         <span
-                            class="glyphicon glyphicon-arrow-left arrow-left-api website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="arrow-left-api glyphicon glyphicon-arrow-left website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         ></span>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a

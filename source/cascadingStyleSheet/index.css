@@ -33,7 +33,7 @@ endregion */
     /** endregion */
     /* endregion */
     /* region custom properties */
-    --icon: {
+    @define-mixin icon {
         background-position: 0 0;
         background-repeat: no-repeat;
         display: inline-block;
@@ -46,8 +46,8 @@ endregion */
         NOTE: We explicit inherit form ".icon" to prepare this class to be
         super classes as well.
     */
-    --icon-blacktocat: {
-        @apply --icon;
+    @define-mixin icon-blacktocat {
+        @mixin icon;
 
         background-image: url('../image/blacktocat.png');
         background-position: 0 0;
@@ -55,28 +55,28 @@ endregion */
         width: 30px;
     }
 
-    --icon-archiv: {
-        @apply --icon;
+    @define-mixin icon-archiv {
+        @mixin icon;
 
         background-position: 0 0;
         height: 64px;
         width: 82px;
     }
 
-    --icon-archiv-gray: {
-        @apply --icon-archiv;
+    @define-mixin icon-archiv-gray {
+        @mixin icon-archiv;
 
         background-image: url('../image/folderGray.png');
     }
 
-    --icon-archiv-blue: {
-        @apply --icon-archiv;
+    @define-mixin icon-archiv-blue {
+        @mixin icon-archiv;
 
         background-image: url('../image/folderBlue.png');
     }
 
-    --icon-download: {
-        @apply --icon;
+    @define-mixin icon-download {
+        @mixin icon;
 
         background-image: url('../image/arrowDown.png');
         background-position: 0 0;
@@ -88,8 +88,8 @@ endregion */
 
 .documentation {
     /* region global */
-    @apply --codehilite;
-    @apply --website;
+    @mixin codehilite;
+    @mixin website-utilities;
     /*
         NOTE: If we swap these lines to order alphabetical bodies background
         color does not get overwritten.
@@ -170,18 +170,18 @@ endregion */
     /*** region generic */
     & [class^="icon-"],
     & [class*=" icon-"],
-    & .icon { @apply --icon; }
+    & .icon { @mixin icon; }
 
     & .icon- {
-        &blacktocat { @apply --icon-blacktocat; }
-        &download { @apply --icon-download; }
-        &gray-archiv { @apply --icon-archiv-gray; }
-        &blue-archiv { @apply --icon-archiv-blue; }
+        &blacktocat { @mixin icon-blacktocat; }
+        &download { @mixin icon-download; }
+        &gray-archiv { @mixin icon-archiv-gray; }
+        &blue-archiv { @mixin icon-archiv-blue; }
     }
     /*** endregion */
     & i {
         &.icon-download-arrow {
-            @apply --icon-download;
+            @mixin icon-download;
 
             float: right;
             margin-left: var(--default-space);
@@ -189,7 +189,7 @@ endregion */
         }
 
         &.icon-github {
-            @apply --icon-blacktocat;
+            @mixin icon-blacktocat;
 
             margin-bottom: -2px;
             margin-left: 8px;
@@ -258,7 +258,7 @@ endregion */
                     &.zip-source-download,
                     &.zip-distribution-bundle-download,
                     &.tar-gz-source-download {
-                        @apply --icon-archiv-gray;
+                        @mixin icon-archiv-gray;
 
                         color: var(--color1);
                         display: block;
@@ -276,7 +276,7 @@ endregion */
                     &.zip-source-download:hover,
                     &.zip-distribution-bundle-download:hover,
                     &.tar-gz-source-download:hover {
-                        @apply --icon-archiv-blue;
+                        @mixin icon-archiv-blue;
 
                         color: var(--color1);
                         height: 66px;
@@ -316,17 +316,8 @@ endregion */
         background-color: var(--color1);
         overflow: auto;
         word-wrap: break-word;
-        /* region about this website */
-        & .about-this-website {
-            & p { margin-bottom: 45px; }
 
-            & a[href="#home"] {
-                float: left;
-                margin-left: 10px;
-                margin-top: 8px;
-            }
-        }
-        /* endregion */
+        & .about-this-website p { margin-bottom: 45px; }
         /* region content */
         & .inner {
             padding-top: 40px;
