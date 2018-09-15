@@ -189,7 +189,7 @@ def main():
                         )['return_code']
                     '''
                     return_code = Platform.run(
-                        "/usr/bin/env cp --recursive --reflink=auto '%s' '%s'" % (
+                        "/usr/bin/env cp --dereference --recursive --reflink=auto '%s' '%s'" % (
                             node_modules_directory.path,
                             temporary_documentation_node_modules_directory.path
                         ),
