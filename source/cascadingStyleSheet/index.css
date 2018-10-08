@@ -98,8 +98,6 @@ endregion */
     background-color: var(--color8);
     line-height: 1.5;
     /** region grid */
-    & .outer { width: 100%; }
-
     & .inner {
         margin: 0 auto;
         position: relative;
@@ -404,16 +402,19 @@ endregion */
     /* endregion */
     /* region responsive */
     /** region extra extra small */
-    @media (--extra-extra-small) {
+    /* @media (--extra-extra-small) { */
+    @media (min-width: 360px) {
         & header .inner .header-links {
             & .arrow-left-api,
             & .icon-download-arrow { display: initial; }
         }
         /** region extra small */
-        @media (--extra-small) {
+        /* @media (--extra-small) { */
+        @media (min-width: 500px) {
             & header .inner .header-links .api-link span { display: initial; }
 
-            @media (--small) {
+            /* @media (--small) { */
+            @media (min-width: 768px) {
                 /* region small */
                 /** region headline */
                 & h2 {
@@ -458,7 +459,10 @@ endregion */
                 }
                 /* endregion */
                 /* region medium */
-                @media (--medium) { & a[href="#top"] { right: 45px; } }
+                /* @media (--medium) { */
+                @media (min-width: 992px) {
+                    & a[href="#top"] { right: 45px; }
+                }
                 /* endregion */
             }
         }
