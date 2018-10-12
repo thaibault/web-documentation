@@ -33,6 +33,7 @@ endregion */
     /** endregion */
     /* endregion */
     /* region custom properties */
+    /* stylelint-disable at-rule-no-unknown */
     @define-mixin icon {
         background-position: 0 0;
         background-repeat: no-repeat;
@@ -83,13 +84,16 @@ endregion */
         height: var(--default-space);
         width: 20px;
     }
+    /* stylelint-enable at-rule-no-unknown */
     /* endregion */
 }
 
 .documentation {
     /* region global */
+    /* stylelint-disable at-rule-no-unknown */
     @mixin codehilite;
     @mixin website-utilities;
+    /* stylelint-enable at-rule-no-unknown */
     /*
         NOTE: If we swap these lines to order alphabetical bodies background
         color does not get overwritten.
@@ -166,6 +170,7 @@ endregion */
     /** endregion */
     /** region image */
     /*** region generic */
+    /* stylelint-disable at-rule-no-unknown */
     & [class^="icon-"],
     & [class*=" icon-"],
     & .icon { @mixin icon; }
@@ -176,7 +181,9 @@ endregion */
         &gray-archiv { @mixin icon-archiv-gray; }
         &blue-archiv { @mixin icon-archiv-blue; }
     }
+    /* stylelint-enable at-rule-no-unknown */
     /*** endregion */
+    /* stylelint-disable at-rule-no-unknown */
     & i {
         &.icon-download-arrow {
             @mixin icon-download;
@@ -194,6 +201,7 @@ endregion */
             margin-top: -6px;
         }
     }
+    /* stylelint-enable at-rule-no-unknown */
     /** endregion */
     /* endregion */
     /* region footer */
@@ -256,7 +264,9 @@ endregion */
                     &.zip-source-download,
                     &.zip-distribution-bundle-download,
                     &.tar-gz-source-download {
+                        /* stylelint-disable at-rule-no-unknown */
                         @mixin icon-archiv-gray;
+                        /* stylelint-enable at-rule-no-unknown */
 
                         color: var(--color1);
                         display: block;
@@ -274,7 +284,9 @@ endregion */
                     &.zip-source-download:hover,
                     &.zip-distribution-bundle-download:hover,
                     &.tar-gz-source-download:hover {
+                        /* stylelint-disable at-rule-no-unknown */
                         @mixin icon-archiv-blue;
+                        /* stylelint-enable at-rule-no-unknown */
 
                         color: var(--color1);
                         height: 66px;
@@ -410,9 +422,9 @@ endregion */
         }
         /** region extra small */
         /* @media (--extra-small) { */
+        /* stylelint-disable at-rule-no-unknown */
         @media (min-width: 500px) {
             & header .inner .header-links .api-link span { display: initial; }
-
             /* @media (--small) { */
             @media (min-width: 768px) {
                 /* region small */
@@ -466,6 +478,7 @@ endregion */
                 /* endregion */
             }
         }
+        /* stylelint-enable at-rule-no-unknown */
         /** endregion */
     }
     /** endregion */

@@ -10,6 +10,7 @@ This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
 endregion */
 :root {
+    /* stylelint-disable at-rule-no-unknown */
     @define-mixin codehilite {
         & .codehilite {
             /* Background */
@@ -176,6 +177,7 @@ endregion */
             & .il { color: #cd00cd; }
         }
     }
+    /* stylelint-enable at-rule-no-unknown */
 }
 /* region vim modline
 vim: set tabstop=4 shiftwidth=4 expandtab:
