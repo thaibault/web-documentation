@@ -275,8 +275,7 @@ export class Documentation extends $.Website.class {
         // Add space for ending dots.
         excess += 3
         let newContent:string = ''
-        let $content:$DomNode
-        $content = $(`<wrapper>${content}</wrapper>`)
+        const $content:$DomNode = $(`<wrapper>${content}</wrapper>`)
         for (const domNode:DomNode of $content.contents().get().reverse()) {
             const $wrapper:$DomNode = $(domNode).wrap('<wrapper>').parent()
             let contentSnippet:string = $wrapper.html()
