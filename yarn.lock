@@ -3399,9 +3399,9 @@ error-ex@^1.3.1:
     is-arrayish "^0.2.1"
 
 errorreporter@*:
-  version "1.0.137"
-  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.137.tgz#a7a4b95fa2622c86c30685e3d22e5ef1617c16a2"
-  integrity sha512-l7qhEoqlxf1KbeAb1eS6kI0oxIa+tCSNxjdLlYplGtr8I0XUioaT9GXujD7JRroPQlADHp4kvRBpbBjDNyrXYA==
+  version "1.0.139"
+  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.139.tgz#441e093223251cd5110f3300a9019bf0da110bbe"
+  integrity sha512-/tbTSqVf7uaGyQaSHXt8WL3T6bEFX8J1/VDo4l8yJ3L4CtX56GqnSAvHJr9TKXcU5y2x4nEiMryFrWE/DNnYEg==
 
 es-abstract@^1.5.1, es-abstract@^1.6.1:
   version "1.12.0"
@@ -4912,9 +4912,9 @@ internal-ip@^3.0.1:
     ipaddr.js "^1.5.2"
 
 internationalisation@*:
-  version "1.0.144"
-  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.144.tgz#d0a1d380a230fe33a1eee41db73dbe78bcb0abe6"
-  integrity sha512-JMvAC4eMip3NZn5BQRUjKId3piAa0LyRaIsvdfrMrEgsr8fxn2wd8KH1/FlWeCZuALuzYEDyCEIL8PGXlR1WxQ==
+  version "1.0.145"
+  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.145.tgz#a668aa3af54304a9487902feef4973e84f9b210c"
+  integrity sha512-E+3vvacTylInAPlnM/ry7IPh1ly/1lVas9g/67Rn+k4cU4TxaxjcHmV+mrBZHrtYd5f89ZNTC4ETiHoPtdF0gg==
 
 interpret@^1.1.0:
   version "1.1.0"
@@ -10167,9 +10167,9 @@ webidl-conversions@^4.0.2:
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
 weboptimizer@*:
-  version "2.0.331"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.331.tgz#769e1852de5cb70deede6d702899accbb1735f1d"
-  integrity sha512-BAxJ4gJ+CTowXDeAd6vUDVsjG7ox8JDjjTTR+jLln/iKHUWVWypL9kM+PzkDKDYnij67K/w73nhMRAIgWG4rEQ==
+  version "2.0.332"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.332.tgz#aec35967422b05fdbb60e077264dbdee1f2e8a2e"
+  integrity sha512-JkMFBk0yJJFSUUoJcVXCz3vfKdu4pKt1UhA023R7Vk/3zpZl8ZRWsp8W3dsyJAtbVIzFNcyPT9CteuysNCFVvA==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
