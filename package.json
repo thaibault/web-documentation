@@ -1,6 +1,6 @@
 {
   "name": "documentation-website",
-  "version": "1.0.201",
+  "version": "1.0.202",
   "license": "CC-BY-3.0",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
