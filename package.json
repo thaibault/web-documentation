@@ -158,7 +158,7 @@
               },
               "TAGLINE": "generic documentation website pattern",
               "URL": {
-                "__evaluate__": "`http://torben.website/${self.module.preprocessor.html.options.locals.NAME}`"
+                "__evaluate__": "`https://torben.website/${self.module.preprocessor.html.options.locals.NAME}`"
               }
             }
           }
