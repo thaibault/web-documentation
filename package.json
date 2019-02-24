@@ -95,7 +95,7 @@
       }
     },
     "injection": {
-      "internal": {
+      "entry": {
         "errorreporter": "errorreporter",
         "index": {
           "__evaluate__": "['@babel/polyfill', 'ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
