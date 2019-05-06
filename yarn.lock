@@ -3505,9 +3505,9 @@ error-ex@^1.3.1:
     is-arrayish "^0.2.1"
 
 errorreporter@*:
-  version "1.0.179"
-  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.179.tgz#c22fb307dce1a1d95a51e45d326f69f07a18aa86"
-  integrity sha512-ywWlzEMTLsN/B5+FNJqfxNrEcWOLw1HVRyeVmUVlaLN7cBTUpNztXtD+lnjpk3RYvJwWxcBg4RfJjmxicbDdCg==
+  version "1.0.180"
+  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.180.tgz#6b33428cd663ad0911244153ea11b11fa3215050"
+  integrity sha512-7FEi+QbRXGaFdeUtQTY7c0qlhJH05NFhDxfJULOyn/Nf1t4LTUUqrXb6l7hUAU1ZkgvGuTFG0p9pM+K1QcQ3Sw==
 
 es-abstract@^1.12.0, es-abstract@^1.5.0, es-abstract@^1.5.1:
   version "1.13.0"
