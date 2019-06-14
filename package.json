@@ -40,7 +40,6 @@
     "website-utilities": "*"
   },
   "devDependencies": {
-    "@babel/polyfill": "*",
     "babel-eslint": "*",
     "css-loader": "*",
     "cssnano": "*",
@@ -98,7 +97,7 @@
       "entry": {
         "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "['@babel/polyfill', 'ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "['ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
         }
       }
     },
@@ -106,7 +105,6 @@
     "module": {
       "aliases": {
         "bootstrap$": "bootstrap/dist/css/bootstrap.min.css",
-        "^@babel/polyfill$": "@babel/polyfill/dist/polyfill.min.js",
         "^jquery$": "jquery/dist/jquery.min.js",
         "^jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo.min.js",
         "website-utilities/index.css$": "website-utilities/index.compiled.css"
@@ -168,7 +166,7 @@
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/(?:^|\\/)(?:(?:@babel\\/polyfill\\/dist\\/polyfill)|(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/(?:^|\\/)(?:(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
     },
     "path": {
