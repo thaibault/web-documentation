@@ -55,9 +55,11 @@ build
 dist
 target
 *Bundle.*
+*.bundle.*
 *.compiled.*
 *.compiled
 *.dll-manifest.json
+*.styles.css
 !/data/**/*
 
 # Profiling data.
@@ -102,13 +104,12 @@ nosetests.xml
 
 # JetBrain's idea, PHPStorm and other IDE Files
 .externalToolBuilders
+.idea
 .project
 .pydevproject
 .settings
 *.iml
-**/.idea/sonarIssues.xml
-**/.idea/sonarlint-state.xml
-**/.idea/workspace.xml
+**/.idea
 
 # Gedit autosave backups.
 *~

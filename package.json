@@ -6,33 +6,36 @@
   "keywords": [
     "documentation",
     "website",
-    "project",
     "homepage",
-    "page"
+    "page",
+    "project"
   ],
   "files": [
-    "source",
-    "index.py"
+    "index.py",
+    "source"
   ],
   "main": "source/index.html.ejs",
   "bin": {
-    "documentationWebsite": "index.py"
+    "documentation-website": "index.py"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.io:thaibault/documentationWebsite.git"
+    "url": "git@github.io:thaibault/documentation-website.git"
   },
   "scripts": {
-    "build": "webOptimizer build",
-    "build:stats": "webOptimizer build --profile --json >/tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
-    "clear": "webOptimizer clear",
-    "document": "webOptimizer document",
-    "lint": "webOptimizer check:type; webOptimizer lint",
-    "serve": "webOptimizer serve",
+    "build": "weboptimizer build",
+    "build:stats": "weboptimizer build --json /tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
+    "check": "yarn check:types; yarn lint",
+    "check:types": "weboptimizer check:types",
+    "clear": "weboptimizer clear",
+    "document": "weboptimizer document",
+    "lint": "weboptimizer lint",
+    "prepare": "yarn build",
+    "serve": "weboptimizer serve",
     "start": "yarn serve",
     "test": "yarn build",
     "update": "yarn version --patch && yarn publish",
-    "watch": "webOptimizer build --watch"
+    "watch": "weboptimizer build --watch"
   },
   "dependencies": {
     "boostnode": "*",
@@ -40,35 +43,46 @@
     "website-utilities": "*"
   },
   "devDependencies": {
+    "@types/ejs": "*",
+    "@types/html-minifier": "*",
+    "@types/jest": "*",
+    "@types/jquery": "*",
+    "@types/jsdom": "*",
+    "@types/loader-utils": "*",
+    "@types/node": "*",
+    "@types/node-fetch": "*",
+    "@types/workbox-webpack-plugin": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
     "babel-eslint": "*",
+    "clientnode": "*",
     "css-loader": "*",
     "cssnano": "*",
     "default-gateway": "*",
     "errorreporter": "*",
     "eslint": "*",
     "eslint-config-google": "*",
-    "eslint-plugin-flowtype": "*",
     "eslint-plugin-jsdoc": "*",
-    "favicons-webpack-plugin": "*",
-    "flow-bin": "*",
+    "favicons-webpack-plugin": "^5.0.0-alpha.6",
+    "internationalisation": "*",
+    "jest": "*",
+    "jquery": "*",
     "jsdoc": "*",
     "legal-notes": "*",
     "mini-css-extract-plugin": "*",
-    "offline-plugin": "*",
     "postcss-fontpath": "*",
-    "postcss-import": "*",
+    "postcss-import": "<=12",
     "postcss-loader": "*",
-    "postcss-mixins": "*",
+    "postcss-mixins": "<=6",
     "postcss-preset-env": "*",
     "postcss-sprites": "*",
-    "postcss-url": "*",
+    "postcss-url": "<=9",
+    "spin.js": "*",
     "style-loader": "*",
     "stylelint": "*",
     "stylelint-config-standard": "*",
     "ua-parser-js": "*",
     "weboptimizer": "*",
-    "webpack": "*",
-    "webpack-cli": "*",
     "webpack-dev-server": "*"
   },
   "sideEffects": true,
@@ -83,22 +97,11 @@
         }
       }
     },
-    "debug": {
-      "module": {
-        "optimizer": {
-          "babelMinify": {
-            "bundle": null,
-            "module": null
-          },
-          "htmlMinifier": null
-        }
-      }
-    },
     "injection": {
       "entry": {
         "errorreporter": "errorreporter",
         "index": {
-          "__evaluate__": "['ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`].concat(self.offline ? 'offline-plugin/runtime' : []).concat('./index')"
+          "__evaluate__": "['ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, './index']"
         }
       }
     },
@@ -110,15 +113,8 @@
         "^jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo.min.js",
         "website-utilities/index.css$": "website-utilities/index.compiled.css"
       },
+      "enforceDeduplication": true,
       "optimizer": {
-        "babelMinify": {
-          "module": {
-            "#": "Activating this module would result in this error for task \"serve\": \"Module build failed (from ./node_modules/babel-loader/lib/index.js): TypeError: documentationWebsite/source/index.js: Cannot read property 'end' of null at _evaluate (documentationWebsite/node_modules/babel-traverse/lib/path/evaluation.js:159:58)\".",
-            "evaluate": false,
-            "#0": "Activating this module would result in this error for task \"serve\": \"Module build failed (from ./node_modules/babel-loader/lib/index.js): TypeError: documentationWebsite/source/index.js: Cannot read property 'end' of null at _evaluate (documentationWebsite/node_modules/babel-traverse/lib/path/evaluation.js:159:58)\".",
-            "guards": false
-          }
-        },
         "htmlMinifier": {
           "ignoreCustomComments": [
             {
@@ -150,9 +146,9 @@
               "CONTENT_FILE_PATH": "dummyDocumentation.html",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "LANGUAGES": {
-                "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'documentationWebsite' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
+                "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'documentation-website' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
               },
-              "NAME": "documentationWebsite",
+              "NAME": "documentation-website",
               "META_TAGS": [],
               "RENDER_CONTENT": true,
               "SOURCE_URL": {
@@ -167,7 +163,7 @@
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/(?:^|\\/)(?:(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/(?:^|\\/)(?:(?:jquery\\/dist\\/jquery))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
     },
     "path": {
