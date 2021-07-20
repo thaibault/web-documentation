@@ -38,6 +38,7 @@
     "watch": "weboptimizer build --watch"
   },
   "dependencies": {
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz",
     "boostnode": "*",
     "bootstrap": "^3.3.7",
     "website-utilities": "*"
@@ -57,13 +58,14 @@
     "babel-eslint": "*",
     "clientnode": "*",
     "css-loader": "*",
-    "cssnano": "*",
+    "cssnano": "<=4",
     "default-gateway": "*",
     "errorreporter": "*",
     "eslint": "*",
     "eslint-config-google": "*",
     "eslint-plugin-jsdoc": "*",
-    "favicons-webpack-plugin": "^5.0.0-alpha.6",
+    "favicons": "*",
+    "favicons-webpack-plugin": "*",
     "internationalisation": "*",
     "jest": "*",
     "jquery": "*",
@@ -84,6 +86,9 @@
     "ua-parser-js": "*",
     "weboptimizer": "*",
     "webpack-dev-server": "*"
+  },
+  "resolutions": {
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
   },
   "sideEffects": true,
   "webOptimizer": {
