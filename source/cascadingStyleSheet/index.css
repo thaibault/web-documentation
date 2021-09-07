@@ -11,7 +11,7 @@ This library written by Torben Sickert stand under a creative commons naming
 endregion */
 @import 'bootstrap';
 @import 'pygment-vim-like-highlighting';
-/*@import 'website-utilities/index.css';*/
+/* TODO @import 'website-utilities/index.css';*/
 
 :root {
     /* region constants */
@@ -92,7 +92,7 @@ endregion */
     /* region global */
     /* stylelint-disable at-rule-no-unknown */
     @mixin codehilite;
-    /*@mixin website-utilities;*/
+    /* TODO @mixin website-utilities;*/
     /* stylelint-enable at-rule-no-unknown */
     /*
         NOTE: If we swap these lines to order alphabetical bodies background
