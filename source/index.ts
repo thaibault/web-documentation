@@ -200,7 +200,7 @@ export class Documentation extends WebsiteUtilities {
             NOTE: After injecting new dom nodes we have to grab them for
             further controller logic.
         */
-        this.$domNodes = this.grabDomNode(this.options.domNodes)
+        this.$domNodes = this.grabDomNodes(this.options.domNodes)
         // New injected dom nodes may take affect on language handler.
         if (
             this.startUpAnimationIsComplete &&
