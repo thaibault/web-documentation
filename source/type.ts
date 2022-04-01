@@ -16,44 +16,38 @@
     endregion
 */
 // region imports
-import {ProcedureFunction, $DomNode, $Function} from 'clientnode/type'
+import {ProcedureFunction} from 'clientnode/type'
 import {
-    DefaultOptions as BaseDefaultOptions,
-    DomNodes as BaseDomNodes,
-    Options as BaseOptions,
-    StaticScope as BaseStaticScope
+    DomNodes as BaseDomNodes, Options as BaseOptions
 } from 'website-utilities/type'
 
 import Documentation from './index'
  // endregion
 // region exports
 export type DocumentationFunction =
-    ((...parameter:Array<any>) => any) &
+    ((..._parameters:Array<unknown>) => unknown) &
     {class:typeof Documentation}
-
-export interface StaticScope extends BaseStaticScope {
-    Documentation:DocumentationFunction
-    scrollTo:(selector:string, animation:string) => void
-}
 declare global {
-    interface JQueryStatic extends StaticScope {}
+    interface JQueryStatic {
+        Documentation:DocumentationFunction
+    }
 }
 
-export type DomNodes<Type = string> = BaseDomNodes<Type> & {
-    aboutThisWebsiteLink:Type
-    aboutThisWebsiteSection:Type
-    codeWrapper:Type
-    code:Type
-    homeLink:Type
-    mainSection:Type
-    tableOfContentLinks:Type
-}
-export type $DomNodes = DomNodes<$DomNode> & {
-    parent:$DomNode<HTMLElement>
-    window:$DomNode<Window>
-}
+export type DomNodes<Type = string> =
+    BaseDomNodes<Type> &
+    {
+        aboutThisWebsiteLink:Type
+        aboutThisWebsiteSection:Type
 
-export interface DefaultOptions extends BaseDefaultOptions {
+        codeWrapper:Type
+        code:Type
+
+        homeLink:Type
+        mainSection:Type
+        tableOfContentLinks:Type
+    }
+
+export interface DefaultOptions {
     codeTableWrapper:string
     domNodes:DomNodes
     domNodeSelectorPrefix:string

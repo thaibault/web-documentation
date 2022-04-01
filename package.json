@@ -1,7 +1,6 @@
 {
   "name": "documentation-website",
   "version": "1.0.242",
-  "license": "CC-BY-3.0",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
@@ -10,6 +9,16 @@
     "page",
     "project"
   ],
+  "bugs": {
+    "email": "info@torben.website",
+    "url": "https://github.com/thaibault/documentation-website/issues"
+  },
+  "license": "CC-BY-3.0",
+  "author": {
+    "name": "Torben Sickert",
+    "email": "info@torben.website",
+    "url": "https://torben.website"
+  },
   "files": [
     "index.py",
     "source"
@@ -24,7 +33,7 @@
   },
   "scripts": {
     "build": "weboptimizer build",
-    "build:stats": "weboptimizer build --json /tmp/stat.json && echo 'Results successfully written to \"/tmp/stat.json\".'",
+    "build:stats": "weboptimizer build --profile --json /tmp/stats.json | sed --regexp-extended 's/^Running \".+$//' | sed --regexp-extended 's/^Consolidate module request \".+$//' >/tmp/stats.json && echo 'Results successfully written to \"/tmp/stats.json\".'",
     "check": "yarn check:types; yarn lint",
     "check:types": "weboptimizer check:types",
     "clear": "weboptimizer clear",
@@ -33,7 +42,10 @@
     "prepare": "yarn build",
     "serve": "weboptimizer serve",
     "start": "yarn serve",
-    "test": "yarn build",
+    "test": "yarn clear && weboptimizer test",
+    "test:browser": "yarn clear && weboptimizer test:browser",
+    "test:coverage": "yarn clear && weboptimizer test:coverage",
+    "test:coverage:report": "yarn clear && weboptimizer test:coverage:report",
     "update": "yarn version --patch && yarn publish",
     "watch": "weboptimizer build --watch"
   },
@@ -50,10 +62,8 @@
     "@types/jquery": "*",
     "@types/jsdom": "*",
     "@types/node": "*",
-    "@types/workbox-webpack-plugin": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "bootstrap": "^3.3.7",
     "clientnode": "*",
     "css-loader": "*",
     "cssnano": "<=4",
@@ -86,8 +96,13 @@
     "webpack-dev-server": "*",
     "website-utilities": "*"
   },
+  "engines": {
+    "node": ">=17",
+    "npm": ">=7"
+  },
   "resolutions": {
-    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
+    "colors": "1.4.0"
   },
   "sideEffects": true,
   "webOptimizer": {
@@ -101,20 +116,24 @@
         }
       }
     },
+    "commandLine": {
+      "test": {
+        "environments": [
+          "jsdom"
+        ]
+      }
+    },
     "injection": {
+      "chunks": false,
       "entry": {
-        "errorreporter": "errorreporter",
-        "index": {
-          "__evaluate__": "['ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, './index']"
-        }
+        "#": "errorreporter\": \"errorreporter",
+        "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {index: ['ua-parser-js', `./${path.relative(self.path.source.base, self.path.source.asset.cascadingStyleSheet)}/index`, './index']}"
       }
     },
     "library": false,
     "module": {
       "aliases": {
-        "bootstrap$": "bootstrap/dist/css/bootstrap.min.css",
         "^jquery$": "jquery/dist/jquery.min.js",
-        "^jQuery-scrollTo$": "jquery.scrollto/jquery.scrollTo.min.js",
         "website-utilities/index.css$": "website-utilities/index.compiled.css"
       },
       "enforceDeduplication": true,

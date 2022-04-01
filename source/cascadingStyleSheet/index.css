@@ -9,9 +9,8 @@ License
 This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. See https://creativecommons.org/licenses/by/3.0/deed.de
 endregion */
-@import 'bootstrap';
-@import 'pygment-vim-like-highlighting';
-/* TODO @import 'website-utilities/index.css';*/
+@import "pygment-vim-like-highlighting";
+@import "website-utilities/index.css";
 
 :root {
     /* region constants */
@@ -50,12 +49,11 @@ endregion */
     @define-mixin icon-blacktocat {
         @mixin icon;
 
-        background-image: url('../image/blacktocat.png');
+        background-image: url("../image/blacktocat.png");
         background-position: 0 0;
         height: 30px;
         width: 30px;
     }
-
     @define-mixin icon-archiv {
         @mixin icon;
 
@@ -63,23 +61,20 @@ endregion */
         height: 64px;
         width: 82px;
     }
-
     @define-mixin icon-archiv-gray {
         @mixin icon-archiv;
 
-        background-image: url('../image/folderGray.png');
+        background-image: url("../image/folderGray.png");
     }
-
     @define-mixin icon-archiv-blue {
         @mixin icon-archiv;
 
-        background-image: url('../image/folderBlue.png');
+        background-image: url("../image/folderBlue.png");
     }
-
     @define-mixin icon-download {
         @mixin icon;
 
-        background-image: url('../image/arrowDown.png');
+        background-image: url("../image/arrowDown.png");
         background-position: 0 0;
         height: var(--default-space);
         width: 20px;
@@ -92,7 +87,7 @@ endregion */
     /* region global */
     /* stylelint-disable at-rule-no-unknown */
     @mixin codehilite;
-    /* TODO @mixin website-utilities;*/
+    /* TODO @mixin website-utilities; */
     /* stylelint-enable at-rule-no-unknown */
     /*
         NOTE: If we swap these lines to order alphabetical bodies background
@@ -174,13 +169,14 @@ endregion */
     & [class^="icon-"],
     & [class*=" icon-"],
     & .icon { @mixin icon; }
-
+    /* stylelint-disable selector-class-pattern */
     & .icon- {
         &blacktocat { @mixin icon-blacktocat; }
         &download { @mixin icon-download; }
         &gray-archiv { @mixin icon-archiv-gray; }
         &blue-archiv { @mixin icon-archiv-blue; }
     }
+    /* stylelint-enable selector-class-pattern */
     /* stylelint-enable at-rule-no-unknown */
     /*** endregion */
     /* stylelint-disable at-rule-no-unknown */

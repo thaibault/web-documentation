@@ -17,54 +17,52 @@
     endregion
 */
 // region imports
+import Tools, {$} from 'clientnode'
+import {RecursivePartial, $T} from 'clientnode/type'
 import Internationalisation from 'internationalisation'
 import WebsiteUtilities from 'website-utilities'
-import Tools, {$} from 'clientnode'
-import {$DomNode} from 'clientnode/type'
 
-import {
-    DocumentationFunction, DomNodes, DefaultOptions, Options, $DomNodes
-} from './type'
+import {DocumentationFunction, DomNodes, DefaultOptions, Options} from './type'
 // endregion
 // region declaration
-declare var LANGUAGES:Array<string>
-declare var OFFLINE:boolean
+declare const LANGUAGES:Array<string>
 // endregion
 // region plugins/classes
+/* eslint-disable jsdoc/require-description-complete-sentence */
 /**
  * This plugin holds all needed methods to extend a whole documentation site.
- * @property static:_defaultOptions - Options extended by the options given to
+ * @property static:_commonOptions - Options extended by the options given to
  * the initializer method.
- * @property static:_defaultOptions.onExamplesLoaded {Function} - Callback to
+ * @property static:_commonOptions.onExamplesLoaded {Function} - Callback to
  * trigger when all example loaded.
- * @property static:_defaultOptions.domNodeSelectorPrefix {string} - Something
+ * @property static:_commonOptions.domNodeSelectorPrefix {string} - Something
  * like "body.{1}" which resolves to "body.documentationWebsite" e.g. depending
  * how given option "name" is specified.
- * @property static:_defaultOptions.codeTableWrapper {string} - Markup to use
- * as wrapper for all code highlighted examples.
- * @property static:_defaultOptions.showExample {Object} - Options object to
+ * @property static:_commonOptions.codeTableWrapper {string} - Markup to use as
+ * wrapper for all code highlighted examples.
+ * @property static:_commonOptions.showExample {Object} - Options object to
  * configure code example representation.
- * @property static:_defaultOptions.showExample.pattern {string} - Regular
+ * @property static:_commonOptions.showExample.pattern {string} - Regular
  * expression to introduce a code example section.
- * @property static:_defaultOptions.showExample.domNodeName {string} - Dom node
+ * @property static:_commonOptions.showExample.domNodeName {string} - Dom node
  * name to indicate a declarative example section.
- * @property static:_defaultOptions.showExample.htmlWrapper {string} - HTML
+ * @property static:_commonOptions.showExample.htmlWrapper {string} - HTML
  * example wrapper.
- * @property static:_defaultOptions.domNode {Object} - Object with a mapping of
+ * @property static:_commonOptions.domNode {Object} - Object with a mapping of
  * needed dom node descriptions to their corresponding selectors.
- * @property static:_defaultOptions.section {Object} - Configuration object for
+ * @property static:_commonOptions.section {Object} - Configuration object for
  * section switches between the main page and legal notes descriptions.
- * @property static:_defaultOptions.section.aboutThisWebsite {Object} -
+ * @property static:_commonOptions.section.aboutThisWebsite {Object} -
  * Configuration object for transitions concerning the legal notes section.
- * @property static:_defaultOptions.section.aboutThisWebsite.fadeOutOptions {Object} -
- * Fade out configurations.
- * @property static:_defaultOptions.section.aboutThisWebsite.fadeInOptions {Object} -
- * Fade in configurations.
- * @property static:_defaultOptions.section.main {Object} - Configuration
- * object for transitions concerning the main section.
- * @property static:_defaultOptions.section.main.fadeOutOptions {Object} - Fade
+ * @property static:_commonOptions.section.aboutThisWebsite.fadeOutOptions
+ * {Object} - Fade out configurations.
+ * @property static:_commonOptions.section.aboutThisWebsite.fadeInOptions
+ * {Object} - Fade in configurations.
+ * @property static:_commonOptions.section.main {Object} - Configuration object
+ * for transitions concerning the main section.
+ * @property static:_commonOptions.section.main.fadeOutOptions {Object} - Fade
  * out configurations.
- * @property static:_defaultOptions.section.main.fadeInOptions {Object} - Fade
+ * @property static:_commonOptions.section.main.fadeInOptions {Object} - Fade
  * in configurations.
  *
  * @property options - Finally configured given options.
@@ -76,7 +74,8 @@ declare var OFFLINE:boolean
  * should be activated.
  */
 export class Documentation extends WebsiteUtilities {
-    static _defaultOptions:DefaultOptions = {
+/* eslint-enable jsdoc/require-description-complete-sentence */
+    static _commonOptions:DefaultOptions = {
         codeTableWrapper: '<div class="table-responsive">',
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
@@ -113,19 +112,21 @@ export class Documentation extends WebsiteUtilities {
             `,
             pattern: '^ *showExample(: *([^ ]+))? *$'
         }
-    } as DefaultOptions
+    }
 
     options:Options = null as unknown as Options
 
-    _activateLanguageSupport:boolean = false
+    _activateLanguageSupport = false
     // region public methods
-    // / region special
+    /// region special
     /**
      * Initializes the interactive web application.
      * @param options - An options object.
      * @returns Returns the current instance.
      */
-    async initialize(options:Partial<Options> = {}):Promise<Documentation> {
+    initialize<R = Promise<Documentation>>(
+        options:RecursivePartial<Options> = {}
+    ):R {
         /*
             NOTE: We will initialize language support after examples are
             injected if activated via options.
@@ -133,64 +134,78 @@ export class Documentation extends WebsiteUtilities {
         this._activateLanguageSupport = options.activateLanguageSupport!
         options.activateLanguageSupport = false
 
-        await super.initialize(Tools.extend(
-            true, {} as Options, Documentation._defaultOptions, options
-        ))
+        return super.initialize(Tools.extend(
+            true, {} as Options, Documentation._commonOptions, options
+        )).then(():Documentation => {
+            if (!this._activateLanguageSupport)
+                this._activateLanguageSupport =
+                    this.options.activateLanguageSupport
 
-        if (!this._activateLanguageSupport)
-            this._activateLanguageSupport =
-                this.options.activateLanguageSupport
+            if (!$.global.location?.hash)
+                $.global.location.hash = this.$domNodes.homeLink.attr('href')!
 
-        if (!$.global.location?.hash)
-            $.global.location.hash = this.$domNodes.homeLink.attr('href')!
+            this.$domNodes.aboutThisWebsiteSection.hide()
+            /*
+                NOTE: We have to render examples first to avoid having dots in
+                example code.
+            */
+            this._showExamples()
+            this._makeCodeEllipsis()
 
-        this.$domNodes.aboutThisWebsiteSection.hide()
-        /*
-            NOTE: We have to render examples first to avoid having dots in
-            example code.
-        */
-        this._showExamples()
-        this._makeCodeEllipsis()
+            this.on(
+                this.$domNodes.tableOfContentLinks,
+                'click',
+                (event:Event):void => {
+                    const hashReference:string|undefined =
+                        $(event.target as HTMLLinkElement).attr('href')
+                    if (hashReference && hashReference !== '#')
+                        this.$domNodes.window!
+                            .stop()
+                            .animate(
+                                {scrollTop: $(hashReference).offset()!.top},
+                                this.options.scrollToTop.options
+                            )
+                    else
+                        this.scrollToTop()
+                }
+            )
 
-        this.on(
-            this.$domNodes.tableOfContentLinks,
-            'click',
-            (event:Event):void => {
-                const hashReference:null|string = $(event.target).attr('href')
-                if (hashReference && hashReference !== '#')
-                    $.scrollTo(hashReference, 'slow')
-                else
-                    this.scrollToTop()
-            }
-        )
-        // Handle section switch between documentation and legal notes section.
-        this.options.section.aboutThisWebsite.fadeOutOptions.always =
-            ():$DomNode =>
-                this.$domNodes.mainSection.fadeIn(
-                    this.options.section.main.fadeInOptions
+            /*
+                Handle section switch between documentation and legal notes
+                section.
+            */
+            this.options.section.aboutThisWebsite.fadeOutOptions.always =
+                ():void => {
+                    this.$domNodes.mainSection.fadeIn(
+                        this.options.section.main.fadeInOptions
+                    )
+                }
+            this.options.section.main.fadeOutOptions.always = ():void => {
+                this.$domNodes.aboutThisWebsiteSection.fadeIn(
+                    this.options.section.aboutThisWebsite.fadeInOptions
                 )
-        this.options.section.main.fadeOutOptions.always = ():$DomNode =>
-            this.$domNodes.aboutThisWebsiteSection.fadeIn(
-                this.options.section.aboutThisWebsite.fadeInOptions
-            )
+            }
 
-        this.on(this.$domNodes.aboutThisWebsiteLink, 'click', ():$DomNode =>
-            this.scrollToTop().$domNodes.mainSection.fadeOut(
-                this.options.section.main.fadeOutOptions
-            )
-        )
-        this.on(this.$domNodes.homeLink, 'click', ():$DomNode =>
-            this.scrollToTop().$domNodes.aboutThisWebsiteSection.fadeOut(
-                this.options.section.aboutThisWebsite.fadeOutOptions
-            )
-        )
+            this.on(this.$domNodes.aboutThisWebsiteLink, 'click', ():void => {
+                this.scrollToTop()
+                this.$domNodes.mainSection.fadeOut(
+                    this.options.section.main.fadeOutOptions
+                )
+            })
+            this.on(this.$domNodes.homeLink, 'click', ():void => {
+                this.scrollToTop()
+                this.$domNodes.aboutThisWebsiteSection.fadeOut(
+                    this.options.section.aboutThisWebsite.fadeOutOptions
+                )
+            })
 
-        return this
+            return this
+        }) as unknown as R
     }
-    // / endregion
+    /// endregion
     // endregion
     // region protected methods
-    // / region event handler
+    /// region event handler
     /**
      * This method triggers if all examples loaded.
      * @returns Returns the current instance.
@@ -208,9 +223,9 @@ export class Documentation extends WebsiteUtilities {
             !this.languageHandler
         )
             this.languageHandler = (
-                await $(this.$domNodes.parent)
+                await $(this.$domNodes.parent as unknown as HTMLBodyElement)
                     .Internationalisation(this.options.language)
-            ).data(this.options.name)
+            ).data('Internationalisation') as Internationalisation
     }
     /**
      * This method triggers if we change the current section.
@@ -233,9 +248,9 @@ export class Documentation extends WebsiteUtilities {
     async _onStartUpAnimationComplete():Promise<void> {
         if (this._activateLanguageSupport && !this.languageHandler)
             this.languageHandler = (
-                await $(this.$domNodes.parent)
+                await $(this.$domNodes.parent as unknown as HTMLBodyElement)
                     .Internationalisation(this.options.language)
-            ).data(this.options.name)
+            ).data('Internationalisation') as Internationalisation
 
         // All start up effects are ready. Handle direct section links.
         this.startUpAnimationIsComplete = true
@@ -254,7 +269,7 @@ export class Documentation extends WebsiteUtilities {
 
         super._onStartUpAnimationComplete()
     }
-    // / endregion
+    /// endregion
     /**
      * This method makes dotes after code lines which are too long. This
      * prevents line wrapping.
@@ -262,13 +277,13 @@ export class Documentation extends WebsiteUtilities {
      */
     _makeCodeEllipsis():void {
         this.$domNodes.code.each((index:number, domNode:HTMLElement):void => {
-            const $domNode:$DomNode = $(domNode)
-            const tableParent:$DomNode = $domNode.closest('table')
+            const $domNode:$T = $(domNode)
+            const tableParent:$T = $domNode.closest('table')
             if (tableParent.length)
                 tableParent.wrap(this.options.codeTableWrapper)
-            let newContent:string = ''
+            let newContent = ''
             const codeLines:Array<string> = $domNode.html().split('\n')
-            let subIndex:number = 0
+            let subIndex = 0
             for (const value of codeLines) {
                 /*
                     NOTE: Wrap a div object to grantee that $ will accept the
@@ -297,11 +312,10 @@ export class Documentation extends WebsiteUtilities {
     _replaceExcessWithDots(content:string, excess:number):string {
         // Add space for ending dots.
         excess += 3
-        let newContent:string = ''
-        const $content:$DomNode = $(`<wrapper>${content}</wrapper>`)
+        let newContent = ''
+        const $content:$T = $(`<wrapper>${content}</wrapper>`)
         for (const domNode of $content.contents().get().reverse()) {
-            const $wrapper:$DomNode =
-                $(domNode).wrap('<wrapper>').parent() as $DomNode
+            const $wrapper:$T = $(domNode).wrap('<wrapper>').parent() as $T
 
             const textContent:string = domNode.textContent || ''
 
@@ -352,7 +366,7 @@ export class Documentation extends WebsiteUtilities {
                             new RegExp(this.options.showExample.pattern)
                         )
                     if (match) {
-                        const $codeDomNode:$DomNode<Node> = $(domNode).next()
+                        const $codeDomNode:$T<Node> = $(domNode).next()
 
                         let code:string = $codeDomNode
                             .find(this.$domNodes.codeWrapper)
@@ -400,7 +414,7 @@ export class Documentation extends WebsiteUtilities {
                         } catch (error) {
                             this.critical(
                                 `Error while integrating code "${code}": ` +
-                                error
+                                String(error)
                             )
                         }
                     }
@@ -417,29 +431,20 @@ $.Documentation = ((...parameter:Array<unknown>):unknown =>
     Tools.controller(Documentation, parameter)
 ) as DocumentationFunction
 $.Documentation.class = Documentation
-if (!'TODO' && typeof OFFLINE !== 'undefined' && OFFLINE) {
-    /*
-    const offlineHandler:Object = require('offline-plugin/runtime')
-    offlineHandler.install({
-        // NOTE: Tell the new service worker to take control immediately.
-        onUpdateReady: ():void => offlineHandler.applyUpdate()
-    })
-    */
-}
 // NOTE: We make jQuery available to make bootstrapping examples with deferred
 // script loading simpler.
 ;($.global as unknown as {$documentationWebsite:JQueryStatic})
     .$documentationWebsite = $
 // endregion
 // region bootstrap
-$.noConflict(true)(($:JQueryStatic):Documentation =>
+$.noConflict(true)(($:JQueryStatic):void => {
     $.Documentation({
         language: {
             selection: typeof LANGUAGES === 'undefined' ? [] : LANGUAGES,
             sessionDescription: 'documentationWebsite{1}'
         }
     })
-)
+})
 // endregion
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
