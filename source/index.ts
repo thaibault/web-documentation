@@ -35,9 +35,8 @@ declare const LANGUAGES:Array<string>
  * the initializer method.
  * @property static:_commonOptions.onExamplesLoaded {Function} - Callback to
  * trigger when all example loaded.
- * @property static:_commonOptions.domNodeSelectorPrefix {string} - Something
- * like "body.{1}" which resolves to "body.documentationWebsite" e.g. depending
- * how given option "name" is specified.
+ * @property static:_commonOptions.domNodeSelectorInfix {string} - Something
+ * indicating controlled nodes.
  * @property static:_commonOptions.codeTableWrapper {string} - Markup to use as
  * wrapper for all code highlighted examples.
  * @property static:_commonOptions.showExample {Object} - Options object to
@@ -86,7 +85,7 @@ export class Documentation extends WebsiteUtilities {
             mainSection: '.main-content',
             tableOfContentLinks: '.toc ul li a[href^="#"]'
         } as DomNodes,
-        domNodeSelectorPrefix: 'body.{1}',
+        domNodeSelectorInfix: 'doc',
         name: 'Documentation',
         onExamplesLoaded: Tools.noop,
         section: {
@@ -127,24 +126,21 @@ export class Documentation extends WebsiteUtilities {
     initialize<R = Promise<Documentation>>(
         options:RecursivePartial<Options> = {}
     ):R {
+        this._activateLanguageSupport = options.activateLanguageSupport ?? true
         /*
             NOTE: We will initialize language support after examples are
             injected if activated via options.
         */
-        this._activateLanguageSupport = options.activateLanguageSupport!
         options.activateLanguageSupport = false
 
         return super.initialize(Tools.extend(
             true, {} as Options, Documentation._commonOptions, options
         )).then(():Documentation => {
-            if (!this._activateLanguageSupport)
-                this._activateLanguageSupport =
-                    this.options.activateLanguageSupport
-
             if (!$.global.location?.hash)
                 $.global.location.hash = this.$domNodes.homeLink.attr('href')!
 
             this.$domNodes.aboutThisWebsiteSection.hide()
+
             /*
                 NOTE: We have to render examples first to avoid having dots in
                 example code.
@@ -158,14 +154,16 @@ export class Documentation extends WebsiteUtilities {
                 (event:Event):void => {
                     const hashReference:string|undefined =
                         $(event.target as HTMLLinkElement).attr('href')
-                    if (hashReference && hashReference !== '#')
-                        this.$domNodes.window!
-                            .stop()
-                            .animate(
-                                {scrollTop: $(hashReference).offset()!.top},
-                                this.options.scrollToTop.options
-                            )
-                    else
+                    if (hashReference && hashReference !== '#') {
+                        const offset = $(hashReference).offset()
+                        if (offset)
+                            $('html, body')
+                                .stop()
+                                .animate(
+                                    {scrollTop: offset.top},
+                                    this.options.scrollToTop.options
+                                )
+                    } else
                         this.scrollToTop()
                 }
             )
@@ -186,18 +184,20 @@ export class Documentation extends WebsiteUtilities {
                 )
             }
 
-            this.on(this.$domNodes.aboutThisWebsiteLink, 'click', ():void => {
-                this.scrollToTop()
-                this.$domNodes.mainSection.fadeOut(
-                    this.options.section.main.fadeOutOptions
+
+            if (
+                $.global.location?.hash &&
+                this.options.initialSectionName !==
+                    $.global.location.hash.substring('#'.length)
+            )
+                this.fireEvent(
+                    'switchSection',
+                    false,
+                    this,
+                    $.global.location.hash.substring('#'.length)
                 )
-            })
-            this.on(this.$domNodes.homeLink, 'click', ():void => {
-                this.scrollToTop()
-                this.$domNodes.aboutThisWebsiteSection.fadeOut(
-                    this.options.section.aboutThisWebsite.fadeOutOptions
-                )
-            })
+            else
+                this.currentSectionName = this.options.initialSectionName
 
             return this
         }) as unknown as R
@@ -216,6 +216,7 @@ export class Documentation extends WebsiteUtilities {
             further controller logic.
         */
         this.$domNodes = this.grabDomNodes(this.options.domNodes)
+
         // New injected dom nodes may take affect on language handler.
         if (
             this.startUpAnimationIsComplete &&
@@ -239,6 +240,17 @@ export class Documentation extends WebsiteUtilities {
             .filter(`a[href="#${sectionName}"]`)
             .trigger('click')
 
+        this.scrollToTop()
+
+        if (sectionName === 'about-this-website')
+            this.$domNodes.mainSection.fadeOut(
+                this.options.section.main.fadeOutOptions
+            )
+        else
+            this.$domNodes.aboutThisWebsiteSection.fadeOut(
+                this.options.section.aboutThisWebsite.fadeOutOptions
+            )
+
         super._onSwitchSection(sectionName)
     }
     /**
@@ -246,14 +258,19 @@ export class Documentation extends WebsiteUtilities {
      * @returns Promise resolving when language handler has been initialized.
      */
     async _onStartUpAnimationComplete():Promise<void> {
-        if (this._activateLanguageSupport && !this.languageHandler)
+        /*
+            NOTE: We reference "Internationalisation" here to make sure that
+            static tree shaking includes this module.
+        */
+        if (
+            Internationalisation &&
+            this._activateLanguageSupport &&
+            !this.languageHandler
+        )
             this.languageHandler = (
                 await $(this.$domNodes.parent as unknown as HTMLBodyElement)
                     .Internationalisation(this.options.language)
             ).data('Internationalisation') as Internationalisation
-
-        // All start up effects are ready. Handle direct section links.
-        this.startUpAnimationIsComplete = true
 
         if ($.global.location)
             this.$domNodes.tableOfContentLinks
@@ -420,6 +437,7 @@ export class Documentation extends WebsiteUtilities {
                     }
                 }
             })
+
         this.fireEvent('examplesLoaded')
     }
     // endregion

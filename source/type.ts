@@ -50,7 +50,7 @@ export type DomNodes<Type = string> =
 export interface DefaultOptions {
     codeTableWrapper:string
     domNodes:DomNodes
-    domNodeSelectorPrefix:string
+    domNodeSelectorInfix:null|string
     name:string
     onExamplesLoaded:ProcedureFunction
     section:{

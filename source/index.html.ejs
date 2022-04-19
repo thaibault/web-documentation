@@ -38,7 +38,7 @@ _%>
     </head>
     <!--endregion-->
     <!--region body-->
-    <body class="documentation no-javascript">
+    <body class="doc no-javascript wu">
         <script>
             window.document.body.className =
                 window.document.body.className.replace(
@@ -46,13 +46,13 @@ _%>
                 );
         </script>
         <div
-            class="tools-visible-on-javascript-enabled website-utilities-window-loading-cover"
+            class="tools-visible-on-javascript-enabled window-loading-cover"
         ><div></div></div>
         <!--region header-->
         <header class="header-wrap"><div class="inner">
             <%_ START_UP_ANIMATION_NUMBER += 1 _%>
             <a
-                class="forkme-banner website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                class="forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                 href="<%- SOURCE_URL %>"
             >
                 View on GitHub
@@ -62,11 +62,11 @@ _%>
             </a>
             <%_ START_UP_ANIMATION_NUMBER += 1 _%>
             <h1
-                class="project-title website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                class="project-title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
             ><a href="<%- URL %>"><%- NAME %></a>
             <%_ START_UP_ANIMATION_NUMBER += 1 _%>
             <h2
-                class="project-tagline website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                class="project-tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
             >
                 <%- TAGLINE %>
                 <br />
@@ -91,28 +91,28 @@ _%>
                     BUNDLE === true
                 ) { _%>
                     <a
-                        class="zip-source-download website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="https://github.com/thaibault/<%- NAME %>/zipball/master"
                     >src.zip</a>
                     <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                     <a
-                        class="zip-distribution-bundle-download website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        class="zip-distribution-bundle-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="<%- `${URL}/${DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
                     >app.zip</a>
                 <%_ } else { _%>
                     <a
-                        class="zip-source-download website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="https://github.com/thaibault/<%- NAME %>/zipball/master"
                     >.zip</a>
                     <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                     <a
-                        class="tar-gz-source-download website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        class="tar-gz-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="https://github.com/thaibault/<%- NAME %>/tarball/master"
                     >.tar.gz</a>
                 <%_ }
                 START_UP_ANIMATION_NUMBER -= 1 _%>
                 <i
-                    class="icon-download-arrow website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    class="icon-download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                 ></i>
                 <%_
                     if (numberOfLanguageLinks)
@@ -120,24 +120,24 @@ _%>
                             START_UP_ANIMATION_NUMBER -= 1
                 _%>
                             <a
-                                class="tools-hidden-on-javascript-disabled website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="#language-<%- language %>"
+                                class="tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="#lang-<%- language %>"
                             ><%- language.slice(0, 2) %></a>
                 <%_      }
                     if (API_DOCUMENTATION_PATH) {
                         START_UP_ANIMATION_NUMBER -= 1
                 _%>
                         <span
-                            class="arrow-left-api glyphicon glyphicon-arrow-left website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="arrow-left-api icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         ></span>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a
-                            class="api-link website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             href="<%- URL %><%- API_DOCUMENTATION_PATH %>"
                         >
-                            <langreplace>
+                            <lang-replace>
                                 API <span>Documentation</span>
-                            </langreplace>
+                            </lang-replace>
                             <!--deDE:API<span>-Dokumentation</span>-->
                             <!--frFR:<span>Documentation de l'</span>API-->
                         </a>
@@ -203,7 +203,7 @@ _%>
                     <!--frFR:Site:-->
                     <a href="https://torben.website">https://torben.website</a>
                     <br>
-                    <span class="glyphicon glyphicon-arrow-left arrow-left-home tools-visible-on-javascript-enabled">
+                    <span class="arrow-left-home icon icon-arrow-left tools-visible-on-javascript-enabled"></span>
                     <a
                         class="tools-visible-on-javascript-enabled"
                         href="#home"
@@ -222,7 +222,7 @@ _%>
         <footer class="footer-wrap"><div class="inner">
             <%_ START_UP_ANIMATION_NUMBER += 1 _%>
             <p
-                class="copyright website-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                class="copyright wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
             >
                 <%- NAME %> maintained by
                 <!--deDE:<%- NAME %> betrieben von-->

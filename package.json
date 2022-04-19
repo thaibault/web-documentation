@@ -20,19 +20,22 @@
     "url": "https://torben.website"
   },
   "files": [
-    "index.py",
+    "deploy.js",
+    "deploy.d.ts",
     "source"
   ],
   "main": "source/index.html.ejs",
   "bin": {
-    "documentation-website": "index.py"
+    "documentation-website": "deploy.js"
   },
   "repository": {
     "type": "git",
     "url": "git@github.io:thaibault/documentation-website.git"
   },
   "scripts": {
-    "build": "weboptimizer build",
+    "build": "yarn build:web && yarn build:deploy",
+    "build:deploy": "weboptimizer build '{__reference__: \"target:deploy\"}'",
+    "build:web": "weboptimizer build",
     "build:stats": "weboptimizer build --profile --json /tmp/stats.json | sed --regexp-extended 's/^Running \".+$//' | sed --regexp-extended 's/^Consolidate module request \".+$//' >/tmp/stats.json && echo 'Results successfully written to \"/tmp/stats.json\".'",
     "check": "yarn check:types; yarn lint",
     "check:types": "weboptimizer check:types",
@@ -61,6 +64,7 @@
     "@types/jest": "*",
     "@types/jquery": "*",
     "@types/jsdom": "*",
+    "@types/marked": "*",
     "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
@@ -74,16 +78,20 @@
     "eslint-plugin-jsdoc": "*",
     "favicons": "*",
     "favicons-webpack-plugin": "*",
+    "highlight.js": "*",
     "internationalisation": "*",
     "jest": "*",
     "jquery": "*",
     "jsdoc": "*",
     "legal-notes": "*",
+    "marked": "*",
     "mini-css-extract-plugin": "*",
+    "postcss": "*",
     "postcss-fontpath": "*",
     "postcss-import": "<=12",
     "postcss-loader": "*",
     "postcss-mixins": "<=6",
+    "postcss-nested": "*",
     "postcss-preset-env": "*",
     "postcss-sprites": "*",
     "postcss-url": "<=9",
@@ -133,8 +141,7 @@
     "library": false,
     "module": {
       "aliases": {
-        "^jquery$": "jquery/dist/jquery.min.js",
-        "website-utilities/index.css$": "website-utilities/index.compiled.css"
+        "^jquery$": "jquery/dist/jquery.min.js"
       },
       "enforceDeduplication": true,
       "optimizer": {
@@ -156,9 +163,12 @@
         "cascadingStyleSheet": {
           "additional": {
             "plugins": {
-              "pre": [
-                "require('postcss-mixins')"
-              ]
+              "pre": {
+                "__append__": [
+                  "require('postcss-mixins')",
+                  "require('postcss-nested')"
+                ]
+              }
             }
           }
         },
@@ -200,6 +210,11 @@
           "javaScript": "./",
           "cascadingStyleSheet": "./"
         }
+      }
+    },
+    "target:deploy": {
+      "injection": {
+        "entry": "./deploy"
       }
     }
   }
