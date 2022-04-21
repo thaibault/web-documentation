@@ -20,8 +20,8 @@
     "url": "https://torben.website"
   },
   "files": [
-    "deploy.js",
-    "deploy.d.ts",
+    "build/deploy.js",
+    "build/deploy.d.ts",
     "source"
   ],
   "main": "source/index.html.ejs",
@@ -33,7 +33,7 @@
     "url": "git@github.io:thaibault/documentation-website.git"
   },
   "scripts": {
-    "build": "yarn build:web && yarn build:deploy",
+    "build": "yarn build:web; yarn build:deploy",
     "build:deploy": "weboptimizer build '{__reference__: \"target:deploy\"}'",
     "build:web": "weboptimizer build",
     "build:stats": "weboptimizer build --profile --json /tmp/stats.json | sed --regexp-extended 's/^Running \".+$//' | sed --regexp-extended 's/^Consolidate module request \".+$//' >/tmp/stats.json && echo 'Results successfully written to \"/tmp/stats.json\".'",
@@ -213,8 +213,25 @@
       }
     },
     "target:deploy": {
+      "exportFormat": {
+        "external": "commonjs2",
+        "self": "commonjs2"
+      },
+      "files": {
+        "defaultHTML": {
+          "template": {
+            "filePath": "none"
+          }
+        }
+      },
       "injection": {
-        "entry": "./deploy"
+        "entry": {
+          "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {deploy: './deploy'}"
+        }
+      },
+      "targetTechnology": {
+        "boilerplate": "node",
+        "payload": "node"
       }
     }
   }
