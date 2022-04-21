@@ -26,7 +26,7 @@
   ],
   "main": "source/index.html.ejs",
   "bin": {
-    "documentation-website": "deploy.js"
+    "documentation-website": "build/deploy.js"
   },
   "repository": {
     "type": "git",
