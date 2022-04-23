@@ -19,14 +19,14 @@
 // region imports
 import {execSync} from 'child_process'
 import Tools, {optionalRequire} from 'clientnode'
-import {File, Mapping, PlainObject} from 'clientnode/type'
+import {EvaluationResult, File, Mapping, PlainObject} from 'clientnode/type'
 import {createReadStream, createWriteStream, WriteStream} from 'fs'
 import {
     copyFile, mkdir, readdir, readFile, rename, rm, rmdir, writeFile
 } from 'fs/promises'
 import highlightModule from 'highlight.js'
 import {marked} from 'marked'
-import {basename, extname, resolve} from 'path'
+import {basename, extname, join, resolve} from 'path'
 import {pipeline} from 'stream'
 import {createGunzip, createGzip, Gzip} from 'zlib'
 // endregion
@@ -99,9 +99,9 @@ const run = (command:string, options = {}):string =>
 
 // region globals
 /// region locations
-const DOCUMENTATION_BUILD_PATH = 'build/'
-const DATA_PATH = 'data/'
-const API_DOCUMENTATION_PATHS = ['apiDocumentation/', '/api/']
+const DOCUMENTATION_BUILD_PATH = resolve('./build/')
+const DATA_PATH = resolve('./data/')
+const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
 let API_DOCUMENTATION_PATH_SUFFIX = '${name}/${version}/'
 const DISTRIBUTION_BUNDLE_FILE_PATH = `${DATA_PATH}distributionBundle.zip`
 const DISTRIBUTION_BUNDLE_DIRECTORY_PATH = `${DATA_PATH}distributionBundle`
@@ -125,7 +125,7 @@ const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
 }
 let CONTENT = ''
 const DOCUMENTATION_REPOSITORY =
-    'git@github.com:"thaibault/documentationWebsite"'
+    'git@github.com:"thaibault/documentation-website"'
 const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
 let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
@@ -220,7 +220,7 @@ const generateAndPushNewDocumentationPage = async (
         JSON.stringify(Tools.evaluateDynamicData(
             BUILD_DOCUMENTATION_PAGE_CONFIGURATION, {parameters, ...SCOPE}
         ))
-    const parametersFilePath:string = run('mktemp --suffix .json')
+    const parametersFilePath:string = run('mktemp --suffix .json').trim()
     await writeFile(parametersFilePath, serializedParameters)
     BUILD_DOCUMENTATION_PAGE_COMMAND = Tools.stringEvaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND,
@@ -273,7 +273,8 @@ const createDistributionBundle = async ():Promise<null|string> => {
         run(`yarn ${SCOPE.scripts['build:export'] ? 'build:export' : 'build'}`)
 
     console.info('Pack to a zip archive.')
-    const distributionBundleFilePath:string = run('mktemp')
+    const distributionBundleFilePath:string =
+        run('mktemp --suffix .zip').trim()
 
     const filePaths = SCOPE.files || []
     if (SCOPE.main)
@@ -287,7 +288,9 @@ const createDistributionBundle = async ():Promise<null|string> => {
         createWriteStream(distributionBundleFilePath)
 
     const add = async (filePaths:Array<string>):Promise<void> => {
-        for (const filePath of filePaths) {
+        for (let filePath of filePaths) {
+            filePath = resolve(`./${filePath}`)
+
             console.debug(`Add "${filePath}" to distribution bundle.`)
 
             if (!(await isFileIgnored(filePath)))
@@ -346,7 +349,9 @@ const copyRepositoryFile = async (source:File, targetPath:string):Promise<
     )
         return false
 
-    console.debug('Copy "%s" to "%s".', source.path, targetPath)
+    targetPath = join(targetPath, source.name)
+
+    console.debug(`Copy "${source.path}" to "${targetPath}".`)
 
     if (source.stats!.isFile())
         await copyFile(source.path, targetPath)
@@ -376,23 +381,23 @@ const addReadme = async (file:File):Promise<false|void> => {
 }
 // endregion
 
-console.log('AAA')
-process.exit()
 if (
     run('git branch').includes('* master') &&
     run('git branch --all').includes('gh-pages')
 ) {
-    SCOPE = optionalRequire('./package.json') || SCOPE
+    SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
 
-    API_DOCUMENTATION_PATH_SUFFIX = Tools.stringEvaluate(
-        API_DOCUMENTATION_PATH_SUFFIX, SCOPE
-    ).result
+    const evaluationResult:EvaluationResult = Tools.stringEvaluate(
+        `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
+    )
 
-    const temporaryDocumentationFolderPath = 'documentationWebsite'
+    API_DOCUMENTATION_PATH_SUFFIX = evaluationResult.result
+
+    const temporaryDocumentationFolderPath = 'documentation-website'
     if (await Tools.isDirectory(temporaryDocumentationFolderPath))
         await rmdir(temporaryDocumentationFolderPath, {recursive: true})
 
-    console.info('Compile all readme markdown files to html.')
+    console.info('Compile read all markdown files and transform to html.')
 
     await Tools.walkDirectoryRecursively('./', addReadme)
 
@@ -400,12 +405,16 @@ if (
 
     const distributionBundleFilePath:null|string =
         await createDistributionBundle()
+
     if (
         distributionBundleFilePath &&
         await Tools.isFile(distributionBundleFilePath)
     ) {
         await mkdir(DATA_PATH, {recursive: true})
-        await rename(distributionBundleFilePath, DATA_PATH)
+        await copyFile(
+            distributionBundleFilePath,
+            join(DATA_PATH, basename(distributionBundleFilePath))
+        )
     }
 
     let hasAPIDocumentationCommand:boolean =
@@ -421,14 +430,19 @@ if (
     run('git checkout gh-pages')
     run('git pull')
 
-    const apiDocumentationDirectoryPath = `.${API_DOCUMENTATION_PATHS[1]}`
+    const apiDocumentationDirectoryPath:string =
+        resolve(`./.${API_DOCUMENTATION_PATHS[1]}`)
     if (await Tools.isDirectory(apiDocumentationDirectoryPath))
         await rmdir(apiDocumentationDirectoryPath, {recursive: true})
 
-    await rename(API_DOCUMENTATION_PATHS[0], apiDocumentationDirectoryPath)
+    if (await Tools.isDirectory(resolve(`./${API_DOCUMENTATION_PATHS[0]}`)))
+        await rename(
+            resolve(`./${API_DOCUMENTATION_PATHS[0]}`),
+            apiDocumentationDirectoryPath
+        )
 
-    const localDocumentationWebsitePath =
-        `../${basename(temporaryDocumentationFolderPath)}`
+    const localDocumentationWebsitePath:string =
+        resolve(`../${basename(temporaryDocumentationFolderPath)}`)
     if (await Tools.isDirectory(localDocumentationWebsitePath)) {
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
@@ -438,9 +452,10 @@ if (
                 copyRepositoryFile(file, temporaryDocumentationFolderPath)
         )
 
-        const nodeModulesDirectoryPath =
+        const nodeModulesDirectoryPath:string =
             resolve(localDocumentationWebsitePath, 'node_modules')
-        if (await Tools.isDirectory(nodeModulesDirectoryPath)) {
+        if (false && await Tools.isDirectory(nodeModulesDirectoryPath)) {
+            // NOTE: Not working caused by nested symlinks.
             const temporaryDocumentationNodeModulesDirectoryPath:string =
                 resolve(temporaryDocumentationFolderPath, 'node_modules')
             /*
@@ -456,15 +471,17 @@ if (
                 privileges.
             */
             run(`
-                cp
-                --dereference
-                --recursive
-                --reflink=auto
-                '${nodeModulesDirectoryPath}'
-                '${temporaryDocumentationNodeModulesDirectoryPath}'
+                cp \
+                    --dereference \
+                    --recursive \
+                    --reflink=auto \
+                    '${nodeModulesDirectoryPath}' \
+                    '${temporaryDocumentationNodeModulesDirectoryPath}'
             `)
-        } else
+        } else {
+            console.log('TODO AAA')
             run('yarn --production=false')
+        }
 
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else
@@ -473,6 +490,7 @@ if (
             git clone '${DOCUMENTATION_REPOSITORY}';
             yarn --production=false
         `)
+    console.log('TODO AAA');process.exit()
 
     await generateAndPushNewDocumentationPage(
         temporaryDocumentationFolderPath,
