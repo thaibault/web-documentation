@@ -53,12 +53,12 @@
     "watch": "weboptimizer build --watch"
   },
   "dependencies": {
-    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
-    "boostnode": "*"
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
   },
   "devDependencies": {
     "@babel/eslint-parser": "*",
     "@babel/runtime": "*",
+    "@types/archiver": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
     "@types/jest": "*",
@@ -66,8 +66,10 @@
     "@types/jsdom": "*",
     "@types/marked": "*",
     "@types/node": "*",
+    "@types/unzipper": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
+    "archiver": "*",
     "clientnode": "*",
     "css-loader": "*",
     "cssnano": "<=4",
@@ -100,6 +102,7 @@
     "stylelint": "*",
     "stylelint-config-standard": "*",
     "ua-parser-js": "*",
+    "unzipper": "*",
     "weboptimizer": "*",
     "webpack-dev-server": "*",
     "website-utilities": "*"

@@ -17,18 +17,18 @@
     endregion
 */
 // region imports
+import archiver from 'archiver'
 import {execSync} from 'child_process'
 import Tools, {optionalRequire} from 'clientnode'
 import {EvaluationResult, File, Mapping, PlainObject} from 'clientnode/type'
-import {createReadStream, createWriteStream, WriteStream} from 'fs'
+import {createReadStream, createWriteStream} from 'fs'
 import {
-    copyFile, mkdir, readdir, readFile, rename, rm, rmdir, writeFile
+    copyFile, mkdir, readdir, readFile, rename, rm, writeFile
 } from 'fs/promises'
 import highlightModule from 'highlight.js'
 import {marked} from 'marked'
-import {basename, extname, join, resolve} from 'path'
-import {pipeline} from 'stream'
-import {createGunzip, createGzip, Gzip} from 'zlib'
+import {basename, dirname, extname, join, relative, resolve} from 'path'
+import {Extract} from 'unzipper'
 // endregion
 const {getLanguage, highlight} = highlightModule
 
@@ -103,10 +103,12 @@ const DOCUMENTATION_BUILD_PATH = resolve('./build/')
 const DATA_PATH = resolve('./data/')
 const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
 let API_DOCUMENTATION_PATH_SUFFIX = '${name}/${version}/'
-const DISTRIBUTION_BUNDLE_FILE_PATH = `${DATA_PATH}distributionBundle.zip`
-const DISTRIBUTION_BUNDLE_DIRECTORY_PATH = `${DATA_PATH}distributionBundle`
+const DISTRIBUTION_BUNDLE_FILE_PATH = join(DATA_PATH, 'distributionBundle.zip')
+const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
+    join(DATA_PATH, 'distributionBundle')
 /// endregion
-let BUILD_DOCUMENTATION_PAGE_COMMAND = 'yarn build ${parametersFilePath}'
+let BUILD_DOCUMENTATION_PAGE_COMMAND =
+    '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
 const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
     module: {
         preprocessor: {
@@ -147,35 +149,50 @@ const generateAndPushNewDocumentationPage = async (
     distributionBundleFilePath:null|string,
     hasAPIDocumentationCommand:boolean
 ):Promise<void> => {
-    console.info('Update documentation design.')
+    console.info('Generate document website artefacts.')
 
     if (distributionBundleFilePath) {
-        const newDistributionBundleFilePath =
-            temporaryDocumentationFolderPath +
-            DOCUMENTATION_BUILD_PATH +
-            DISTRIBUTION_BUNDLE_FILE_PATH
+        console.info('Prepare distribution files.')
 
-        await mkdir(newDistributionBundleFilePath, {recursive: true})
-        await rename(distributionBundleFilePath, newDistributionBundleFilePath)
+        const newDistributionBundleFilePath = join(
+            temporaryDocumentationFolderPath,
+            relative('./', DOCUMENTATION_BUILD_PATH),
+            relative('./', DISTRIBUTION_BUNDLE_FILE_PATH)
+        )
 
-        const newDistributionBundleDirectoryPath =
-            temporaryDocumentationFolderPath +
-            DOCUMENTATION_BUILD_PATH +
-            DISTRIBUTION_BUNDLE_DIRECTORY_PATH
+        await mkdir(dirname(newDistributionBundleFilePath), {recursive: true})
+        await copyFile(
+            distributionBundleFilePath, newDistributionBundleFilePath
+        )
+        await rm(distributionBundleFilePath)
+
+        const newDistributionBundleDirectoryPath = join(
+            temporaryDocumentationFolderPath,
+            relative('./', DOCUMENTATION_BUILD_PATH),
+            relative('./', DISTRIBUTION_BUNDLE_DIRECTORY_PATH)
+        )
 
         await mkdir(newDistributionBundleDirectoryPath, {recursive: true})
 
-        createReadStream(distributionBundleFilePath)
-            .pipe(createGunzip())
-            .pipe(createWriteStream(newDistributionBundleDirectoryPath))
+        await new Promise<void>((
+            resolve:() => void, reject:(reason:Error) => void
+        ):void => {
+            createReadStream(newDistributionBundleFilePath)
+                .pipe(Extract({path: newDistributionBundleDirectoryPath}))
+                .on('close', ():void => resolve())
+                .on('error', (error:Error):void => reject(error))
+        })
     }
 
+    console.info('Prepare favicon file.')
     const faviconPath = 'favicon.png'
     if (await Tools.isFile(faviconPath))
         await copyFile(
             faviconPath,
             `${temporaryDocumentationFolderPath}/source/image/favicon.ico`
         )
+
+    console.info('Render html.')
 
     let parameters:Mapping<unknown> = {}
     for (const [key, value] of Object.entries(
@@ -187,7 +204,9 @@ const generateAndPushNewDocumentationPage = async (
     if (!parameters.NAME && SCOPE.name)
         parameters.NAME = SCOPE.name
 
-    console.debug(`Found parameters "${Tools.represent(parameters)}".`)
+    console.debug(
+        `Found parameters "${Tools.represent(parameters)}" to render.`
+    )
 
     let apiDocumentationPath:null|string = null
     if (hasAPIDocumentationCommand) {
@@ -222,12 +241,13 @@ const generateAndPushNewDocumentationPage = async (
         ))
     const parametersFilePath:string = run('mktemp --suffix .json').trim()
     await writeFile(parametersFilePath, serializedParameters)
+
     BUILD_DOCUMENTATION_PAGE_COMMAND = Tools.stringEvaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND,
         {parameters, parametersFilePath, ...SCOPE}
     ).result
 
-    console.debug(`Use parameters "${serializedParameters}".`)
+    console.debug(`Use final parameters "${serializedParameters}".`)
     console.info(`Run "${BUILD_DOCUMENTATION_PAGE_COMMAND}".`)
 
     run(
@@ -237,24 +257,28 @@ const generateAndPushNewDocumentationPage = async (
     await rm(parametersFilePath)
 
     for (const filePath of await readdir('./'))
-        if (
-            ![
-                temporaryDocumentationFolderPath,
-                `.${API_DOCUMENTATION_PATHS[1]}`
-            ].includes(filePath) ||
+        if (!(
+            [
+                resolve(temporaryDocumentationFolderPath),
+                resolve(API_DOCUMENTATION_PATHS[1])
+            ].includes(resolve(filePath)) ||
             await isFileIgnored(filePath)
-        )
-            await rm(filePath)
+        ))
+            await rm(filePath, {recursive: true})
 
-    const documentationBuildFolderPath =
-        temporaryDocumentationFolderPath + DOCUMENTATION_BUILD_PATH
+    console.info('Copy all build artefacts.')
+
+    const documentationBuildFolderPath = join(
+        temporaryDocumentationFolderPath,
+        relative('./', DOCUMENTATION_BUILD_PATH)
+    )
     await Tools.walkDirectoryRecursively(
         documentationBuildFolderPath,
         (file:File):Promise<false|void> =>
-            copyRepositoryFile(file, documentationBuildFolderPath)
+            copyRepositoryFile(documentationBuildFolderPath, './', file)
     )
 
-    await rmdir(temporaryDocumentationFolderPath, {recursive: true})
+    await rm(temporaryDocumentationFolderPath, {recursive: true})
 
     run('git add --all')
     run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)
@@ -283,36 +307,58 @@ const createDistributionBundle = async ():Promise<null|string> => {
     if (filePaths.length === 0)
         return null
 
-    const gzip:Gzip = createGzip()
-    const destination:WriteStream =
-        createWriteStream(distributionBundleFilePath)
+    const determineFilePaths = async (
+        filePaths:Array<string>
+    ):Promise<Array<string>> => {
+        let result:Array<string> = []
 
-    const add = async (filePaths:Array<string>):Promise<void> => {
         for (let filePath of filePaths) {
             filePath = resolve(`./${filePath}`)
 
-            console.debug(`Add "${filePath}" to distribution bundle.`)
-
             if (!(await isFileIgnored(filePath)))
                 if (await Tools.isDirectory(filePath))
-                    await add(await readdir('./'))
-                else
-                    pipeline(
-                        createReadStream(filePath),
-                        gzip,
-                        destination,
-                        (error:Error|null) => {
-                            if (error) {
-                                console.error('An error occurred:', error)
-
-                                process.exitCode = 1
-                            }
-                        }
+                    result = result.concat(
+                        await determineFilePaths(await readdir(filePath))
                     )
+                else {
+                    console.debug(`Add "${filePath}" to distribution bundle.`)
+
+                    result.push(filePath)
+                }
         }
+
+        return result
     }
 
-    await add(filePaths)
+
+    const archive = archiver('zip', {zlib: {level: 9}})
+    archive.pipe(createWriteStream(distributionBundleFilePath))
+
+    const promise = new Promise<void>((
+        resolve:() => void, reject:(reason:Error) => void
+    ):void => {
+        archive.on('error', (error:Error):void => {
+            reject(error)
+        })
+
+        archive.on('warning', (error:Error):void => {
+            console.warn(error)
+        })
+
+        archive.on('progress', ({entries: {total, processed}}):void => {
+            if (total === processed)
+                resolve()
+        })
+    })
+
+    for (const filePath of await determineFilePaths(filePaths))
+        archive.append(
+            createReadStream(filePath), {name: relative('./', filePath)}
+        )
+
+    await archive.finalize()
+
+    await promise
 
     return distributionBundleFilePath
 }
@@ -329,32 +375,29 @@ const isFileIgnored = async (filePath:string):Promise<boolean> => (
     await Tools.isDirectory(filePath) &&
     ['node_modules', 'build'].includes(basename(filePath)) ||
     await Tools.isFile(filePath) &&
-    basename(filePath) === 'params.json' ||
-    ['pyc', 'pyo'].includes(extname(filePath).substring(1))
+    basename(filePath) === 'params.json'
 )
 
 /**
  * Copy the website documentation design repository.
- * @param source - Location to copy.
+ * @param sourcePath - Location to copy from.
  * @param targetPath - Location where to copy given source.
+ * @param file - Location to copy.
  *
  * @returns Promise resolving when finished coping.
  */
-const copyRepositoryFile = async (source:File, targetPath:string):Promise<
-    false|void
-> => {
-    if (
-        await isFileIgnored(source.path) ||
-        basename(source.name) === 'readme.md'
-    )
+const copyRepositoryFile = async (
+    sourcePath:string, targetPath:string, file:File
+):Promise<false|void> => {
+    if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
         return false
 
-    targetPath = join(targetPath, source.name)
+    targetPath = join(targetPath, relative(sourcePath, file.path))
 
-    console.debug(`Copy "${source.path}" to "${targetPath}".`)
+    console.debug(`Copy "${file.path}" to "${targetPath}".`)
 
-    if (source.stats!.isFile())
-        await copyFile(source.path, targetPath)
+    if (file.stats!.isFile())
+        await copyFile(file.path, targetPath)
     else
         await mkdir(targetPath)
 }
@@ -395,16 +438,24 @@ if (
 
     const temporaryDocumentationFolderPath = 'documentation-website'
     if (await Tools.isDirectory(temporaryDocumentationFolderPath))
-        await rmdir(temporaryDocumentationFolderPath, {recursive: true})
+        await rm(temporaryDocumentationFolderPath, {recursive: true})
 
-    console.info('Compile read all markdown files and transform to html.')
+    console.info('Read and Compile all markdown files and transform to html.')
 
     await Tools.walkDirectoryRecursively('./', addReadme)
 
     CONTENT = marked.parse(CONTENT)
 
-    const distributionBundleFilePath:null|string =
-        await createDistributionBundle()
+    let distributionBundleFilePath:null|string = null
+    try {
+        distributionBundleFilePath = await createDistributionBundle()
+    } catch (error) {
+        console.error(
+            'Error occurred during building distribution bundle:', error
+        )
+
+        process.exitCode = 1
+    }
 
     if (
         distributionBundleFilePath &&
@@ -431,13 +482,13 @@ if (
     run('git pull')
 
     const apiDocumentationDirectoryPath:string =
-        resolve(`./.${API_DOCUMENTATION_PATHS[1]}`)
+        resolve(API_DOCUMENTATION_PATHS[1])
     if (await Tools.isDirectory(apiDocumentationDirectoryPath))
-        await rmdir(apiDocumentationDirectoryPath, {recursive: true})
+        await rm(apiDocumentationDirectoryPath, {recursive: true})
 
-    if (await Tools.isDirectory(resolve(`./${API_DOCUMENTATION_PATHS[0]}`)))
+    if (await Tools.isDirectory(API_DOCUMENTATION_PATHS[0]))
         await rename(
-            resolve(`./${API_DOCUMENTATION_PATHS[0]}`),
+            resolve(API_DOCUMENTATION_PATHS[0]),
             apiDocumentationDirectoryPath
         )
 
@@ -449,7 +500,11 @@ if (
         await Tools.walkDirectoryRecursively(
             localDocumentationWebsitePath,
             (file:File):Promise<false|void> =>
-                copyRepositoryFile(file, temporaryDocumentationFolderPath)
+                copyRepositoryFile(
+                    localDocumentationWebsitePath,
+                    temporaryDocumentationFolderPath,
+                    file
+                )
         )
 
         const nodeModulesDirectoryPath:string =
@@ -478,19 +533,17 @@ if (
                     '${nodeModulesDirectoryPath}' \
                     '${temporaryDocumentationNodeModulesDirectoryPath}'
             `)
-        } else {
-            console.log('TODO AAA')
-            run('yarn --production=false')
-        }
+        } else
+            run(
+                'yarn --production=false',
+                {cwd: temporaryDocumentationFolderPath}
+            )
 
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
-    } else
-        run(`
-            unset GIT_WORK_TREE;
-            git clone '${DOCUMENTATION_REPOSITORY}';
-            yarn --production=false
-        `)
-    console.log('TODO AAA');process.exit()
+    } else {
+        run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
+        run('yarn --production=false', {cwd: temporaryDocumentationFolderPath})
+    }
 
     await generateAndPushNewDocumentationPage(
         temporaryDocumentationFolderPath,
@@ -499,7 +552,7 @@ if (
     )
 
     if (await Tools.isDirectory(apiDocumentationDirectoryPath))
-        await rmdir(apiDocumentationDirectoryPath, {recursive: true})
+        await rm(apiDocumentationDirectoryPath, {recursive: true})
 }
 
 

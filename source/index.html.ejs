@@ -85,11 +85,7 @@ _%>
                         START_UP_ANIMATION_NUMBER += 2
                     START_UP_ANIMATION_NUMBER += 1
                 _%>
-                <%_ if (
-                    DISTRIBUTION_BUNDLE_FILE_PATH &&
-                    typeof BUNDLE === 'undefined' ||
-                    BUNDLE === true
-                ) { _%>
+                <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
                     <a
                         class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         href="https://github.com/thaibault/<%- NAME %>/zipball/master"
@@ -133,7 +129,7 @@ _%>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a
                             class="api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="<%- URL %><%- API_DOCUMENTATION_PATH %>"
+                            href="<%- URL %>/<%- API_DOCUMENTATION_PATH %>"
                         >
                             <lang-replace>
                                 API <span>Documentation</span>
