@@ -223,11 +223,8 @@ const generateAndPushNewDocumentationPage = async (
         RENDER_CONTENT: false,
         API_DOCUMENTATION_PATH: apiDocumentationPath,
         DISTRIBUTION_BUNDLE_FILE_PATH:
-            (
-                distributionBundleFilePath &&
-                await Tools.isFile(distributionBundleFilePath)
-            ) ?
-                DISTRIBUTION_BUNDLE_FILE_PATH :
+            await Tools.isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
+                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
                 null
     }
 
@@ -516,14 +513,12 @@ if (
             /*
                 We copy just recursively reference files.
 
-                NOTE: Symlinking doesn't work since some node modules
-                need the right absolute location to work.
+                NOTE: Symlinking doesn't work since some node modules need the
+                right absolute location to work.
 
-                NOTE: Coping complete "node_modules" folder takes to
-                long.
+                NOTE: Coping complete "node_modules" folder takes to long.
 
-                NOTE: Mounting "node_modules" folder needs root
-                privileges.
+                NOTE: Mounting "node_modules" folder needs root privileges.
             */
             run(`
                 cp \
@@ -551,8 +546,11 @@ if (
         hasAPIDocumentationCommand
     )
 
-    if (await Tools.isDirectory(apiDocumentationDirectoryPath))
-        await rm(apiDocumentationDirectoryPath, {recursive: true})
+    // region tidy up
+    for (const path of [apiDocumentationDirectoryPath, DATA_PATH])
+        if (await Tools.isDirectory(path))
+            await rm(path, {recursive: true})
+    // endregion
 }
 
 
