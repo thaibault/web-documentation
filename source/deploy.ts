@@ -294,8 +294,8 @@ const createDistributionBundle = async ():Promise<null|string> => {
             SCOPE.scripts['build:export'] ||
             SCOPE.scripts.build
         )
-    )
-        run(
+    ) {
+        const buildCommand =
             'yarn ' +
             (
                 SCOPE.scripts['build:export:compatible'] ?
@@ -304,7 +304,9 @@ const createDistributionBundle = async ():Promise<null|string> => {
                         'build:export' :
                         'build'
             )
-        )
+        console.info(`Build distribution bundle via "${buildCommand}".`)
+        run(buildCommand)
+    }
 
     console.info('Pack to a zip archive.')
     const distributionBundleFilePath:string =
