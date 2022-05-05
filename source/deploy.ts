@@ -289,9 +289,22 @@ const generateAndPushNewDocumentationPage = async (
 const createDistributionBundle = async ():Promise<null|string> => {
     if (
         SCOPE.scripts &&
-        (SCOPE.scripts['build:export'] || SCOPE.scripts.build)
+        (
+            SCOPE.scripts['build:export:compatible'] ||
+            SCOPE.scripts['build:export'] ||
+            SCOPE.scripts.build
+        )
     )
-        run(`yarn ${SCOPE.scripts['build:export'] ? 'build:export' : 'build'}`)
+        run(
+            'yarn ' +
+            (
+                SCOPE.scripts['build:export:compatible'] ?
+                    'build:export:compatible' :
+                    SCOPE.scripts['build:export'] ?
+                        'build:export' :
+                        'build'
+            )
+        )
 
     console.info('Pack to a zip archive.')
     const distributionBundleFilePath:string =
@@ -551,6 +564,9 @@ if (
         if (await Tools.isDirectory(path))
             await rm(path, {recursive: true})
     // endregion
+
+    // Prepare build artefacts for further local usage.
+    run('yarn build')
 }
 
 
