@@ -148,14 +148,6 @@
       },
       "enforceDeduplication": true,
       "optimizer": {
-        "babelMinify": {
-          "bundle": {
-            "transform": {
-              "#": "To provide a logging output we need to exclude this feature.",
-              "removeConsole": false
-            }
-          }
-        },
         "htmlMinifier": {
           "ignoreCustomComments": [
             {
@@ -246,6 +238,21 @@
       "injection": {
         "entry": {
           "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {deploy: './deploy'}"
+        }
+      },
+      "module": {
+        "optimizer": {
+          "babelMinify": {
+            "#": "To provide a logging output we need to exclude this feature.",
+            "bundle": {
+              "transform": {
+                "removeConsole": false
+              }
+            },
+            "module": {
+              "removeConsole": false
+            }
+          }
         }
       },
       "targetTechnology": {
