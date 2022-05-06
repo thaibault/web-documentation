@@ -148,6 +148,19 @@
       },
       "enforceDeduplication": true,
       "optimizer": {
+        "cssnano": {
+          "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
+          "preset": {
+            "__remove__": 1,
+            "__append__": {
+              "autoprefixer": false,
+              "discardUnused": {
+                "__evaluate__": "!self.library"
+              },
+              "mergeRules": false
+            }
+          }
+        },
         "htmlMinifier": {
           "ignoreCustomComments": [
             {
