@@ -149,25 +149,22 @@ export class Documentation extends WebsiteUtilities {
             */
             this._showExamples()
             this._makeCodeEllipsis()
-            this._generateTableOfContentsLinks()
 
+            this._generateTableOfContentsLinks()
             this.on(
                 this.$domNodes.tableOfContentLinks,
                 'click',
                 (event:Event):void => {
                     const hashReference:string|undefined =
                         $(event.target as HTMLLinkElement).attr('href')
-                    if (hashReference && hashReference !== '#') {
-                        const offset = $(hashReference).offset()
-                        if (offset)
-                            $('html, body')
-                                .stop()
-                                .animate(
-                                    {scrollTop: offset.top},
-                                    this.options.scrollToTop.options
-                                )
-                    } else
-                        this.scrollToTop()
+                    if (hashReference && hashReference !== '#')
+                        this.fireEvent(
+                            'switchSection',
+                            false,
+                            this,
+                            hashReference.substring(1),
+                            event
+                        )
                 }
             )
 
@@ -233,17 +230,33 @@ export class Documentation extends WebsiteUtilities {
     }
     /**
      * This method triggers if we change the current section.
-     * @param sectionName - New section which should be switched to.
+     * @param sectionName - New section which should be switched to.#
+     * @param event - Triggered event object.
+     *
      * @returns Returns the current instance.
      */
-    _onSwitchSection(sectionName:string):void {
-        this.$domNodes.tableOfContentLinks
-            .add(this.$domNodes.aboutThisWebsiteLink)
-            .add(this.$domNodes.homeLink)
-            .filter(`a[href="#${sectionName}"]`)
-            .trigger('click')
+    _onSwitchSection(sectionName:string, event?:Event):void {
+        const hashReference = `#${sectionName}`
+        const $target = $(hashReference)
+        if (sectionName && $target.length) {
+            event?.preventDefault()
 
-        this.scrollToTop()
+            const offset = $target.offset()
+            if (offset)
+                $('html, body')
+                    .stop()
+                    .animate(
+                        {scrollTop: offset.top},
+                        {
+                            ...this.options.scrollToTop.options,
+                            complete: ():void => {
+                                if (window.location.hash !== hashReference)
+                                    window.location.hash = hashReference
+                            }
+                        }
+                    )
+        } else
+            this.scrollToTop()
 
         if (sectionName === 'about-this-website')
             this.$domNodes.mainSection.fadeOut(

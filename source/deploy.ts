@@ -142,7 +142,7 @@ const generateAndPushNewDocumentationPage = async (
     for (const [key, value] of Object.entries(
         SCOPE.documentationWebsite || {}
     ))
-        parameters[Tools.stringCamelCaseToDelimited(key)] = value
+        parameters[Tools.stringCamelCaseToDelimited(key).toUpperCase()] = value
     if (!parameters.TAGLINE && SCOPE.description)
         parameters.TAGLINE = SCOPE.description
     if (!parameters.NAME && SCOPE.name)
