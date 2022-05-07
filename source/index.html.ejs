@@ -148,15 +148,16 @@ _%>
         <section class="main-content-wrap">
             <!--region main content-->
             <div class="main-content inner">
-                <%_ if (CONTENT_FILE_PATH) { _%>
-                    <%- include(CONTENT_FILE_PATH) %>
-                <%_ } else if (CONTENT) {
-                    let content = CONTENT
-                    if (RENDER_CONTENT)
-                        content = compile(CONTENT)(locals)
-                    if (content)
+                <%_ if (CONTENT)
+                    if (CONTENT.trim().startsWith('<')) {
                 _%>
-                        <%- content %>
+                    <%- CONTENT %>
+                <%_ } else if (CONTENT.endsWith('.html')) { _%>
+                    <%- include(CONTENT) %>
+                <%_ } else if (CONTENT.endsWith('.md')) { _%>
+                    <%- RENDER_MARKDOWN(READ_FILE(CONTENT, configuration.encoding)) %>
+                <%_ } else { _%>
+                    <%- RENDER_MARKDOWN(CONTENT) %>
                 <%_ } _%>
             </div>
             <!--endregion-->

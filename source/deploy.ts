@@ -25,13 +25,9 @@ import {createReadStream, createWriteStream} from 'fs'
 import {
     copyFile, mkdir, readdir, readFile, rename, rm, writeFile
 } from 'fs/promises'
-import highlightModule from 'highlight.js'
-import {marked} from 'marked'
 import {basename, dirname, extname, join, relative, resolve} from 'path'
 import {Extract} from 'unzipper'
 // endregion
-const {getLanguage, highlight} = highlightModule
-
 interface SCOPE_TYPE extends Mapping<unknown> {
     description?:string
     documentationWebsite?:PlainObject
@@ -41,58 +37,6 @@ interface SCOPE_TYPE extends Mapping<unknown> {
     scripts?:Mapping
     version:string
 }
-
-marked.use({
-    // A prefix url for any relative link.
-    baseUrl: '',
-    // If true, add <br> on a single line break (copies GitHub behavior on
-    // comments, but not on rendered markdown files). Requires gfm be true.
-    breaks: false,
-    // If true, use approved GitHub Flavored Markdown (GFM) specification.
-    gfm: true,
-    // If true, include an id attribute when emitting headings (h1, h2, h3,
-    // etc).
-    headerIds: true,
-    // A string to prefix the id attribute when emitting headings (h1, h2, h3,
-    // etc).
-    headerPrefix: 'doc-',
-    // A function to highlight code blocks, see Asynchronous highlighting.
-    highlight: (code:string, language:string):string => (
-        highlight(
-            code, {language: getLanguage(language) ? language : 'plaintext'}
-        ).value
-    ),
-    // A string to prefix the className in a <code> block. Useful for syntax
-    // highlighting.
-    langPrefix: 'language-',
-    // If true, autolinked email address is escaped with HTML character
-    // references.
-    mangle: true,
-    // If true, conform to the original markdown.pl as much as possible. Don't
-    // fix original markdown bugs or behavior. Turns off and overrides gfm.
-    pedantic: false,
-    // An object containing functions to render tokens to HTML. See
-    // extensibility for more details.
-    // // renderer: new Renderer(),
-    // A function to sanitize the HTML passed into markdownString.
-    sanitizer: Tools.identity,
-    // If true, the parser does not throw any exception.
-    silent: false,
-    // If true, use smarter list behavior than those found in markdown.pl.
-    smartLists: true,
-    // If true, use "smart" typographic punctuation for things like quotes and
-    // dashes.
-    smartypants: true,
-    // An object containing functions to create tokens from markdown. See
-    // extensibility for more details.
-    // tokenizer: new Tokenizer(),
-    // A function which is called for every token. See extensibility for more
-    // details.
-    walkTokens: undefined,
-    // If true, emit self-closing HTML tags for void elements (<br/>, <img/>,
-    // etc.) with a "/" as required by XHTML.
-    xhtml: true
-})
 
 const run = (command:string, options = {}):string =>
     execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
@@ -219,8 +163,6 @@ const generateAndPushNewDocumentationPage = async (
     parameters = {
         ...parameters,
         CONTENT,
-        CONTENT_FILE_PATH: null,
-        RENDER_CONTENT: false,
         API_DOCUMENTATION_PATH: apiDocumentationPath,
         DISTRIBUTION_BUNDLE_FILE_PATH:
             await Tools.isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
@@ -455,8 +397,6 @@ if (
     console.info('Read and Compile all markdown files and transform to html.')
 
     await Tools.walkDirectoryRecursively('./', addReadme)
-
-    CONTENT = marked.parse(CONTENT)
 
     let distributionBundleFilePath:null|string = null
     try {

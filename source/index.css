@@ -9,7 +9,7 @@ License
 This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. See https://creativecommons.org/licenses/by/3.0/deed.de
 endregion */
-@import "pygment-vim-like-highlighting";
+@import "highlight.js/styles/github.css";
 @import "website-utilities/index.compiled.css";
 
 .doc.wu {
@@ -49,7 +49,7 @@ endregion */
     @define-mixin icon-blacktocat {
         @mixin icon;
 
-        background-image: url("../image/blacktocat.png");
+        background-image: url("image/blacktocat.png");
         background-position: 0 0;
         height: 30px;
         width: 30px;
@@ -64,17 +64,17 @@ endregion */
     @define-mixin icon-archiv-gray {
         @mixin icon-archiv;
 
-        background-image: url("../image/folderGray.png");
+        background-image: url("image/folderGray.png");
     }
     @define-mixin icon-archiv-blue {
         @mixin icon-archiv;
 
-        background-image: url("../image/folderBlue.png");
+        background-image: url("image/folderBlue.png");
     }
     @define-mixin icon-download {
         @mixin icon;
 
-        background-image: url("../image/arrowDown.png");
+        background-image: url("image/arrowDown.png");
         background-position: 0 0;
         height: var(--default-space);
         width: 20px;
