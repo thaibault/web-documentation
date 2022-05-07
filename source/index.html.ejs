@@ -148,17 +148,16 @@ _%>
         <section class="main-content-wrap">
             <!--region main content-->
             <div class="main-content inner">
-                <%_ if (CONTENT)
-                    if (CONTENT.trim().startsWith('<')) {
+                <%_ if (CONTENT && !CONTENT.trim().startsWith('<'))
+                    if (CONTENT.endsWith('.html'))
+                        CONTENT = READ_FILE(CONTENT, configuration.encoding)
+                    else if (CONTENT.endsWith('.md'))
+                        CONTENT = RENDER_MARKDOWN(READ_FILE(CONTENT, configuration.encoding))
+                    else
+                        CONTENT = RENDER_MARKDOWN(CONTENT)
                 _%>
-                    <%- CONTENT %>
-                <%_ } else if (CONTENT.endsWith('.html')) { _%>
-                    <%- include(CONTENT) %>
-                <%_ } else if (CONTENT.endsWith('.md')) { _%>
-                    <%- RENDER_MARKDOWN(READ_FILE(CONTENT, configuration.encoding)) %>
-                <%_ } else { _%>
-                    <%- RENDER_MARKDOWN(CONTENT) %>
-                <%_ } _%>
+
+                <%- CONTENT %>
             </div>
             <!--endregion-->
             <!--region about this website-->

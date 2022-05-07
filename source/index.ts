@@ -81,9 +81,11 @@ export class Documentation extends WebsiteUtilities {
             aboutThisWebsiteSection: '.about-this-website',
             codeWrapper: '.codehilite',
             code: '.codehilite pre, code',
+            headlines: '.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6',
             homeLink: 'a[href="#home"]',
             mainSection: '.main-content',
-            tableOfContentLinks: '.toc ul li a[href^="#"]'
+            tableOfContentLinks: '.doc-toc ul li a[href^="#"]',
+            toc: '.doc-toc'
         } as DomNodes,
         domNodeSelectorInfix: 'doc',
         name: 'Documentation',
@@ -147,6 +149,7 @@ export class Documentation extends WebsiteUtilities {
             */
             this._showExamples()
             this._makeCodeEllipsis()
+            this._generateTableOfContentsLinks()
 
             this.on(
                 this.$domNodes.tableOfContentLinks,
@@ -287,6 +290,55 @@ export class Documentation extends WebsiteUtilities {
         super._onStartUpAnimationComplete()
     }
     /// endregion
+    /**
+     * Generates a table of contents overview and links them to their
+     * headlines.
+     * @returns Nothing.
+     */
+    _generateTableOfContentsLinks():void {
+        if (!this.$domNodes.toc)
+            return
+
+        let listItems = '<ul>'
+        let level:number
+        let firstLevel:number
+        this.$domNodes.headlines.each((
+            index:number, element:HTMLHeadingElement
+        ):void => {
+            const newLevel:number =
+                parseInt(element.nodeName.replace(/\D/g, ''))
+
+            if (index === 0)
+                firstLevel = newLevel
+
+            if (newLevel > level)
+                listItems += '<ul>'
+            else if (newLevel < level)
+                listItems += '</ul>'
+
+            listItems += `
+                <li>
+                    <a href="#${element.getAttribute('id')}">
+                        ${element.innerText}
+                    </a>
+                </li>
+            `
+
+            level = newLevel
+        })
+        // Close remaining inner lists.
+        while (level < firstLevel) {
+            listItems += '</ul>'
+            level += 1
+        }
+
+        listItems += '</ul>'
+
+        this.$domNodes.toc.append(listItems)
+
+        this.$domNodes.tableOfContentLinks =
+            $(this.options.domNodes.tableOfContentLinks)
+    }
     /**
      * This method makes dotes after code lines which are too long. This
      * prevents line wrapping.

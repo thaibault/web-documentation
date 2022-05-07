@@ -35,7 +35,7 @@
   "scripts": {
     "build": "yarn build:web; yarn build:deploy",
     "build:deploy": "weboptimizer build '{__reference__: \"target:deploy\"}'",
-    "build:web": "weboptimizer build '{__reference__: \"target:debug\"}'",
+    "build:web": "weboptimizer build",
     "build:stats": "weboptimizer build --profile --json /tmp/stats.json | sed --regexp-extended 's/^Running \".+$//' | sed --regexp-extended 's/^Consolidate module request \".+$//' >/tmp/stats.json && echo 'Results successfully written to \"/tmp/stats.json\".'",
     "check": "yarn check:types; yarn lint",
     "check:types": "weboptimizer check:types",
@@ -148,18 +148,9 @@
       },
       "enforceDeduplication": true,
       "optimizer": {
+        "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
         "cssnano": {
-          "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
-          "preset": {
-            "__remove__": 1,
-            "__append__": {
-              "autoprefixer": false,
-              "discardUnused": {
-                "__evaluate__": "!self.library"
-              },
-              "mergeRules": false
-            }
-          }
+          "__evaluate__": "self.debug ? null : {preset: [optionalRequire('cssnano-preset-default'), {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
         },
         "htmlMinifier": {
           "ignoreCustomComments": [
