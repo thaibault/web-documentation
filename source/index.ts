@@ -79,13 +79,19 @@ export class Documentation extends WebsiteUtilities {
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
             aboutThisWebsiteSection: '.about-this-website',
+
             codeWrapper: '.codehilite',
             code: '.codehilite pre, code',
-            headlines: '.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6',
+
             homeLink: 'a[href="#home"]',
             mainSection: '.main-content',
-            tableOfContentLinks: '.doc-toc ul li a[href^="#"]',
-            toc: '.doc-toc'
+
+            headlines:
+                '.main-content h1, .main-content h2, ' +
+                '.main-content h3, .main-content h4, ' +
+                '.main-content h5, .main-content h6',
+            tableOfContent: '.doc-toc',
+            tableOfContentLinks: '.doc-toc ul li a[href^="#"]'
         } as DomNodes,
         domNodeSelectorInfix: 'doc',
         name: 'Documentation',
@@ -230,7 +236,7 @@ export class Documentation extends WebsiteUtilities {
     }
     /**
      * This method triggers if we change the current section.
-     * @param sectionName - New section which should be switched to.#
+     * @param sectionName - New section which should be switched to.
      * @param event - Triggered event object.
      *
      * @returns Returns the current instance.
@@ -309,14 +315,14 @@ export class Documentation extends WebsiteUtilities {
      * @returns Nothing.
      */
     _generateTableOfContentsLinks():void {
-        if (!this.$domNodes.toc)
+        if (!this.$domNodes.tableOfContent)
             return
 
         let listItems = '<ul>'
         let level:number
         let firstLevel:number
         this.$domNodes.headlines.each((
-            index:number, element:HTMLHeadingElement
+            index:number, element:HTMLElement
         ):void => {
             const newLevel:number =
                 parseInt(element.nodeName.replace(/\D/g, ''))
@@ -331,7 +337,7 @@ export class Documentation extends WebsiteUtilities {
 
             listItems += `
                 <li>
-                    <a href="#${element.getAttribute('id')}">
+                    <a href="#${element.getAttribute('id')!}">
                         ${element.innerText}
                     </a>
                 </li>
@@ -340,14 +346,14 @@ export class Documentation extends WebsiteUtilities {
             level = newLevel
         })
         // Close remaining inner lists.
-        while (level < firstLevel) {
+        while (level! < firstLevel!) {
             listItems += '</ul>'
-            level += 1
+            level! += 1
         }
 
         listItems += '</ul>'
 
-        this.$domNodes.toc.append(listItems)
+        this.$domNodes.tableOfContent.append(listItems)
 
         this.$domNodes.tableOfContentLinks =
             $(this.options.domNodes.tableOfContentLinks)

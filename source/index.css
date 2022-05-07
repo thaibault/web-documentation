@@ -217,7 +217,11 @@ endregion */
     /* region header */
     & header {
         background-image:
-            linear-gradient(to bottom, var(--color7), var(--color8));
+            linear-gradient(
+                to bottom,
+                var(--color7),
+                var(--color8)
+            );
         width: 100%;
 
         & .inner {

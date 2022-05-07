@@ -44,6 +44,9 @@ export type DomNodes<Type = string> =
 
         homeLink:Type
         mainSection:Type
+
+        headlines:Type
+        tableOfContent:Type
         tableOfContentLinks:Type
     }
 
