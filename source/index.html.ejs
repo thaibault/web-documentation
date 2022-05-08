@@ -148,11 +148,13 @@ _%>
         <section class="main-content-wrap">
             <!--region main content-->
             <div class="main-content inner">
-                <%_ if (CONTENT && !CONTENT.trim().startsWith('<'))
+                <%_ if (CONTENT && !CONTENT.trim().startsWith('<!--html-->'))
                     if (CONTENT.endsWith('.html'))
                         CONTENT = READ_FILE(CONTENT, configuration.encoding)
                     else if (CONTENT.endsWith('.md'))
-                        CONTENT = RENDER_MARKDOWN(READ_FILE(CONTENT, configuration.encoding))
+                        CONTENT = RENDER_MARKDOWN(READ_FILE(
+                            CONTENT, configuration.encoding
+                        ))
                     else
                         CONTENT = RENDER_MARKDOWN(CONTENT)
                 _%>
