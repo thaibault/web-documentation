@@ -49,105 +49,107 @@ _%>
             class="tools-visible-on-javascript-enabled window-loading-cover"
         ><div></div></div>
         <!--region header-->
-        <header class="header-wrap"><div class="inner">
-            <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-            <a
-                class="forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                href="<%- SOURCE_URL %>"
-            >
-                View on GitHub
-                <!--deDE:GitHub-Projekt-->
-                <!--frFR:GitHub-Project-->
-                <i class="icon-github"></i>
-            </a>
-            <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-            <h1
-                class="project-title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-            ><a href="<%- URL %>"><%- NAME %></a>
-            <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-            <h2
-                class="project-tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-            >
-                <%- TAGLINE %>
-                <br />
-            </h2>
-            <div class="header-links">
-                <!--NOTE: This elements are shown in reverse order.-->
-                <%_
-                    let numberOfLanguageLinks = 0
-                    if (1 < LANGUAGES.length) {
-                        numberOfLanguageLinks = LANGUAGES.length
-                        START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
-                    }
-                    if (API_DOCUMENTATION_PATH)
-                        START_UP_ANIMATION_NUMBER += 4
-                    else
-                        START_UP_ANIMATION_NUMBER += 2
-                    START_UP_ANIMATION_NUMBER += 1
-                _%>
-                <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
-                    <a
-                        class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                        href="https://github.com/thaibault/<%- NAME %>/zipball/master"
-                    >src.zip</a>
-                    <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                    <a
-                        class="zip-distribution-bundle-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                        href="<%- `${URL}/${DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
-                    >app.zip</a>
-                <%_ } else { _%>
-                    <a
-                        class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                        href="https://github.com/thaibault/<%- NAME %>/zipball/master"
-                    >.zip</a>
-                    <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                    <a
-                        class="tar-gz-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                        href="https://github.com/thaibault/<%- NAME %>/tarball/master"
-                    >.tar.gz</a>
-                <%_ }
-                START_UP_ANIMATION_NUMBER -= 1 _%>
-                <i
-                    class="icon-download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                ></i>
-                <%_
-                    if (numberOfLanguageLinks)
-                        for (const language of LANGUAGES) {
-                            START_UP_ANIMATION_NUMBER -= 1
-                _%>
-                            <a
-                                class="tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="#lang-<%- language %>"
-                            ><%- language.slice(0, 2) %></a>
-                <%_      }
-                    if (API_DOCUMENTATION_PATH) {
-                        START_UP_ANIMATION_NUMBER -= 1
-                _%>
-                        <span
-                            class="arrow-left-api icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                        ></span>
+        <header class="header">
+            <div class="header__inner">
+                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
+                <a
+                    class="forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    href="<%- SOURCE_URL %>"
+                >
+                    View on GitHub
+                    <!--deDE:GitHub-Projekt-->
+                    <!--frFR:GitHub-Project-->
+                    <i class="icon-github"></i>
+                </a>
+                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
+                <h1
+                    class="project-title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                ><a href="<%- URL %>"><%- NAME %></a>
+                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
+                <h2
+                    class="project-tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                >
+                    <%- TAGLINE %>
+                    <br />
+                </h2>
+                <div class="header-links">
+                    <!--NOTE: This elements are shown in reverse order.-->
+                    <%_
+                        let numberOfLanguageLinks = 0
+                        if (1 < LANGUAGES.length) {
+                            numberOfLanguageLinks = LANGUAGES.length
+                            START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
+                        }
+                        if (API_DOCUMENTATION_PATH)
+                            START_UP_ANIMATION_NUMBER += 4
+                        else
+                            START_UP_ANIMATION_NUMBER += 2
+                        START_UP_ANIMATION_NUMBER += 1
+                    _%>
+                    <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
+                        <a
+                            class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="https://github.com/thaibault/<%- NAME %>/zipball/master"
+                        >src.zip</a>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a
-                            class="api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="<%- URL %>/<%- API_DOCUMENTATION_PATH %>"
-                        >
-                            <lang-replace>
-                                API <span>Documentation</span>
-                            </lang-replace>
-                            <!--deDE:API<span>-Dokumentation</span>-->
-                            <!--frFR:<span>Documentation de l'</span>API-->
-                        </a>
-                <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
-                    } else
-                        START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
-                _%>
+                            class="zip-distribution-bundle-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="<%- `${URL}/${DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
+                        >app.zip</a>
+                    <%_ } else { _%>
+                        <a
+                            class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="https://github.com/thaibault/<%- NAME %>/zipball/master"
+                        >.zip</a>
+                        <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                        <a
+                            class="tar-gz-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="https://github.com/thaibault/<%- NAME %>/tarball/master"
+                        >.tar.gz</a>
+                    <%_ }
+                    START_UP_ANIMATION_NUMBER -= 1 _%>
+                    <i
+                        class="icon-download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    ></i>
+                    <%_
+                        if (numberOfLanguageLinks)
+                            for (const language of LANGUAGES) {
+                                START_UP_ANIMATION_NUMBER -= 1
+                    _%>
+                                <a
+                                    class="tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                    href="#lang-<%- language %>"
+                                ><%- language.slice(0, 2) %></a>
+                    <%_      }
+                        if (API_DOCUMENTATION_PATH) {
+                            START_UP_ANIMATION_NUMBER -= 1
+                    _%>
+                            <span
+                                class="arrow-left-api icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            ></span>
+                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                            <a
+                                class="api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="<%- URL %>/<%- API_DOCUMENTATION_PATH %>"
+                            >
+                                <lang-replace>
+                                    API <span>Documentation</span>
+                                </lang-replace>
+                                <!--deDE:API<span>-Dokumentation</span>-->
+                                <!--frFR:<span>Documentation de l'</span>API-->
+                            </a>
+                    <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
+                        } else
+                            START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
+                    _%>
+                </div>
             </div>
-        </div></header>
+        </header>
         <!--endregion-->
         <!--region sections-->
-        <section class="main-content-wrap">
+        <section class="section">
             <!--region main content-->
-            <div class="main-content inner">
+            <div class="main-content section__inner">
                 <%_ if (CONTENT && !CONTENT.trim().startsWith('<!--html-->'))
                     if (CONTENT.endsWith('.html'))
                         CONTENT = READ_FILE(CONTENT, configuration.encoding)
@@ -163,7 +165,7 @@ _%>
             </div>
             <!--endregion-->
             <!--region about this website-->
-            <div class="about-this-website inner">
+            <div class="about-this-website section__inner">
                 <h2 id="about-this-website">
                     About this website
                     <!--deDE:Impressum-->
@@ -217,27 +219,29 @@ _%>
         </section>
         <!--endregion-->
         <!--region footer-->
-        <footer class="footer-wrap"><div class="inner">
-            <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-            <p
-                class="copyright wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-            >
-                <%- NAME %> maintained by
-                <!--deDE:<%- NAME %> betrieben von-->
-                <!--frFR:<%- NAME %> exploité par-->
-                <%_ /*
-                    We need an explicit whitespace here preserve whitespaces
-                    after language switches.
-                */ _%>
-                <a href="https://torben.website"> thaibault</a>
-                &middot; &copy; 2013 Torben Sickert &middot;
-                <a href="#about-this-website">
-                    about this website
-                    <!--deDE:Impressum-->
-                    <!--frFR:Mentions légales-->
-                </a>
-            </p>
-        </div></footer>
+        <footer class="footer">
+            <div class="footer__inner">
+                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
+                <p
+                    class="copyright wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                >
+                    <%- NAME %> maintained by
+                    <!--deDE:<%- NAME %> betrieben von-->
+                    <!--frFR:<%- NAME %> exploité par-->
+                    <%_ /*
+                        We need an explicit whitespace here preserve whitespaces
+                        after language switches.
+                    */ _%>
+                    <a href="https://torben.website"> thaibault</a>
+                    &middot; &copy; 2013 Torben Sickert &middot;
+                    <a href="#about-this-website">
+                        about this website
+                        <!--deDE:Impressum-->
+                        <!--frFR:Mentions légales-->
+                    </a>
+                </p>
+            </div>
+        </footer>
         <!--endregion-->
         <a href="#top">top<!--deDE:nach oben--><!--frFR:ascendant--></a>
         <%_ if (configuration.offline) { _%>

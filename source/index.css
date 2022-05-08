@@ -96,7 +96,9 @@ endregion */
         box-sizing: border-box;
     }
     /** region grid */
-    & .inner {
+    & .header__inner,
+    & .section__inner,
+    & .footer__inner {
         margin: 0 auto;
         position: relative;
         padding: var(--default-space) calc(var(--default-space) / 2);
@@ -206,7 +208,7 @@ endregion */
     /** endregion */
     /* endregion */
     /* region footer */
-    & footer .inner {
+    & .footer__inner {
         padding-left: 0;
         padding-right: 0;
         text-align: center;
@@ -217,7 +219,7 @@ endregion */
     }
     /* endregion */
     /* region header */
-    & header {
+    & .header {
         background-image:
             linear-gradient(
                 to bottom,
@@ -226,7 +228,7 @@ endregion */
             );
         width: 100%;
 
-        & .inner {
+        & .header__inner {
             padding: 50px 10px 30px;
 
             & .forkme-banner {
@@ -324,7 +326,7 @@ endregion */
     }
     /* endregion */
     /* region content */
-    & section {
+    & .section {
         background-color: var(--color1);
         overflow: auto;
         word-wrap: break-word;
@@ -343,7 +345,7 @@ endregion */
             }
         }
         /* region content */
-        & .inner {
+        & .section__inner {
             padding-top: 40px;
 
             &.main-content {
@@ -400,7 +402,7 @@ endregion */
     /** region extra extra small */
     /* TODO pre-process media of wu @media (--extra-extra-small) { */
     @media (min-width: 360px) {
-        & header .inner .header-links {
+        & .header__inner .header-links {
             & .arrow-left-api,
             & .icon-download-arrow { display: initial; }
         }
@@ -408,7 +410,9 @@ endregion */
         /* @media (--extra-small) { */
         /* stylelint-disable at-rule-no-unknown */
         @media (min-width: 500px) {
-            & header .inner .header-links .api-link span { display: initial; }
+            & .header .header__inner .header-links .api-link span {
+                display: initial;
+            }
             /* @media (--small) { */
             @media (min-width: 768px) {
                 /* region small */
@@ -419,15 +423,17 @@ endregion */
                 }
                 /** endregion */
 
-                & .inner { width: 715px; }
+                & .header__inner,
+                & .section__inner,
+                & .footer__inner { width: 715px; }
 
-                & header .inner .header-links {
+                & .header__inner .header-links {
                     width: 706px;
 
                     & .arrow-left-api { margin-left: 0; }
                 }
 
-                & section .inner.main-content {
+                & .section__inner.main-content {
                     & pre { font-size: 0.9em; }
 
                     & code pre { width: 695px; }
