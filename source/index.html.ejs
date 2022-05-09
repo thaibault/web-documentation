@@ -63,16 +63,16 @@ _%>
                 </a>
                 <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                 <h1
-                    class="project-title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    class="header__inner__title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                 ><a href="<%- URL %>"><%- NAME %></a>
                 <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                 <h2
-                    class="project-tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    class="header__inner__tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                 >
                     <%- TAGLINE %>
                     <br />
                 </h2>
-                <div class="header-links">
+                <div class="header__inner__links">
                     <!--NOTE: This elements are shown in reverse order.-->
                     <%_
                         let numberOfLanguageLinks = 0
@@ -88,22 +88,22 @@ _%>
                     _%>
                     <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
                         <a
-                            class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             href="https://github.com/thaibault/<%- NAME %>/zipball/master"
                         >src.zip</a>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a
-                            class="zip-distribution-bundle-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             href="<%- `${URL}/${DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
                         >app.zip</a>
                     <%_ } else { _%>
                         <a
-                            class="zip-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             href="https://github.com/thaibault/<%- NAME %>/zipball/master"
                         >.zip</a>
                         <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <a
-                            class="tar-gz-source-download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             href="https://github.com/thaibault/<%- NAME %>/tarball/master"
                         >.tar.gz</a>
                     <%_ }
@@ -129,7 +129,7 @@ _%>
                             ></span>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
-                                class="api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                 href="<%- URL %>/<%- API_DOCUMENTATION_PATH %>"
                             >
                                 <lang-replace>
@@ -148,8 +148,8 @@ _%>
         <!--endregion-->
         <!--region sections-->
         <section class="section">
-            <!--region main content-->
-            <div class="main-content section__inner">
+            <!--region main-->
+            <div class="section__inner section__main">
                 <%_ if (CONTENT && !CONTENT.trim().startsWith('<!--html-->'))
                     if (CONTENT.endsWith('.html'))
                         CONTENT = READ_FILE(CONTENT, configuration.encoding)
@@ -165,7 +165,7 @@ _%>
             </div>
             <!--endregion-->
             <!--region about this website-->
-            <div class="about-this-website section__inner">
+            <div class="section__about-this-website section__inner">
                 <h2 id="about-this-website">
                     About this website
                     <!--deDE:Impressum-->

@@ -78,18 +78,18 @@ export class Documentation extends WebsiteUtilities {
         codeTableWrapper: '<div class="table-responsive">',
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
-            aboutThisWebsiteSection: '.about-this-website',
+            aboutThisWebsiteSection: '.section__about-this-website',
 
-            codeWrapper: '.codehilite',
-            code: '.codehilite pre, code',
+            codeWrapper: 'pre',
+            code: 'code',
 
             homeLink: 'a[href="#home"]',
-            mainSection: '.main-content',
+            mainSection: '.section__main',
 
             headlines:
-                '.main-content h1, .main-content h2, ' +
-                '.main-content h3, .main-content h4, ' +
-                '.main-content h5, .main-content h6',
+                '.section__main h1, .section__main h2, ' +
+                '.section__main h3, .section__main h4, ' +
+                '.section__main h5, .section__main h6',
             tableOfContent: '.doc-toc',
             tableOfContentLinks: '.doc-toc ul li a[href^="#"]'
         } as DomNodes,
