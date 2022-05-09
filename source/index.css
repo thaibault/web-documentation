@@ -99,27 +99,26 @@ endregion */
     & .header__inner,
     & .section__inner,
     & .footer__inner {
-        margin: 0 auto;
         position: relative;
+
+        margin: 0 auto;
         padding: var(--default-space) calc(var(--default-space) / 2);
     }
     /** endregion */
     /** region symbol */
-    & span {
-        &.arrow-left-home,
-        &.arrow-left-api {
-            float: left;
-            height: 14px;
-            width: 14px;
-            margin-top: 10px;
-            overflow: visible;
-            vertical-align: baseline;
-        }
+    & .section__inner__arrow-left-home,
+    & .header__inner__links__left-arrow {
+        float: left;
+        height: 14px;
+        width: 14px !important;
+        margin-top: 10px;
+        overflow: visible;
+        vertical-align: baseline;
+    }
 
-        &.arrow-left-api {
-            margin-left: 10px;
-            margin-top: 38px;
-        }
+    & .header__inner__links__left-arrow {
+        margin-left: 10px;
+        margin-top: 38px;
     }
     /** endregion */
     /** region headline */
@@ -148,26 +147,14 @@ endregion */
         transition: color 0.5s ease, background-color 0.5s ease;
 
         &:hover { color: var(--color11); }
-
-        &[href="#top"] {
-            bottom: 30px;
-            position: fixed;
-            right: 45px;
-            visibility: hidden;
-            z-index: 4;
-        }
-
-        &[href^="#lang-"] {
-            color: var(--color6);
-
-            &.current { color: var(--color7); }
-            &:hover { color: var(--color8); }
-        }
     }
 
-    & .header__inner__links__api-link {
-        float: left;
-        padding-top: 36px;
+    & .top-link {
+        bottom: 30px;
+        position: fixed;
+        right: 45px;
+        visibility: hidden;
+        z-index: 4;
     }
     /** endregion */
     /** region image */
@@ -179,44 +166,14 @@ endregion */
     /* stylelint-disable selector-class-pattern */
     & .icon- {
         &blacktocat { @mixin icon-blacktocat; }
+        &blue-archiv { @mixin icon-archiv-blue; }
         &download { @mixin icon-download; }
         &gray-archiv { @mixin icon-archiv-gray; }
-        &blue-archiv { @mixin icon-archiv-blue; }
     }
     /* stylelint-enable selector-class-pattern */
     /* stylelint-enable at-rule-no-unknown */
     /*** endregion */
-    /* stylelint-disable at-rule-no-unknown */
-    & i {
-        &.icon-download-arrow {
-            @mixin icon-download;
-
-            float: right;
-            margin-left: var(--default-space);
-            margin-top: 39px;
-        }
-
-        &.icon-github {
-            @mixin icon-blacktocat;
-
-            margin-bottom: -2px;
-            margin-left: 8px;
-            margin-top: -6px;
-        }
-    }
-    /* stylelint-enable at-rule-no-unknown */
     /** endregion */
-    /* endregion */
-    /* region footer */
-    & .footer__inner {
-        padding-left: 0;
-        padding-right: 0;
-        text-align: center;
-        width: 100%;
-
-        & p { color: var(--color3); }
-        & a:hover { color: var(--color11); }
-    }
     /* endregion */
     /* region header */
     & .header {
@@ -231,22 +188,48 @@ endregion */
 
     & .header__inner {
         padding: 50px 10px 30px;
+    }
 
-        & .forkme-banner {
-            background-color: var(--color10);
-            border-radius: 0 0 2px 2px;
-            box-shadow: 0 0 10px var(--color9);
+    & .header__inner__forkme-banner {
+        background-color: var(--color10);
+        border-radius: 0 0 2px 2px;
+        box-shadow: 0 0 10px var(--color9);
+        color: var(--color1);
+        display: block;
+        font-weight: 700;
+        padding: 10px;
+        position: absolute;
+        right: 10px;
+        top: 0;
+        z-index: 10;
+
+        &:hover { background-color: var(--color11); }
+    }
+
+    & .header__inner__forkme-banner__icon-github {
+        @mixin icon-blacktocat;
+
+        margin-bottom: -2px;
+        margin-left: 8px;
+        margin-top: -6px;
+    }
+
+    & .header__inner__title,
+    & .header__inner__tagline {
+        border: none;
+        color: var(--color1);
+        text-shadow: var(--color9) 0 0 10px;
+
+        & a {
             color: var(--color1);
-            display: block;
-            font-weight: 700;
-            padding: 10px;
-            position: absolute;
-            right: 10px;
-            top: 0;
-            z-index: 10;
-
-            &:hover { background-color: var(--color11); }
+            text-shadow: var(--color9) 0 0 10px;
         }
+    }
+
+    & .header__inner__tagline {
+        background: none;
+        font-size: 2em;
+        font-weight: 300;
     }
 
     & .header__inner__links {
@@ -257,25 +240,43 @@ endregion */
         right: 0;
         width: 100%;
         z-index: 10;
+    }
 
-        & .arrow-left-api { margin-left: 10px; }
-
-        & .arrow-left-api,
-        & .icon-download-arrow { display: none; }
+    & .header__inner__links__left-arrow {
+        display: none;
+        margin-left: 10px;
     }
 
     & .header__inner__links__api-link {
+        float: left;
+
         margin-left: 10px;
+        padding-top: 36px;
 
         & span {
             display: none;
         }
     }
 
-    & a[href^="#lang-"] {
+    & .header__inner__links__lang {
+        color: var(--color6);
+
         float: right;
+
         padding-right: 10px;
         padding-top: 35px;
+
+        &.current { color: var(--color7); }
+        &:hover { color: var(--color8); }
+    }
+
+    & .header__inner__links__download-arrow {
+        @mixin icon-download;
+
+        display: none;
+        float: right;
+        margin-left: var(--default-space);
+        margin-top: 39px;
     }
 
     /* region download buttons */
@@ -307,24 +308,6 @@ endregion */
         width: 80px;
     }
     /* endregion */
-
-    & .header__inner__title,
-    & .header__inner__tagline {
-        border: none;
-        color: var(--color1);
-        text-shadow: var(--color9) 0 0 10px;
-
-        & a {
-            color: var(--color1);
-            text-shadow: var(--color9) 0 0 10px;
-        }
-    }
-
-    & .header__inner__tagline {
-        background: none;
-        font-size: 2em;
-        font-weight: 300;
-    }
     /* endregion */
     /* region section */
     & .section {
@@ -356,10 +339,12 @@ endregion */
 
         & .show-example-wrapper {
             background-color: var(--color2);
+
             border: 1px solid var(--color4);
             border-top: 0;
-            padding: var(--default-space);
-            padding-top: calc(var(--default-space) / 2);
+
+            margin-top: -14px;
+            padding: calc(var(--default-space) / 2);
 
             & h3 {
                 color: var(--color5);
@@ -394,14 +379,23 @@ endregion */
         }
     }
     /* endregion */
+    /* region footer */
+    & .footer__inner {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        width: 100%;
+
+        & p { color: var(--color3); }
+        & a:hover { color: var(--color11); }
+    }
+    /* endregion */
     /* region responsive */
     /** region extra extra small */
     /* TODO pre-process media of wu @media (--extra-extra-small) { */
     @media (min-width: 360px) {
-        & .header__inner__links {
-            & .arrow-left-api,
-            & .icon-download-arrow { display: initial; }
-        }
+        & .header__inner__links__left-arrow,
+        & .header__inner__links__download-arrow { display: initial; }
         /** region extra small */
         /* @media (--extra-small) { */
         /* stylelint-disable at-rule-no-unknown */
@@ -425,9 +419,9 @@ endregion */
 
                 & .header__inner__links {
                     width: 706px;
-
-                    & .arrow-left-api { margin-left: 0; }
                 }
+
+                & .header__inner__links__left-arrow { margin-left: 0; }
 
                 & .section__main {
                     & code {
@@ -438,7 +432,7 @@ endregion */
                     & .show-example-wrapper { width: 100%; }
                 }
 
-                & a[href="#top"] {
+                & .top-link {
                     bottom: 34px;
                     position: fixed;
                     right: 5px;
@@ -446,10 +440,10 @@ endregion */
                     z-index: 4;
                 }
                 /* endregion */
-                /* region medium */
+                /* reg ion medium */
                 /* @media (--medium) { */
                 @media (min-width: 992px) {
-                    & a[href="#top"] { right: 45px; }
+                    & .top-link { right: 45px; }
 
                     & .section__main code {
                         font-size: 0.9em;

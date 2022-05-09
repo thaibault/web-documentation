@@ -47,12 +47,11 @@ components is integrated as well.
     verschiedener GUI-Komponenten mitgeliefert.
 -->
 
-<!--|deDE:Inhalt-->
-Content
--------
-
 <!--Place for automatic generated table of contents.-->
-<div class="doc-toc"></div>
+<div class="doc-toc" style="display:none">
+    <!--|deDE:Inhalt-->
+    <h2 id="content">Content</h2>
+</div>
 
 <!--|deDE:Merkmale-->
 Features
@@ -96,6 +95,23 @@ Features
 <!--|deDE:Installation-->
 Installation
 ------------
+
+```bash
+>>> curl \
+        https://raw.githubusercontent.com/thaibault/archinstall/master/archinstall.sh >archinstall.sh && \
+        chmod +x archinstall.sh
+```
+
+### Executable code example
+
+<!--showExample-->
+
+```HTML
+<label>
+    Name:
+    <input type="text" placeholder="Max Musterman" />
+</label>
+```
 
 <!--|deDE:Klassische Dom-Integration-->
 ### Classical dom injection

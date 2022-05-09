@@ -37,8 +37,6 @@ declare const LANGUAGES:Array<string>
  * trigger when all example loaded.
  * @property static:_commonOptions.domNodeSelectorInfix {string} - Something
  * indicating controlled nodes.
- * @property static:_commonOptions.codeTableWrapper {string} - Markup to use as
- * wrapper for all code highlighted examples.
  * @property static:_commonOptions.showExample {Object} - Options object to
  * configure code example representation.
  * @property static:_commonOptions.showExample.pattern {string} - Regular
@@ -75,7 +73,6 @@ declare const LANGUAGES:Array<string>
 export class Documentation extends WebsiteUtilities {
 /* eslint-enable jsdoc/require-description-complete-sentence */
     static _commonOptions:DefaultOptions = {
-        codeTableWrapper: '<div class="table-responsive">',
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
             aboutThisWebsiteSection: '.section__about-this-website',
@@ -129,6 +126,7 @@ export class Documentation extends WebsiteUtilities {
     /**
      * Initializes the interactive web application.
      * @param options - An options object.
+     *
      * @returns Returns the current instance.
      */
     initialize<R = Promise<Documentation>>(
@@ -357,6 +355,8 @@ export class Documentation extends WebsiteUtilities {
 
         this.$domNodes.tableOfContentLinks =
             $(this.options.domNodes.tableOfContentLinks)
+
+        this.$domNodes.tableOfContent.css('display', 'initial')
     }
     /**
      * This method makes dotes after code lines which are too long. This
@@ -364,13 +364,14 @@ export class Documentation extends WebsiteUtilities {
      * @returns Returns the current instance.
      */
     _makeCodeEllipsis():void {
+        const lengthLimit = 89 // 79
+
         this.$domNodes.code.each((index:number, domNode:HTMLElement):void => {
             const $domNode:$T = $(domNode)
-            const tableParent:$T = $domNode.closest('table')
-            if (tableParent.length)
-                tableParent.wrap(this.options.codeTableWrapper)
+
             let newContent = ''
             const codeLines:Array<string> = $domNode.html().split('\n')
+
             let subIndex = 0
             for (const value of codeLines) {
                 /*
@@ -378,13 +379,14 @@ export class Documentation extends WebsiteUtilities {
                     input.
                 */
                 const excess:number = $(`<div>${value}</div>`).text(
-                ).length - 79
+                ).length - lengthLimit
                 if (excess > 0)
                     newContent += this._replaceExcessWithDots(value, excess)
                 else
                     newContent += value
                 if (subIndex + 1 !== codeLines.length)
                     newContent += '\n'
+
                 subIndex += 1
             }
             $domNode.html(newContent)
@@ -395,6 +397,7 @@ export class Documentation extends WebsiteUtilities {
      * amount of excess.
      * @param content - String to trim.
      * @param excess - Amount of excess.
+     *
      * @returns Returns the trimmed content.
      */
     _replaceExcessWithDots(content:string, excess:number):string {

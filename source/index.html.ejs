@@ -53,13 +53,13 @@ _%>
             <div class="header__inner">
                 <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                 <a
-                    class="forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    class="header__inner__forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                     href="<%- SOURCE_URL %>"
                 >
                     View on GitHub
                     <!--deDE:GitHub-Projekt-->
                     <!--frFR:GitHub-Project-->
-                    <i class="icon-github"></i>
+                    <i class="header__inner__forkme-banner__icon-github"></i>
                 </a>
                 <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                 <h1
@@ -109,7 +109,7 @@ _%>
                     <%_ }
                     START_UP_ANIMATION_NUMBER -= 1 _%>
                     <i
-                        class="icon-download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        class="header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                     ></i>
                     <%_
                         if (numberOfLanguageLinks)
@@ -117,7 +117,7 @@ _%>
                                 START_UP_ANIMATION_NUMBER -= 1
                     _%>
                                 <a
-                                    class="tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                    class="header__inner__links__lang tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                     href="#lang-<%- language %>"
                                 ><%- language.slice(0, 2) %></a>
                     <%_      }
@@ -125,7 +125,7 @@ _%>
                             START_UP_ANIMATION_NUMBER -= 1
                     _%>
                             <span
-                                class="arrow-left-api icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="header__inner__links__left-arrow icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                             ></span>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
@@ -203,7 +203,7 @@ _%>
                     <!--frFR:Site:-->
                     <a href="https://torben.website">https://torben.website</a>
                     <br>
-                    <span class="arrow-left-home icon icon-arrow-left tools-visible-on-javascript-enabled"></span>
+                    <span class="section__inner__arrow-left-home icon icon-arrow-left tools-visible-on-javascript-enabled"></span>
                     <a
                         class="tools-visible-on-javascript-enabled"
                         href="#home"
@@ -223,7 +223,7 @@ _%>
             <div class="footer__inner">
                 <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                 <p
-                    class="copyright wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    class="wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                 >
                     <%- NAME %> maintained by
                     <!--deDE:<%- NAME %> betrieben von-->
@@ -243,7 +243,9 @@ _%>
             </div>
         </footer>
         <!--endregion-->
-        <a href="#top">top<!--deDE:nach oben--><!--frFR:ascendant--></a>
+        <a class="top-link" href="#top">
+            top<!--deDE:nach oben--><!--frFR:ascendant-->
+        </a>
         <%_ if (configuration.offline) { _%>
             <noscript>
                 <iframe src="manifest.html" style="display: none"></iframe>

@@ -51,7 +51,6 @@ export type DomNodes<Type = string> =
     }
 
 export interface DefaultOptions {
-    codeTableWrapper:string
     domNodes:DomNodes
     domNodeSelectorInfix:null|string
     name:string
