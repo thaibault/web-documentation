@@ -61,7 +61,6 @@
     "@types/archiver": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
-    "@types/jest": "*",
     "@types/jquery": "*",
     "@types/jsdom": "*",
     "@types/marked": "*",
