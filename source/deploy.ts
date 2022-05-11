@@ -273,7 +273,7 @@ const createDistributionBundle = async ():Promise<null|string> => {
                 if (await Tools.isDirectory(filePath))
                     result = result.concat(await determineFilePaths(
                         (await readdir(filePath)).map((path:string):string =>
-                            resolve(path)
+                            resolve(filePath, path)
                         )
                     ))
                 else {
