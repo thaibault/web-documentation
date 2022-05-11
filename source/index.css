@@ -117,6 +117,8 @@ endregion */
     }
 
     & .header__inner__links__left-arrow {
+        display: none;
+
         margin-left: 10px;
         margin-top: 38px;
     }
@@ -207,7 +209,9 @@ endregion */
     }
 
     & .header__inner__forkme-banner__icon-github {
+        /* stylelint-disable at-rule-no-unknown */
         @mixin icon-blacktocat;
+        /* stylelint-enable at-rule-no-unknown */
 
         margin-bottom: -2px;
         margin-left: 8px;
@@ -242,11 +246,6 @@ endregion */
         z-index: 10;
     }
 
-    & .header__inner__links__left-arrow {
-        display: none;
-        margin-left: 10px;
-    }
-
     & .header__inner__links__api-link {
         float: left;
 
@@ -271,14 +270,15 @@ endregion */
     }
 
     & .header__inner__links__download-arrow {
+        /* stylelint-disable at-rule-no-unknown */
         @mixin icon-download;
+        /* stylelint-enable at-rule-no-unknown */
 
         display: none;
         float: right;
         margin-left: var(--default-space);
         margin-top: 39px;
     }
-
     /* region download buttons */
     & .header__inner__links__download {
         /* stylelint-disable at-rule-no-unknown */
@@ -309,6 +309,17 @@ endregion */
     }
     /* endregion */
     /* endregion */
+    /* region footer */
+    & .footer__inner {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        width: 100%;
+
+        & p { color: var(--color3); }
+        & a:hover { color: var(--color11); }
+    }
+    /* endregion */
     /* region section */
     & .section {
         background-color: var(--color1);
@@ -337,6 +348,23 @@ endregion */
     & .section__main {
         & p { margin: var(--default-space) 0 0 0; }
 
+        & code {
+            display: block;
+            padding: 9.5px;
+
+            font-size: 0.7em;
+            line-height: 1.4286;
+
+            color: #333;
+            overflow: auto;
+
+            background-color: var(--color2);
+
+            border: 1px solid var(--color4);
+
+            margin: var(--default-space) 0 0 0;
+        }
+
         & .show-example-wrapper {
             background-color: var(--color2);
 
@@ -358,36 +386,6 @@ endregion */
 
             & p { margin: 0; }
         }
-
-        & code {
-            display: block;
-            padding: 9.5px;
-
-            font-size: 0.7em;
-            line-height: 1.4286;
-
-            color: #333;
-            overflow: auto;
-
-            background-color: var(--color2);
-
-            border: 1px solid var(--color4);
-
-            margin: var(--default-space) 0 0 0;
-            /* Don't highlight syntax errors. */
-            & .err { border: 0; }
-        }
-    }
-    /* endregion */
-    /* region footer */
-    & .footer__inner {
-        padding-left: 0;
-        padding-right: 0;
-        text-align: center;
-        width: 100%;
-
-        & p { color: var(--color3); }
-        & a:hover { color: var(--color11); }
     }
     /* endregion */
     /* region responsive */
@@ -440,7 +438,7 @@ endregion */
                     z-index: 4;
                 }
                 /* endregion */
-                /* reg ion medium */
+                /* region medium */
                 /* @media (--medium) { */
                 @media (min-width: 992px) {
                     & .top-link { right: 45px; }

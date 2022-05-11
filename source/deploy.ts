@@ -267,13 +267,15 @@ const createDistributionBundle = async ():Promise<null|string> => {
         let result:Array<string> = []
 
         for (let filePath of filePaths) {
-            filePath = resolve(`./${filePath}`)
+            filePath = resolve(filePath)
 
             if (!(await isFileIgnored(filePath)))
                 if (await Tools.isDirectory(filePath))
-                    result = result.concat(
-                        await determineFilePaths(await readdir(filePath))
-                    )
+                    result = result.concat(await determineFilePaths(
+                        (await readdir(filePath)).map((path:string):string =>
+                            resolve(path)
+                        )
+                    ))
                 else {
                     console.debug(`Add "${filePath}" to distribution bundle.`)
 

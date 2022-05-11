@@ -14,6 +14,7 @@
     endregion
 */
 // region imports
+import {beforeAll, describe, expect, test} from '@jest/globals'
 import {$} from 'clientnode'
 
 import Documentation from './index'
@@ -27,6 +28,7 @@ describe('Documentation', ():void => {
     require('internationalisation')
     require('website-utilities')
     require('./index')
+
     beforeAll(async ():Promise<void> => {
         documentation = (await $.Documentation()) as Documentation
     })
