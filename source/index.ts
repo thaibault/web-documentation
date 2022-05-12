@@ -322,6 +322,9 @@ export class Documentation extends WebsiteUtilities {
         this.$domNodes.headlines.each((
             index:number, element:HTMLElement
         ):void => {
+            if ($(element).closest('.show-example-wrapper').length)
+                return
+
             const newLevel:number =
                 parseInt(element.nodeName.replace(/\D/g, ''))
 
