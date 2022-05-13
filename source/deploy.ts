@@ -509,8 +509,12 @@ if (
             await rm(path, {recursive: true})
     // endregion
 
-    // Prepare build artefacts for further local usage.
-    run('yarn build')
+    if (
+        Boolean(SCOPE.scripts) &&
+        Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
+    )
+        // Prepare build artefacts for further local usage.
+        run('yarn build')
 }
 
 
