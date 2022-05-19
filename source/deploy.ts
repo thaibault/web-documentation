@@ -232,18 +232,18 @@ const createDistributionBundle = async ():Promise<null|string> => {
     if (
         SCOPE.scripts &&
         (
-            SCOPE.scripts['build:export:compatible'] ||
-            SCOPE.scripts['build:export'] ||
+            SCOPE.scripts['build:bundle:compatible'] ||
+            SCOPE.scripts['build:bundle'] ||
             SCOPE.scripts.build
         )
     ) {
         const buildCommand =
             'yarn ' +
             (
-                SCOPE.scripts['build:export:compatible'] ?
-                    'build:export:compatible' :
-                    SCOPE.scripts['build:export'] ?
-                        'build:export' :
+                SCOPE.scripts['build:bundle:compatible'] ?
+                    'build:bundle:compatible' :
+                    SCOPE.scripts['build:bundle'] ?
+                        'build:bundle' :
                         'build'
             )
         console.info(`Build distribution bundle via "${buildCommand}".`)
