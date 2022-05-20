@@ -151,6 +151,16 @@ endregion */
         &:hover { color: var(--color11); }
     }
 
+    /* Badge links */
+    & p a {
+        &[href^="https://coveralls.io/github/"],
+        &[href^="https://github.com/"],
+        &[href^="https://torben.website/"],
+        &[href^="https://www.npmjs.com/package/"] {
+            margin: 5px;
+        }
+    }
+
     & .top-link {
         bottom: 30px;
         position: fixed;
