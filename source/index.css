@@ -147,10 +147,7 @@ endregion */
         outline: none !important;
         text-shadow: none;
         transition: color 0.5s ease, background-color 0.5s ease;
-
-        &:hover { color: var(--color11); }
     }
-
     /* Badge links */
     & p a {
         &[href^="https://coveralls.io/github/"],
@@ -160,6 +157,8 @@ endregion */
             margin: 5px;
         }
     }
+
+    & a:hover { color: var(--color11); }
 
     & .top-link {
         bottom: 30px;
