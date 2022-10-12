@@ -27,9 +27,6 @@ endregion */
     --color10: #0090ff;
     --color11: #0069ba;
     /** endregion */
-    /** region space */
-    --default-space: 20px;
-    /** endregion */
     /* endregion */
     /* region custom properties */
     /* stylelint-disable at-rule-no-unknown */
@@ -76,7 +73,7 @@ endregion */
 
         background-image: url("image/arrowDown.png");
         background-position: 0 0;
-        height: var(--default-space);
+        height: var(--w-default-space);
         width: 20px;
     }
     /* stylelint-enable at-rule-no-unknown */
@@ -102,7 +99,7 @@ endregion */
         position: relative;
 
         margin: 0 auto;
-        padding: var(--default-space) calc(var(--default-space) / 2);
+        padding: var(--w-default-space) calc(var(--w-default-space) / 2);
     }
     /** endregion */
     /** region symbol */
@@ -132,7 +129,7 @@ endregion */
     & h6 {
         color: var(--color8);
 
-        font-family: var(--font-family-condensed);
+        font-family: var(--w-typography-font-family-headline);
         font-size: 2em;
 
         letter-spacing: -1px;
@@ -285,7 +282,7 @@ endregion */
 
         display: none;
         float: right;
-        margin-left: var(--default-space);
+        margin-left: var(--w-default-space);
         margin-top: 39px;
     }
     /* region download buttons */
@@ -300,7 +297,7 @@ endregion */
         font-size: 1.2em;
         font-weight: bolder;
         height: 66px;
-        margin-right: calc(var(--default-space) / 2);
+        margin-right: calc(var(--w-default-space) / 2);
         overflow: hidden;
         padding-top: 29px;
         text-align: center;
@@ -355,7 +352,7 @@ endregion */
     }
 
     & .section__main {
-        & p { margin: var(--default-space) 0 0 0; }
+        & p { margin: var(--w-default-space) 0 0 0; }
 
         & code {
             display: block;
@@ -371,7 +368,7 @@ endregion */
 
             border: 1px solid var(--color4);
 
-            margin: var(--default-space) 0 0 0;
+            margin: var(--w-default-space) 0 0 0;
         }
 
         & .show-example-wrapper {
@@ -381,15 +378,15 @@ endregion */
             border-top: 0;
 
             margin-top: -14px;
-            padding: calc(var(--default-space) / 2);
+            padding: calc(var(--w-default-space) / 2);
 
             & h3 {
                 color: var(--color5);
-                font-family: var(--font-family);
+                font-family: var(--w-typography-font-family);
                 font-size: 0.9em;
                 font-weight: bold;
                 letter-spacing: 1px;
-                margin-bottom: calc(var(--default-space) / 2);
+                margin-bottom: calc(var(--w-default-space) / 2);
                 margin-top: 0;
             }
 
