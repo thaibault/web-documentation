@@ -18,17 +18,11 @@ Project status
 
 [![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml)
 [![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/test.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/test:coverage:report.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/test:coverage:report.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/check:types.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/check:types.yaml)
+[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml)
+[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml)
 [![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml)
 
 [![code coverage](https://coveralls.io/repos/github/thaibault/documentation-website/badge.svg)](https://coveralls.io/github/thaibault/documentation-website)
-
-<!-- Too unstable yet
-[![dependencies](https://img.shields.io/david/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website)
-[![development dependencies](https://img.shields.io/david/dev/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website?type=dev)
-[![peer dependencies](https://img.shields.io/david/peer/thaibault/documentation-website.svg)](https://david-dm.org/thaibault/documentation-website?type=peer)
--->
 
 Use case
 --------
