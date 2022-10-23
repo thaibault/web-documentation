@@ -98,7 +98,7 @@ Installation
 
 ```bash
 >>> curl \
-        https://raw.githubusercontent.com/thaibault/archinstall/master/archinstall.sh >archinstall.sh && \
+        https://raw.githubusercontent.com/thaibault/archinstall/main/archinstall.sh >archinstall.sh && \
         chmod +x archinstall.sh
 ```
 

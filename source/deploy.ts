@@ -222,7 +222,7 @@ const generateAndPushNewDocumentationPage = async (
     run('git add --all')
     run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)
     run('git push')
-    run('git checkout master')
+    run('git checkout main')
 }
 
 /**
@@ -381,7 +381,7 @@ const addReadme = async (file:File):Promise<false|void> => {
 // endregion
 
 if (
-    run('git branch').includes('* master') &&
+    run('git branch').includes('* main') &&
     run('git branch --all').includes('gh-pages')
 ) {
     SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
