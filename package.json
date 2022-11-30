@@ -75,7 +75,7 @@
     "eslint": "*",
     "eslint-config-google": "*",
     "eslint-plugin-jsdoc": "*",
-    "favicons": "^6.2.0",
+    "favicons": "*",
     "favicons-webpack-plugin": "*",
     "highlight.js": "*",
     "internationalisation": "*",
