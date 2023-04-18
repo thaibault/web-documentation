@@ -13,6 +13,18 @@ endregion */
 @import "website-utilities/fonts.compiled.css";
 @import "website-utilities/index.compiled.css";
 
+:root {
+    /* region extra small dimension */
+    @custom-media --w-extra-extra-small (min-width: 360px);
+    @custom-media --w-extra-small (min-width: 500px);
+    /* endregion */
+    /* region default media query dimensions */
+    @custom-media --w-small (min-width: 768px);
+    @custom-media --w-medium (min-width: 992px);
+    @custom-media --w-large (min-width: 1200px);
+    /* endregion */
+}
+
 .doc.wu {
     /* region constants */
     /** region color */
@@ -397,19 +409,16 @@ endregion */
     /* endregion */
     /* region responsive */
     /** region extra extra small */
-    /* TODO pre-process media of wu @media (--extra-extra-small) { */
-    @media (min-width: 360px) {
+    @media (--w-extra-extra-small) {
         & .header__inner__links__left-arrow,
         & .header__inner__links__download-arrow { display: initial; }
         /** region extra small */
-        /* @media (--extra-small) { */
-        /* stylelint-disable at-rule-no-unknown */
-        @media (min-width: 500px) {
+        @media (--w-extra-small) {
             & .header__inner__links__api-link span {
                 display: initial;
             }
-            /* @media (--small) { */
-            @media (min-width: 768px) {
+
+            @media (--w-small) {
                 /* region small */
                 /** region headline */
                 & h2 {
@@ -446,8 +455,7 @@ endregion */
                 }
                 /* endregion */
                 /* region medium */
-                /* @media (--medium) { */
-                @media (min-width: 992px) {
+                @media (--w-medium) {
                     & .top-link { right: 45px; }
 
                     & .section__main code {
@@ -457,7 +465,6 @@ endregion */
                 /* endregion */
             }
         }
-        /* stylelint-enable at-rule-no-unknown */
         /** endregion */
     }
     /** endregion */
