@@ -13,16 +13,16 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/documentation-website?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d)](https://www.npmjs.com/package/documentation-website)
-[![npm downloads](https://img.shields.io/npm/dy/documentation-website.svg)](https://www.npmjs.com/package/documentation-website)
+[![npm](https://img.shields.io/npm/v/documentation-website?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/documentation-website)
+[![npm downloads](https://img.shields.io/npm/dy/documentation-website.svg?style=for-the-badge)](https://www.npmjs.com/package/documentation-website)
 
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/test.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml)
-[![<LABEL>](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml)
+[![build](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/build.yaml?style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml)
 
-[![code coverage](https://coveralls.io/repos/github/thaibault/documentation-website/badge.svg)](https://coveralls.io/github/thaibault/documentation-website)
+[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml)
+[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml)
+[![test](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml)
+
+[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/documentation-website?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/documentation-website)
 
 Use case
 --------
