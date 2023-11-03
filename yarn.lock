@@ -3861,9 +3861,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.1087"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1087.tgz#5b88429bc4788e077e61b168cc2f9c10567f5630"
-  integrity sha512-SnBTQSom49GIHl4hCNbaXvHhZUcr5kYUZW0HQ6HiLDPV8KkpuBdly71cIAis/sLm44Un1wJbCA4ehpGxvn/2rA==
+  version "3.0.1088"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1088.tgz#6205e918a8a4e252a8b0e7feb6015b1f000a3e00"
+  integrity sha512-mPdywe3CLJXO4YCLXS/ETWu3qwkBQWVkoLOB+jmev6NK/7Hz75laYN9lvZ9pQcS5pojdz2g8nk4wvwVRtLoBWg==
 
 cliui@^4.0.0:
   version "4.1.0"
@@ -4802,9 +4802,9 @@ ejs@*:
     jake "^10.8.5"
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.4.535:
-  version "1.4.574"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.574.tgz#6de04d7c6e244e5ffcae76d2e2a33b02cab66781"
-  integrity sha512-bg1m8L0n02xRzx4LsTTMbBPiUd9yIR+74iPtS/Ao65CuXvhVZHP0ym1kSdDG3yHFDXqHQQBKujlN1AQ8qZnyFg==
+  version "1.4.575"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.575.tgz#7c0b87eb2c6214a993699792abd704de41255c39"
+  integrity sha512-kY2BGyvgAHiX899oF6xLXSIf99bAvvdPhDoJwG77nxCSyWYuRH6e9a9a3gpXBvCs6lj4dQZJkfnW2hdKWHEISg==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -4879,9 +4879,9 @@ error-ex@^1.3.1:
     is-arrayish "^0.2.1"
 
 errorreporter@*:
-  version "1.0.295"
-  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.295.tgz#d75d94d2de22ffe77c34d27aba099f496cc9e2c6"
-  integrity sha512-uUhQiz2LhrTUzyO2jAlAENgn5A9LkD0nhebOhU60NUddka69vpM24GSxfTDglR/xyFGkEetMq7QqPPwQ45paeg==
+  version "1.0.296"
+  resolved "https://registry.yarnpkg.com/errorreporter/-/errorreporter-1.0.296.tgz#064834caa34aa07929f372df25e1e123303beb97"
+  integrity sha512-X8ys789/TTebDZ8lWn7Xh3RajUjGQOOP+dkSH4JRpOzJPFGpnKRhdxI+O1Rb562IRQK0vPg4N2JZIfvZmCPLgw==
 
 es-abstract@^1.17.2, es-abstract@^1.22.1:
   version "1.22.3"
@@ -6243,9 +6243,9 @@ internal-slot@^1.0.5:
     side-channel "^1.0.4"
 
 internationalisation@*:
-  version "1.0.306"
-  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.306.tgz#a2ed23748da18bd4251ac9e5aaa273c6fd115423"
-  integrity sha512-Wd3oZSVICquT/O5GDjWSYXCfjpitIJpaW6iJtCn8nF/N+WXNAmaYT5emzvJArC/1F0F84Qo3bWiJc7lZPl1O6w==
+  version "1.0.307"
+  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.307.tgz#7081a2b291c67fc1c8a818ce2f85a1a1457d74c9"
+  integrity sha512-q2eZzdu9ZGqmNERVImYVoOCA/2Y8MmV0czDa3azp5ugBy/eWlMj4Nf2h9sKw48f+xe6ITAx1JO1GBsAowZeiKg==
 
 interpret@^3.1.1:
   version "3.1.1"
@@ -10935,9 +10935,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1395"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1395.tgz#95de05e1937ccebb0fd972ffd8ceb583ac07513e"
-  integrity sha512-VjhQ4jwgvEQ81MwmaljCtsgY2hPivsnEkdSH+mDNWYjJ+WQB5d1011rpqZvu/jblLVrceG6cEfv9KsXF/yQ4lA==
+  version "2.0.1396"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1396.tgz#ca12035cb7d9e002e4333e68ffd5fe7c0ff7b4de"
+  integrity sha512-9bIyR0msspoac7KHN/3YKKSsGSboMDca7cu38SBYuyLdWXJ2nFFVjeMC3QCTS75v4GoGIG0YtasAaDZSdP6Rxw==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
@@ -11078,9 +11078,9 @@ webpack@*:
     webpack-sources "^3.2.3"
 
 website-utilities@*:
-  version "1.0.336"
-  resolved "https://registry.yarnpkg.com/website-utilities/-/website-utilities-1.0.336.tgz#0ccdd0a06b726322b95ff9b3fabf4b8702b455ca"
-  integrity sha512-5vHXzi9kSpvs1F8n+DNe5feGWNIGPHxozKoW8FI8Q/gZHbX16HgSkoPAhUulBJD2MEup0Tc6Manm0sUnqWtMTQ==
+  version "1.0.337"
+  resolved "https://registry.yarnpkg.com/website-utilities/-/website-utilities-1.0.337.tgz#c8172706d1a9ab97fbda709f0aaa5702cf88698b"
+  integrity sha512-PCHz31sKDM3mnE1KmRkyoXK8cH3FXyo7J6zqYuzHwfS6sVx2c2FYYMvh0NP80+gZc2AjDuodf21ixVKO+w/7QQ==
 
 websocket-driver@>=0.5.1, websocket-driver@^0.7.4:
   version "0.7.4"
