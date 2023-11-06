@@ -26,6 +26,7 @@ import {
     copyFile, mkdir, readdir, readFile, rename, rm, writeFile
 } from 'fs/promises'
 import {basename, dirname, extname, join, relative, resolve} from 'path'
+import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
 interface SCOPE_TYPE extends Mapping<unknown> {
@@ -76,6 +77,18 @@ const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
 let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
 // region functions
+/**
+ * TODO
+ * @param stream
+ */
+const stream2buffer = async (stream:Stream):Promise<Buffer> => {
+    return new Promise<Buffer>((resolve, reject) => {
+        const chunks:Array<Uint8Array> = []
+        stream.on('data', (chunk:Uint8Array) => chunks.push(chunk))
+        stream.on('end', () => resolve(Buffer.concat(chunks)))
+        stream.on('error', (error:Error) => reject(error))
+    })
+}
 /**
  * Renders a new index.html file and copies new assets to generate a new
  * documentation homepage.
@@ -286,7 +299,6 @@ const createDistributionBundle = async ():Promise<null|string> => {
         return result
     }
 
-
     const archive = archiver('zip', {zlib: {level: 9}})
     archive.pipe(createWriteStream(distributionBundleFilePath))
 
@@ -309,7 +321,8 @@ const createDistributionBundle = async ():Promise<null|string> => {
 
     for (const filePath of await determineFilePaths(filePaths))
         archive.append(
-            createReadStream(filePath), {name: relative('./', filePath)}
+            await stream2buffer(createReadStream(filePath)),
+            {name: relative('./', filePath)}
         )
 
     await archive.finalize()
