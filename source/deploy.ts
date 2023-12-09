@@ -78,8 +78,10 @@ let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
 // region functions
 /**
- * TODO
- * @param stream
+ * Converts a given stream into a buffer.
+ * @param stream - To Convert.
+ *
+ * @returns Converted buffer.
  */
 const stream2buffer = async (stream:Stream):Promise<Buffer> => {
     return new Promise<Buffer>((resolve, reject) => {
