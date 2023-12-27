@@ -96,7 +96,7 @@
     "postcss-url": "*",
     "spin.js": "*",
     "style-loader": "*",
-    "stylelint": "^15.11.0",
+    "stylelint": "*",
     "stylelint-config-standard": "*",
     "ua-parser-js": "*",
     "unzipper": "*",
