@@ -10730,9 +10730,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1410"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1410.tgz#2f1e0b818fcff380edc9e37421a03df7698f479e"
-  integrity sha512-K3k2/98QxeGdQaa4wmaWLUGivhtKGwxOXJYrYJZTpCvycPJErkUgmi8ykyI00qGkbRXZjDmTk1wc3/miCtL/Mg==
+  version "2.0.1411"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1411.tgz#2989b36dcca946f1b263e6776603848759934f0b"
+  integrity sha512-ehfr/dq9tltNHUHOmaZvzoVaBKBNnAj0/duNJ/CShZbCIwd3U0jv5TyY+5kmHogon5IgaMw7kIH1UV9Dt+b9Tw==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
