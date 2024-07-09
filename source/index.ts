@@ -17,8 +17,7 @@
     endregion
 */
 // region imports
-import Tools, {$} from 'clientnode'
-import {RecursivePartial, $T} from 'clientnode/type'
+import {$, $T, extend, NOOP, RecursivePartial, Tools} from 'clientnode'
 import Internationalisation from 'internationalisation'
 import WebsiteUtilities from 'website-utilities'
 
@@ -28,50 +27,44 @@ import {DocumentationFunction, DomNodes, DefaultOptions, Options} from './type'
 declare const LANGUAGES:Array<string>
 // endregion
 // region plugins/classes
-/* eslint-disable jsdoc/require-description-complete-sentence */
 /**
  * This plugin holds all needed methods to extend a whole documentation site.
- * @property static:_commonOptions - Options extended by the options given to
- * the initializer method.
- * @property static:_commonOptions.onExamplesLoaded {Function} - Callback to
- * trigger when all example loaded.
- * @property static:_commonOptions.domNodeSelectorInfix {string} - Something
- * indicating controlled nodes.
- * @property static:_commonOptions.showExample {Object} - Options object to
- * configure code example representation.
- * @property static:_commonOptions.showExample.pattern {string} - Regular
- * expression to introduce a code example section.
- * @property static:_commonOptions.showExample.domNodeName {string} - Dom node
- * name to indicate a declarative example section.
- * @property static:_commonOptions.showExample.htmlWrapper {string} - HTML
- * example wrapper.
- * @property static:_commonOptions.domNode {Object} - Object with a mapping of
- * needed dom node descriptions to their corresponding selectors.
- * @property static:_commonOptions.section {Object} - Configuration object for
- * section switches between the main page and legal notes descriptions.
- * @property static:_commonOptions.section.aboutThisWebsite {Object} -
- * Configuration object for transitions concerning the legal notes section.
- * @property static:_commonOptions.section.aboutThisWebsite.fadeOutOptions
- * {Object} - Fade out configurations.
- * @property static:_commonOptions.section.aboutThisWebsite.fadeInOptions
- * {Object} - Fade in configurations.
- * @property static:_commonOptions.section.main {Object} - Configuration object
- * for transitions concerning the main section.
- * @property static:_commonOptions.section.main.fadeOutOptions {Object} - Fade
+ * @property _commonOptions - Options extended by the options given to the
+ * initializer method.
+ * @property _commonOptions.onExamplesLoaded - Callback to trigger when all
+ * example loaded.
+ * @property _commonOptions.domNodeSelectorInfix - Something indicating
+ * controlled nodes.
+ * @property _commonOptions.showExample - Options object to configure code
+ * example representation.
+ * @property _commonOptions.showExample.pattern - Regular expression to
+ * introduce a code example section.
+ * @property _commonOptions.showExample.domNodeName - Dom node name to indicate
+ * a declarative example section.
+ * @property _commonOptions.showExample.htmlWrapper - HTML example wrapper.
+ * @property _commonOptions.domNode - Object with a mapping of needed dom node
+ * descriptions to their corresponding selectors.
+ * @property _commonOptions.section - Configuration object for section switches
+ * between the main page and legal notes descriptions.
+ * @property _commonOptions.section.aboutThisWebsite - Configuration object for
+ * transitions concerning the legal notes section.
+ * @property _commonOptions.section.aboutThisWebsite.fadeOutOptions - Fade out
+ * configurations.
+ * @property _commonOptions.section.aboutThisWebsite.fadeInOptions - Fade in
+ * configurations.
+ * @property _commonOptions.section.main - Configuration object for transitions
+ * concerning the main section.
+ * @property _commonOptions.section.main.fadeOutOptions {Object} - Fade
  * out configurations.
- * @property static:_commonOptions.section.main.fadeInOptions {Object} - Fade
- * in configurations.
- *
+ * @property _commonOptions.section.main.fadeInOptions {Object} - Fade in
+ * configurations.
  * @property options - Finally configured given options.
- *
  * @property startUpAnimationIsComplete - Indicates whether start up animations
  * has been completed.
- *
  * @property _activateLanguageSupport - Indicates whether a language switcher
  * should be activated.
  */
 export class Documentation extends WebsiteUtilities {
-/* eslint-enable jsdoc/require-description-complete-sentence */
     static _commonOptions:DefaultOptions = {
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
@@ -92,7 +85,7 @@ export class Documentation extends WebsiteUtilities {
         } as DomNodes,
         domNodeSelectorInfix: 'doc',
         name: 'Documentation',
-        onExamplesLoaded: Tools.noop,
+        onExamplesLoaded: NOOP,
         section: {
             aboutThisWebsite: {
                 fadeInOptions: {duration: 'fast'},
@@ -126,7 +119,6 @@ export class Documentation extends WebsiteUtilities {
     /**
      * Initializes the interactive web application.
      * @param options - An options object.
-     *
      * @returns Returns the current instance.
      */
     initialize<R = Promise<Documentation>>(
@@ -139,7 +131,7 @@ export class Documentation extends WebsiteUtilities {
         */
         options.activateLanguageSupport = false
 
-        return super.initialize(Tools.extend(
+        return super.initialize(extend(
             true, {} as Options, Documentation._commonOptions, options
         )).then(():Documentation => {
             if (!$.global.location?.hash)
@@ -236,8 +228,6 @@ export class Documentation extends WebsiteUtilities {
      * This method triggers if we change the current section.
      * @param sectionName - New section which should be switched to.
      * @param event - Triggered event object.
-     *
-     * @returns Returns the current instance.
      */
     _onSwitchSection(sectionName:string, event?:Event):void {
         const hashReference = `#${sectionName}`
@@ -308,9 +298,7 @@ export class Documentation extends WebsiteUtilities {
     }
     /// endregion
     /**
-     * Generates a table of contents overview and links them to their
-     * headlines.
-     * @returns Nothing.
+     * Generates a table of contents via creating links referring to headlines.
      */
     _generateTableOfContentsLinks():void {
         if (!this.$domNodes.tableOfContent)
@@ -364,7 +352,6 @@ export class Documentation extends WebsiteUtilities {
     /**
      * This method makes dotes after code lines which are too long. This
      * prevents line wrapping.
-     * @returns Returns the current instance.
      */
     _makeCodeEllipsis():void {
         const lengthLimit = 89 // 79
@@ -400,7 +387,6 @@ export class Documentation extends WebsiteUtilities {
      * amount of excess.
      * @param content - String to trim.
      * @param excess - Amount of excess.
-     *
      * @returns Returns the trimmed content.
      */
     _replaceExcessWithDots(content:string, excess:number):string {
@@ -445,7 +431,6 @@ export class Documentation extends WebsiteUtilities {
     }
     /**
      * Shows marked example codes directly in browser.
-     * @returns Returns the current instance.
      */
     _showExamples():void {
         this.$domNodes.parent!

@@ -16,7 +16,7 @@
     endregion
 */
 // region imports
-import {ProcedureFunction} from 'clientnode/type'
+import {ProcedureFunction} from 'clientnode'
 import {
     DomNodes as BaseDomNodes, Options as BaseOptions
 } from 'website-utilities/type'
@@ -72,8 +72,4 @@ export interface DefaultOptions {
     }
 }
 export type Options = BaseOptions & DefaultOptions
-// endregion
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
 // endregion

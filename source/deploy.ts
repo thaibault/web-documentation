@@ -19,8 +19,20 @@
 // region imports
 import archiver from 'archiver'
 import {execSync} from 'child_process'
-import Tools, {optionalRequire} from 'clientnode'
-import {EvaluationResult, File, Mapping, PlainObject} from 'clientnode/type'
+import {
+    camelCaseToDelimited,
+    evaluate,
+    evaluateDynamicData,
+    EvaluationResult,
+    File,
+    isDirectory,
+    isFile,
+    Mapping,
+    optionalRequire,
+    PlainObject,
+    represent,
+    walkDirectoryRecursively
+} from 'clientnode'
 import {createReadStream, createWriteStream} from 'fs'
 import {
     copyFile, mkdir, readdir, readFile, rename, rm, writeFile
@@ -80,7 +92,6 @@ let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 /**
  * Converts a given stream into a buffer.
  * @param stream - To Convert.
- *
  * @returns Converted buffer.
  */
 const stream2buffer = async (stream:Stream):Promise<Buffer> => {
@@ -100,7 +111,6 @@ const stream2buffer = async (stream:Stream):Promise<Buffer> => {
  * build artefacts.
  * @param hasAPIDocumentationCommand - Indicates whether there already exists
  * a ready to use api documentation.
- *
  * @returns A promise resolving when build process has finished.
  */
 const generateAndPushNewDocumentationPage = async (
@@ -145,7 +155,7 @@ const generateAndPushNewDocumentationPage = async (
 
     console.info('Prepare favicon file.')
     const faviconPath = 'favicon.png'
-    if (await Tools.isFile(faviconPath))
+    if (await isFile(faviconPath))
         await copyFile(
             faviconPath,
             `${temporaryDocumentationFolderPath}/source/image/favicon.ico`
@@ -157,21 +167,19 @@ const generateAndPushNewDocumentationPage = async (
     for (const [key, value] of Object.entries(
         SCOPE.documentationWebsite || {}
     ))
-        parameters[Tools.stringCamelCaseToDelimited(key).toUpperCase()] = value
+        parameters[camelCaseToDelimited(key).toUpperCase()] = value
     if (!parameters.TAGLINE && SCOPE.description)
         parameters.TAGLINE = SCOPE.description
     if (!parameters.NAME && SCOPE.name)
         parameters.NAME = SCOPE.name
 
-    console.debug(
-        `Found parameters "${Tools.represent(parameters)}" to render.`
-    )
+    console.debug(`Found parameters "${represent(parameters)}" to render.`)
 
     let apiDocumentationPath:null|string = null
     if (hasAPIDocumentationCommand) {
         apiDocumentationPath =
             API_DOCUMENTATION_PATHS[1] + API_DOCUMENTATION_PATH_SUFFIX
-        if (!(await Tools.isDirectory(apiDocumentationPath)))
+        if (!(await isDirectory(apiDocumentationPath)))
             apiDocumentationPath = API_DOCUMENTATION_PATHS[1]
     }
 
@@ -180,7 +188,7 @@ const generateAndPushNewDocumentationPage = async (
         CONTENT,
         API_DOCUMENTATION_PATH: apiDocumentationPath,
         DISTRIBUTION_BUNDLE_FILE_PATH:
-            await Tools.isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
+            await isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
                 relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
                 null
     }
@@ -190,13 +198,13 @@ const generateAndPushNewDocumentationPage = async (
             parameters[key] = value.replace('!', '#%%%#')
 
     const serializedParameters:string =
-        JSON.stringify(Tools.evaluateDynamicData(
+        JSON.stringify(evaluateDynamicData(
             BUILD_DOCUMENTATION_PAGE_CONFIGURATION, {parameters, ...SCOPE}
         ))
     const parametersFilePath:string = run('mktemp --suffix .json').trim()
     await writeFile(parametersFilePath, serializedParameters)
 
-    BUILD_DOCUMENTATION_PAGE_COMMAND = Tools.stringEvaluate(
+    BUILD_DOCUMENTATION_PAGE_COMMAND = evaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND,
         {parameters, parametersFilePath, ...SCOPE}
     ).result
@@ -226,7 +234,7 @@ const generateAndPushNewDocumentationPage = async (
         temporaryDocumentationFolderPath,
         relative('./', DOCUMENTATION_BUILD_PATH)
     )
-    await Tools.walkDirectoryRecursively(
+    await walkDirectoryRecursively(
         documentationBuildFolderPath,
         (file:File):Promise<false|void> =>
             copyRepositoryFile(documentationBuildFolderPath, './', file)
@@ -239,9 +247,9 @@ const generateAndPushNewDocumentationPage = async (
     run('git push')
     run('git checkout main')
 }
-
 /**
  * Creates a distribution bundle file as zip archiv.
+ * @returns Path to build distribution bundle or "null" of building failed.
  */
 const createDistributionBundle = async ():Promise<null|string> => {
     if (
@@ -285,7 +293,7 @@ const createDistributionBundle = async ():Promise<null|string> => {
             filePath = resolve(filePath)
 
             if (!(await isFileIgnored(filePath)))
-                if (await Tools.isDirectory(filePath))
+                if (await isDirectory(filePath))
                     result = result.concat(await determineFilePaths(
                         (await readdir(filePath)).map((path:string):string =>
                             resolve(filePath, path)
@@ -337,15 +345,14 @@ const createDistributionBundle = async ():Promise<null|string> => {
  * Checks if given file path points to a file which should not be distributed
  * for generic reasons.
  * @param filePath - File path to check.
- *
  * @returns Promise wrapping indicating boolean.
  */
 const isFileIgnored = async (filePath:string):Promise<boolean> => (
     basename(filePath, extname(filePath)).startsWith('.') ||
     basename(filePath, extname(filePath)) === 'dummyDocumentation' ||
-    await Tools.isDirectory(filePath) &&
+    await isDirectory(filePath) &&
     ['node_modules', 'build'].includes(basename(filePath)) ||
-    await Tools.isFile(filePath) &&
+    await isFile(filePath) &&
     basename(filePath) === 'params.json'
 )
 
@@ -354,7 +361,6 @@ const isFileIgnored = async (filePath:string):Promise<boolean> => (
  * @param sourcePath - Location to copy from.
  * @param targetPath - Location where to copy given source.
  * @param file - Location to copy.
- *
  * @returns Promise resolving when finished coping.
  */
 const copyRepositoryFile = async (
@@ -377,10 +383,10 @@ const copyRepositoryFile = async (
  * Merges all readme file.
  * @param file - File to check if it is a readme and should be added to the
  * output content.
- *
- * @returns Nothing.
+ * @returns False or "null" indicating whether the readme file should be
+ * ignored.
  */
-const addReadme = async (file:File):Promise<false|void> => {
+const addReadme = async (file:File):Promise<false|null> => {
     if (await isFileIgnored(file.path))
         return false
 
@@ -392,6 +398,8 @@ const addReadme = async (file:File):Promise<false|void> => {
 
         CONTENT += await readFile(file.path, 'utf8')
     }
+
+    return null
 }
 // endregion
 
@@ -401,19 +409,19 @@ if (
 ) {
     SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
 
-    const evaluationResult:EvaluationResult = Tools.stringEvaluate(
+    const evaluationResult:EvaluationResult = evaluate(
         `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
     )
 
     API_DOCUMENTATION_PATH_SUFFIX = evaluationResult.result
 
     const temporaryDocumentationFolderPath = 'documentation-website'
-    if (await Tools.isDirectory(temporaryDocumentationFolderPath))
+    if (await isDirectory(temporaryDocumentationFolderPath))
         await rm(temporaryDocumentationFolderPath, {recursive: true})
 
     console.info('Read and Compile all markdown files and transform to html.')
 
-    await Tools.walkDirectoryRecursively('./', addReadme)
+    await walkDirectoryRecursively('./', addReadme)
 
     let distributionBundleFilePath:null|string = null
     try {
@@ -427,8 +435,7 @@ if (
     }
 
     if (
-        distributionBundleFilePath &&
-        await Tools.isFile(distributionBundleFilePath)
+        distributionBundleFilePath && await isFile(distributionBundleFilePath)
     ) {
         await mkdir(DATA_PATH, {recursive: true})
         await copyFile(
@@ -452,10 +459,10 @@ if (
 
     const apiDocumentationDirectoryPath:string =
         resolve(API_DOCUMENTATION_PATHS[1])
-    if (await Tools.isDirectory(apiDocumentationDirectoryPath))
+    if (await isDirectory(apiDocumentationDirectoryPath))
         await rm(apiDocumentationDirectoryPath, {recursive: true})
 
-    if (await Tools.isDirectory(API_DOCUMENTATION_PATHS[0]))
+    if (await isDirectory(API_DOCUMENTATION_PATHS[0]))
         await rename(
             resolve(API_DOCUMENTATION_PATHS[0]),
             apiDocumentationDirectoryPath
@@ -463,10 +470,10 @@ if (
 
     const localDocumentationWebsitePath:string =
         resolve(`../${basename(temporaryDocumentationFolderPath)}`)
-    if (await Tools.isDirectory(localDocumentationWebsitePath)) {
+    if (await isDirectory(localDocumentationWebsitePath)) {
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
-        await Tools.walkDirectoryRecursively(
+        await walkDirectoryRecursively(
             localDocumentationWebsitePath,
             (file:File):Promise<false|void> =>
                 copyRepositoryFile(
@@ -476,9 +483,10 @@ if (
                 )
         )
 
+        /* TODO
         const nodeModulesDirectoryPath:string =
             resolve(localDocumentationWebsitePath, 'node_modules')
-        if (false && await Tools.isDirectory(nodeModulesDirectoryPath)) {
+        if (await isDirectory(nodeModulesDirectoryPath)) {
             // NOTE: Not working caused by nested symlinks.
             const temporaryDocumentationNodeModulesDirectoryPath:string =
                 resolve(temporaryDocumentationFolderPath, 'node_modules')
@@ -491,7 +499,7 @@ if (
                 NOTE: Coping complete "node_modules" folder takes to long.
 
                 NOTE: Mounting "node_modules" folder needs root privileges.
-            */
+            * /
             run(`
                 cp \
                     --dereference \
@@ -501,10 +509,11 @@ if (
                     '${temporaryDocumentationNodeModulesDirectoryPath}'
             `)
         } else
-            run(
-                'yarn --production=false',
-                {cwd: temporaryDocumentationFolderPath}
-            )
+        */
+        run(
+            'yarn --production=false',
+            {cwd: temporaryDocumentationFolderPath}
+        )
 
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else {
@@ -520,7 +529,7 @@ if (
 
     // region tidy up
     for (const path of [apiDocumentationDirectoryPath, DATA_PATH])
-        if (await Tools.isDirectory(path))
+        if (await isDirectory(path))
             await rm(path, {recursive: true})
     // endregion
 
@@ -531,9 +540,3 @@ if (
         // Prepare build artefacts for further local usage.
         run('yarn build')
 }
-
-
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
-// endregion

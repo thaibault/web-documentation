@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "build/"
+    },
+    "extends": "./node_modules/weboptimizer/tsconfig.application.json",
+    "include": ["source/**/*.ts"]
+}
