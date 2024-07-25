@@ -42,7 +42,7 @@ declare const LANGUAGES:Array<string>
  * @property _commonOptions.showExample.domNodeName - Dom node name to indicate
  * a declarative example section.
  * @property _commonOptions.showExample.htmlWrapper - HTML example wrapper.
- * @property _commonOptions.domNode - Object with a mapping of needed dom node
+ * @property _commonOptions.domNodes - Object with a mapping of needed dom node
  * descriptions to their corresponding selectors.
  * @property _commonOptions.section - Configuration object for section switches
  * between the main page and legal notes descriptions.
