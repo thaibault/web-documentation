@@ -19,15 +19,17 @@ import {$} from 'clientnode'
 
 import Documentation from './index'
 // endregion
-describe('Documentation', ():void => {
+describe('Documentation', () => {
     let documentation:Documentation
     /*
         NOTE: Import plugins with side effects (augmenting "$" scope /
         registering plugin) when other imports are only used as type.
     */
+    /* eslint-disable @typescript-eslint/no-require-imports */
     require('internationalisation')
     require('website-utilities')
     require('./index')
+    /* eslint-enable @typescript-eslint/no-require-imports */
 
     beforeAll(async ():Promise<void> => {
         documentation = (await $.Documentation()) as Documentation
@@ -35,7 +37,9 @@ describe('Documentation', ():void => {
     // region tests
     /// region public methods
     //// region special
-    test('initialize', ():void => expect(documentation).toBeDefined())
+    test('initialize', () => {
+        expect(documentation).toBeDefined()
+    })
     //// endregion
     /// endregion
     // endregion

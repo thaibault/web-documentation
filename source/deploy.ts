@@ -98,8 +98,12 @@ const stream2buffer = async (stream:Stream):Promise<Buffer> => {
     return new Promise<Buffer>((resolve, reject) => {
         const chunks:Array<Uint8Array> = []
         stream.on('data', (chunk:Uint8Array) => chunks.push(chunk))
-        stream.on('end', () => resolve(Buffer.concat(chunks)))
-        stream.on('error', (error:Error) => reject(error))
+        stream.on('end', () => {
+            resolve(Buffer.concat(chunks))
+        })
+        stream.on('error', (error:Error) => {
+            reject(error)
+        })
     })
 }
 /**
@@ -148,8 +152,12 @@ const generateAndPushNewDocumentationPage = async (
         ):void => {
             createReadStream(newDistributionBundleFilePath)
                 .pipe(Extract({path: newDistributionBundleDirectoryPath}))
-                .on('close', ():void => resolve())
-                .on('error', (error:Error):void => reject(error))
+                .on('close', () => {
+                    resolve()
+                })
+                .on('error', (error:Error) => {
+                    reject(error)
+                })
         })
     }
 
@@ -236,7 +244,7 @@ const generateAndPushNewDocumentationPage = async (
     )
     await walkDirectoryRecursively(
         documentationBuildFolderPath,
-        (file:File):Promise<false|void> =>
+        (file:File):Promise<false|undefined> =>
             copyRepositoryFile(documentationBuildFolderPath, './', file)
     )
 
@@ -365,7 +373,7 @@ const isFileIgnored = async (filePath:string):Promise<boolean> => (
  */
 const copyRepositoryFile = async (
     sourcePath:string, targetPath:string, file:File
-):Promise<false|void> => {
+):Promise<false|undefined> => {
     if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
         return false
 
@@ -373,7 +381,7 @@ const copyRepositoryFile = async (
 
     console.debug(`Copy "${file.path}" to "${targetPath}".`)
 
-    if (file.stats!.isFile())
+    if (file.stats?.isFile())
         await copyFile(file.path, targetPath)
     else
         await mkdir(targetPath)
@@ -450,7 +458,7 @@ if (
     if (hasAPIDocumentationCommand)
         try {
             run('yarn document')
-        } catch (error) {
+        } catch (_error) {
             hasAPIDocumentationCommand = false
         }
 
@@ -475,7 +483,7 @@ if (
 
         await walkDirectoryRecursively(
             localDocumentationWebsitePath,
-            (file:File):Promise<false|void> =>
+            (file:File):Promise<false|undefined> =>
                 copyRepositoryFile(
                     localDocumentationWebsitePath,
                     temporaryDocumentationFolderPath,

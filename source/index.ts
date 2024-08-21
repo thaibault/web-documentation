@@ -134,8 +134,12 @@ export class Documentation extends WebsiteUtilities {
         return super.initialize(extend(
             true, {} as Options, Documentation._commonOptions, options
         )).then(():Documentation => {
-            if (!$.global.location?.hash)
-                $.global.location.hash = this.$domNodes.homeLink.attr('href')!
+            if (!(
+                Object.prototype.hasOwnProperty.call($.global, 'location') &&
+                $.global.location.hash
+            ))
+                $.global.location.hash =
+                    this.$domNodes.homeLink.attr('href') ?? ''
 
             this.$domNodes.aboutThisWebsiteSection.hide()
 
@@ -182,7 +186,8 @@ export class Documentation extends WebsiteUtilities {
 
 
             if (
-                $.global.location?.hash &&
+                Object.prototype.hasOwnProperty.call($.global, 'location') &&
+                $.global.location.hash &&
                 this.options.initialSectionName !==
                     $.global.location.hash.substring('#'.length)
             )
@@ -213,7 +218,7 @@ export class Documentation extends WebsiteUtilities {
         */
         this.$domNodes = this.grabDomNodes(this.options.domNodes)
 
-        // New injected dom nodes may take affect on language handler.
+        // New injected dom nodes may take effect on language handler.
         if (
             this.startUpAnimationIsComplete &&
             this._activateLanguageSupport &&
@@ -243,7 +248,7 @@ export class Documentation extends WebsiteUtilities {
                         {scrollTop: offset.top},
                         {
                             ...this.options.scrollToTop.options,
-                            complete: ():void => {
+                            complete: () => {
                                 if (window.location.hash !== hashReference)
                                     window.location.hash = hashReference
                             }
@@ -273,7 +278,9 @@ export class Documentation extends WebsiteUtilities {
             static tree shaking includes this module.
         */
         if (
+            /* eslint-disable @typescript-eslint/no-unnecessary-condition */
             Internationalisation &&
+            /* eslint-enable @typescript-eslint/no-unnecessary-condition */
             this._activateLanguageSupport &&
             !this.languageHandler
         )
@@ -282,31 +289,33 @@ export class Documentation extends WebsiteUtilities {
                     .Internationalisation(this.options.language)
             ).data('Internationalisation') as Internationalisation
 
-        if ($.global.location)
+        if (Object.prototype.hasOwnProperty.call($.global, 'location'))
             this.$domNodes.tableOfContentLinks
                 .add(this.$domNodes.aboutThisWebsiteLink)
                 .filter(
                     'a[href="' +
-                    $.global.location.href.substr(
+                    $.global.location.href.substring(
                         $.global.location.href.indexOf('#')
                     ) +
                     '"]'
                 )
                 .trigger('click')
 
-        super._onStartUpAnimationComplete()
+        void super._onStartUpAnimationComplete()
     }
     /// endregion
     /**
      * Generates a table of contents via creating links referring to headlines.
      */
     _generateTableOfContentsLinks():void {
-        if (!this.$domNodes.tableOfContent)
+        if (!Object.prototype.hasOwnProperty.call(
+            this.$domNodes, 'tableOfContent'
+        ))
             return
 
         let listItems = '<ul>'
-        let level:number
-        let firstLevel:number
+        let level = 0
+        let firstLevel = 0
         this.$domNodes.headlines.each((
             index:number, element:HTMLElement
         ):void => {
@@ -326,7 +335,7 @@ export class Documentation extends WebsiteUtilities {
 
             listItems += `
                 <li>
-                    <a href="#${element.getAttribute('id')!}">
+                    <a href="#${element.getAttribute('id') ?? 'unknown'}">
                         ${element.innerText}
                     </a>
                 </li>
@@ -335,9 +344,9 @@ export class Documentation extends WebsiteUtilities {
             level = newLevel
         })
         // Close remaining inner lists.
-        while (level! < firstLevel!) {
+        while (level < firstLevel) {
             listItems += '</ul>'
-            level! += 1
+            level += 1
         }
 
         listItems += '</ul>'
@@ -433,8 +442,7 @@ export class Documentation extends WebsiteUtilities {
      * Shows marked example codes directly in browser.
      */
     _showExamples():void {
-        this.$domNodes.parent!
-            .find(':not(iframe)')
+        this.$domNodes.parent?.find(':not(iframe)')
             .contents()
             .each((index:number, domNode:Node):void => {
                 if (
