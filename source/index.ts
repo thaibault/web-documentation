@@ -422,7 +422,7 @@ export class Documentation extends WebsiteUtilities {
                         shorten: We work on "textContent" property only.
                     */
                     domNode.textContent =
-                        textContent.substr(
+                        textContent.substring(
                             0, textContent.length - excess - 1
                         ) +
                         '...'
