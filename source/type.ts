@@ -25,50 +25,50 @@ import Documentation from './index'
  // endregion
 // region exports
 export type DocumentationFunction =
-    ((..._parameters:Array<unknown>) => unknown) &
-    {class:typeof Documentation}
+    ((..._parameters: Array<unknown>) => unknown) &
+    {class: typeof Documentation}
 declare global {
     interface JQueryStatic {
-        Documentation:DocumentationFunction
+        Documentation: DocumentationFunction
     }
 }
 
 export type DomNodes<Type = string> =
     BaseDomNodes<Type> &
     {
-        aboutThisWebsiteLink:Type
-        aboutThisWebsiteSection:Type
+        aboutThisWebsiteLink: Type
+        aboutThisWebsiteSection: Type
 
-        codeWrapper:Type
-        code:Type
+        codeWrapper: Type
+        code: Type
 
-        homeLink:Type
-        mainSection:Type
+        homeLink: Type
+        mainSection: Type
 
-        headlines:Type
-        tableOfContent:Type
-        tableOfContentLinks:Type
+        headlines: Type
+        tableOfContent: Type
+        tableOfContentLinks: Type
     }
 
 export interface DefaultOptions {
-    domNodes:DomNodes
-    domNodeSelectorInfix:null|string
-    name:string
-    onExamplesLoaded:ProcedureFunction
-    section:{
-        aboutThisWebsite:{
-            fadeInOptions:JQuery.EffectsOptions<HTMLElement>
-            fadeOutOptions:JQuery.EffectsOptions<HTMLElement>
+    domNodes: DomNodes
+    domNodeSelectorInfix: null|string
+    name: string
+    onExamplesLoaded: ProcedureFunction
+    section: {
+        aboutThisWebsite: {
+            fadeInOptions: JQuery.EffectsOptions<HTMLElement>
+            fadeOutOptions: JQuery.EffectsOptions<HTMLElement>
         }
-        main:{
-            fadeInOptions:JQuery.EffectsOptions<HTMLElement>
-            fadeOutOptions:JQuery.EffectsOptions<HTMLElement>
+        main: {
+            fadeInOptions: JQuery.EffectsOptions<HTMLElement>
+            fadeOutOptions: JQuery.EffectsOptions<HTMLElement>
         }
     }
-    showExample:{
-        domNodeName:string
-        htmlWrapper:string
-        pattern:string
+    showExample: {
+        domNodeName: string
+        htmlWrapper: string
+        pattern: string
     }
 }
 export type Options = BaseOptions & DefaultOptions

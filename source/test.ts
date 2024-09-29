@@ -20,7 +20,7 @@ import {$} from 'clientnode'
 import Documentation from './index'
 // endregion
 describe('Documentation', () => {
-    let documentation:Documentation
+    let documentation: Documentation
     /*
         NOTE: Import plugins with side effects (augmenting "$" scope /
         registering plugin) when other imports are only used as type.
@@ -31,7 +31,7 @@ describe('Documentation', () => {
     require('./index')
     /* eslint-enable @typescript-eslint/no-require-imports */
 
-    beforeAll(async ():Promise<void> => {
+    beforeAll(async (): Promise<void> => {
         documentation = (await $.Documentation()) as Documentation
     })
     // region tests

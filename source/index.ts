@@ -24,7 +24,7 @@ import WebsiteUtilities from 'website-utilities'
 import {DocumentationFunction, DomNodes, DefaultOptions, Options} from './type'
 // endregion
 // region declaration
-declare const LANGUAGES:Array<string>
+declare const LANGUAGES: Array<string>
 // endregion
 // region plugins/classes
 /**
@@ -65,7 +65,7 @@ declare const LANGUAGES:Array<string>
  * should be activated.
  */
 export class Documentation extends WebsiteUtilities {
-    static _commonOptions:DefaultOptions = {
+    static _commonOptions: DefaultOptions = {
         domNodes: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
             aboutThisWebsiteSection: '.section__about-this-website',
@@ -111,7 +111,7 @@ export class Documentation extends WebsiteUtilities {
         }
     }
 
-    options:Options = null as unknown as Options
+    options = null as unknown as Options
 
     _activateLanguageSupport = false
     // region public methods
@@ -122,8 +122,8 @@ export class Documentation extends WebsiteUtilities {
      * @returns Returns the current instance.
      */
     initialize<R = Promise<Documentation>>(
-        options:RecursivePartial<Options> = {}
-    ):R {
+        options: RecursivePartial<Options> = {}
+    ): R {
         this._activateLanguageSupport = options.activateLanguageSupport ?? true
         /*
             NOTE: We will initialize language support after examples are
@@ -133,7 +133,7 @@ export class Documentation extends WebsiteUtilities {
 
         return super.initialize(extend(
             true, {} as Options, Documentation._commonOptions, options
-        )).then(():Documentation => {
+        )).then((): Documentation => {
             if (!(
                 Object.prototype.hasOwnProperty.call($.global, 'location') &&
                 $.global.location.hash
@@ -154,8 +154,8 @@ export class Documentation extends WebsiteUtilities {
             this.on(
                 this.$domNodes.tableOfContentLinks,
                 'click',
-                (event:Event):void => {
-                    const hashReference:string|undefined =
+                (event: Event) => {
+                    const hashReference: string|undefined =
                         $(event.target as HTMLLinkElement).attr('href')
                     if (hashReference && hashReference !== '#')
                         this.fireEvent(
@@ -173,12 +173,12 @@ export class Documentation extends WebsiteUtilities {
                 section.
             */
             this.options.section.aboutThisWebsite.fadeOutOptions.always =
-                ():void => {
+                () => {
                     this.$domNodes.mainSection.fadeIn(
                         this.options.section.main.fadeInOptions
                     )
                 }
-            this.options.section.main.fadeOutOptions.always = ():void => {
+            this.options.section.main.fadeOutOptions.always = () => {
                 this.$domNodes.aboutThisWebsiteSection.fadeIn(
                     this.options.section.aboutThisWebsite.fadeInOptions
                 )
@@ -211,7 +211,7 @@ export class Documentation extends WebsiteUtilities {
      * This method triggers if all examples loaded.
      * @returns Returns the current instance.
      */
-    async _onExamplesLoaded():Promise<void> {
+    async _onExamplesLoaded(): Promise<void> {
         /*
             NOTE: After injecting new dom nodes we have to grab them for
             further controller logic.
@@ -234,7 +234,7 @@ export class Documentation extends WebsiteUtilities {
      * @param sectionName - New section which should be switched to.
      * @param event - Triggered event object.
      */
-    _onSwitchSection(sectionName:string, event?:Event):void {
+    _onSwitchSection(sectionName: string, event?: Event): void {
         const hashReference = `#${sectionName}`
         const $target = $(hashReference)
         if (sectionName && $target.length) {
@@ -272,7 +272,7 @@ export class Documentation extends WebsiteUtilities {
      * This method triggers if all startup animations are ready.
      * @returns Promise resolving when language handler has been initialized.
      */
-    async _onStartUpAnimationComplete():Promise<void> {
+    async _onStartUpAnimationComplete(): Promise<void> {
         /*
             NOTE: We reference "Internationalisation" here to make sure that
             static tree shaking includes this module.
@@ -307,7 +307,7 @@ export class Documentation extends WebsiteUtilities {
     /**
      * Generates a table of contents via creating links referring to headlines.
      */
-    _generateTableOfContentsLinks():void {
+    _generateTableOfContentsLinks(): void {
         if (!Object.prototype.hasOwnProperty.call(
             this.$domNodes, 'tableOfContent'
         ))
@@ -317,12 +317,12 @@ export class Documentation extends WebsiteUtilities {
         let level = 0
         let firstLevel = 0
         this.$domNodes.headlines.each((
-            index:number, element:HTMLElement
-        ):void => {
+            index: number, element: HTMLElement
+        ): void => {
             if ($(element).closest('.show-example-wrapper').length)
                 return
 
-            const newLevel:number =
+            const newLevel: number =
                 parseInt(element.nodeName.replace(/\D/g, ''))
 
             if (index === 0)
@@ -362,14 +362,16 @@ export class Documentation extends WebsiteUtilities {
      * This method makes dotes after code lines which are too long. This
      * prevents line wrapping.
      */
-    _makeCodeEllipsis():void {
+    _makeCodeEllipsis(): void {
         const lengthLimit = 89 // 79
 
-        this.$domNodes.code.each((index:number, domNode:HTMLElement):void => {
-            const $domNode:$T = $(domNode)
+        this.$domNodes.code.each((
+            index: number, domNode: HTMLElement
+        ): void => {
+            const $domNode: $T = $(domNode)
 
             let newContent = ''
-            const codeLines:Array<string> = $domNode.html().split('\n')
+            const codeLines: Array<string> = $domNode.html().split('\n')
 
             let subIndex = 0
             for (const value of codeLines) {
@@ -377,7 +379,7 @@ export class Documentation extends WebsiteUtilities {
                     NOTE: Wrap a div object to grantee that $ will accept the
                     input.
                 */
-                const excess:number = $(`<div>${value}</div>`).text(
+                const excess: number = $(`<div>${value}</div>`).text(
                 ).length - lengthLimit
                 if (excess > 0)
                     newContent += this._replaceExcessWithDots(value, excess)
@@ -398,17 +400,17 @@ export class Documentation extends WebsiteUtilities {
      * @param excess - Amount of excess.
      * @returns Returns the trimmed content.
      */
-    _replaceExcessWithDots(content:string, excess:number):string {
+    _replaceExcessWithDots(content: string, excess: number): string {
         // Add space for ending dots.
         excess += 3
         let newContent = ''
-        const $content:$T = $(`<wrapper>${content}</wrapper>`)
+        const $content: $T = $(`<wrapper>${content}</wrapper>`)
         for (const domNode of $content.contents().get().reverse()) {
-            const $wrapper:$T = $(domNode).wrap('<wrapper>').parent() as $T
+            const $wrapper: $T = $(domNode).wrap('<wrapper>').parent() as $T
 
-            const textContent:string = domNode.textContent || ''
+            const textContent: string = domNode.textContent || ''
 
-            let contentSnippet:string = $wrapper.html()
+            let contentSnippet: string = $wrapper.html()
             if (!contentSnippet)
                 contentSnippet = textContent
 
@@ -441,21 +443,21 @@ export class Documentation extends WebsiteUtilities {
     /**
      * Shows marked example codes directly in browser.
      */
-    _showExamples():void {
+    _showExamples(): void {
         this.$domNodes.parent?.find(':not(iframe)')
             .contents()
-            .each((index:number, domNode:Node):void => {
+            .each((index: number, domNode: Node): void => {
                 if (
                     domNode.nodeName === this.options.showExample.domNodeName
                 ) {
-                    const match:null|RegExpMatchArray =
+                    const match: null|RegExpMatchArray =
                         (domNode.textContent || '').match(
                             new RegExp(this.options.showExample.pattern)
                         )
                     if (match) {
-                        const $codeDomNode:$T<Node> = $(domNode).next()
+                        const $codeDomNode: $T<Node> = $(domNode).next()
 
-                        let code:string = $codeDomNode
+                        let code: string = $codeDomNode
                             .find(this.$domNodes.codeWrapper)
                             .text()
 
@@ -515,17 +517,17 @@ export class Documentation extends WebsiteUtilities {
 export default Documentation
 // endregion
 // region handle $ extending
-$.Documentation = ((...parameter:Array<unknown>):unknown =>
+$.Documentation = ((...parameter: Array<unknown>): unknown =>
     Tools.controller(Documentation, parameter)
 ) as DocumentationFunction
 $.Documentation.class = Documentation
 // NOTE: We make jQuery available to make bootstrapping examples with deferred
 // script loading simpler.
-;($.global as unknown as {$documentationWebsite:JQueryStatic})
+;($.global as unknown as {$documentationWebsite: JQueryStatic})
     .$documentationWebsite = $
 // endregion
 // region bootstrap
-$.noConflict(true)(($:JQueryStatic):void => {
+$.noConflict(true)(($: JQueryStatic) => {
     $.Documentation({
         language: {
             selection: typeof LANGUAGES === 'undefined' ? [] : LANGUAGES,

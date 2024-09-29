@@ -42,16 +42,16 @@ import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
 interface SCOPE_TYPE extends Mapping<unknown> {
-    description?:string
-    documentationWebsite?:PlainObject
-    files?:Array<string>
-    main?:string
-    name:string
-    scripts?:Mapping
-    version:string
+    description?: string
+    documentationWebsite?: PlainObject
+    files?: Array<string>
+    main?: string
+    name: string
+    scripts?: Mapping
+    version: string
 }
 
-const run = (command:string, options = {}):string =>
+const run = (command: string, options = {}): string =>
     execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
 
 // region globals
@@ -86,7 +86,7 @@ let CONTENT = ''
 const DOCUMENTATION_REPOSITORY =
     'git@github.com:"thaibault/documentation-website"'
 const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
-let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
+let SCOPE: SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
 // region functions
 /**
@@ -94,14 +94,14 @@ let SCOPE:SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
  * @param stream - To Convert.
  * @returns Converted buffer.
  */
-const stream2buffer = async (stream:Stream):Promise<Buffer> => {
+const stream2buffer = async (stream: Stream): Promise<Buffer> => {
     return new Promise<Buffer>((resolve, reject) => {
-        const chunks:Array<Uint8Array> = []
-        stream.on('data', (chunk:Uint8Array) => chunks.push(chunk))
+        const chunks: Array<Uint8Array> = []
+        stream.on('data', (chunk: Uint8Array) => chunks.push(chunk))
         stream.on('end', () => {
             resolve(Buffer.concat(chunks))
         })
-        stream.on('error', (error:Error) => {
+        stream.on('error', (error: Error) => {
             reject(error)
         })
     })
@@ -118,10 +118,10 @@ const stream2buffer = async (stream:Stream):Promise<Buffer> => {
  * @returns A promise resolving when build process has finished.
  */
 const generateAndPushNewDocumentationPage = async (
-    temporaryDocumentationFolderPath:string,
-    distributionBundleFilePath:null|string,
-    hasAPIDocumentationCommand:boolean
-):Promise<void> => {
+    temporaryDocumentationFolderPath: string,
+    distributionBundleFilePath: null|string,
+    hasAPIDocumentationCommand: boolean
+): Promise<void> => {
     console.info('Generate document website artefacts.')
 
     if (distributionBundleFilePath) {
@@ -148,14 +148,14 @@ const generateAndPushNewDocumentationPage = async (
         await mkdir(newDistributionBundleDirectoryPath, {recursive: true})
 
         await new Promise<void>((
-            resolve:() => void, reject:(reason:Error) => void
-        ):void => {
+            resolve: () => void, reject: (reason: Error) => void
+        ) => {
             createReadStream(newDistributionBundleFilePath)
                 .pipe(Extract({path: newDistributionBundleDirectoryPath}))
                 .on('close', () => {
                     resolve()
                 })
-                .on('error', (error:Error) => {
+                .on('error', (error: Error) => {
                     reject(error)
                 })
         })
@@ -171,7 +171,7 @@ const generateAndPushNewDocumentationPage = async (
 
     console.info('Render html.')
 
-    let parameters:Mapping<unknown> = {}
+    let parameters: Mapping<unknown> = {}
     for (const [key, value] of Object.entries(
         SCOPE.documentationWebsite || {}
     ))
@@ -183,7 +183,7 @@ const generateAndPushNewDocumentationPage = async (
 
     console.debug(`Found parameters "${represent(parameters)}" to render.`)
 
-    let apiDocumentationPath:null|string = null
+    let apiDocumentationPath: null|string = null
     if (hasAPIDocumentationCommand) {
         apiDocumentationPath =
             API_DOCUMENTATION_PATHS[1] + API_DOCUMENTATION_PATH_SUFFIX
@@ -205,11 +205,11 @@ const generateAndPushNewDocumentationPage = async (
         if (typeof value === 'string')
             parameters[key] = value.replace('!', '#%%%#')
 
-    const serializedParameters:string =
+    const serializedParameters: string =
         JSON.stringify(evaluateDynamicData(
             BUILD_DOCUMENTATION_PAGE_CONFIGURATION, {parameters, ...SCOPE}
         ))
-    const parametersFilePath:string = run('mktemp --suffix .json').trim()
+    const parametersFilePath: string = run('mktemp --suffix .json').trim()
     await writeFile(parametersFilePath, serializedParameters)
 
     BUILD_DOCUMENTATION_PAGE_COMMAND = evaluate(
@@ -244,7 +244,7 @@ const generateAndPushNewDocumentationPage = async (
     )
     await walkDirectoryRecursively(
         documentationBuildFolderPath,
-        (file:File):Promise<false|undefined> =>
+        (file: File): Promise<false|undefined> =>
             copyRepositoryFile(documentationBuildFolderPath, './', file)
     )
 
@@ -259,7 +259,7 @@ const generateAndPushNewDocumentationPage = async (
  * Creates a distribution bundle file as zip archiv.
  * @returns Path to build distribution bundle or "null" of building failed.
  */
-const createDistributionBundle = async ():Promise<null|string> => {
+const createDistributionBundle = async (): Promise<null|string> => {
     if (
         SCOPE.scripts &&
         (
@@ -282,7 +282,7 @@ const createDistributionBundle = async ():Promise<null|string> => {
     }
 
     console.info('Pack to a zip archive.')
-    const distributionBundleFilePath:string =
+    const distributionBundleFilePath: string =
         run('mktemp --suffix .zip').trim()
 
     const filePaths = SCOPE.files || []
@@ -293,9 +293,9 @@ const createDistributionBundle = async ():Promise<null|string> => {
         return null
 
     const determineFilePaths = async (
-        filePaths:Array<string>
-    ):Promise<Array<string>> => {
-        let result:Array<string> = []
+        filePaths: Array<string>
+    ): Promise<Array<string>> => {
+        let result: Array<string> = []
 
         for (let filePath of filePaths) {
             filePath = resolve(filePath)
@@ -303,7 +303,7 @@ const createDistributionBundle = async ():Promise<null|string> => {
             if (!(await isFileIgnored(filePath)))
                 if (await isDirectory(filePath))
                     result = result.concat(await determineFilePaths(
-                        (await readdir(filePath)).map((path:string):string =>
+                        (await readdir(filePath)).map((path: string): string =>
                             resolve(filePath, path)
                         )
                     ))
@@ -321,17 +321,17 @@ const createDistributionBundle = async ():Promise<null|string> => {
     archive.pipe(createWriteStream(distributionBundleFilePath))
 
     const promise = new Promise<void>((
-        resolve:() => void, reject:(reason:Error) => void
-    ):void => {
-        archive.on('error', (error:Error):void => {
+        resolve: () => void, reject: (reason: Error) => void
+    ): void => {
+        archive.on('error', (error: Error): void => {
             reject(error)
         })
 
-        archive.on('warning', (error:Error):void => {
+        archive.on('warning', (error: Error): void => {
             console.warn(error)
         })
 
-        archive.on('progress', ({entries: {total, processed}}):void => {
+        archive.on('progress', ({entries: {total, processed}}): void => {
             if (total === processed)
                 resolve()
         })
@@ -355,7 +355,7 @@ const createDistributionBundle = async ():Promise<null|string> => {
  * @param filePath - File path to check.
  * @returns Promise wrapping indicating boolean.
  */
-const isFileIgnored = async (filePath:string):Promise<boolean> => (
+const isFileIgnored = async (filePath: string): Promise<boolean> => (
     basename(filePath, extname(filePath)).startsWith('.') ||
     basename(filePath, extname(filePath)) === 'dummyDocumentation' ||
     await isDirectory(filePath) &&
@@ -372,8 +372,8 @@ const isFileIgnored = async (filePath:string):Promise<boolean> => (
  * @returns Promise resolving when finished coping.
  */
 const copyRepositoryFile = async (
-    sourcePath:string, targetPath:string, file:File
-):Promise<false|undefined> => {
+    sourcePath: string, targetPath: string, file: File
+): Promise<false|undefined> => {
     if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
         return false
 
@@ -394,7 +394,7 @@ const copyRepositoryFile = async (
  * @returns False or "null" indicating whether the readme file should be
  * ignored.
  */
-const addReadme = async (file:File):Promise<false|null> => {
+const addReadme = async (file: File): Promise<false|null> => {
     if (await isFileIgnored(file.path))
         return false
 
@@ -417,7 +417,7 @@ if (
 ) {
     SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
 
-    const evaluationResult:EvaluationResult = evaluate(
+    const evaluationResult: EvaluationResult = evaluate(
         `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
     )
 
@@ -431,7 +431,7 @@ if (
 
     await walkDirectoryRecursively('./', addReadme)
 
-    let distributionBundleFilePath:null|string = null
+    let distributionBundleFilePath: null|string = null
     try {
         distributionBundleFilePath = await createDistributionBundle()
     } catch (error) {
@@ -452,7 +452,7 @@ if (
         )
     }
 
-    let hasAPIDocumentationCommand:boolean =
+    let hasAPIDocumentationCommand: boolean =
         Boolean(SCOPE.scripts) &&
         Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
     if (hasAPIDocumentationCommand)
@@ -465,7 +465,7 @@ if (
     run('git checkout gh-pages')
     run('git pull')
 
-    const apiDocumentationDirectoryPath:string =
+    const apiDocumentationDirectoryPath: string =
         resolve(API_DOCUMENTATION_PATHS[1])
     if (await isDirectory(apiDocumentationDirectoryPath))
         await rm(apiDocumentationDirectoryPath, {recursive: true})
@@ -476,14 +476,14 @@ if (
             apiDocumentationDirectoryPath
         )
 
-    const localDocumentationWebsitePath:string =
+    const localDocumentationWebsitePath: string =
         resolve(`../${basename(temporaryDocumentationFolderPath)}`)
     if (await isDirectory(localDocumentationWebsitePath)) {
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
         await walkDirectoryRecursively(
             localDocumentationWebsitePath,
-            (file:File):Promise<false|undefined> =>
+            (file: File): Promise<false|undefined> =>
                 copyRepositoryFile(
                     localDocumentationWebsitePath,
                     temporaryDocumentationFolderPath,
@@ -492,11 +492,11 @@ if (
         )
 
         /* TODO
-        const nodeModulesDirectoryPath:string =
+        const nodeModulesDirectoryPath: string =
             resolve(localDocumentationWebsitePath, 'node_modules')
         if (await isDirectory(nodeModulesDirectoryPath)) {
             // NOTE: Not working caused by nested symlinks.
-            const temporaryDocumentationNodeModulesDirectoryPath:string =
+            const temporaryDocumentationNodeModulesDirectoryPath: string =
                 resolve(temporaryDocumentationFolderPath, 'node_modules')
             /*
                 We copy just recursively reference files.
