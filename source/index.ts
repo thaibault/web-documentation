@@ -134,10 +134,7 @@ export class Documentation extends WebsiteUtilities {
         return super.initialize(extend(
             true, {} as Options, Documentation._commonOptions, options
         )).then((): Documentation => {
-            if (!(
-                Object.prototype.hasOwnProperty.call($.global, 'location') &&
-                $.global.location.hash
-            ))
+            if ($.global.location && !$.global.location.hash)
                 $.global.location.hash =
                     this.$domNodes.homeLink.attr('href') ?? ''
 
@@ -186,8 +183,7 @@ export class Documentation extends WebsiteUtilities {
 
 
             if (
-                Object.prototype.hasOwnProperty.call($.global, 'location') &&
-                $.global.location.hash &&
+                $.global.location?.hash &&
                 this.options.initialSectionName !==
                     $.global.location.hash.substring('#'.length)
             )
@@ -289,7 +285,7 @@ export class Documentation extends WebsiteUtilities {
                     .Internationalisation(this.options.language)
             ).data('Internationalisation') as Internationalisation
 
-        if (Object.prototype.hasOwnProperty.call($.global, 'location'))
+        if ($.global.location)
             this.$domNodes.tableOfContentLinks
                 .add(this.$domNodes.aboutThisWebsiteLink)
                 .filter(

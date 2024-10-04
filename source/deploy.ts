@@ -29,6 +29,7 @@ import {
     isFile,
     Mapping,
     optionalRequire,
+    PositiveEvaluationResult,
     PlainObject,
     represent,
     walkDirectoryRecursively
@@ -212,10 +213,16 @@ const generateAndPushNewDocumentationPage = async (
     const parametersFilePath: string = run('mktemp --suffix .json').trim()
     await writeFile(parametersFilePath, serializedParameters)
 
-    BUILD_DOCUMENTATION_PAGE_COMMAND = evaluate(
+    const evaluationResult: EvaluationResult = evaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND,
         {parameters, parametersFilePath, ...SCOPE}
-    ).result
+    )
+
+    if (evaluationResult.error)
+        throw new Error(evaluationResult.error)
+
+    BUILD_DOCUMENTATION_PAGE_COMMAND =
+        (evaluationResult as PositiveEvaluationResult).result
 
     console.debug(`Use final parameters "${serializedParameters}".`)
     console.info(`Run "${BUILD_DOCUMENTATION_PAGE_COMMAND}".`)
@@ -421,7 +428,11 @@ if (
         `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
     )
 
-    API_DOCUMENTATION_PATH_SUFFIX = evaluationResult.result
+    if (evaluationResult.error)
+        throw new Error(evaluationResult.error)
+
+    API_DOCUMENTATION_PATH_SUFFIX =
+        (evaluationResult as PositiveEvaluationResult).result
 
     const temporaryDocumentationFolderPath = 'documentation-website'
     if (await isDirectory(temporaryDocumentationFolderPath))
