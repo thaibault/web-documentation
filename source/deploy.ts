@@ -120,7 +120,7 @@ const stream2buffer = async (stream: Stream): Promise<Buffer> => {
  */
 const generateAndPushNewDocumentationPage = async (
     temporaryDocumentationFolderPath: string,
-    distributionBundleFilePath: null|string,
+    distributionBundleFilePath: null | string,
     hasAPIDocumentationCommand: boolean
 ): Promise<void> => {
     console.info('Generate document website artefacts.')
@@ -184,7 +184,7 @@ const generateAndPushNewDocumentationPage = async (
 
     console.debug(`Found parameters "${represent(parameters)}" to render.`)
 
-    let apiDocumentationPath: null|string = null
+    let apiDocumentationPath: null | string = null
     if (hasAPIDocumentationCommand) {
         apiDocumentationPath =
             API_DOCUMENTATION_PATHS[1] + API_DOCUMENTATION_PATH_SUFFIX
@@ -251,7 +251,7 @@ const generateAndPushNewDocumentationPage = async (
     )
     await walkDirectoryRecursively(
         documentationBuildFolderPath,
-        (file: File): Promise<false|undefined> =>
+        (file: File): Promise<false | undefined> =>
             copyRepositoryFile(documentationBuildFolderPath, './', file)
     )
 
@@ -266,7 +266,7 @@ const generateAndPushNewDocumentationPage = async (
  * Creates a distribution bundle file as zip archiv.
  * @returns Path to build distribution bundle or "null" of building failed.
  */
-const createDistributionBundle = async (): Promise<null|string> => {
+const createDistributionBundle = async (): Promise<null | string> => {
     if (
         SCOPE.scripts &&
         (
@@ -380,7 +380,7 @@ const isFileIgnored = async (filePath: string): Promise<boolean> => (
  */
 const copyRepositoryFile = async (
     sourcePath: string, targetPath: string, file: File
-): Promise<false|undefined> => {
+): Promise<false | undefined> => {
     if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
         return false
 
@@ -401,7 +401,7 @@ const copyRepositoryFile = async (
  * @returns False or "null" indicating whether the readme file should be
  * ignored.
  */
-const addReadme = async (file: File): Promise<false|null> => {
+const addReadme = async (file: File): Promise<false | null> => {
     if (await isFileIgnored(file.path))
         return false
 
@@ -442,7 +442,7 @@ if (
 
     await walkDirectoryRecursively('./', addReadme)
 
-    let distributionBundleFilePath: null|string = null
+    let distributionBundleFilePath: null | string = null
     try {
         distributionBundleFilePath = await createDistributionBundle()
     } catch (error) {
@@ -494,7 +494,7 @@ if (
 
         await walkDirectoryRecursively(
             localDocumentationWebsitePath,
-            (file: File): Promise<false|undefined> =>
+            (file: File): Promise<false | undefined> =>
                 copyRepositoryFile(
                     localDocumentationWebsitePath,
                     temporaryDocumentationFolderPath,
@@ -512,7 +512,7 @@ if (
             /*
                 We copy just recursively reference files.
 
-                NOTE: Symlinking doesn't work since some node modules need the
+                NOTE: Symlinks doesn't work since some node modules need the
                 right absolute location to work.
 
                 NOTE: Coping complete "node_modules" folder takes to long.

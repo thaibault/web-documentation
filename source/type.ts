@@ -52,7 +52,7 @@ export type DomNodes<Type = string> =
 
 export interface DefaultOptions {
     domNodes: DomNodes
-    domNodeSelectorInfix: null|string
+    domNodeSelectorInfix: null | string
     name: string
     onExamplesLoaded: ProcedureFunction
     section: {

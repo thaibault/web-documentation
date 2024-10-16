@@ -152,7 +152,7 @@ export class Documentation extends WebsiteUtilities {
                 this.$domNodes.tableOfContentLinks,
                 'click',
                 (event: Event) => {
-                    const hashReference: string|undefined =
+                    const hashReference: string | undefined =
                         $(event.target as HTMLLinkElement).attr('href')
                     if (hashReference && hashReference !== '#')
                         this.fireEvent(
@@ -446,7 +446,7 @@ export class Documentation extends WebsiteUtilities {
                 if (
                     domNode.nodeName === this.options.showExample.domNodeName
                 ) {
-                    const match: null|RegExpMatchArray =
+                    const match: null | RegExpMatchArray =
                         (domNode.textContent || '').match(
                             new RegExp(this.options.showExample.pattern)
                         )
