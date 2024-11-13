@@ -469,7 +469,7 @@ if (
     if (hasAPIDocumentationCommand)
         try {
             run('yarn document')
-        } catch (_error) {
+        } catch {
             hasAPIDocumentationCommand = false
         }
 
