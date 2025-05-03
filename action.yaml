@@ -1,0 +1,23 @@
+name: Deploy documentation website
+
+inputs:
+  debug:
+    description: Sets "NODE_ENV" to "debug".
+    required: false
+    default: false
+
+runs:
+  using: composite
+
+  steps:
+    - uses: thaibault/install-npm-package-dependencies-action@main
+      with:
+        debug: ${{ inputs.debug }}
+
+    - name: Change Owner of Container Working Directory
+      run: chown root:root .
+      shell: bash
+
+    - name: Trigger deployment script.
+      run: yarn run update:documentation
+      shell: bash

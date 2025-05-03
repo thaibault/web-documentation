@@ -418,6 +418,8 @@ const addReadme = async (file: File): Promise<false | null> => {
 }
 // endregion
 
+console.info('Start deploying documentation website:')
+
 if (
     run('git branch').includes('* main') &&
     run('git branch --all').includes('gh-pages')
