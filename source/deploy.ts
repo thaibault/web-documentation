@@ -482,8 +482,6 @@ if (
         }
 
     run('git checkout gh-pages')
-    console.log('TODO JAU')
-    run('git pull')
 
     const apiDocumentationDirectoryPath: string =
         resolve(API_DOCUMENTATION_PATHS[1])
@@ -510,6 +508,8 @@ if (
                     file
                 )
         )
+
+        console.log('TODO LOL')
 
         /* TODO
         const nodeModulesDirectoryPath: string =
@@ -538,10 +538,7 @@ if (
             `)
         } else
         */
-        run(
-            'yarn --production=false',
-            {cwd: temporaryDocumentationFolderPath}
-        )
+        run('yarn', {cwd: temporaryDocumentationFolderPath})
 
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else {
