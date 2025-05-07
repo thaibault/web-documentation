@@ -421,7 +421,7 @@ const addReadme = async (file: File): Promise<false | null> => {
 console.log('TODO 1', run('git branch --all'))
 
 if (!run('git branch --all').includes('gh-pages'))
-    run('git checkout gh-pages')
+    run('git checkout remotes/origin/gh-pages')
 
 if (!run('git branch').includes('* main'))
     run('git checkout main')
