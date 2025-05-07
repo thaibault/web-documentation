@@ -544,7 +544,7 @@ if (
             'yarn install',
             {
                 cwd: temporaryDocumentationFolderPath,
-                env: {NODE_ENV: 'debug'}
+                env: {...process.env, NODE_ENV: 'debug'}
             }
         )
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
