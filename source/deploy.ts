@@ -422,6 +422,7 @@ console.log('TODO 1', run('git branch --all'))
 
 if (!run('git branch --all').includes('gh-pages')) {
     run('git fetch --all')
+    console.log('TODO 1.1', run('git diff'))
     run('git checkout gh-pages')
 }
 
