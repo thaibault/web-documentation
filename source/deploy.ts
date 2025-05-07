@@ -363,7 +363,8 @@ const createDistributionBundle = async (): Promise<null | string> => {
  * @returns Promise wrapping indicating boolean.
  */
 const isFileIgnored = async (filePath: string): Promise<boolean> => (
-    basename(filePath, extname(filePath)).startsWith('.') ||
+    basename(filePath, extname(filePath)).startsWith('.') &&
+    basename(filePath) !== '.yarn' ||
     basename(filePath, extname(filePath)) === 'dummyDocumentation' ||
     await isDirectory(filePath) &&
     ['node_modules', 'build'].includes(basename(filePath)) ||
