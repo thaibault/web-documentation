@@ -418,18 +418,13 @@ const addReadme = async (file: File): Promise<false | null> => {
 }
 // endregion
 
-console.log('TODO 1', run('git branch --all'))
-
 if (!run('git branch --all').includes('gh-pages')) {
     run('git fetch --all')
-    console.log('TODO 1.1', run('git diff'))
     run('git checkout gh-pages')
 }
 
 if (!run('git branch').includes('* main'))
     run('git checkout main')
-
-console.log('TODO 2', run('git branch --all'))
 
 if (
     run('git branch').includes('* main') &&
@@ -487,6 +482,7 @@ if (
         }
 
     run('git checkout gh-pages')
+    console.log('TODO JAU')
     run('git pull')
 
     const apiDocumentationDirectoryPath: string =
