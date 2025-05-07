@@ -225,6 +225,7 @@ const generateAndPushNewDocumentationPage = async (
         (evaluationResult as PositiveEvaluationResult).result
 
     console.debug(`Use final parameters "${serializedParameters}".`)
+    // TODO
     console.info(`Run "${BUILD_DOCUMENTATION_PAGE_COMMAND}".`)
 
     run(
@@ -537,12 +538,15 @@ if (
             `)
         } else
         */
-        console.log('TODO 1')
         run('corepack enable', {cwd: temporaryDocumentationFolderPath})
         run('corepack install', {cwd: temporaryDocumentationFolderPath})
-        console.log('TODO 2')
-        run('yarn', {cwd: temporaryDocumentationFolderPath})
-        console.log('TODO 3')
+        run(
+            'yarn install',
+            {
+                cwd: temporaryDocumentationFolderPath,
+                env: {NODE_ENV: 'debug'}
+            }
+        )
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else {
         run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
