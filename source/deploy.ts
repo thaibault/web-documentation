@@ -65,7 +65,7 @@ const DISTRIBUTION_BUNDLE_FILE_PATH = join(DATA_PATH, 'distributionBundle.zip')
 const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
     join(DATA_PATH, 'distributionBundle')
 /// endregion
-let BUILD_DOCUMENTATION_PAGE_COMMAND =
+const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
     '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
 const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
     module: {
@@ -214,24 +214,23 @@ const generateAndPushNewDocumentationPage = async (
     await writeFile(parametersFilePath, serializedParameters)
 
     const evaluationResult: EvaluationResult = evaluate(
-        BUILD_DOCUMENTATION_PAGE_COMMAND,
+        BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE,
         {parameters, parametersFilePath, ...SCOPE}
     )
 
     if (evaluationResult.error)
         throw new Error(evaluationResult.error)
 
-    BUILD_DOCUMENTATION_PAGE_COMMAND =
+    const buildDocumentationPageCommand =
         (evaluationResult as PositiveEvaluationResult).result
 
     console.debug(`Use final parameters "${serializedParameters}".`)
     // TODO
-    console.info(`Run "${BUILD_DOCUMENTATION_PAGE_COMMAND}".`)
+    run('pwd')
+    run('ls -lha')
+    console.info(`Run "${buildDocumentationPageCommand}".`)
 
-    run(
-        BUILD_DOCUMENTATION_PAGE_COMMAND,
-        {cwd: temporaryDocumentationFolderPath}
-    )
+    run(buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath})
     await rm(parametersFilePath)
 
     for (const filePath of await readdir('./'))
