@@ -65,7 +65,7 @@
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "archiver": "^7.0.1",
-    "clientnode": "^3.0.1280",
+    "clientnode": "^3.0.1281",
     "css-loader": "^7.1.2",
     "cssnano": "^7.0.7",
     "default-gateway": "^7.2.2",
