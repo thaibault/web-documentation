@@ -549,7 +549,16 @@ if (
         )
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else {
+        console.log()
+        console.log('TODO', 'A')
+        console.log()
+
         run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
+
+        console.log()
+        console.log('TODO', 'B')
+        console.log()
+
         run('yarn --production=false', {cwd: temporaryDocumentationFolderPath})
     }
 
