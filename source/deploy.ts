@@ -501,6 +501,7 @@ if (
 
     console.log()
     console.log('TODO', 'A', await isDirectory(localDocumentationWebsitePath))
+    process.stdout.write('JAU')
     console.log()
 
     if (await isDirectory(localDocumentationWebsitePath)) {
