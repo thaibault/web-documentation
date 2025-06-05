@@ -498,6 +498,11 @@ if (
 
     const localDocumentationWebsitePath: string =
         resolve(`../${basename(temporaryDocumentationFolderPath)}`)
+
+    console.log()
+    console.log('TODO', 'A', await isDirectory(localDocumentationWebsitePath))
+    console.log()
+
     if (await isDirectory(localDocumentationWebsitePath)) {
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
@@ -549,18 +554,23 @@ if (
         )
         run('yarn clear', {cwd: temporaryDocumentationFolderPath})
     } else {
+
         console.log()
-        console.log('TODO', 'A')
+        console.log('TODO', 'a')
         console.log()
 
         run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
 
         console.log()
-        console.log('TODO', 'B')
+        console.log('TODO', 'b')
         console.log()
 
         run('yarn --production=false', {cwd: temporaryDocumentationFolderPath})
     }
+
+    console.log()
+    console.log('TODO', 'B')
+    console.log()
 
     await generateAndPushNewDocumentationPage(
         temporaryDocumentationFolderPath,
