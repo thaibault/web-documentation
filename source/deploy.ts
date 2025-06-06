@@ -225,9 +225,13 @@ const generateAndPushNewDocumentationPage = async (
         (evaluationResult as PositiveEvaluationResult).result
 
     console.debug(`Use final parameters "${serializedParameters}".`)
+
     // TODO
-    run('pwd')
-    run('ls -lha')
+    console.log()
+    console.log(run('pwd'))
+    console.log(run('ls -lha'))
+    console.log(temporaryDocumentationFolderPath)
+
     console.info(`Run "${buildDocumentationPageCommand}".`)
 
     run(buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath})
@@ -498,12 +502,9 @@ if (
     const localDocumentationWebsitePath: string =
         resolve(`../${basename(temporaryDocumentationFolderPath)}`)
 
-    console.log()
-    console.log('TODO', 'A', await isDirectory(localDocumentationWebsitePath))
-    process.stdout.write('JAU')
-    console.log()
-
     if (await isDirectory(localDocumentationWebsitePath)) {
+        console.info('Copy local existing documentation-website.')
+
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
         await walkDirectoryRecursively(
@@ -516,7 +517,8 @@ if (
                 )
         )
 
-        /* TODO
+        /*
+
         const nodeModulesDirectoryPath: string =
             resolve(localDocumentationWebsitePath, 'node_modules')
         if (await isDirectory(nodeModulesDirectoryPath)) {
@@ -542,34 +544,29 @@ if (
                     '${temporaryDocumentationNodeModulesDirectoryPath}'
             `)
         } else
-        */
-        run('corepack enable', {cwd: temporaryDocumentationFolderPath})
-        run('corepack install', {cwd: temporaryDocumentationFolderPath})
-        run(
-            'yarn install',
-            {
-                cwd: temporaryDocumentationFolderPath,
-                env: {...process.env, NODE_ENV: 'debug'}
-            }
-        )
-        run('yarn clear', {cwd: temporaryDocumentationFolderPath})
-    } else {
 
-        console.log()
-        console.log('TODO', 'a')
-        console.log()
+        */
+    } else {
+        console.info(
+            'No local existing documentation-website found getting it remotely.'
+        )
 
         run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
-
-        console.log()
-        console.log('TODO', 'b')
-        console.log()
-
-        run('yarn --production=false', {cwd: temporaryDocumentationFolderPath})
     }
 
+    run('corepack enable', {cwd: temporaryDocumentationFolderPath})
+    run('corepack install', {cwd: temporaryDocumentationFolderPath})
+    run(
+        'yarn install',
+        {
+            cwd: temporaryDocumentationFolderPath,
+            env: {...process.env, NODE_ENV: 'debug'}
+        }
+    )
+    run('yarn clear', {cwd: temporaryDocumentationFolderPath})
+
     console.log()
-    console.log('TODO', 'B')
+    console.log('TODO 1')
     console.log()
 
     await generateAndPushNewDocumentationPage(
