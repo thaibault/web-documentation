@@ -407,12 +407,16 @@ const copyRepositoryFile = async (
  * @returns False or "null" indicating whether the readme file should be
  * ignored.
  */
-const addReadme = async (file: File): Promise<false | null> => {
+const addReadme = async (file: File): Promise<false | undefined> => {
+    console.log('A', file.path, CONTENT.length)
+
     if (await isFileIgnored(file.path))
         return false
 
     if (basename(file.name, extname(file.name)) === 'readme') {
         console.info(`Handle "${file.path}".`)
+
+        console.log('B', file.path)
 
         if (CONTENT)
             CONTENT += '\n'
@@ -420,7 +424,7 @@ const addReadme = async (file: File): Promise<false | null> => {
         CONTENT += await readFile(file.path, 'utf8')
     }
 
-    return null
+    console.log('C', CONTENT.length)
 }
 // endregion
 
