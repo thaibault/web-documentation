@@ -42,6 +42,7 @@ import {basename, dirname, extname, join, relative, resolve} from 'path'
 import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
+// region types
 interface SCOPE_TYPE extends Mapping<unknown> {
     description?: string
     documentationWebsite?: PlainObject
@@ -51,10 +52,7 @@ interface SCOPE_TYPE extends Mapping<unknown> {
     scripts?: Mapping
     version: string
 }
-
-const run = (command: string, options = {}): string =>
-    execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
-
+// endregion
 // region globals
 /// region locations
 const DOCUMENTATION_BUILD_PATH = resolve('./build/')
@@ -65,6 +63,7 @@ const DISTRIBUTION_BUNDLE_FILE_PATH = join(DATA_PATH, 'distributionBundle.zip')
 const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
     join(DATA_PATH, 'distributionBundle')
 /// endregion
+const ALLOW_LOCAL_DOCUMENTATION_WEBSITE = false
 const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
     '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
 const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
@@ -91,6 +90,17 @@ const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
 let SCOPE: SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
 // region functions
+/**
+ * Provides generic shell execution for given commands. When errors occur (none
+ * zero return code) they will result in a thrown exception.
+ * @param command - To execute.
+ * @param options - To be forward the node's native "execSync" function.
+ * @returns The resulting stdout. You need to forward them to console to make
+ * it visible.
+ */
+const run = (command: string, options = {}): string =>
+    execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
+
 /**
  * Converts a given stream into a buffer.
  * @param stream - To Convert.
@@ -502,7 +512,10 @@ if (
     const localDocumentationWebsitePath: string =
         resolve(`../${DOCUMENTATION_WEBSITE_NAME}`)
 
-    if (await isDirectory(localDocumentationWebsitePath)) {
+    if (
+        ALLOW_LOCAL_DOCUMENTATION_WEBSITE &&
+        await isDirectory(localDocumentationWebsitePath)
+    ) {
         console.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
 
         await mkdir(temporaryDocumentationFolderPath, {recursive: true})

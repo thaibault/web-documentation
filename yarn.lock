@@ -7678,9 +7678,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^3.0.1287":
-  version: 3.0.1287
-  resolution: "clientnode@npm:3.0.1287"
+"clientnode@npm:^3.0.1288":
+  version: 3.0.1288
+  resolution: "clientnode@npm:3.0.1288"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -7698,7 +7698,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/f5316f8253561681504075e314ae8eb0bbc54ccf33f67aec50597ad58ac0c38bb189a4906fc0cc4e2d98c2ceacd8508749ff4f816299bc2bca737d0b33bd770f
+  checksum: 10c0/e7e82f5643c30e0bc0096dd60bdb22d16a3cd02a366e4f4a3b562c2b599ab2ebaa7d1a37831f4e0cfd8ef5dab00fd505cbd070e9a6142170de533248dc1daa29
   languageName: node
   linkType: hard
 
@@ -8776,7 +8776,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.34.0"
     "@typescript-eslint/parser": "npm:^8.34.0"
     archiver: "npm:^7.0.1"
-    clientnode: "npm:^3.0.1287"
+    clientnode: "npm:^3.0.1288"
     css-loader: "npm:^7.1.2"
     cssnano: "npm:^7.0.7"
     default-gateway: "npm:^7.2.2"
