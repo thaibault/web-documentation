@@ -2729,15 +2729,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/postcss-is-pseudo-class@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@csstools/postcss-is-pseudo-class@npm:5.0.2"
+"@csstools/postcss-is-pseudo-class@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@csstools/postcss-is-pseudo-class@npm:5.0.3"
   dependencies:
     "@csstools/selector-specificity": "npm:^5.0.0"
     postcss-selector-parser: "npm:^7.0.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/79b4149b9718799c240b72680f5a37dd4b04a50d8b4a05b3fb35b921d03b2338a7ffa1324019681101c1023076bb0d4950cec1da49cd305e9ab154aad199ff92
+  checksum: 10c0/7980f1cabf32850bac72552e4e9de47412359e36e259a92b9b9af25dae4cce42bbcc5fdca8f384a589565bf383ecb23dec3af9f084d8df18b82552318b2841b6
   languageName: node
   linkType: hard
 
@@ -7678,9 +7678,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^3.0.1285":
-  version: 3.0.1285
-  resolution: "clientnode@npm:3.0.1285"
+"clientnode@npm:^3.0.1287":
+  version: 3.0.1287
+  resolution: "clientnode@npm:3.0.1287"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -7698,7 +7698,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/10eacfe6dbac827ee16add5572191c1fd4c607914c6e2dc8269aa9644f9efd538dce45706189b16dc20fc4c74e56ff48d193eb5285aba9214112a5000f75c94b
+  checksum: 10c0/f5316f8253561681504075e314ae8eb0bbc54ccf33f67aec50597ad58ac0c38bb189a4906fc0cc4e2d98c2ceacd8508749ff4f816299bc2bca737d0b33bd770f
   languageName: node
   linkType: hard
 
@@ -8776,14 +8776,14 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.34.0"
     "@typescript-eslint/parser": "npm:^8.34.0"
     archiver: "npm:^7.0.1"
-    clientnode: "npm:^3.0.1285"
+    clientnode: "npm:^3.0.1287"
     css-loader: "npm:^7.1.2"
     cssnano: "npm:^7.0.7"
     default-gateway: "npm:^7.2.2"
     errorreporter: "npm:^1.0.326"
     eslint: "npm:^9.28.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^50.7.1"
+    eslint-plugin-jsdoc: "npm:^50.8.0"
     favicons: "npm:^7.2.0"
     favicons-webpack-plugin: "npm:^6.0.1"
     highlight.js: "npm:^11.11.1"
@@ -8800,7 +8800,7 @@ __metadata:
     postcss-loader: "npm:^8.1.1"
     postcss-mixins: "npm:^11.0.3"
     postcss-nested: "npm:^7.0.2"
-    postcss-preset-env: "npm:^10.2.2"
+    postcss-preset-env: "npm:^10.2.3"
     postcss-sprites: "npm:^4.2.1"
     postcss-url: "npm:^10.1.3"
     spin.js: "npm:^4.1.2"
@@ -9307,9 +9307,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^50.7.1":
-  version: 50.7.1
-  resolution: "eslint-plugin-jsdoc@npm:50.7.1"
+"eslint-plugin-jsdoc@npm:^50.8.0":
+  version: 50.8.0
+  resolution: "eslint-plugin-jsdoc@npm:50.8.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.50.2"
     are-docs-informative: "npm:^0.0.2"
@@ -9323,7 +9323,7 @@ __metadata:
     spdx-expression-parse: "npm:^4.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/8ec6295ce789534c1ff47f2988e56c05dc5afb6c1ae54d7036196522aa32de0dee47affe1526697f4ad63ca41124f45175e175ac1f0efe60592f15d1501b57bb
+  checksum: 10c0/8829eb841666e897ddce2677e8288fcdc231bab73add93236e14f2fc7f5d494f5809ac7fc1f809c64817abe532e9a7f4a6aa2eeac303c518d4f70f22ef13642c
   languageName: node
   linkType: hard
 
@@ -14766,9 +14766,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:^10.2.2":
-  version: 10.2.2
-  resolution: "postcss-preset-env@npm:10.2.2"
+"postcss-preset-env@npm:^10.2.3":
+  version: 10.2.3
+  resolution: "postcss-preset-env@npm:10.2.3"
   dependencies:
     "@csstools/postcss-cascade-layers": "npm:^5.0.1"
     "@csstools/postcss-color-function": "npm:^4.0.10"
@@ -14782,7 +14782,7 @@ __metadata:
     "@csstools/postcss-hwb-function": "npm:^4.0.10"
     "@csstools/postcss-ic-unit": "npm:^4.0.2"
     "@csstools/postcss-initial": "npm:^2.0.1"
-    "@csstools/postcss-is-pseudo-class": "npm:^5.0.2"
+    "@csstools/postcss-is-pseudo-class": "npm:^5.0.3"
     "@csstools/postcss-light-dark-function": "npm:^2.0.9"
     "@csstools/postcss-logical-float-and-clear": "npm:^3.0.0"
     "@csstools/postcss-logical-overflow": "npm:^2.0.0"
@@ -14836,7 +14836,7 @@ __metadata:
     postcss-selector-not: "npm:^8.0.1"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10c0/314774ed0cfb2880d82d0056e1a26ab5c04b9e5584e5c41045231374a7e080eda7ed6e5506fbc1c1c6bc7a05700576bfb0b5f334ae25f125bcbb772e2aa337e8
+  checksum: 10c0/f3d2ea8b95083acad2cf74aca93904dd3158639bf692d1d471598b538e0c6b4447ae306e7bc1c2426dd465e7c9715373678855b7e211e194b507ef8184e83f99
   languageName: node
   linkType: hard
 
