@@ -36,13 +36,20 @@ import {
 } from 'clientnode'
 import {createReadStream, createWriteStream} from 'fs'
 import {
-    copyFile, mkdir, readdir, readFile, rename, rm, writeFile
+    copyFile, mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile
 } from 'fs/promises'
+import {tmpdir} from 'node:os'
 import {basename, dirname, extname, join, relative, resolve} from 'path'
 import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
 // region types
+interface MAKE_TEMPORARY_FILE_OPTIONS {
+    directory: boolean
+    encoding?: BufferEncoding | null
+    extension: string
+    prefix: string
+}
 interface SCOPE_TYPE extends Mapping<unknown> {
     description?: string
     documentationWebsite?: PlainObject
@@ -84,12 +91,37 @@ const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
 }
 let CONTENT = ''
 const DOCUMENTATION_WEBSITE_NAME = 'documentation-website'
-const DOCUMENTATION_REPOSITORY =
-    `git@github.com:"thaibault/${DOCUMENTATION_WEBSITE_NAME}"`
+const DOCUMENTATION_WEBSITE_REPOSITORY =
+    `git@github.com:thaibault/${DOCUMENTATION_WEBSITE_NAME}`
 const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
 let SCOPE: SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
 // endregion
 // region functions
+/**
+ * Creates temporary directories or provides temporary not yet used file
+ * locations.
+ * @param givenOptions - Defines options to influence the file path creation.
+ * @returns Determined file path.
+ */
+const makeTemporaryFile = async (
+    givenOptions: Partial<MAKE_TEMPORARY_FILE_OPTIONS> = {}
+): Promise<string> => {
+    const options: MAKE_TEMPORARY_FILE_OPTIONS = {
+        directory: false,
+        encoding: 'utf8',
+        extension: '',
+        prefix: 'DW',
+        ...givenOptions
+    }
+
+    const directoryPath: string =
+        await mkdtemp(join(tmpdir(), options.prefix), options.encoding)
+
+    if (options.directory)
+        return directoryPath
+
+    return join(directoryPath, `${options.prefix}${options.extension}`)
+}
 /**
  * Provides generic shell execution for given commands. When errors occur (none
  * zero return code) they will result in a thrown exception.
@@ -221,7 +253,8 @@ const generateAndPushNewDocumentationPage = async (
         JSON.stringify(evaluateDynamicData(
             BUILD_DOCUMENTATION_PAGE_CONFIGURATION, {parameters, ...SCOPE}
         ))
-    const parametersFilePath: string = run('mktemp --suffix .json').trim()
+    const parametersFilePath: string =
+        await makeTemporaryFile({extension: '.json'})
     await writeFile(parametersFilePath, serializedParameters)
 
     const evaluationResult: EvaluationResult = evaluate(
@@ -305,7 +338,7 @@ const createDistributionBundle = async (): Promise<null | string> => {
 
     console.info('Pack to a zip archive.')
     const distributionBundleFilePath: string =
-        run('mktemp --suffix .zip').trim()
+        await makeTemporaryFile({extension: '.zip'})
 
     const filePaths = SCOPE.files || []
     if (SCOPE.main)
@@ -456,11 +489,6 @@ if (
     API_DOCUMENTATION_PATH_SUFFIX =
         (evaluationResult as PositiveEvaluationResult).result
 
-    const temporaryDocumentationFolderPath =
-        run(`mktemp --directory --suffix ${DOCUMENTATION_WEBSITE_NAME}`).trim()
-    if (await isDirectory(temporaryDocumentationFolderPath))
-        await rm(temporaryDocumentationFolderPath, {recursive: true})
-
     console.info('Read and Compile all markdown files and transform to html.')
 
     await walkDirectoryRecursively('./', addReadme)
@@ -509,16 +537,18 @@ if (
             apiDocumentationDirectoryPath
         )
 
+    let temporaryDocumentationFolderPath = await makeTemporaryFile({
+        directory: true, prefix: DOCUMENTATION_WEBSITE_NAME
+    })
     const localDocumentationWebsitePath: string =
         resolve(`../${DOCUMENTATION_WEBSITE_NAME}`)
 
     if (
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         ALLOW_LOCAL_DOCUMENTATION_WEBSITE &&
         await isDirectory(localDocumentationWebsitePath)
     ) {
         console.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
-
-        await mkdir(temporaryDocumentationFolderPath, {recursive: true})
 
         await walkDirectoryRecursively(
             localDocumentationWebsitePath,
@@ -566,13 +596,22 @@ if (
         )
 
         console.debug(
-            run(`unset GIT_WORK_TREE; git clone '${DOCUMENTATION_REPOSITORY}'`)
+            run(
+                'unset GIT_WORK_TREE; git clone ' +
+                `'${DOCUMENTATION_WEBSITE_REPOSITORY}'`,
+                {cwd: temporaryDocumentationFolderPath}
+            )
+        )
+
+        temporaryDocumentationFolderPath = resolve(
+            temporaryDocumentationFolderPath, DOCUMENTATION_WEBSITE_NAME
         )
     }
 
     console.debug(
         run('corepack enable', {cwd: temporaryDocumentationFolderPath})
     )
+
     console.debug(
         run('corepack install', {cwd: temporaryDocumentationFolderPath})
     )
@@ -592,7 +631,11 @@ if (
     )
 
     // region tidy up
-    for (const path of [apiDocumentationDirectoryPath, DATA_PATH])
+    for (const path of [
+        apiDocumentationDirectoryPath,
+        DATA_PATH,
+        temporaryDocumentationFolderPath
+    ])
         if (await isDirectory(path))
             await rm(path, {recursive: true})
     // endregion
