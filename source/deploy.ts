@@ -304,6 +304,11 @@ const generateAndPushNewDocumentationPage = async (
 
     await rm(temporaryDocumentationFolderPath, {recursive: true})
 
+    if (run('git config user.email') === '')
+        console.debug(run('git config user.email "github_actor@example.com"'))
+    if (run('git config user.name') === '')
+        console.debug(run('git config user.name "github_actor"'))
+
     console.debug(run('git add --all'))
     console.debug(
         run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)

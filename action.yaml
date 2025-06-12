@@ -6,6 +6,12 @@ inputs:
     required: false
     default: false
 
+  # Input not required from the user
+  token:
+    description: The token used to make requests to the GitHub API.
+    required: false
+    default: ${{ github.token }}
+
 runs:
   using: composite
 
