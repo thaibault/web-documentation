@@ -18,7 +18,7 @@
 */
 // region imports
 import archiver from 'archiver'
-import {execSync} from 'child_process'
+import {execSync, ExecSyncOptionsWithStringEncoding} from 'child_process'
 import {
     camelCaseToDelimited,
     evaluate,
@@ -131,8 +131,25 @@ const makeTemporaryFile = async (
  * @returns The resulting stdout. You need to forward them to console to make
  * it visible.
  */
-const run = (command: string, options = {}): string =>
+const run = (
+    command: string, options: Partial<ExecSyncOptionsWithStringEncoding> = {}
+): string =>
     execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
+/**
+ * Checks if given command throws an error or not.
+ * @param parameters - Parameters for "run" function.
+ * @returns Boolean indicating whether given command runs successful or not.
+ */
+const checkRun = (
+    ...parameters: Parameters<typeof run>
+): boolean => {
+    try {
+        run(...parameters)
+        return true
+    } catch (_error) {
+        return false
+    }
+}
 
 /**
  * Converts a given stream into a buffer.
@@ -304,9 +321,9 @@ const generateAndPushNewDocumentationPage = async (
 
     await rm(temporaryDocumentationFolderPath, {recursive: true})
 
-    if (run('git config user.email') === '')
+    if (checkRun('git config user.email'))
         console.debug(run('git config user.email "github_actor@example.com"'))
-    if (run('git config user.name') === '')
+    if (checkRun('git config user.name'))
         console.debug(run('git config user.name "github_actor"'))
 
     console.debug(run('git add --all'))
