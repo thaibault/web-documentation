@@ -467,8 +467,15 @@ const addReadme = async (file: File): Promise<false | undefined> => {
 
 if (!run('git branch --all').includes('gh-pages')) {
     console.debug(run('git fetch --all'))
-    console.debug(run('git status'))
-    console.debug(run('git diff'))
+    try {
+        /*
+            NOTE: The issue here that other configuration might automatically
+            add a new line at the end of the package manifest file.
+        */
+        console.debug(run('git checkout package.json'))
+    } catch (_error) {
+        // Do nothing regardless of an error.
+    }
     console.debug(run('git checkout gh-pages'))
 }
 
