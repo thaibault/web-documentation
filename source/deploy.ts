@@ -467,6 +467,8 @@ const addReadme = async (file: File): Promise<false | undefined> => {
 
 if (!run('git branch --all').includes('gh-pages')) {
     console.debug(run('git fetch --all'))
+    console.debug(run('git status'))
+    console.debug(run('git diff'))
     console.debug(run('git checkout gh-pages'))
 }
 
