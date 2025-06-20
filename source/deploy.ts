@@ -505,6 +505,8 @@ if (!run('git branch --all').includes('gh-pages')) {
 if (!run('git branch').includes('* main'))
     console.debug(run('git checkout main'))
 
+console.debug(run('git pull'))
+
 if (
     run('git branch').includes('* main') &&
     run('git branch --all').includes('gh-pages')
@@ -557,6 +559,7 @@ if (
         }
 
     console.debug(run('git checkout gh-pages'))
+    console.debug(run('git pull'))
 
     const apiDocumentationDirectoryPath: string =
         resolve(API_DOCUMENTATION_PATHS[1])
