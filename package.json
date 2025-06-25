@@ -99,7 +99,7 @@
     "typescript-eslint": "^8.35.0",
     "ua-parser-js": "^2.0.4",
     "unzipper": "^0.12.3",
-    "weboptimizer": "^2.0.1588",
+    "weboptimizer": "^2.0.1589",
     "webpack-dev-server": "^5.2.2",
     "website-utilities": "^1.0.367"
   },
