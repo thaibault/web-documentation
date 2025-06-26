@@ -69,6 +69,7 @@ let API_DOCUMENTATION_PATH_SUFFIX = '${name}/${version}/'
 const DISTRIBUTION_BUNDLE_FILE_PATH = join(DATA_PATH, 'distributionBundle.zip')
 const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
     join(DATA_PATH, 'distributionBundle')
+const LOCATIONS_TO_TIDY_UP: Array<string> = []
 /// endregion
 const ALLOW_LOCAL_DOCUMENTATION_WEBSITE = true
 const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
@@ -289,18 +290,27 @@ const generateAndPushNewDocumentationPage = async (
     console.debug(`Use final parameters "${serializedParameters}".`)
     console.info(`Run "${buildDocumentationPageCommand}".`)
 
-    console.info(`TODO WAIT`)
-    console.debug(
-        run(
-            'sleep 99999999',
-            {cwd: temporaryDocumentationFolderPath}
-        )
-    )
+    const environment = {...process.env}
+    for (const name of [
+        'BERRY_BIN_FOLDER',
+        'INIT_CWD',
+        'npm_config_user_agent',
+        'npm_execpath',
+        'npm_lifecycle_event',
+        'npm_node_execpath',
+        'npm_package_json',
+        'npm_package_name',
+        'npm_package_version',
+        'PROJECT_CWD'
+    ])
+        delete environment[name]
 
+    // TODO
+    console.debug('TODO', temporaryDocumentationFolderPath)
     console.debug(
         run(
             buildDocumentationPageCommand,
-            {cwd: temporaryDocumentationFolderPath}
+            {cwd: temporaryDocumentationFolderPath, env: environment}
         )
     )
     await rm(parametersFilePath)
@@ -494,199 +504,238 @@ const addReadme = async (file: File): Promise<false | undefined> => {
         CONTENT += await readFile(file.path, 'utf8')
     }
 }
-// endregion
+/**
+ * Removes build files.
+ * @returns A promise resolving to nothing when finished.
+ */
+const tidyUp = async (): Promise<void> => {
+    for (const path of LOCATIONS_TO_TIDY_UP)
+        await rm(path, {recursive: true})
 
-if (!run('git branch --all').includes('gh-pages')) {
-    console.debug(run('git fetch --all'))
-    try {
-        /*
-            NOTE: The issue here that other configuration might automatically
-            add a new line at the end of the package manifest file.
-        */
-        console.debug(run('git checkout package.json'))
-    } catch (_error) {
-        // Do nothing regardless of an error.
-    }
-    console.debug(run('git checkout gh-pages'))
+    const oldAPIDocumentationDirectoryPath = resolve(API_DOCUMENTATION_PATHS[1])
+    if (!(await isDirectory(oldAPIDocumentationDirectoryPath)))
+        run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+
+    if (!run('git branch').includes('* main'))
+        console.debug(run('git checkout main'))
 }
-
-if (!run('git branch').includes('* main'))
-    console.debug(run('git checkout main'))
-
-console.debug(run('git pull'))
-
-if (
-    run('git branch').includes('* main') &&
-    run('git branch --all').includes('gh-pages')
-) {
-    SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
-
-    const evaluationResult: EvaluationResult = evaluate(
-        `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
-    )
-
-    if (evaluationResult.error)
-        throw new Error(evaluationResult.error)
-
-    API_DOCUMENTATION_PATH_SUFFIX =
-        (evaluationResult as PositiveEvaluationResult).result
-
-    console.info('Read and Compile all markdown files and transform to html.')
-
-    await walkDirectoryRecursively('./', addReadme)
-
-    let distributionBundleFilePath: null | string = null
-    try {
-        distributionBundleFilePath = await createDistributionBundle()
-    } catch (error) {
-        console.error(
-            'Error occurred during building distribution bundle:', error
-        )
-
-        process.exitCode = 1
-    }
-
-    if (
-        distributionBundleFilePath && await isFile(distributionBundleFilePath)
-    ) {
-        await mkdir(DATA_PATH, {recursive: true})
-        await copyFile(
-            distributionBundleFilePath,
-            join(DATA_PATH, basename(distributionBundleFilePath))
-        )
-    }
-
-    let hasAPIDocumentationCommand: boolean =
-        Boolean(SCOPE.scripts) &&
-        Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
-    if (hasAPIDocumentationCommand)
+/**
+ * Main procedure.
+ * @returns A promise resolving to nothing when finished.
+ */
+const main = async (): Promise<void> => {
+    if (!run('git branch --all').includes('gh-pages')) {
+        console.debug(run('git fetch --all'))
         try {
-            console.debug(run('yarn document'))
-        } catch {
-            hasAPIDocumentationCommand = false
+            /*
+                NOTE: The issue here that other configuration might
+                automatically add a new line at the end of the package manifest
+                file.
+            */
+            console.debug(run('git checkout package.json'))
+        } catch (_error) {
+            // Do nothing regardless of an error.
         }
+        console.debug(run('git checkout gh-pages'))
+    }
 
-    console.debug(run('git checkout gh-pages'))
+    if (!run('git branch').includes('* main'))
+        console.debug(run('git checkout main'))
+
     console.debug(run('git pull'))
 
-    const apiDocumentationDirectoryPath: string =
-        resolve(API_DOCUMENTATION_PATHS[1])
-    if (await isDirectory(apiDocumentationDirectoryPath))
-        await rm(apiDocumentationDirectoryPath, {recursive: true})
-
-    if (await isDirectory(API_DOCUMENTATION_PATHS[0]))
-        await rename(
-            resolve(API_DOCUMENTATION_PATHS[0]),
-            apiDocumentationDirectoryPath
-        )
-
-    let temporaryDocumentationFolderPath = await makeTemporaryFile({
-        directory: true, prefix: DOCUMENTATION_WEBSITE_NAME
-    })
-    const localDocumentationWebsitePath: string =
-        resolve(`../${DOCUMENTATION_WEBSITE_NAME}`)
-
     if (
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        ALLOW_LOCAL_DOCUMENTATION_WEBSITE &&
-        await isDirectory(localDocumentationWebsitePath)
+        run('git branch').includes('* main') &&
+        run('git branch --all').includes('gh-pages')
     ) {
-        console.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
+        SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
 
-        await walkDirectoryRecursively(
-            localDocumentationWebsitePath,
-            (file: File): Promise<false | undefined> =>
-                copyRepositoryFile(
-                    localDocumentationWebsitePath,
-                    temporaryDocumentationFolderPath,
-                    file
-                )
+        const evaluationResult: EvaluationResult = evaluate(
+            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
         )
 
-        /*
+        if (evaluationResult.error)
+            throw new Error(evaluationResult.error)
 
-        const nodeModulesDirectoryPath: string =
-            resolve(localDocumentationWebsitePath, 'node_modules')
-        if (await isDirectory(nodeModulesDirectoryPath)) {
-            // NOTE: Not working caused by nested symlinks.
-            const temporaryDocumentationNodeModulesDirectoryPath: string =
-                resolve(temporaryDocumentationFolderPath, 'node_modules')
-            /*
-                We copy just recursively reference files.
+        API_DOCUMENTATION_PATH_SUFFIX =
+            (evaluationResult as PositiveEvaluationResult).result
 
-                NOTE: Symlinks doesn't work since some node modules need the
-                right absolute location to work.
-
-                NOTE: Coping complete "node_modules" folder takes to long.
-
-                NOTE: Mounting "node_modules" folder needs root privileges.
-            * /
-            console.debug(run(`
-                cp \
-                    --dereference \
-                    --recursive \
-                    --reflink=auto \
-                    '${nodeModulesDirectoryPath}' \
-                    '${temporaryDocumentationNodeModulesDirectoryPath}'
-            `))
-        } else
-
-        */
-    } else {
         console.info(
-            `No local existing ${DOCUMENTATION_WEBSITE_NAME} found getting it`,
-            'remotely.'
+            'Read and Compile all markdown files and transform to html.'
+        )
+
+        await walkDirectoryRecursively('./', addReadme)
+
+        let distributionBundleFilePath: null | string = null
+        try {
+            distributionBundleFilePath = await createDistributionBundle()
+        } catch (error) {
+            console.error(
+                'Error occurred during building distribution bundle:', error
+            )
+
+            process.exitCode = 1
+        }
+
+        if (
+            distributionBundleFilePath &&
+            await isFile(distributionBundleFilePath)
+        ) {
+            const targetFilePath =
+                join(DATA_PATH, basename(distributionBundleFilePath))
+
+            await mkdir(DATA_PATH, {recursive: true})
+            await copyFile(distributionBundleFilePath, targetFilePath)
+
+            LOCATIONS_TO_TIDY_UP.push(targetFilePath)
+        }
+
+        let hasAPIDocumentationCommand: boolean =
+            Boolean(SCOPE.scripts) &&
+            Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
+        if (hasAPIDocumentationCommand)
+            try {
+                console.debug(run('yarn document'))
+            } catch {
+                hasAPIDocumentationCommand = false
+            }
+
+        console.debug(run('git checkout gh-pages'))
+        console.debug(run('git pull'))
+
+        const apiDocumentationDirectoryPath: string =
+            resolve(API_DOCUMENTATION_PATHS[1])
+        if (await isDirectory(apiDocumentationDirectoryPath))
+            await rm(apiDocumentationDirectoryPath, {recursive: true})
+
+        if (await isDirectory(API_DOCUMENTATION_PATHS[0])) {
+            await rename(
+                resolve(API_DOCUMENTATION_PATHS[0]),
+                apiDocumentationDirectoryPath
+            )
+
+            LOCATIONS_TO_TIDY_UP.push(apiDocumentationDirectoryPath)
+        }
+
+        let temporaryDocumentationFolderPath = await makeTemporaryFile({
+            directory: true, prefix: DOCUMENTATION_WEBSITE_NAME
+        })
+        const localDocumentationWebsitePath: string =
+            resolve(`../${DOCUMENTATION_WEBSITE_NAME}`)
+
+        if (
+            /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+            ALLOW_LOCAL_DOCUMENTATION_WEBSITE &&
+            /* eslint-enable @typescript-eslint/no-unnecessary-condition */
+            await isDirectory(localDocumentationWebsitePath)
+        ) {
+            console.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
+
+            await walkDirectoryRecursively(
+                localDocumentationWebsitePath,
+                (file: File): Promise<false | undefined> =>
+                    copyRepositoryFile(
+                        localDocumentationWebsitePath,
+                        temporaryDocumentationFolderPath,
+                        file
+                    )
+            )
+
+            /*
+
+            const nodeModulesDirectoryPath: string =
+                resolve(localDocumentationWebsitePath, 'node_modules')
+            if (await isDirectory(nodeModulesDirectoryPath)) {
+                // NOTE: Not working caused by nested symlinks.
+                const temporaryDocumentationNodeModulesDirectoryPath: string =
+                    resolve(temporaryDocumentationFolderPath, 'node_modules')
+                /*
+                    We copy just recursively reference files.
+
+                    NOTE: Symlinks doesn't work since some node modules need the
+                    right absolute location to work.
+
+                    NOTE: Coping complete "node_modules" folder takes to long.
+
+                    NOTE: Mounting "node_modules" folder needs root privileges.
+                * /
+                console.debug(run(`
+                    cp \
+                        --dereference \
+                        --recursive \
+                        --reflink=auto \
+                        '${nodeModulesDirectoryPath}' \
+                        '${temporaryDocumentationNodeModulesDirectoryPath}'
+                `))
+            } else
+
+            */
+        } else {
+            console.info(
+                `No local existing ${DOCUMENTATION_WEBSITE_NAME} found`,
+                'getting it remotely.'
+            )
+
+            console.debug(
+                run(
+                    'unset GIT_WORK_TREE; git clone ' +
+                    `'${DOCUMENTATION_WEBSITE_REPOSITORY}'`,
+                    {cwd: temporaryDocumentationFolderPath}
+                )
+            )
+
+            temporaryDocumentationFolderPath = resolve(
+                temporaryDocumentationFolderPath, DOCUMENTATION_WEBSITE_NAME
+            )
+        }
+
+        console.debug(
+            run('corepack enable', {cwd: temporaryDocumentationFolderPath})
         )
 
         console.debug(
-            run(
-                'unset GIT_WORK_TREE; git clone ' +
-                `'${DOCUMENTATION_WEBSITE_REPOSITORY}'`,
-                {cwd: temporaryDocumentationFolderPath}
-            )
+            run('corepack install', {cwd: temporaryDocumentationFolderPath})
+        )
+        console.debug(run(
+            'yarn install',
+            {
+                cwd: temporaryDocumentationFolderPath,
+                env: {...process.env, NODE_ENV: 'debug'}
+            }
+        ))
+        console.debug(run(
+            'yarn clear', {cwd: temporaryDocumentationFolderPath}
+        ))
+
+        await generateAndPushNewDocumentationPage(
+            temporaryDocumentationFolderPath,
+            distributionBundleFilePath,
+            hasAPIDocumentationCommand
         )
 
-        temporaryDocumentationFolderPath = resolve(
-            temporaryDocumentationFolderPath, DOCUMENTATION_WEBSITE_NAME
+        // region tidy up
+        for (const path of [
+            apiDocumentationDirectoryPath,
+            DATA_PATH,
+            temporaryDocumentationFolderPath
+        ])
+            if (await isDirectory(path))
+                await rm(path, {recursive: true})
+        // endregion
+
+        if (
+            Boolean(SCOPE.scripts) &&
+            Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
         )
+            // Prepare build artefacts for further local usage.
+            console.debug(run('yarn build'))
     }
+}
+// endregion
 
-    console.debug(
-        run('corepack enable', {cwd: temporaryDocumentationFolderPath})
-    )
-
-    console.debug(
-        run('corepack install', {cwd: temporaryDocumentationFolderPath})
-    )
-    console.debug(run(
-        'yarn install',
-        {
-            cwd: temporaryDocumentationFolderPath,
-            env: {...process.env, NODE_ENV: 'debug'}
-        }
-    ))
-    console.debug(run('yarn clear', {cwd: temporaryDocumentationFolderPath}))
-
-    await generateAndPushNewDocumentationPage(
-        temporaryDocumentationFolderPath,
-        distributionBundleFilePath,
-        hasAPIDocumentationCommand
-    )
-
-    // region tidy up
-    for (const path of [
-        apiDocumentationDirectoryPath,
-        DATA_PATH,
-        temporaryDocumentationFolderPath
-    ])
-        if (await isDirectory(path))
-            await rm(path, {recursive: true})
-    // endregion
-
-    if (
-        Boolean(SCOPE.scripts) &&
-        Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
-    )
-        // Prepare build artefacts for further local usage.
-        console.debug(run('yarn build'))
+try {
+    await main()
+} catch (error) {
+    await tidyUp()
+    throw error
 }
