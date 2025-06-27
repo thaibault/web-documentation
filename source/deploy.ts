@@ -290,6 +290,7 @@ const generateAndPushNewDocumentationPage = async (
     console.debug(`Use final parameters "${serializedParameters}".`)
     console.info(`Run "${buildDocumentationPageCommand}".`)
 
+    // TODO may not be needed
     const environment = {...process.env}
     for (const name of [
         'BERRY_BIN_FOLDER',
@@ -307,6 +308,12 @@ const generateAndPushNewDocumentationPage = async (
 
     // TODO
     console.debug('TODO', temporaryDocumentationFolderPath)
+    console.debug(run(
+        `ls ${temporaryDocumentationFolderPath}/node_modules/highlight.js`,
+        {cwd: temporaryDocumentationFolderPath})
+    )
+    // TODO breaks already
+    // console.debug('TODO', eval(`require.resolve('highlight.js')`))
     console.debug(
         run(
             buildDocumentationPageCommand,
