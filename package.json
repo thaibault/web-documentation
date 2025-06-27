@@ -200,7 +200,7 @@
                 "headerPrefix": "doc-",
                 "#5": "A function to highlight code blocks, see Asynchronous highlighting.",
                 "highlight": {
-                  "__execute__": "const highlightModule = require('highlight.js'); const {getLanguage, highlight} = highlightModule; return (code, language) => (highlight(code, {language: getLanguage(language) ? language : 'plaintext'}).value)"
+                  "__execute__": "const highlightModule = optionalRequire('highlight.js'); if (!highlightModule) return functions.identity; const {getLanguage, highlight} = highlightModule; return (code, language) => (highlight(code, {language: getLanguage(language) ? language : 'plaintext'}).value)"
                 },
                 "#6": "A string to prefix the className in a <code> block. Useful for syntax highlighting.",
                 "langPrefix": "language-",

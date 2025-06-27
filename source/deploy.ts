@@ -289,37 +289,9 @@ const generateAndPushNewDocumentationPage = async (
 
     console.debug(`Use final parameters "${serializedParameters}".`)
     console.info(`Run "${buildDocumentationPageCommand}".`)
-
-    // TODO may not be needed
-    const environment = {...process.env}
-    for (const name of [
-        'BERRY_BIN_FOLDER',
-        'INIT_CWD',
-        'npm_config_user_agent',
-        'npm_execpath',
-        'npm_lifecycle_event',
-        'npm_node_execpath',
-        'npm_package_json',
-        'npm_package_name',
-        'npm_package_version',
-        'PROJECT_CWD'
-    ])
-        delete environment[name]
-
-    // TODO
-    console.debug('TODO', temporaryDocumentationFolderPath)
     console.debug(run(
-        `ls ${temporaryDocumentationFolderPath}/node_modules/highlight.js`,
-        {cwd: temporaryDocumentationFolderPath})
-    )
-    // TODO breaks already
-    // console.debug('TODO', eval(`require.resolve('highlight.js')`))
-    console.debug(
-        run(
-            buildDocumentationPageCommand,
-            {cwd: temporaryDocumentationFolderPath, env: environment}
-        )
-    )
+        buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath}
+    ))
     await rm(parametersFilePath)
 
     for (const filePath of await readdir('./'))
