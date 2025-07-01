@@ -493,7 +493,11 @@ const tidyUp = async (): Promise<void> => {
 
     const oldAPIDocumentationDirectoryPath = resolve(API_DOCUMENTATION_PATHS[1])
     if (!(await isDirectory(oldAPIDocumentationDirectoryPath)))
-        run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+        try {
+            run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+        } catch (error) {
+            console.warn(error)
+        }
 
     if (!run('git branch').includes('* main'))
         console.debug(run('git checkout main'))
