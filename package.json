@@ -102,7 +102,7 @@
     "typescript-eslint": "^8.35.1",
     "ua-parser-js": "^2.0.4",
     "unzipper": "^0.12.3",
-    "weboptimizer": "^2.0.1593",
+    "weboptimizer": "^2.0.1594",
     "webpack-dev-server": "^5.2.2",
     "website-utilities": "^1.0.368"
   },
