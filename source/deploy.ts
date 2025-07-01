@@ -72,6 +72,7 @@ const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
 const LOCATIONS_TO_TIDY_UP: Array<string> = []
 /// endregion
 const ALLOW_LOCAL_DOCUMENTATION_WEBSITE = true
+const RUN_FINAL_BUILD = false
 const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
     '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
 const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
@@ -702,6 +703,9 @@ const main = async (): Promise<void> => {
         // endregion
 
         if (
+            /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+            RUN_FINAL_BUILD &&
+            /* eslint-enable @typescript-eslint/no-unnecessary-condition */
             Boolean(SCOPE.scripts) &&
             Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
         )
