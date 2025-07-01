@@ -97,6 +97,7 @@ const DOCUMENTATION_WEBSITE_REPOSITORY =
     `https://github.com/thaibault/${DOCUMENTATION_WEBSITE_NAME}.git`
 const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
 let SCOPE: SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
+let HAS_API_DOCUMENTATION = false
 // endregion
 // region functions
 /**
@@ -176,14 +177,11 @@ const stream2buffer = async (stream: Stream): Promise<Buffer> => {
  * documentation build.
  * @param distributionBundleFilePath - Location where to save the exported
  * build artefacts.
- * @param hasAPIDocumentationCommand - Indicates whether there already exists
- * a ready to use api documentation.
  * @returns A promise resolving when build process has finished.
  */
 const generateAndPushNewDocumentationPage = async (
     temporaryDocumentationFolderPath: string,
-    distributionBundleFilePath: null | string,
-    hasAPIDocumentationCommand: boolean
+    distributionBundleFilePath: null | string
 ): Promise<void> => {
     console.info('Generate document website artefacts.')
 
@@ -247,7 +245,7 @@ const generateAndPushNewDocumentationPage = async (
     console.debug(`Found parameters "${represent(parameters)}" to render.`)
 
     let apiDocumentationPath: null | string = null
-    if (hasAPIDocumentationCommand) {
+    if (HAS_API_DOCUMENTATION) {
         apiDocumentationPath =
             API_DOCUMENTATION_PATHS[1] + API_DOCUMENTATION_PATH_SUFFIX
         if (!(await isDirectory(apiDocumentationPath)))
@@ -492,12 +490,11 @@ const tidyUp = async (): Promise<void> => {
         await rm(path, {recursive: true})
 
     const oldAPIDocumentationDirectoryPath = resolve(API_DOCUMENTATION_PATHS[1])
-    if (!(await isDirectory(oldAPIDocumentationDirectoryPath)))
-        try {
-            run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
-        } catch (error) {
-            console.warn(error)
-        }
+    if (
+        HAS_API_DOCUMENTATION &&
+        !(await isDirectory(oldAPIDocumentationDirectoryPath))
+    )
+        run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
 
     if (!run('git branch').includes('* main'))
         console.debug(run('git checkout main'))
@@ -573,14 +570,14 @@ const main = async (): Promise<void> => {
             LOCATIONS_TO_TIDY_UP.push(targetFilePath)
         }
 
-        let hasAPIDocumentationCommand: boolean =
+        HAS_API_DOCUMENTATION =
             Boolean(SCOPE.scripts) &&
             Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
-        if (hasAPIDocumentationCommand)
+        if (HAS_API_DOCUMENTATION)
             try {
                 console.debug(run('yarn document'))
             } catch {
-                hasAPIDocumentationCommand = false
+                HAS_API_DOCUMENTATION = false
             }
 
         console.debug(run('git checkout gh-pages'))
@@ -691,9 +688,7 @@ const main = async (): Promise<void> => {
         ))
 
         await generateAndPushNewDocumentationPage(
-            temporaryDocumentationFolderPath,
-            distributionBundleFilePath,
-            hasAPIDocumentationCommand
+            temporaryDocumentationFolderPath, distributionBundleFilePath
         )
 
         // region tidy up
