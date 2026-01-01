@@ -352,7 +352,7 @@ endregion */
     .section {
         background-color: var(--color1);
         overflow: auto;
-        word-wrap: break-word;
+        overflow-wrap: break-word;
 
         .section__about-this-website {
             a[href="#home"] {

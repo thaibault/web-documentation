@@ -17,7 +17,7 @@
     endregion
 */
 // region imports
-import {$, $T, extend, NOOP, RecursivePartial, Tools} from 'clientnode'
+import {$, $T, extend, Logger, NOOP, RecursivePartial, Tools} from 'clientnode'
 import Internationalisation from 'internationalisation'
 import WebsiteUtilities from 'website-utilities'
 
@@ -26,6 +26,7 @@ import {DocumentationFunction, DomNodes, DefaultOptions, Options} from './type'
 // region declaration
 declare const LANGUAGES: Array<string>
 // endregion
+export const log = new Logger({name: 'documentation-website'})
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a whole documentation site.
@@ -416,9 +417,10 @@ export class Documentation extends WebsiteUtilities {
                     contentSnippet = ''
                 } else if (textContent.length >= excess) {
                     /*
-                        NOTE: We have to ensure that no html tag will be
+                        NOTE: We have to ensure that no HTML tag will be
                         shorten: We work on "textContent" property only.
                     */
+                    // @ts-expect-error writing into "textContent" is safe.
                     domNode.textContent =
                         textContent.substring(
                             0, textContent.length - excess - 1
@@ -497,8 +499,8 @@ export class Documentation extends WebsiteUtilities {
                                         .append(code)
                                 )
                         } catch (error) {
-                            this.critical(
-                                `Error while integrating code "${code}": ` +
+                            log.critical(
+                                `Error while integrating code "${code}":`,
                                 String(error)
                             )
                         }
