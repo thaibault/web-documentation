@@ -28,7 +28,7 @@
   "bin": "build/deploy.js",
   "repository": {
     "type": "git",
-    "url": "git@github.io:thaibault/documentation-website.git"
+    "url": "https://github.com/thaibault/documentation-website"
   },
   "scripts": {
     "build": "yarn build:web; yarn build:deploy",
