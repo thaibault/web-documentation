@@ -8,7 +8,10 @@ const {getLanguage, highlight} = highlightJSModule
 
 const marked = new Marked(
     markedHighlight({
-        // A string to prefix the className in a <code> block. Useful for syntax highlighting.
+        /*
+            A string to prefix the className in a <code> block. Useful for
+            syntax highlighting.
+        */
         langPrefix: 'language-',
         highlight: (code, lang, info) =>
             highlight(

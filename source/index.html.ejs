@@ -12,241 +12,280 @@
     endregion
 */
 let START_UP_ANIMATION_NUMBER = 0
+const getStartUpAnimationNumber = () => {
+    START_UP_ANIMATION_NUMBER += 1
+    return START_UP_ANIMATION_NUMBER
+}
 _%>
-<html class="no-javascript" lang="en">
+<html class="wu-no-javascript" lang="en">
     <!--region head-->
     <head>
         <meta charset="utf-8">
         <meta
             name="description"
-            content="<%- TAGLINE.replace(/^(.+?)<!--.+-->$/, '$1').replace("'", "\\'") %>"
+            content="<%- _.TAGLINE.replace(/^(.+?)<!--.+-->$/, '$1').replace("'", "\\'") %>"
         >
         <meta name="author" content="Torben Sickert">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <%_ for (const metaTag of META_TAGS) { _%>
+        <%_ for (const metaTag of _.META_TAGS) { _%>
             <meta <%_ for (const key in metaTag) { _%>
                 <%- key %>="<%- metaTag[key] %>"
             <%_ } _%>>
         <%_ } _%>
-        <title><%- NAME %></title>
+        <title><%- _.NAME %></title>
+        <%-_.include('web-component-wrapper/polyfill.html') %>
         <script>
-            window.document.documentElement.className =
-                window.document.documentElement.className.replace(
-                    /(^|\s)no-javascript(\s|$)/, '$1javascript$2'
-                );
+            AUTO_DEFINE_WEB_DOCUMENTATION = true
+
+            window.document.documentElement.classList.remove('wu-no-javascript')
+            window.document.documentElement.classList.add('wu-javascript')
         </script>
     </head>
     <!--endregion-->
     <!--region body-->
-    <body class="doc no-javascript wu">
+    <body class="wu-no-javascript">
         <script>
-            window.document.body.className =
-                window.document.body.className.replace(
-                    /(^|\s)no-javascript(\s|$)/, '$1javascript$2'
-                );
+            window.document.body.classList.remove('wu-no-javascript')
+            window.document.body.classList.add('wu-javascript')
         </script>
-        <div
-            class="tools-visible-on-javascript-enabled window-loading-cover"
-        ><div></div></div>
-        <!--region header-->
-        <header class="header">
-            <div class="header__inner">
-                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-                <a
-                    class="header__inner__forkme-banner wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                    href="<%- SOURCE_URL %>"
-                >
-                    View on GitHub
-                    <!--deDE:GitHub-Projekt-->
-                    <!--frFR:GitHub-Project-->
-                    <i class="header__inner__forkme-banner__icon-github"></i>
-                </a>
-                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-                <h1
-                    class="header__inner__title wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                ><a href="<%- URL %>"><%- NAME %></a>
-                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-                <h2
-                    class="header__inner__tagline wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                >
-                    <%- TAGLINE %>
-                    <br />
-                </h2>
-                <div class="header__inner__links">
-                    <!--NOTE: This elements are shown in reverse order.-->
-                    <%_
-                        let numberOfLanguageLinks = 0
-                        if (1 < LANGUAGES.length) {
-                            numberOfLanguageLinks = LANGUAGES.length
-                            START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
-                        }
-                        if (API_DOCUMENTATION_PATH)
-                            START_UP_ANIMATION_NUMBER += 4
-                        else
-                            START_UP_ANIMATION_NUMBER += 2
-                        START_UP_ANIMATION_NUMBER += 1
-                    _%>
-                    <%_ if (DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
-                        <a
-                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="https://github.com/thaibault/<%- NAME %>/zipball/main"
-                        >src.zip</a>
-                        <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                        <a
-                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="<%- `${URL}/${DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
-                        >app.zip</a>
-                    <%_ } else { _%>
-                        <a
-                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="https://github.com/thaibault/<%- NAME %>/zipball/main"
-                        >.zip</a>
-                        <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                        <a
-                            class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            href="https://github.com/thaibault/<%- NAME %>/tarball/main"
-                        >.tar.gz</a>
-                    <%_ }
-                    START_UP_ANIMATION_NUMBER -= 1 _%>
-                    <i
-                        class="header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                    ></i>
-                    <%_
-                        if (numberOfLanguageLinks)
-                            for (const language of LANGUAGES) {
-                                START_UP_ANIMATION_NUMBER -= 1
-                    _%>
-                                <a
-                                    class="header__inner__links__lang tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                    href="#lang-<%- language %>"
-                                ><%- language.slice(0, 2) %></a>
-                    <%_      }
-                        if (API_DOCUMENTATION_PATH) {
-                            START_UP_ANIMATION_NUMBER -= 1
-                    _%>
-                            <span
-                                class="header__inner__links__left-arrow icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                            ></span>
-                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                            <a
-                                class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="<%- URL %>/<%- API_DOCUMENTATION_PATH %>"
-                            >
-                                <lang-replace>
-                                    API <span>Documentation</span>
-                                </lang-replace>
-                                <!--deDE:API<span>-Dokumentation</span>-->
-                                <!--frFR:<span>Documentation de l'</span>API-->
-                            </a>
-                    <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
-                        } else
-                            START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
-                    _%>
+
+        <web-documentation>
+            <div class="wu-window-loading-cover">
+                <div class="loading-text">
+                    <lang-replace>
+                        <span>L</span>
+                        <span>O</span>
+                        <span>A</span>
+                        <span>D</span>
+                        <span>I</span>
+                        <span>N</span>
+                        <span>G</span>
+                    </lang-replace>
+                    <!--deDE:
+                        <span>L</span>
+                        <span>A</span>
+                        <span>D</span>
+                        <span>E</span>
+                    -->
+                    <!--frFR:
+                        <span>C</span>
+                        <span>H</span>
+                        <span>A</span>
+                        <span>r</span>
+                        <span>g</span>
+                        <span>e</span>
+                        <span>m</span>
+                        <span>e</span>
+                        <span>n</span>
+                        <span>t</span>
+                    -->
                 </div>
             </div>
-        </header>
-        <!--endregion-->
-        <!--region sections-->
-        <section class="section">
-            <!--region main-->
-            <div class="section__inner section__main">
-                <%_ if (CONTENT && !CONTENT.trim().startsWith('<!--html-->'))
-                    if (CONTENT.endsWith('.html'))
-                        CONTENT = READ_FILE(CONTENT, configuration.encoding)
-                    else if (CONTENT.endsWith('.md'))
-                        CONTENT = RENDER_MARKDOWN(READ_FILE(
-                            CONTENT, configuration.encoding
-                        ))
-                    else
-                        CONTENT = RENDER_MARKDOWN(CONTENT)
-                _%>
 
-                <%- CONTENT %>
-            </div>
-            <!--endregion-->
-            <!--region about this website-->
-            <div class="section__about-this-website section__inner">
-                <h2 id="about-this-website">
-                    About this website
-                    <!--deDE:Impressum-->
-                    <!--frFR:Mentions légales-->
-                </h2>
-                <p>
-                    Provider of
-                    <!--deDE:Anbieter von-->
-                    <!--frFR:Fournisseur de-->
-                    <a href="https://torben.website/<%- NAME %>">
-                        https://torben.website/<%- NAME %>
-                    </a>
-                    :
-                    <br>
-                    Torben Sickert
-                    <br>
-                    Waldstraße 29
-                    <br>
-                    791194 Gundelfingen i.Br.
-                    <br>
-                    Phone:
-                    <!--deDE:Tel.:-->
-                    <!--frFR:Téléphone:-->
-                    <a href="tel:004917610248185">
-                        +49 (0) 176 <span>/</span> 10 248 185
-                    <br>
-                    Email:
-                    <!--deDE:E-Mail:-->
-                    <a href="mailto:info@torben.website">
-                        info@torben.website
-                    </a>
-                    <br>
-                    Website:
-                    <!--deDE:Webseite:-->
-                    <!--frFR:Site:-->
-                    <a href="https://torben.website">https://torben.website</a>
-                    <br>
-                    <span class="section__inner__arrow-left-home icon icon-arrow-left tools-visible-on-javascript-enabled"></span>
+            <!--region header-->
+            <header class="header">
+                <div class="header__inner">
                     <a
-                        class="tools-visible-on-javascript-enabled"
-                        href="#home"
+                        class="header__inner__forkme-banner wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                        href="<%- _.SOURCE_URL %>"
                     >
-                        home
-                        <!--deDE:Startseite-->
-                        <!--frFR:Maison-->
+                        View on GitHub
+                        <!--deDE:GitHub-Projekt-->
+                        <!--frFR:GitHub-Project-->
+                        <i
+                            class="header__inner__forkme-banner__icon-github"
+                        ></i>
                     </a>
-                </p>
-                <%- include('legal-notes') %>
-            </div>
+                    <h1
+                        class="header__inner__title wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                    ><a href="<%- _.URL %>"><%- _.NAME %></a>
+                    <h2
+                        class="header__inner__tagline wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                    >
+                        <%- _.TAGLINE %>
+                        <br />
+                    </h2>
+                    <div class="header__inner__links">
+                        <!--NOTE: These elements are shown in reverse order.-->
+                        <%_
+                            let numberOfLanguageLinks = 0
+                            if (1 < _.LANGUAGES.length) {
+                                numberOfLanguageLinks = _.LANGUAGES.length
+                                START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
+                            }
+                            if (_.API_DOCUMENTATION_PATH)
+                                START_UP_ANIMATION_NUMBER += 4
+                            else
+                                START_UP_ANIMATION_NUMBER += 2
+                            START_UP_ANIMATION_NUMBER += 1
+                        _%>
+                        <%_ if (_.DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
+                            <a
+                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
+                            >src.zip</a>
+                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                            <a
+                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="<%- `${_.URL}/${_.DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
+                            >app.zip</a>
+                        <%_ } else { _%>
+                            <a
+                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
+                            >.zip</a>
+                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                            <a
+                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                href="https://github.com/thaibault/<%- _.NAME %>/tarball/main"
+                            >.tar.gz</a>
+                        <%_ }
+                        START_UP_ANIMATION_NUMBER -= 1 _%>
+                        <i
+                            class="header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                        ></i>
+                        <%_
+                            if (numberOfLanguageLinks)
+                                for (const language of _.LANGUAGES) {
+                                    START_UP_ANIMATION_NUMBER -= 1
+                        _%>
+                                    <a
+                                        class="header__inner__links__lang tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                        href="#lang-<%- language %>"
+                                    ><%- language.slice(0, 2) %></a>
+                        <%_      }
+                            if (_.API_DOCUMENTATION_PATH) {
+                                START_UP_ANIMATION_NUMBER -= 1
+                        _%>
+                                <span
+                                    class="header__inner__links__left-arrow icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                ></span>
+                                <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                                <a
+                                    class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                    href="<%- _.URL %>/<%- _.API_DOCUMENTATION_PATH %>"
+                                >
+                                    <lang-replace>
+                                        API <span>Documentation</span>
+                                    </lang-replace>
+                                    <!--deDE:API<span>-Dokumentation</span>-->
+                                    <!--frFR:<span>Documentation de l'</span>API-->
+                                </a>
+                        <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
+                            } else
+                                START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
+                        _%>
+                    </div>
+                </div>
+            </header>
             <!--endregion-->
-        </section>
-        <!--endregion-->
-        <!--region footer-->
-        <footer class="footer">
-            <div class="footer__inner">
-                <%_ START_UP_ANIMATION_NUMBER += 1 _%>
-                <p
-                    class="wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+            <!--region sections-->
+            <section class="wu-section section">
+                <!--region home-->
+                <div
+                    class="section__inner section__home"
+                    data-website-utilities-section="home"
                 >
-                    <%- NAME %> maintained by
-                    <!--deDE:<%- NAME %> betrieben von-->
-                    <!--frFR:<%- NAME %> exploité par-->
-                    <%_ /*
-                        We need an explicit whitespace here preserve whitespaces
-                        after language switches.
-                    */ _%>
-                    <a href="https://torben.website"> thaibault</a>
-                    &middot; &copy; 2013 Torben Sickert &middot;
-                    <a href="#about-this-website">
-                        about this website
+                    <%_
+                        let content = ''
+                    if (_.CONTENT && !_.CONTENT.trim().startsWith('<!--html-->'))
+                        if (_.CONTENT.endsWith('.html'))
+                            content = _.READ_FILE(_.CONTENT, _.configuration.encoding)
+                        else if (_.CONTENT.endsWith('.md'))
+                            content = _.RENDER_MARKDOWN(_.READ_FILE(
+                                _.CONTENT, _.configuration.encoding
+                            ))
+                        else
+                            content = _.RENDER_MARKDOWN(_.CONTENT)
+                    _%>
+
+                    <%- content %>
+                </div>
+                <!--endregion-->
+                <!--region about this website-->
+                <div
+                    class="section__inner section__about-this-website"
+                    data-website-utilities-section="about-this-website"
+                >
+                    <h2 id="about-this-website">
+                        About this website
                         <!--deDE:Impressum-->
                         <!--frFR:Mentions légales-->
-                    </a>
-                </p>
-            </div>
-        </footer>
-        <!--endregion-->
-        <a class="top-link" href="#top">
-            top<!--deDE:nach oben--><!--frFR:ascendant-->
-        </a>
-        <%_ if (configuration.offline) { _%>
+                    </h2>
+                    <p>
+                        Provider of
+                        <!--deDE:Anbieter von-->
+                        <!--frFR:Fournisseur de-->
+                        <a href="https://torben.website/<%- _.NAME %>">
+                            https://torben.website/<%- _.NAME %>
+                        </a>
+                        :
+                        <br>
+                        Torben Sickert
+                        <br>
+                        Waldstraße 29
+                        <br>
+                        791194 Gundelfingen i.Br.
+                        <br>
+                        Phone:
+                        <!--deDE:Tel.:-->
+                        <!--frFR:Téléphone:-->
+                        <a href="tel:004917610248185">
+                            +49 (0) 176 <span>/</span> 10 248 185
+                        <br>
+                        Email:
+                        <!--deDE:E-Mail:-->
+                        <a href="mailto:info@torben.website">
+                            info@torben.website
+                        </a>
+                        <br>
+                        Website:
+                        <!--deDE:Webseite:-->
+                        <!--frFR:Site:-->
+                        <a href="https://torben.website">https://torben.website</a>
+                        <br>
+                        <span class="section__inner__arrow-left-home icon icon-arrow-left"></span>
+                        <a href="#home">
+                            home
+                            <!--deDE:Startseite-->
+                            <!--frFR:Maison-->
+                        </a>
+                    </p>
+                    <%- _.include('legal-notes') %>
+                </div>
+                <!--endregion-->
+            </section>
+            <!--endregion-->
+            <!--region footer-->
+            <footer class="footer">
+                <div class="footer__inner">
+                    <%_ START_UP_ANIMATION_NUMBER += 1 _%>
+                    <p
+                        class="wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                    >
+                        <%- _.NAME %> maintained by
+                        <!--deDE:<%- _.NAME %> betrieben von-->
+                        <!--frFR:<%- _.NAME %> exploité par-->
+                        <%_ /*
+                            We need an explicit whitespace here preserve whitespaces
+                            after language switches.
+                        */ _%>
+                        <a href="https://torben.website"> thaibault</a>
+                        &middot; &copy; 2013 Torben Sickert &middot;
+                        <a href="#about-this-website">
+                            about this website
+                            <!--deDE:Impressum-->
+                            <!--frFR:Mentions légales-->
+                        </a>
+                    </p>
+                </div>
+            </footer>
+            <!--endregion-->
+            <a class="wu-scroll-to-top" href="#top">
+                top<!--deDE:nach oben--><!--frFR:ascendant-->
+            </a>
+        </web-documentation>
+        <%_ if (_.configuration.offline) { _%>
             <noscript>
                 <iframe src="manifest.html" style="display: none"></iframe>
             </noscript>

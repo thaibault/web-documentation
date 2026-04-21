@@ -50,65 +50,68 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.958.0",
-    "@babel/eslint-parser": "^7.28.5",
-    "@babel/runtime": "^7.28.4",
-    "@stylistic/eslint-plugin": "^5.6.1",
+    "@aws-sdk/client-s3": "^3.1033.0",
+    "@babel/eslint-parser": "^7.28.6",
+    "@babel/runtime": "^7.29.2",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/archiver": "^7.0.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
-    "@types/jquery": "^3.5.33",
-    "@types/jsdom": "^27.0.0",
+    "@types/jsdom": "^28.0.1",
     "@types/marked": "^6.0.0",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.6.0",
     "@types/unzipper": "^0.10.11",
-    "@typescript-eslint/eslint-plugin": "^8.51.0",
-    "@typescript-eslint/parser": "^8.51.0",
+    "@types/webpack-env": "^1.18.8",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
+    "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^7.0.1",
-    "clientnode": "^3.0.1340",
-    "css-loader": "^7.1.2",
-    "cssnano": "^7.1.2",
+    "clientnode": "^4.0.1387",
+    "css-loader": "^7.1.4",
+    "cssnano": "^7.1.7",
     "default-gateway": "^7.2.2",
-    "errorreporter": "^1.0.334",
-    "eslint": "^9.39.2",
+    "errorreporter": "^1.0.338",
+    "eslint": "^10.2.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^61.5.0",
+    "eslint-plugin-jsdoc": "^62.9.0",
     "favicons": "^7.2.0",
     "favicons-webpack-plugin": "^6.0.1",
     "highlight.js": "^11.11.1",
-    "internationalisation": "^1.0.346",
-    "jest": "^30.2.0",
-    "jquery": "^3.7.1",
+    "jest": "^30.3.0",
     "jsdoc": "^4.0.5",
-    "legal-notes": "^1.0.27",
-    "marked": "^17.0.1",
-    "marked-gfm-heading-id": "^4.1.3",
-    "marked-highlight": "^2.2.3",
-    "marked-xhtml": "^1.0.14",
-    "mini-css-extract-plugin": "^2.9.4",
-    "postcss": "^8.5.6",
+    "legal-notes": "^1.0.28",
+    "marked": "^18.0.2",
+    "marked-gfm-heading-id": "^4.1.4",
+    "marked-highlight": "^2.2.4",
+    "marked-xhtml": "^1.0.15",
+    "mini-css-extract-plugin": "^2.10.2",
+    "postcss": "^8.5.10",
     "postcss-fontpath": "^1.0.0",
     "postcss-import": "^16.1.1",
-    "postcss-loader": "^8.2.0",
+    "postcss-loader": "^8.2.1",
     "postcss-mixins": "^12.1.2",
     "postcss-nested": "^7.0.2",
-    "postcss-preset-env": "^10.6.0",
+    "postcss-preset-env": "^11.2.1",
+    "postcss-scss": "^4.0.9",
     "postcss-sprites": "^4.2.1",
     "postcss-url": "^10.1.3",
-    "spin.js": "^4.1.2",
+    "prop-types": "^15.8.1",
     "style-loader": "^4.0.0",
-    "stylelint": "^16.26.1",
-    "stylelint-config-standard": "^39.0.1",
-    "typescript-eslint": "^8.51.0",
-    "ua-parser-js": "^2.0.7",
+    "stylelint": "^17.8.0",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript-eslint": "^8.59.0",
+    "ua-parser-js": "^2.0.9",
     "unzipper": "^0.12.3",
-    "weboptimizer": "^2.0.1637",
-    "webpack-dev-server": "^5.2.2",
-    "website-utilities": "^1.0.374"
+    "web-component-wrapper": "^0.0.558",
+    "web-internationalization": "^2.0.7",
+    "weboptimizer": "^3.0.21",
+    "webpack-dev-server": "^5.2.3",
+    "website-utilities": "^1.0.385"
   },
   "engines": {
-    "node": ">=20",
-    "npm": ">=10",
+    "node": ">=24",
+    "npm": ">=11",
     "yarn": ">=4"
   },
   "resolutions": {
@@ -145,11 +148,27 @@
     },
     "library": false,
     "module": {
-      "aliases": {
-        "^jquery$": "jquery/dist/jquery.min.js"
-      },
       "enforceDeduplication": true,
+      "html": {
+        "options": {
+          "sources": {
+            "urlFilter": {
+              "__evaluate__": "() => false"
+            }
+          }
+        }
+      },
       "optimizer": {
+        "babelMinify": {
+          "#": "To provide a logging output we need to exclude this feature.",
+          "bundle": {
+            "transform": {
+              "removeConsole": false
+            }
+          },
+          "#1": "Avoids wrong this binding in some callbacks with class bound closure (e.g. in \"performStartUpEffects -> animate -> always\".",
+          "module": null
+        },
         "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
         "cssnano": {
           "__evaluate__": "self.debug ? null : {preset: [optionalRequire('cssnano-preset-default'), {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
@@ -218,9 +237,6 @@
             }
           }
         }
-      },
-      "skipParseRegularExpressions": {
-        "__evaluate__": "/(?:^|\\/)(?:(?:jquery\\/dist\\/jquery))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
     },
     "path": {
@@ -287,6 +303,29 @@
       "targetTechnology": {
         "boilerplate": "node",
         "payload": "node"
+      }
+    },
+    "webpack": {
+      "snapshot": {
+        "unmanagedPaths": [
+          {
+            "__evaluate__": "/^.+?[\\/]node_modules[\\/]clientnode[\\/]/"
+          },
+          {
+            "__evaluate__": "/^.+?[\\/]node_modules[\\/]web-component-wrapper[\\/]/"
+          },
+          {
+            "__evaluate__": "/^.+?[\\/]node_modules[\\/]web-internationalization[\\/]/"
+          },
+          {
+            "__evaluate__": "/^.+?[\\/]node_modules[\\/]website-utilities[\\/]/"
+          }
+        ]
+      },
+      "watchOptions": {
+        "ignored": {
+          "__remove__": "**/node_modules"
+        }
       }
     }
   },

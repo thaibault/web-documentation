@@ -15,32 +15,21 @@
 */
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
-import {$} from 'clientnode'
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
-import Documentation from './index'
+import WebDocumentation, {api} from './index'
 // endregion
-describe('Documentation', () => {
-    let documentation: Documentation
-    /*
-        NOTE: Import plugins with side effects (augmenting "$" scope /
-        registering plugin) when other imports are only used as type.
-    */
-    /* eslint-disable @typescript-eslint/no-require-imports */
-    require('internationalisation')
-    require('website-utilities')
-    require('./index')
-    /* eslint-enable @typescript-eslint/no-require-imports */
+describe('WebDocumentation', () => {
+    let root: WebDocumentation
 
-    beforeAll(async (): Promise<void> => {
-        documentation = (await $.Documentation()) as Documentation
+    beforeAll(() => {
+        api.register()
+        root = document.createElement('web-documentation') as WebDocumentation
+        document.body.appendChild(root)
     })
     // region tests
-    /// region public methods
-    //// region special
-    test('initialize', () => {
-        expect(documentation).toBeDefined()
+    test('should be defined', () => {
+        expect(root).toBeDefined()
     })
-    //// endregion
-    /// endregion
     // endregion
 })

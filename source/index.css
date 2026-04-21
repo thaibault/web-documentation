@@ -25,7 +25,7 @@ endregion */
     /* endregion */
 }
 
-.doc.wu {
+body {
     /* region constants */
     /** region color */
     --color1: #fff;
@@ -96,8 +96,10 @@ endregion */
         NOTE: If we swap these lines to order alphabetical bodies background
         color does not get overwritten.
     */
-    color: var(--color7);
     background-color: var(--color8);
+    color: var(--color7);
+
+    margin: 0;
     line-height: 1.5;
 
     *,
@@ -170,12 +172,16 @@ endregion */
 
     a:hover { color: var(--color11); }
 
-    .top-link {
-        bottom: 30px;
-        position: fixed;
+    .wu-scroll-to-top {
         right: 45px;
-        visibility: hidden;
         z-index: 4;
+    }
+    a.wu-scroll-to-top.wu-scroll-up {
+        bottom: calc(2 * 34px);
+    }
+
+    a.wu-scroll-to-top.wu-scroll-down {
+        bottom: 34px;
     }
     /** endregion */
     /** region image */
@@ -196,6 +202,7 @@ endregion */
     /*** endregion */
     /** endregion */
     /* endregion */
+    web-documentation, website-utilities, web-internationalization {}
     /* region header */
     .header {
         background-image:
@@ -372,7 +379,7 @@ endregion */
             padding-top: 40px;
         }
 
-        .section__main {
+        .section__home {
             p {
                 margin: var(--w-default-space) 0 0 0;
             }
@@ -450,7 +457,7 @@ endregion */
 
                 .header__inner__links__left-arrow { margin-left: 0; }
 
-                .section__main {
+                .section__home {
                     code {
                         font-size: 0.8em;
                         width: 695px;
@@ -471,7 +478,7 @@ endregion */
                 @media (--w-medium) {
                     .top-link { right: 45px; }
 
-                    .section__main code {
+                    .section__home code {
                         font-size: 0.9em;
                     }
                 }

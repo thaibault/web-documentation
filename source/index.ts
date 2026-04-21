@@ -17,65 +17,72 @@
     endregion
 */
 // region imports
-import {$, $T, extend, Logger, NOOP, RecursivePartial, Tools} from 'clientnode'
-import Internationalisation from 'internationalisation'
-import WebsiteUtilities from 'website-utilities'
+import {
+    camelCaseToDelimited,
+    createDomNodes,
+    extend,
+    format,
+    getAll,
+    getParents,
+    getText,
+    globalContext,
+    Logger,
+    Mapping,
+    NOOP,
+    wrap
+} from 'clientnode'
+import {func, object} from 'clientnode/property-types'
+import {property} from 'web-component-wrapper/decorator'
+import {WebComponentAPI} from 'web-component-wrapper/type'
+import {Web} from 'web-component-wrapper/Web'
+import {api as websiteUtilitiesAPI} from 'website-utilities'
+import {api as webInternationalizationAPI} from 'web-internationalization'
 
-import {DocumentationFunction, DomNodes, DefaultOptions, Options} from './type'
-// endregion
-// region declaration
-declare const LANGUAGES: Array<string>
+import {DefaultOptions, Options} from './type'
 // endregion
 export const log = new Logger({name: 'documentation-website'})
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a whole documentation site.
- * @property _commonOptions - Options extended by the options given to the
+ * @property _defaultOptions - Options extended by the options given to the
  * initializer method.
- * @property _commonOptions.onExamplesLoaded - Callback to trigger when all
- * example loaded.
- * @property _commonOptions.domNodeSelectorInfix - Something indicating
- * controlled nodes.
- * @property _commonOptions.showExample - Options object to configure code
+ * @property _defaultOptions.selectors - Object with a mapping of needed dom
+ * node descriptions to their corresponding selectors.
+ * @property _defaultOptions.showExample - Options object to configure code
  * example representation.
- * @property _commonOptions.showExample.pattern - Regular expression to
+ * @property _defaultOptions.showExample.pattern - Regular expression to
  * introduce a code example section.
- * @property _commonOptions.showExample.domNodeName - Dom node name to indicate
- * a declarative example section.
- * @property _commonOptions.showExample.htmlWrapper - HTML example wrapper.
- * @property _commonOptions.domNodes - Object with a mapping of needed dom node
- * descriptions to their corresponding selectors.
- * @property _commonOptions.section - Configuration object for section switches
- * between the main page and legal notes descriptions.
- * @property _commonOptions.section.aboutThisWebsite - Configuration object for
- * transitions concerning the legal notes section.
- * @property _commonOptions.section.aboutThisWebsite.fadeOutOptions - Fade out
- * configurations.
- * @property _commonOptions.section.aboutThisWebsite.fadeInOptions - Fade in
- * configurations.
- * @property _commonOptions.section.main - Configuration object for transitions
- * concerning the main section.
- * @property _commonOptions.section.main.fadeOutOptions {Object} - Fade
- * out configurations.
- * @property _commonOptions.section.main.fadeInOptions {Object} - Fade in
- * configurations.
+ * @property _defaultOptions.showExample.domNodeName - Dom node name to
+ * indicate a declarative example section.
+ * @property _defaultOptions.showExample.htmlWrapper - HTML example wrapper.
+ * @property _defaultOptions.section - Configuration object for section
+ * switches between the main page and legal notes descriptions.
  * @property options - Finally configured given options.
- * @property startUpAnimationIsComplete - Indicates whether start up animations
- * has been completed.
- * @property _activateLanguageSupport - Indicates whether a language switcher
- * should be activated.
  */
-export class Documentation extends WebsiteUtilities {
-    static _commonOptions: DefaultOptions = {
-        domNodes: {
+export class WebDocumentation<
+    TElement = HTMLElement,
+    ExternalProperties extends Mapping<unknown> = Mapping<unknown>,
+    InternalProperties extends Mapping<unknown> = Mapping<unknown>
+> extends Web<TElement, ExternalProperties, InternalProperties> {
+    static content = `
+        <website-utilities
+            options="{sectionNames: ['home', 'about-this-website']}"
+        >
+            <web-internationalization>
+                <slot>Please provide a template to transclude.</slot>
+            </web-internationalization>
+        </website-utilities>
+    `
+
+    static _name = 'WebDocumentation'
+
+    static _defaultOptions: DefaultOptions = {
+        selectors: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
             aboutThisWebsiteSection: '.section__about-this-website',
 
             codeWrapper: 'pre',
             code: 'code',
-
-            homeLink: 'a[href="#home"]',
-            mainSection: '.section__main',
 
             headlines:
                 '.section__main h1, .section__main h2, ' +
@@ -83,20 +90,8 @@ export class Documentation extends WebsiteUtilities {
                 '.section__main h5, .section__main h6',
             tableOfContent: '.doc-toc',
             tableOfContentLinks: '.doc-toc ul li a[href^="#"]'
-        } as DomNodes,
-        domNodeSelectorInfix: 'doc',
-        name: 'Documentation',
-        onExamplesLoaded: NOOP,
-        section: {
-            aboutThisWebsite: {
-                fadeInOptions: {duration: 'fast'},
-                fadeOutOptions: {duration: 'fast'}
-            },
-            main: {
-                fadeInOptions: {duration: 'fast'},
-                fadeOutOptions: {duration: 'fast'}
-            }
         },
+
         showExample: {
             domNodeName: '#comment',
             htmlWrapper: `
@@ -106,223 +101,132 @@ export class Documentation extends WebsiteUtilities {
                         <!--deDE:Beispiel:-->
                         <!--frFR:Exemple:-->
                     </h3>
+                    {1}
                 </div>
             `,
             pattern: '^ *showExample(: *([^ ]+))? *$'
         }
     }
 
-    options = null as unknown as Options
+    readonly self = WebDocumentation
 
-    _activateLanguageSupport = false
-    // region public methods
-    /// region special
+    // region domNodes
+    aboutThisWebsiteLinkDomNodes: NodeListOf<HTMLElement> | null = null
+    aboutThisWebsiteSectionDomNode: HTMLDivElement | null = null
+
+    codeDomNodes: NodeListOf<HTMLElement> | null = null
+
+    headlineDomNodes: NodeListOf<HTMLElement> | null = null
+    tableOfContentDomNode: HTMLElement | null = null
+    tableOfContentLinkDomNodes: NodeListOf<HTMLAnchorElement> | null = null
+    // endregion
+    @property({type: object})
+        options = {} as Options
+
+    @property({type: func})
+        onExamplesLoaded: (this: WebDocumentation) => void = NOOP
+    // region public
+    /// region live-cycle
     /**
-     * Initializes the interactive web application.
-     * @param options - An options object.
-     * @returns Returns the current instance.
+     * Defines dynamic getter and setter interface and resolves configuration
+     * object. Initializes the map implementation.
      */
-    initialize<R = Promise<Documentation>>(
-        options: RecursivePartial<Options> = {}
-    ): R {
-        this._activateLanguageSupport = options.activateLanguageSupport ?? true
+    constructor() {
+        super()
         /*
-            NOTE: We will initialize language support after examples are
-            injected if activated via options.
+            Babels property declaration transformation overwrites defined
+            properties at the end of an implicit constructor. So we have to
+            redefined them as long as we want to declare expected component
+            interface properties to enable static type checks.
         */
-        options.activateLanguageSupport = false
+        this.defineGetterAndSetterInterface()
+    }
+    /**
+     * Triggered when ever a given attribute has changed and triggers to update
+     * configured dom content.
+     * @param name - Attribute name which was updates.
+     * @param newValue - New updated value.
+     */
+    onUpdateAttribute(name: string, newValue: string) {
+        super.onUpdateAttribute(name, newValue)
 
-        return super.initialize(extend(
-            true, {} as Options, Documentation._commonOptions, options
-        )).then((): Documentation => {
-            if ($.global.location && !$.global.location.hash)
-                $.global.location.hash =
-                    this.$domNodes.homeLink.attr('href') ?? ''
-
-            this.$domNodes.aboutThisWebsiteSection.hide()
-
-            /*
-                NOTE: We have to render examples first to avoid having dots in
-                example code.
-            */
-            this._showExamples()
-            this._makeCodeEllipsis()
-
-            this._generateTableOfContentsLinks()
-            this.on(
-                this.$domNodes.tableOfContentLinks,
-                'click',
-                (event: Event) => {
-                    const hashReference: string | undefined =
-                        $(event.target as HTMLLinkElement).attr('href')
-                    if (hashReference && hashReference !== '#')
-                        this.fireEvent(
-                            'switchSection',
-                            false,
-                            this,
-                            hashReference.substring(1),
-                            event
-                        )
-                }
+        if (name === 'options')
+            this.options = extend<Options>(
+                true,
+                {} as Options,
+                this.self._defaultOptions,
+                this.options
             )
+    }
+    /**
+     * Updates controlled dom elements.
+     * @param reason - Why an update has been triggered.
+     */
+    async render(reason?: string): Promise<void> {
+        await super.render(reason)
 
-            /*
-                Handle section switch between documentation and legal notes
-                section.
-            */
-            this.options.section.aboutThisWebsite.fadeOutOptions.always =
-                () => {
-                    this.$domNodes.mainSection.fadeIn(
-                        this.options.section.main.fadeInOptions
-                    )
-                }
-            this.options.section.main.fadeOutOptions.always = () => {
-                this.$domNodes.aboutThisWebsiteSection.fadeIn(
-                    this.options.section.aboutThisWebsite.fadeInOptions
-                )
-            }
+        if (Object.keys(this.options).length === 0)
+            this.onUpdateAttribute('options', '{}')
 
+        this.grabDomNodes()
 
-            if (
-                $.global.location?.hash &&
-                this.options.initialSectionName !==
-                    $.global.location.hash.substring('#'.length)
-            )
-                this.fireEvent(
-                    'switchSection',
-                    false,
-                    this,
-                    $.global.location.hash.substring('#'.length)
-                )
-            else
-                this.currentSectionName = this.options.initialSectionName
+        /*
+            NOTE: We have to render examples first to avoid having dots in
+            example code.
+        */
+        this._showExamples()
 
-            return this
-        }) as unknown as R
+        // TODO we may need to delay internationalization until this has been
+        // finished rendering
+
+        this._makeCodeEllipsis()
+
+        this._generateTableOfContentsLinks()
     }
     /// endregion
+    grabDomNodes(): void {
+        this.aboutThisWebsiteLinkDomNodes = this.root.querySelectorAll(
+            this.options.selectors.aboutThisWebsiteLink
+        )
+        this.aboutThisWebsiteSectionDomNode = this.root.querySelector(
+            this.options.selectors.aboutThisWebsiteSection
+        )
+
+        this.codeDomNodes =
+            this.root.querySelectorAll(this.options.selectors.code)
+
+        this.headlineDomNodes =
+            this.root.querySelectorAll(this.options.selectors.headlines)
+        this.tableOfContentDomNode =
+            this.root.querySelector(this.options.selectors.tableOfContent)
+    }
     // endregion
     // region protected methods
     /// region event handler
-    /**
-     * This method triggers if all examples loaded.
-     * @returns Returns the current instance.
-     */
-    async _onExamplesLoaded(): Promise<void> {
-        /*
-            NOTE: After injecting new dom nodes we have to grab them for
-            further controller logic.
-        */
-        this.$domNodes = this.grabDomNodes(this.options.domNodes)
-
-        // New injected dom nodes may take effect on language handler.
-        if (
-            this.startUpAnimationIsComplete &&
-            this._activateLanguageSupport &&
-            !this.languageHandler
-        )
-            this.languageHandler = (
-                await $(this.$domNodes.parent as unknown as HTMLBodyElement)
-                    .Internationalisation(this.options.language)
-            ).data('Internationalisation') as Internationalisation
-    }
-    /**
-     * This method triggers if we change the current section.
-     * @param sectionName - New section which should be switched to.
-     * @param event - Triggered event object.
-     */
-    _onSwitchSection(sectionName: string, event?: Event): void {
-        const hashReference = `#${sectionName}`
-        const $target = $(hashReference)
-        if (sectionName && $target.length) {
-            event?.preventDefault()
-
-            const offset = $target.offset()
-            if (offset)
-                $('html, body')
-                    .stop()
-                    .animate(
-                        {scrollTop: offset.top},
-                        {
-                            ...this.options.scrollToTop.options,
-                            complete: () => {
-                                if (window.location.hash !== hashReference)
-                                    window.location.hash = hashReference
-                            }
-                        }
-                    )
-        } else
-            this.scrollToTop()
-
-        if (sectionName === 'about-this-website')
-            this.$domNodes.mainSection.fadeOut(
-                this.options.section.main.fadeOutOptions
-            )
-        else
-            this.$domNodes.aboutThisWebsiteSection.fadeOut(
-                this.options.section.aboutThisWebsite.fadeOutOptions
-            )
-
-        super._onSwitchSection(sectionName)
-    }
-    /**
-     * This method triggers if all startup animations are ready.
-     * @returns Promise resolving when language handler has been initialized.
-     */
-    async _onStartUpAnimationComplete(): Promise<void> {
-        /*
-            NOTE: We reference "Internationalisation" here to make sure that
-            static tree shaking includes this module.
-        */
-        if (
-            /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-            Internationalisation &&
-            /* eslint-enable @typescript-eslint/no-unnecessary-condition */
-            this._activateLanguageSupport &&
-            !this.languageHandler
-        )
-            this.languageHandler = (
-                await $(this.$domNodes.parent as unknown as HTMLBodyElement)
-                    .Internationalisation(this.options.language)
-            ).data('Internationalisation') as Internationalisation
-
-        if ($.global.location)
-            this.$domNodes.tableOfContentLinks
-                .add(this.$domNodes.aboutThisWebsiteLink)
-                .filter(
-                    'a[href="' +
-                    $.global.location.href.substring(
-                        $.global.location.href.indexOf('#')
-                    ) +
-                    '"]'
-                )
-                .trigger('click')
-
-        void super._onStartUpAnimationComplete()
-    }
     /// endregion
     /**
      * Generates a table of contents via creating links referring to headlines.
      */
     _generateTableOfContentsLinks(): void {
-        if (!Object.prototype.hasOwnProperty.call(
-            this.$domNodes, 'tableOfContent'
-        ))
+        if (!this.tableOfContentDomNode)
             return
 
         let listItems = '<ul>'
         let level = 0
         let firstLevel = 0
-        this.$domNodes.headlines.each((
-            index: number, element: HTMLElement
-        ): void => {
-            if ($(element).closest('.show-example-wrapper').length)
+        let first = true
+        for (const domNode of this.headlineDomNodes ?? []) {
+            if (getParents(domNode).some((domNode: Node) =>
+                (domNode as Partial<Element>).classList?.contains(
+                    'show-example-wrapper'
+                )
+            ))
                 return
 
             const newLevel: number =
-                parseInt(element.nodeName.replace(/\D/g, ''))
+                parseInt(domNode.nodeName.replace(/\D/g, ''))
 
-            if (index === 0)
+            if (first)
                 firstLevel = newLevel
 
             if (newLevel > level)
@@ -332,14 +236,15 @@ export class Documentation extends WebsiteUtilities {
 
             listItems += `
                 <li>
-                    <a href="#${element.getAttribute('id') ?? 'unknown'}">
-                        ${element.innerText}
+                    <a href="#${domNode.getAttribute('id') ?? 'unknown'}">
+                        ${domNode.innerText}
                     </a>
                 </li>
             `
 
             level = newLevel
-        })
+            first = false
+        }
         // Close remaining inner lists.
         while (level < firstLevel) {
             listItems += '</ul>'
@@ -348,12 +253,12 @@ export class Documentation extends WebsiteUtilities {
 
         listItems += '</ul>'
 
-        this.$domNodes.tableOfContent.append(listItems)
+        this.tableOfContentDomNode.append(listItems)
 
-        this.$domNodes.tableOfContentLinks =
-            $(this.options.domNodes.tableOfContentLinks)
+        this.tableOfContentLinkDomNodes =
+            this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>('a')
 
-        this.$domNodes.tableOfContent.css('display', 'initial')
+        this.tableOfContentDomNode.style.display = 'initial'
     }
     /**
      * This method makes dotes after code lines which are too long. This
@@ -362,13 +267,9 @@ export class Documentation extends WebsiteUtilities {
     _makeCodeEllipsis(): void {
         const lengthLimit = 89 // 79
 
-        this.$domNodes.code.each((
-            index: number, domNode: HTMLElement
-        ): void => {
-            const $domNode: $T = $(domNode)
-
+        for (const domNode of this.codeDomNodes ?? []) {
             let newContent = ''
-            const codeLines: Array<string> = $domNode.html().split('\n')
+            const codeLines: Array<string> = domNode.innerHTML.split('\n')
 
             let subIndex = 0
             for (const value of codeLines) {
@@ -376,8 +277,9 @@ export class Documentation extends WebsiteUtilities {
                     NOTE: Wrap a div object to grantee that $ will accept the
                     input.
                 */
-                const excess: number = $(`<div>${value}</div>`).text(
-                ).length - lengthLimit
+                const excess: number =
+                    getText(createDomNodes(`<div>${value}</div>`)).length -
+                    lengthLimit
                 if (excess > 0)
                     newContent += this._replaceExcessWithDots(value, excess)
                 else
@@ -387,8 +289,9 @@ export class Documentation extends WebsiteUtilities {
 
                 subIndex += 1
             }
-            $domNode.html(newContent)
-        })
+
+            domNode.innerHTML = newContent
+        }
     }
     /**
      * Replaces given html content with a shorter version trimmed by given
@@ -399,15 +302,18 @@ export class Documentation extends WebsiteUtilities {
      */
     _replaceExcessWithDots(content: string, excess: number): string {
         // Add space for ending dots.
-        excess += 3
+        excess += '...'.length
         let newContent = ''
-        const $content: $T = $(`<wrapper>${content}</wrapper>`)
-        for (const domNode of $content.contents().get().reverse()) {
-            const $wrapper: $T = $(domNode).wrap('<wrapper>').parent() as $T
+        const contentDomNodes =
+            getAll(createDomNodes(`<wrapper>${content}</wrapper>`))
+        contentDomNodes.reverse()
+        for (const domNode of contentDomNodes) {
+            const wrapper = createDomNodes<HTMLElement>('<wrapper><wrapper>')
+            wrap(domNode, wrapper)
 
-            const textContent: string = domNode.textContent || ''
+            const textContent = domNode.textContent || ''
 
-            let contentSnippet: string = $wrapper.html()
+            let contentSnippet = wrapper.innerHTML
             if (!contentSnippet)
                 contentSnippet = textContent
 
@@ -418,9 +324,8 @@ export class Documentation extends WebsiteUtilities {
                 } else if (textContent.length >= excess) {
                     /*
                         NOTE: We have to ensure that no HTML tag will be
-                        shorten: We work on "textContent" property only.
+                        shortened: We work on "textContent" property only.
                     */
-                    // @ts-expect-error writing into "textContent" is safe.
                     domNode.textContent =
                         textContent.substring(
                             0, textContent.length - excess - 1
@@ -429,7 +334,7 @@ export class Documentation extends WebsiteUtilities {
 
                     excess = 0
 
-                    contentSnippet = $wrapper.html()
+                    contentSnippet = wrapper.innerHTML
                     if (!contentSnippet)
                         contentSnippet = domNode.textContent
                 }
@@ -442,95 +347,87 @@ export class Documentation extends WebsiteUtilities {
      * Shows marked example codes directly in browser.
      */
     _showExamples(): void {
-        this.$domNodes.parent?.find(':not(iframe)')
-            .contents()
-            .each((index: number, domNode: Node): void => {
-                if (
-                    domNode.nodeName === this.options.showExample.domNodeName
-                ) {
-                    const match: null | RegExpMatchArray =
-                        (domNode.textContent || '').match(
-                            new RegExp(this.options.showExample.pattern)
+        for (const domNode of getAll(this.root))
+            if (domNode.nodeName === this.options.showExample.domNodeName) {
+                const match: null | RegExpMatchArray =
+                    (domNode.textContent || '').match(
+                        new RegExp(this.options.showExample.pattern)
+                    )
+                const codeDomNode = domNode.nextSibling as HTMLElement | null
+                if (match && codeDomNode) {
+                    const codeWrapper: HTMLElement | null =
+                        codeDomNode.querySelector(
+                            this.options.selectors.codeWrapper
                         )
-                    if (match) {
-                        const $codeDomNode: $T<Node> = $(domNode).next()
+                    let code = codeWrapper?.innerText
 
-                        let code: string = $codeDomNode
-                            .find(this.$domNodes.codeWrapper)
-                            .text()
+                    if (!code)
+                        code = codeDomNode.innerText
 
-                        if (!code)
-                            code = $codeDomNode.text()
-
-                        try {
-                            if (match.length > 2 && match[2])
-                                if (
-                                    ['javascript', 'javascripts', 'js']
-                                        .includes(match[2].toLowerCase())
-                                )
-                                    $codeDomNode.after(
-                                        $('<script>')
-                                            .attr('type', 'text/javascript')
-                                            .text(code)
-                                    )
-                                else if ([
-                                    'css', 'cascadingstylesheet',
-                                    'cascadingstylesheets', 'stylesheet',
-                                    'stylesheets', 'sheet', 'sheets', 'style',
-                                    'styles'
-                                ].includes(match[2].toLowerCase()))
-                                    $codeDomNode.after(
-                                        $('<style>')
-                                            .attr('type', 'text/css')
-                                            .text(code)
-                                    )
-                                else if (match[2].toLowerCase() === 'hidden')
-                                    $codeDomNode.after(code)
-                                else
-                                    $codeDomNode.after(
-                                        $(
-                                            this.options.showExample
-                                                .htmlWrapper
-                                        ).append(code)
-                                    )
+                    try {
+                        let domNode: HTMLElement | string = ''
+                        if (match.length > 2 && match[2])
+                            if (
+                                ['javascript', 'javascripts', 'js']
+                                    .includes(match[2].toLowerCase())
+                            ) {
+                                domNode = (globalContext.document as Document)
+                                    .createElement('script')
+                                domNode.setAttribute('type', 'text/javascript')
+                                domNode.innerText = code
+                            } else if ([
+                                'css', 'cascadingstylesheet',
+                                'cascadingstylesheets', 'stylesheet',
+                                'stylesheets', 'sheet', 'sheets', 'style',
+                                'styles'
+                            ].includes(match[2].toLowerCase())) {
+                                domNode = (globalContext.document as Document)
+                                    .createElement('style')
+                                domNode.setAttribute('type', 'text/css')
+                                domNode.innerText = code
+                            } else if (match[2].toLowerCase() === 'hidden')
+                                domNode = code
                             else
-                                $codeDomNode.after(
-                                    $(this.options.showExample.htmlWrapper)
-                                        .append(code)
-                                )
-                        } catch (error) {
-                            log.critical(
-                                `Error while integrating code "${code}":`,
-                                String(error)
-                            )
-                        }
+                                domNode = createDomNodes(format(
+                                    this.options.showExample.htmlWrapper,
+                                    code
+                                ))
+                        else
+                            domNode = createDomNodes(format(
+                                this.options.showExample.htmlWrapper,
+                                code
+                            ))
+
+                        codeDomNode.after(domNode)
+                    } catch (error) {
+                        log.critical(
+                            `Error while integrating code "${code}":`,
+                            String(error)
+                        )
                     }
                 }
-            })
+            }
 
-        this.fireEvent('examplesLoaded')
+
+        this.onExamplesLoaded.call(this)
     }
     // endregion
 }
-export default Documentation
-// endregion
-// region handle $ extending
-$.Documentation = ((...parameter: Array<unknown>): unknown =>
-    Tools.controller(Documentation, parameter)
-) as DocumentationFunction
-$.Documentation.class = Documentation
-// NOTE: We make jQuery available to make bootstrapping examples with deferred
-// script loading simpler.
-;($.global as unknown as {$documentationWebsite: JQueryStatic})
-    .$documentationWebsite = $
-// endregion
-// region bootstrap
-$.noConflict(true)(($: JQueryStatic) => {
-    $.Documentation({
-        language: {
-            selection: typeof LANGUAGES === 'undefined' ? [] : LANGUAGES,
-            sessionDescription: 'documentationWebsite{1}'
-        }
-    })
-})
+export const api: WebComponentAPI<
+    HTMLElement, Mapping<unknown>, Mapping<unknown>, typeof Web
+> = {
+    component: WebDocumentation,
+    register: (
+        tagName: string = camelCaseToDelimited(WebDocumentation._name)
+    ) => {
+        websiteUtilitiesAPI.register()
+        webInternationalizationAPI.register()
+
+        customElements.define(tagName, WebDocumentation)
+    }
+}
+export default WebDocumentation
+
+if ((globalContext as Mapping<boolean>).AUTO_DEFINE_WEB_DOCUMENTATION)
+    api.register()
 // endregion
