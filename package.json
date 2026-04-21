@@ -220,6 +220,9 @@
                 "silent": false
               },
               "NAME": "documentation-website",
+              "IS_DIRECTORY": {
+                "__evaluate__": "filesystem.isDirectorySync"
+              },
               "READ_FILE": {
                 "__evaluate__": "fs.readFileSync"
               },

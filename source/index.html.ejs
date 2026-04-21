@@ -156,7 +156,10 @@ _%>
                                         href="#lang-<%- language %>"
                                     ><%- language.slice(0, 2) %></a>
                         <%_      }
-                            if (_.API_DOCUMENTATION_PATH) {
+                            if (
+                                _.API_DOCUMENTATION_PATH &&
+                                _.IS_DIRECTORY(_.API_DOCUMENTATION_PATH)
+                            ) {
                                 START_UP_ANIMATION_NUMBER -= 1
                         _%>
                                 <span
