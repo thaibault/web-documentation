@@ -4,7 +4,7 @@
 'use strict'
 /* !
     region header
-    [Project page](https://torben.website/documentationwebsite)
+    [Project page](https://github.com/documentation-website)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 
