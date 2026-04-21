@@ -176,6 +176,7 @@ body {
         right: 45px;
         z-index: 4;
     }
+
     a.wu-scroll-to-top.wu-scroll-up {
         bottom: calc(2 * 34px);
     }
@@ -202,7 +203,6 @@ body {
     /*** endregion */
     /** endregion */
     /* endregion */
-    web-documentation, website-utilities, web-internationalization {}
     /* region header */
     .header {
         background-image:

@@ -33,7 +33,9 @@ _%>
             <%_ } _%>>
         <%_ } _%>
         <title><%- _.NAME %></title>
-        <%-_.include('web-component-wrapper/polyfill.html') %>
+        <%- _.include(
+            'web-component-wrapper/polyfill.html', {webComponents: false}
+        ) %>
         <script>
             AUTO_DEFINE_WEB_DOCUMENTATION = true
 
