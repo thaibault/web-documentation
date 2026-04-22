@@ -9547,73 +9547,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"documentation-website@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "documentation-website@workspace:."
-  dependencies:
-    "@aws-sdk/client-s3": "npm:^3.1033.0"
-    "@babel/eslint-parser": "npm:^7.28.6"
-    "@babel/runtime": "npm:^7.29.2"
-    "@eslint/js": "npm:^10.0.1"
-    "@stylistic/eslint-plugin": "npm:^5.10.0"
-    "@types/archiver": "npm:^7.0.0"
-    "@types/ejs": "npm:^3.1.5"
-    "@types/html-minifier": "npm:^4.0.6"
-    "@types/jsdom": "npm:^28.0.1"
-    "@types/marked": "npm:^6.0.0"
-    "@types/node": "npm:^25.6.0"
-    "@types/unzipper": "npm:^0.10.11"
-    "@types/webpack-env": "npm:^1.18.8"
-    "@typescript-eslint/eslint-plugin": "npm:^8.59.0"
-    "@typescript-eslint/parser": "npm:^8.59.0"
-    "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    archiver: "npm:^7.0.1"
-    clientnode: "npm:^4.0.1387"
-    css-loader: "npm:^7.1.4"
-    cssnano: "npm:^7.1.7"
-    default-gateway: "npm:^7.2.2"
-    errorreporter: "npm:^1.0.338"
-    eslint: "npm:^10.2.1"
-    eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^62.9.0"
-    favicons: "npm:^7.2.0"
-    favicons-webpack-plugin: "npm:^6.0.1"
-    highlight.js: "npm:^11.11.1"
-    jest: "npm:^30.3.0"
-    jsdoc: "npm:^4.0.5"
-    legal-notes: "npm:^1.0.28"
-    marked: "npm:^18.0.2"
-    marked-gfm-heading-id: "npm:^4.1.4"
-    marked-highlight: "npm:^2.2.4"
-    marked-xhtml: "npm:^1.0.15"
-    mini-css-extract-plugin: "npm:^2.10.2"
-    postcss: "npm:^8.5.10"
-    postcss-fontpath: "npm:^1.0.0"
-    postcss-import: "npm:^16.1.1"
-    postcss-loader: "npm:^8.2.1"
-    postcss-mixins: "npm:^12.1.2"
-    postcss-nested: "npm:^7.0.2"
-    postcss-preset-env: "npm:^11.2.1"
-    postcss-scss: "npm:^4.0.9"
-    postcss-sprites: "npm:^4.2.1"
-    postcss-url: "npm:^10.1.3"
-    prop-types: "npm:^15.8.1"
-    style-loader: "npm:^4.0.0"
-    stylelint: "npm:^17.8.0"
-    stylelint-config-standard: "npm:^40.0.0"
-    typescript-eslint: "npm:^8.59.0"
-    ua-parser-js: "npm:^2.0.9"
-    unzipper: "npm:^0.12.3"
-    web-component-wrapper: "npm:^0.0.561"
-    web-internationalization: "npm:^2.0.7"
-    weboptimizer: "npm:^3.0.21"
-    webpack-dev-server: "npm:^5.2.3"
-    website-utilities: "npm:^1.0.385"
-  bin:
-    documentation-website: build/deploy.js
-  languageName: unknown
-  linkType: soft
-
 "dom-converter@npm:^0.2.0":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -19133,6 +19066,73 @@ __metadata:
   checksum: 10c0/4632a88cb5001fb5b559752ebcc67b8f72f05637b5eb21913f71f81c5553ff9596cfb4dcd907d0669967fae1aab7068617d0fc4c453f5e6820583afb53ade9d9
   languageName: node
   linkType: hard
+
+"web-documentation@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "web-documentation@workspace:."
+  dependencies:
+    "@aws-sdk/client-s3": "npm:^3.1033.0"
+    "@babel/eslint-parser": "npm:^7.28.6"
+    "@babel/runtime": "npm:^7.29.2"
+    "@eslint/js": "npm:^10.0.1"
+    "@stylistic/eslint-plugin": "npm:^5.10.0"
+    "@types/archiver": "npm:^7.0.0"
+    "@types/ejs": "npm:^3.1.5"
+    "@types/html-minifier": "npm:^4.0.6"
+    "@types/jsdom": "npm:^28.0.1"
+    "@types/marked": "npm:^6.0.0"
+    "@types/node": "npm:^25.6.0"
+    "@types/unzipper": "npm:^0.10.11"
+    "@types/webpack-env": "npm:^1.18.8"
+    "@typescript-eslint/eslint-plugin": "npm:^8.59.0"
+    "@typescript-eslint/parser": "npm:^8.59.0"
+    "@webcomponents/webcomponentsjs": "npm:^2.8.0"
+    archiver: "npm:^7.0.1"
+    clientnode: "npm:^4.0.1387"
+    css-loader: "npm:^7.1.4"
+    cssnano: "npm:^7.1.7"
+    default-gateway: "npm:^7.2.2"
+    errorreporter: "npm:^1.0.338"
+    eslint: "npm:^10.2.1"
+    eslint-config-google: "npm:^0.14.0"
+    eslint-plugin-jsdoc: "npm:^62.9.0"
+    favicons: "npm:^7.2.0"
+    favicons-webpack-plugin: "npm:^6.0.1"
+    highlight.js: "npm:^11.11.1"
+    jest: "npm:^30.3.0"
+    jsdoc: "npm:^4.0.5"
+    legal-notes: "npm:^1.0.28"
+    marked: "npm:^18.0.2"
+    marked-gfm-heading-id: "npm:^4.1.4"
+    marked-highlight: "npm:^2.2.4"
+    marked-xhtml: "npm:^1.0.15"
+    mini-css-extract-plugin: "npm:^2.10.2"
+    postcss: "npm:^8.5.10"
+    postcss-fontpath: "npm:^1.0.0"
+    postcss-import: "npm:^16.1.1"
+    postcss-loader: "npm:^8.2.1"
+    postcss-mixins: "npm:^12.1.2"
+    postcss-nested: "npm:^7.0.2"
+    postcss-preset-env: "npm:^11.2.1"
+    postcss-scss: "npm:^4.0.9"
+    postcss-sprites: "npm:^4.2.1"
+    postcss-url: "npm:^10.1.3"
+    prop-types: "npm:^15.8.1"
+    style-loader: "npm:^4.0.0"
+    stylelint: "npm:^17.8.0"
+    stylelint-config-standard: "npm:^40.0.0"
+    typescript-eslint: "npm:^8.59.0"
+    ua-parser-js: "npm:^2.0.9"
+    unzipper: "npm:^0.12.3"
+    web-component-wrapper: "npm:^0.0.561"
+    web-internationalization: "npm:^2.0.7"
+    weboptimizer: "npm:^3.0.21"
+    webpack-dev-server: "npm:^5.2.3"
+    website-utilities: "npm:^1.0.385"
+  bin:
+    web-documentation: build/deploy.js
+  languageName: unknown
+  linkType: soft
 
 "web-internationalization@npm:^2.0.7":
   version: 2.0.7

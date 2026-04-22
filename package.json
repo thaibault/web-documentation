@@ -1,6 +1,6 @@
 {
-  "name": "documentation-website",
-  "version": "1.0.405",
+  "name": "web-documentation",
+  "version": "1.0.0",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
@@ -11,7 +11,7 @@
   ],
   "bugs": {
     "email": "info@torben.website",
-    "url": "https://github.com/thaibault/documentation-website/issues"
+    "url": "https://github.com/thaibault/wbe-documentation/issues"
   },
   "license": "CC-BY-3.0",
   "author": {
@@ -28,7 +28,7 @@
   "bin": "build/deploy.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thaibault/documentation-website"
+    "url": "https://github.com/thaibault/web-documentation"
   },
   "scripts": {
     "build": "yarn build:web; yarn build:deploy",
@@ -207,7 +207,7 @@
               "CONTENT": "source/dummyReadme.md",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "LANGUAGES": {
-                "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'documentation-website' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
+                "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'web-documentation' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
               },
               "MARKED_OPTIONS": {
                 "#": "If true, add <br> on a single line break (copies GitHub behavior on comments, but not on rendered markdown files). Requires gfm be true.",
@@ -219,7 +219,7 @@
                 "#3": "If true, the parser does not throw any exception.",
                 "silent": false
               },
-              "NAME": "documentation-website",
+              "NAME": "web-documentation",
               "IS_DIRECTORY": {
                 "__evaluate__": "filesystem.isDirectorySync"
               },

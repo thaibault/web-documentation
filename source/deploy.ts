@@ -94,7 +94,7 @@ const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
     offline: null
 }
 let CONTENT = ''
-const DOCUMENTATION_WEBSITE_NAME = 'documentation-website'
+const DOCUMENTATION_WEBSITE_NAME = 'web-documentation'
 const DOCUMENTATION_WEBSITE_REPOSITORY =
     // `git@github.com:thaibault/${DOCUMENTATION_WEBSITE_NAME}`
     `https://github.com/thaibault/${DOCUMENTATION_WEBSITE_NAME}.git`

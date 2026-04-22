@@ -13,17 +13,17 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/documentation-website?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/documentation-website)
-[![npm downloads](https://img.shields.io/npm/dy/documentation-website.svg?style=for-the-badge)](https://www.npmjs.com/package/documentation-website)
+[![npm](https://img.shields.io/npm/v/web-documentation?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/web-documentation)
+[![npm downloads](https://img.shields.io/npm/dy/web-documentation.svg?style=for-the-badge)](https://www.npmjs.com/package/web-documentation)
 
-[![build](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/build.yaml?style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/build.yaml)
-[![build push package](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/build-package-and-push.yaml?label=build%20push%20package&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/build-package-and-push.yaml)
+[![build](https://img.shields.io/github/actions/workflow/status/thaibault/web-documentation/build.yaml?style=for-the-badge)](https://github.com/thaibault/web-documentation/actions/workflows/build.yaml)
+[![build push package](https://img.shields.io/github/actions/workflow/status/thaibault/web-documentation/build-package-and-push.yaml?label=build%20push%20package&style=for-the-badge)](https://github.com/thaibault/web-documentation/actions/workflows/build-package-and-push.yaml)
 
-[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/check-types.yaml)
-[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/lint.yaml)
-[![test](https://img.shields.io/github/actions/workflow/status/thaibault/documentation-website/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/documentation-website/actions/workflows/test-coverage-report.yaml)
+[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/web-documentation/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/web-documentation/actions/workflows/check-types.yaml)
+[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/web-documentation/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/web-documentation/actions/workflows/lint.yaml)
+[![test](https://img.shields.io/github/actions/workflow/status/thaibault/web-documentation/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/web-documentation/actions/workflows/test-coverage-report.yaml)
 
-[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/documentation-website?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/documentation-website)
+[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/web-documentation?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/web-documentation)
 
 Use case
 --------
