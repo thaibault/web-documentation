@@ -1,4 +1,4 @@
-name: Deploy documentation website
+name: Deploy web documentation
 
 inputs:
   debug:
