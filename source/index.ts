@@ -68,7 +68,9 @@ export class WebDocumentation<
         <website-utilities
             options="{sectionNames: ['home', 'about-this-website']}"
         >
-            <web-internationalization>
+            <web-internationalization
+                options="{selectors: {knownTranslation: '.doc-toc'}}"
+            >
                 <slot>Please provide a template to transclude.</slot>
             </web-internationalization>
         </website-utilities>
@@ -85,9 +87,9 @@ export class WebDocumentation<
             code: 'code',
 
             headlines:
-                '.section__main h1, .section__main h2, ' +
-                '.section__main h3, .section__main h4, ' +
-                '.section__main h5, .section__main h6',
+                '.section__home h1, .section__home h2, ' +
+                '.section__home h3, .section__home h4, ' +
+                '.section__home h5, .section__home h6',
             tableOfContent: '.doc-toc',
             tableOfContentLinks: '.doc-toc ul li a[href^="#"]'
         },
@@ -151,12 +153,7 @@ export class WebDocumentation<
         super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
-            this.options = extend<Options>(
-                true,
-                {},
-                this.self._defaultOptions,
-                this.options
-            )
+            this._extendOptions()
     }
     /**
      * Updates controlled dom elements.
@@ -166,7 +163,7 @@ export class WebDocumentation<
         await super.render(reason)
 
         if (Object.keys(this.options).length === 0)
-            this.onUpdateAttribute('options', '{}')
+            this._extendOptions()
 
         this.grabDomNodes()
 
@@ -205,6 +202,14 @@ export class WebDocumentation<
     /// region event handler
     /// endregion
     /**
+     * Extends given options by default options.
+     */
+    _extendOptions() {
+        this.options = extend<Options>(
+            true, {}, this.self._defaultOptions, this.options
+        )
+    }
+    /**
      * Generates a table of contents via creating links referring to headlines.
      */
     _generateTableOfContentsLinks(): void {
@@ -215,6 +220,7 @@ export class WebDocumentation<
         let level = 0
         let firstLevel = 0
         let first = true
+
         for (const domNode of this.headlineDomNodes ?? []) {
             if (getParents(domNode).some((domNode: Node) =>
                 (domNode as Partial<Element>).classList?.contains(
@@ -253,7 +259,7 @@ export class WebDocumentation<
 
         listItems += '</ul>'
 
-        this.tableOfContentDomNode.append(listItems)
+        this.tableOfContentDomNode.append(createDomNodes(listItems))
 
         this.tableOfContentLinkDomNodes =
             this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>('a')

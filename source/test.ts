@@ -22,10 +22,12 @@ import WebDocumentation, {api} from './index'
 describe('WebDocumentation', () => {
     let root: WebDocumentation
 
-    beforeAll(() => {
+    beforeAll(async () => {
         api.register()
         root = document.createElement('web-documentation') as WebDocumentation
         document.body.appendChild(root)
+
+        await root.renderState.promise
     })
     // region tests
     test('should be defined', () => {
