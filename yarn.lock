@@ -19111,7 +19111,7 @@ __metadata:
     ua-parser-js: "npm:^2.0.9"
     unzipper: "npm:^0.12.3"
     web-component-wrapper: "npm:^0.0.566"
-    web-internationalization: "npm:^2.0.10"
+    web-internationalization: "npm:^2.0.11"
     weboptimizer: "npm:^3.0.22"
     webpack-dev-server: "npm:^5.2.3"
     website-utilities: "npm:^1.0.389"
@@ -19120,9 +19120,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"web-internationalization@npm:^2.0.10":
-  version: 2.0.10
-  resolution: "web-internationalization@npm:2.0.10"
+"web-internationalization@npm:^2.0.11":
+  version: 2.0.11
+  resolution: "web-internationalization@npm:2.0.11"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -19131,7 +19131,7 @@ __metadata:
   peerDependenciesMeta:
     "@babel/runtime":
       optional: true
-  checksum: 10c0/fa9ad532fca9e58b4f65901d295ce51869b61c40422b1e4940ca4c3e309dc45e736a5338015a30ab7e0068d87e0aea544cc451703c156a277a520a2d31b2cde8
+  checksum: 10c0/50998fed3cfe69787562fff4077f8d9a39dfb3c5b2b8f45567d4661afb94faaedc52470c9d420e2e0781e44ce2f2ebcde158af56b9bdc1a56d1aad12b3707021
   languageName: node
   linkType: hard
 
