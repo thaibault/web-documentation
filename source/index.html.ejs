@@ -187,10 +187,9 @@ _%>
                 </div>
             </header>
             <!--endregion-->
-            <!--region sections-->
-            <section class="wu-section section">
+            <main class="wu-router-outlet section">
                 <!--region home-->
-                <div
+                <section
                     class="section__inner section__home"
                     data-website-utilities-section="home"
                 >
@@ -208,10 +207,10 @@ _%>
                     _%>
 
                     <%- content %>
-                </div>
+                </section>
                 <!--endregion-->
                 <!--region about this website-->
-                <div
+                <section
                     class="section__inner section__about-this-website"
                     data-website-utilities-section="about-this-website"
                 >
@@ -250,9 +249,13 @@ _%>
                         Website:
                         <!--deDE:Webseite:-->
                         <!--frFR:Site:-->
-                        <a href="https://torben.website">https://torben.website</a>
+                        <a href="https://torben.website">
+                            https://torben.website
+                        </a>
                         <br>
-                        <span class="section__inner__arrow-left-home icon icon-arrow-left"></span>
+                        <span
+                            class="section__inner__arrow-left-home icon icon-arrow-left"
+                        ></span>
                         <a href="#home">
                             home
                             <!--deDE:Startseite-->
@@ -260,9 +263,9 @@ _%>
                         </a>
                     </p>
                     <%- _.include('legal-notes') %>
-                </div>
+                </section>
                 <!--endregion-->
-            </section>
+            </main>
             <!--endregion-->
             <!--region footer-->
             <footer class="footer">

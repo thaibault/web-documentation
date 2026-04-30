@@ -172,17 +172,19 @@ body {
 
     a:hover { color: var(--color11); }
 
-    .wu-scroll-to-top {
-        right: 45px;
-        z-index: 4;
-    }
+    website-utilities {
+        .wu-scroll-to-top {
+            right: 45px;
+            z-index: 4;
+        }
 
-    a.wu-scroll-to-top.wu-scroll-up {
-        bottom: calc(2 * 34px);
-    }
+        .wu-scroll-to-top.wu-scroll-up {
+            bottom: calc(2 * 34px);
+        }
 
-    a.wu-scroll-to-top.wu-scroll-down {
-        bottom: 34px;
+        .wu-scroll-to-top.wu-scroll-down {
+            bottom: 34px;
+        }
     }
     /** endregion */
     /** region image */

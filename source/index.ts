@@ -57,6 +57,9 @@ export const log = new Logger({name: 'web-documentation'})
  * @property _defaultOptions.showExample.htmlWrapper - HTML example wrapper.
  * @property _defaultOptions.section - Configuration object for section
  * switches between the main page and legal notes descriptions.
+ * @property self - Reference to this class.
+ * @property doRender - Indicates that this components should evaluate given
+ * body content.
  * @property options - Finally configured given options.
  */
 export class WebDocumentation<
@@ -110,6 +113,8 @@ export class WebDocumentation<
         }
     }
 
+    static doRender = true
+
     readonly self = WebDocumentation
     // region api properties
     @property({type: object})
@@ -158,12 +163,20 @@ export class WebDocumentation<
     /**
      * Updates controlled dom elements.
      * @param reason - Why an update has been triggered.
+     * @param resolveRendering - Indicates whether rendering should be resolved
+     * finally. Should be set to "false" via super calls in inherited render
+     * methods which do further dom manipulations afterwards and resolve the
+     * rendering process by their own.
+     * @returns A promise resolving when rendering has finished. A promise may
+     * be needed for classes inheriting from this class.
      */
-    async render(reason?: string): Promise<void> {
-        await super.render(reason)
+    async render(reason = 'unknown', resolveRendering = true): Promise<void> {
+        await super.render(reason, false)
 
         if (Object.keys(this.options).length === 0)
             this._extendOptions()
+
+        await this.waitForNestedComponentRendering()
 
         this.grabDomNodes()
 
@@ -173,29 +186,29 @@ export class WebDocumentation<
         */
         this._showExamples()
 
-        // TODO we may need to delay internationalization until this has been
-        // finished rendering
-
         this._makeCodeEllipsis()
 
         this._generateTableOfContentsLinks()
+
+        await this.resolveRenderingPromiseIfSet(reason, resolveRendering)
     }
     /// endregion
     grabDomNodes(): void {
-        this.aboutThisWebsiteLinkDomNodes = this.root.querySelectorAll(
+        this.aboutThisWebsiteLinkDomNodes = this.hostDomNode.querySelectorAll(
             this.options.selectors.aboutThisWebsiteLink
         )
-        this.aboutThisWebsiteSectionDomNode = this.root.querySelector(
+        this.aboutThisWebsiteSectionDomNode = this.hostDomNode.querySelector(
             this.options.selectors.aboutThisWebsiteSection
         )
 
         this.codeDomNodes =
-            this.root.querySelectorAll(this.options.selectors.code)
+            this.hostDomNode.querySelectorAll(this.options.selectors.code)
 
         this.headlineDomNodes =
-            this.root.querySelectorAll(this.options.selectors.headlines)
-        this.tableOfContentDomNode =
-            this.root.querySelector(this.options.selectors.tableOfContent)
+            this.hostDomNode.querySelectorAll(this.options.selectors.headlines)
+        this.tableOfContentDomNode = this.hostDomNode.querySelector(
+            this.options.selectors.tableOfContent
+        )
     }
     // endregion
     // region protected methods
@@ -205,8 +218,13 @@ export class WebDocumentation<
      * Extends given options by default options.
      */
     _extendOptions() {
-        this.options = extend<Options>(
-            true, {}, this.self._defaultOptions, this.options
+        /*
+            NOTE: Using the internal setter avoids to trigger an additinal
+            rendering.
+        */
+        this.setPropertyValue(
+            'options',
+            extend<Options>(true, {}, this.self._defaultOptions, this.options)
         )
     }
     /**
@@ -353,7 +371,7 @@ export class WebDocumentation<
      * Shows marked example codes directly in browser.
      */
     _showExamples(): void {
-        for (const domNode of getAll(this.root))
+        for (const domNode of getAll(this.hostDomNode))
             if (domNode.nodeName === this.options.showExample.domNodeName) {
                 const match: null | RegExpMatchArray =
                     (domNode.textContent || '').match(
