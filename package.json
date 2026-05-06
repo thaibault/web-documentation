@@ -104,10 +104,10 @@
     "ua-parser-js": "^2.0.9",
     "unzipper": "^0.12.3",
     "web-component-wrapper": "^0.0.586",
-    "web-internationalization": "^2.0.17",
+    "web-internationalization": "^2.0.18",
     "weboptimizer": "^3.0.22",
     "webpack-dev-server": "^5.2.3",
-    "website-utilities": "^1.0.399"
+    "website-utilities": "^1.0.400"
   },
   "engines": {
     "node": ">=24",
