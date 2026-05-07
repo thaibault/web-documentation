@@ -433,7 +433,7 @@ export class WebDocumentation<
             }
 
 
-        this.onExamplesLoaded.call(this)
+        this.onExamplesLoaded()
     }
     // endregion
 }
