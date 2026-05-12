@@ -153,9 +153,10 @@ export class WebDocumentation<
      * configured dom content.
      * @param name - Attribute name which was updates.
      * @param newValue - New updated value.
+     * @returns A promise resolving when attribute has been updated.
      */
-    onUpdateAttribute(name: string, newValue: string) {
-        super.onUpdateAttribute(name, newValue)
+    async onUpdateAttribute(name: string, newValue: string): Promise<void> {
+        await super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
             this._extendOptions()
