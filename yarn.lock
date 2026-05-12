@@ -19092,7 +19092,7 @@ __metadata:
     web-internationalization: "npm:^2.0.22"
     weboptimizer: "npm:^3.0.22"
     webpack-dev-server: "npm:^5.2.4"
-    website-utilities: "npm:^1.0.412"
+    website-utilities: "npm:^1.0.413"
   bin:
     web-documentation: build/deploy.js
   languageName: unknown
@@ -19420,9 +19420,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.412":
-  version: 1.0.412
-  resolution: "website-utilities@npm:1.0.412"
+"website-utilities@npm:^1.0.413":
+  version: 1.0.413
+  resolution: "website-utilities@npm:1.0.413"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -19432,7 +19432,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/c5291ac2fee4728b46c4db7bf90731476bd7a75238953c5eab2311332f743706643add9efb7be63b118bf880175d4b8f6a5ff4bc1ca917bc65dc8c95147f4bac
+  checksum: 10c0/73fd5c2b5e2abfbd15a7d19c4b56258dba26806a42646815ab4827cbee4b8948e68e861f309c73ac99698e9016b8d248f20d52329949e1929cc7a6c711dde4a1
   languageName: node
   linkType: hard
 
