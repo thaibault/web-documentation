@@ -5533,15 +5533,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsdom@npm:^28.0.1":
-  version: 28.0.1
-  resolution: "@types/jsdom@npm:28.0.1"
+"@types/jsdom@npm:^28.0.3":
+  version: 28.0.3
+  resolution: "@types/jsdom@npm:28.0.3"
   dependencies:
     "@types/node": "npm:*"
     "@types/tough-cookie": "npm:*"
-    parse5: "npm:^7.0.0"
+    parse5: "npm:^8.0.0"
     undici-types: "npm:^7.21.0"
-  checksum: 10c0/4d0e412b4de5389279544ff227c6bacf6a8cb3e2fcabf8b543026568444c60e770848ba752cd134ef90f6ce3e7bafd3158b2a3dc1947c2961a5824b12d15bfac
+  checksum: 10c0/08b1cd61ee3e9610676be3c68a782a94667b86a5f73b8a262095d05f84c9e864fc11b25ae53450cd519a0abd46c202906a735bd61aa176257a981964bc5b1166
   languageName: node
   linkType: hard
 
@@ -8394,9 +8394,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1395":
-  version: 4.0.1395
-  resolution: "clientnode@npm:4.0.1395"
+"clientnode@npm:^4.0.1396":
+  version: 4.0.1396
+  resolution: "clientnode@npm:4.0.1396"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -8411,7 +8411,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/7025ae6678d9ac7468c1050e051e75c292145924a31a47961cd7ef7b344a69e705ef3834249da905d521fb9c4859410df98cb1196459421af1773467866b3798
+  checksum: 10c0/b538387691b9359583a004d85c4bc6bf475b042af45cc1e58c8960e942b5fa1adabaec4959ba2387840dfda3eaf64540bae08b6fdaddff1b300e57d343aadf2d
   languageName: node
   linkType: hard
 
@@ -9771,6 +9771,13 @@ __metadata:
   version: 6.0.1
   resolution: "entities@npm:6.0.1"
   checksum: 10c0/ed836ddac5acb34341094eb495185d527bd70e8632b6c0d59548cbfa23defdbae70b96f9a405c82904efa421230b5b3fd2283752447d737beffd3f3e6ee74414
+  languageName: node
+  linkType: hard
+
+"entities@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "entities@npm:8.0.0"
+  checksum: 10c0/938e631664c19451823344a351aeeafd74fae2d5fa51e4d5b6ff635afaefd4bacf0f609989888c04c42733f46ffdac15211608267ebb02488005891a4793e94d
   languageName: node
   linkType: hard
 
@@ -14669,6 +14676,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse5@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "parse5@npm:8.0.1"
+  dependencies:
+    entities: "npm:^8.0.0"
+  checksum: 10c0/c3c1c5aab55f6e4be5245599790e56e64be7764a4a0edd7f98db4fe3bb380f63add752fa047dff0496446c25f4104f0c7c1967723de640bde92306a7bb67ed2f
+  languageName: node
+  linkType: hard
+
 "parseurl@npm:~1.3.2, parseurl@npm:~1.3.3":
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
@@ -19027,7 +19043,7 @@ __metadata:
     "@types/archiver": "npm:^7.0.0"
     "@types/ejs": "npm:^3.1.5"
     "@types/html-minifier": "npm:^4.0.6"
-    "@types/jsdom": "npm:^28.0.1"
+    "@types/jsdom": "npm:^28.0.3"
     "@types/marked": "npm:^6.0.0"
     "@types/node": "npm:^25.7.0"
     "@types/unzipper": "npm:^0.10.11"
@@ -19036,7 +19052,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.59.3"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
-    clientnode: "npm:^4.0.1395"
+    clientnode: "npm:^4.0.1396"
     css-loader: "npm:^7.1.4"
     cssnano: "npm:^8.0.1"
     default-gateway: "npm:^7.2.2"
@@ -19076,7 +19092,7 @@ __metadata:
     web-internationalization: "npm:^2.0.22"
     weboptimizer: "npm:^3.0.22"
     webpack-dev-server: "npm:^5.2.4"
-    website-utilities: "npm:^1.0.408"
+    website-utilities: "npm:^1.0.412"
   bin:
     web-documentation: build/deploy.js
   languageName: unknown
@@ -19404,9 +19420,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.408":
-  version: 1.0.408
-  resolution: "website-utilities@npm:1.0.408"
+"website-utilities@npm:^1.0.412":
+  version: 1.0.412
+  resolution: "website-utilities@npm:1.0.412"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -19416,7 +19432,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/6c65a6886887b4ada90acfd9a3405f7ebf6924a59d2257ab8179a771079e20de6de11a588adc5ba973f7e4c1068fdd5e1d30946346ea3b8e213f4e85c72fdf61
+  checksum: 10c0/c5291ac2fee4728b46c4db7bf90731476bd7a75238953c5eab2311332f743706643add9efb7be63b118bf880175d4b8f6a5ff4bc1ca917bc65dc8c95147f4bac
   languageName: node
   linkType: hard
 

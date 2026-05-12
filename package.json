@@ -58,7 +58,7 @@
     "@types/archiver": "^7.0.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
-    "@types/jsdom": "^28.0.1",
+    "@types/jsdom": "^28.0.3",
     "@types/marked": "^6.0.0",
     "@types/node": "^25.7.0",
     "@types/unzipper": "^0.10.11",
@@ -67,7 +67,7 @@
     "@typescript-eslint/parser": "^8.59.3",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
-    "clientnode": "^4.0.1395",
+    "clientnode": "^4.0.1396",
     "css-loader": "^7.1.4",
     "cssnano": "^8.0.1",
     "default-gateway": "^7.2.2",
@@ -107,7 +107,7 @@
     "web-internationalization": "^2.0.22",
     "weboptimizer": "^3.0.22",
     "webpack-dev-server": "^5.2.4",
-    "website-utilities": "^1.0.408"
+    "website-utilities": "^1.0.412"
   },
   "engines": {
     "node": ">=24",
