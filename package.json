@@ -1,6 +1,6 @@
 {
   "name": "web-documentation",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
