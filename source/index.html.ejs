@@ -6,7 +6,7 @@
     License
     =======
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
@@ -165,9 +165,6 @@ _%>
                             ) {
                                 START_UP_ANIMATION_NUMBER -= 1
                         _%>
-                                <span
-                                    class="header__inner__links__left-arrow icon icon-arrow-left wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                ></span>
                                 <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                                 <a
                                     class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
@@ -175,9 +172,16 @@ _%>
                                 >
                                     <lang-replace>
                                         API <span>Documentation</span>
+                                        <i class="bi bi-arrow-right"></i>
                                     </lang-replace>
-                                    <!--deDE:API<span>-Dokumentation</span>-->
-                                    <!--frFR:<span>Documentation de l'</span>API-->
+                                    <lang-replacement>deDE:
+                                        API<span>-Dokumentation</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </lang-replacement>
+                                    <lang-replacement>frFR:
+                                        <span>Documentation de l'</span>API
+                                        <i class="bi bi-arrow-right"></i>
+                                    </lang-replacement>
                                 </a>
                         <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
                             } else
@@ -220,13 +224,7 @@ _%>
                         <!--frFR:Mentions légales-->
                     </h2>
                     <p>
-                        Provider of
-                        <!--deDE:Anbieter von-->
-                        <!--frFR:Fournisseur de-->
-                        <a href="https://torben.website/<%- _.NAME %>">
-                            https://torben.website/<%- _.NAME %>
-                        </a>
-                        :
+                        Provider of<!--deDE:Anbieter von--><!--frFR:Fournisseur de--><a href="https://torben.website/<%- _.NAME %>">https://torben.website/<%- _.NAME %></a>:
                         <br>
                         Torben Sickert
                         <br>
@@ -253,13 +251,17 @@ _%>
                             https://torben.website
                         </a>
                         <br>
-                        <span
-                            class="section__inner__arrow-left-home icon icon-arrow-left"
-                        ></span>
+
                         <a href="#home">
-                            home
-                            <!--deDE:Startseite-->
-                            <!--frFR:Maison-->
+                            <lang-replace>
+                                <i class="bi bi-arrow-left"></i> home
+                            </lang-replace>
+                            <lang-replacement>deDE:
+                                <i class="bi bi-arrow-left"></i> Startseite
+                            </lang-replacement>
+                            <lang-replacement>frFR:
+                                <i class="bi bi-arrow-left"></i> Maison
+                            </lang-replacement>
                         </a>
                     </p>
                     <%- _.include('legal-notes') %>
