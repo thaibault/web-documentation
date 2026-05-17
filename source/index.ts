@@ -11,7 +11,7 @@
     License
     -------
 
-    This library written by Torben Sickert stand under a creative commons
+    This library written by Torben Sickert stands under a creative commons
     naming 3.0 unported license.
     See https://creativecommons.org/licenses/by/3.0/deed.de
     endregion
@@ -69,7 +69,10 @@ export class WebDocumentation<
 > extends Web<TElement, ExternalProperties, InternalProperties> {
     static content = `
         <website-utilities
-            options="{sectionNames: ['home', 'about-this-website']}"
+            options="{sectionNames: {
+                default: 'home',
+                managed: ['home', 'about-this-website']
+            }}"
         >
             <web-internationalization
                 options="{selectors: {knownTranslation: '.doc-toc'}}"
