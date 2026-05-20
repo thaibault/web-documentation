@@ -19,11 +19,11 @@
 // region imports
 import {
     camelCaseToDelimited,
+    closest,
     createDomNodes,
     extend,
     format,
     getAll,
-    getParents,
     getText,
     globalContext,
     Logger,
@@ -244,11 +244,7 @@ export class WebDocumentation<
         let first = true
 
         for (const domNode of this.headlineDomNodes ?? []) {
-            if (getParents(domNode).some((domNode: Node) =>
-                (domNode as Partial<Element>).classList?.contains(
-                    'show-example-wrapper'
-                )
-            ))
+            if (closest(domNode, '.show-example-wrapper'))
                 return
 
             const newLevel: number =
