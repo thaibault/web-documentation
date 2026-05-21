@@ -50,7 +50,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1050.0",
+    "@aws-sdk/client-s3": "^3.1051.0",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/runtime": "^7.29.2",
     "@eslint/js": "^10.0.1",
@@ -68,7 +68,7 @@
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.1",
-    "clientnode": "^4.0.1400",
+    "clientnode": "^4.0.1405",
     "css-loader": "^7.1.4",
     "cssnano": "^8.0.1",
     "default-gateway": "^7.2.2",
@@ -102,13 +102,13 @@
     "stylelint": "^17.12.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript-eslint": "^8.59.4",
-    "ua-parser-js": "^2.0.9",
+    "ua-parser-js": "^2.0.10",
     "unzipper": "^0.12.3",
-    "web-component-wrapper": "^0.0.591",
-    "web-internationalization": "^2.0.26",
+    "web-component-wrapper": "^0.0.592",
+    "web-internationalization": "^2.0.30",
     "weboptimizer": "^3.0.24",
     "webpack-dev-server": "^5.2.4",
-    "website-utilities": "^1.0.421"
+    "website-utilities": "^1.0.426"
   },
   "engines": {
     "node": ">=24",

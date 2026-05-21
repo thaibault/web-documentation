@@ -117,9 +117,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-s3@npm:^3.1050.0":
-  version: 3.1050.0
-  resolution: "@aws-sdk/client-s3@npm:3.1050.0"
+"@aws-sdk/client-s3@npm:^3.1051.0":
+  version: 3.1051.0
+  resolution: "@aws-sdk/client-s3@npm:3.1051.0"
   dependencies:
     "@aws-crypto/sha1-browser": "npm:5.2.0"
     "@aws-crypto/sha256-browser": "npm:5.2.0"
@@ -139,7 +139,7 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.7.2"
     "@smithy/types": "npm:^4.14.1"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/baeeb207bb2813b9a4b682eb92425b8559f3386397f303fe1b8ae9b2972b9a92e25223eda8fc474fb87e72c9a57d987484c529c11a0aa380d6becd456a6a2351
+  checksum: 10c0/f4b23febacda792bc660e705ed4296490cb86f7a22e6e239d9d964f1c847a674bc9fd208f315661c9900411dae82d7e8eeb00eb75e3607fe6089a2f416994e29
   languageName: node
   linkType: hard
 
@@ -7753,9 +7753,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1400":
-  version: 4.0.1400
-  resolution: "clientnode@npm:4.0.1400"
+"clientnode@npm:^4.0.1405":
+  version: 4.0.1405
+  resolution: "clientnode@npm:4.0.1405"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -7770,7 +7770,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/beb5244908360c6096d592fc3dba6a7001a821eeab6fc543f7d5fa3ac885f268ae6f0fddf10536684159ce0849dfb70f202ce1c5767c3ff6a7d5d6f6c5814830
+  checksum: 10c0/09a512a68b7d23006bf9db281506f3a212e5e76c6b2da304f9790e016f26f43dab622cc46da6d362b5bbaf341533a99131b6cab8873bff91aea579718142f374
   languageName: node
   linkType: hard
 
@@ -17938,16 +17938,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^2.0.9":
-  version: 2.0.9
-  resolution: "ua-parser-js@npm:2.0.9"
+"ua-parser-js@npm:^2.0.10":
+  version: 2.0.10
+  resolution: "ua-parser-js@npm:2.0.10"
   dependencies:
     detect-europe-js: "npm:^0.1.2"
     is-standalone-pwa: "npm:^0.1.1"
     ua-is-frozen: "npm:^0.1.2"
   bin:
     ua-parser-js: script/cli.js
-  checksum: 10c0/6287fb9e0d332b139bd039cbd606f909bdc3337681b7e6ec2ce9c427d1f39a040a65e03620b82bd3bc4a7d7681be70dd2fa75125fd8c72c01bd9cedb729e5683
+  checksum: 10c0/77d4dbc6047a2f06ee96bfa6bf496d4325a7076d6e97cfdd1f6b09477cbc5b82fd81b035c103b1b5a8711f09dd7f5acd4940eecefbe942546cc2f5a0ee7345c5
   languageName: node
   linkType: hard
 
@@ -18398,9 +18398,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.591":
-  version: 0.0.591
-  resolution: "web-component-wrapper@npm:0.0.591"
+"web-component-wrapper@npm:^0.0.592":
+  version: 0.0.592
+  resolution: "web-component-wrapper@npm:0.0.592"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -18419,7 +18419,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/ce1832660119a7f97ec5660bef954b1305ff5562c78d42b3660db55f75e1c4433abd202a35da4a2b415756c3d56f06f4ccc108dd70558d715faf2c87dc3aee45
+  checksum: 10c0/134c3410f849952d09a32aa4f003da89fb3bd17b8030730ff51576813e4820d3ac4413a87a4d4c6c48d1d56969d51b2b1c2135dba0d417fa7622b948d47f702c
   languageName: node
   linkType: hard
 
@@ -18427,7 +18427,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web-documentation@workspace:."
   dependencies:
-    "@aws-sdk/client-s3": "npm:^3.1050.0"
+    "@aws-sdk/client-s3": "npm:^3.1051.0"
     "@babel/eslint-parser": "npm:^7.28.6"
     "@babel/runtime": "npm:^7.29.2"
     "@eslint/js": "npm:^10.0.1"
@@ -18445,7 +18445,7 @@ __metadata:
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
     bootstrap-icons: "npm:^1.13.1"
-    clientnode: "npm:^4.0.1400"
+    clientnode: "npm:^4.0.1405"
     css-loader: "npm:^7.1.4"
     cssnano: "npm:^8.0.1"
     default-gateway: "npm:^7.2.2"
@@ -18479,21 +18479,21 @@ __metadata:
     stylelint: "npm:^17.12.0"
     stylelint-config-standard: "npm:^40.0.0"
     typescript-eslint: "npm:^8.59.4"
-    ua-parser-js: "npm:^2.0.9"
+    ua-parser-js: "npm:^2.0.10"
     unzipper: "npm:^0.12.3"
-    web-component-wrapper: "npm:^0.0.591"
-    web-internationalization: "npm:^2.0.26"
+    web-component-wrapper: "npm:^0.0.592"
+    web-internationalization: "npm:^2.0.30"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.4"
-    website-utilities: "npm:^1.0.421"
+    website-utilities: "npm:^1.0.426"
   bin:
     web-documentation: build/deploy.js
   languageName: unknown
   linkType: soft
 
-"web-internationalization@npm:^2.0.26":
-  version: 2.0.26
-  resolution: "web-internationalization@npm:2.0.26"
+"web-internationalization@npm:^2.0.30":
+  version: 2.0.30
+  resolution: "web-internationalization@npm:2.0.30"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -18502,7 +18502,7 @@ __metadata:
   peerDependenciesMeta:
     "@babel/runtime":
       optional: true
-  checksum: 10c0/9aa8b922ae2799abae25a28ab7f665713ef15a6eede7f96705015783365c2e538f264d15a3682b3b5dbb5a8121c4456d9439967e84c85e5f5a450736cd11b1a8
+  checksum: 10c0/6523c7df4850144b25c639c7a23f4bbfb28451a86c726b11af7b331c12578aa157a1f2b2cacdb75f02565cba4c47926c13346e07d939fdec3792f060cc3d524d
   languageName: node
   linkType: hard
 
@@ -18820,9 +18820,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.421":
-  version: 1.0.421
-  resolution: "website-utilities@npm:1.0.421"
+"website-utilities@npm:^1.0.426":
+  version: 1.0.426
+  resolution: "website-utilities@npm:1.0.426"
   peerDependencies:
     "@babel/runtime": "*"
     bootstrap-icons: "*"
@@ -18835,7 +18835,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/8752fd7c08b3151247fb57149cfa531f6804d9751a41c2f63168c8ccf7262021a57fb53ce0119ab39a0b8bb203c76a99bd1d5f2d4df91a62915cb7ca1002d0bc
+  checksum: 10c0/4861d41738772e23d3bd6bf20a0edf9cb57ae574e4200671d578e76be9208be4a4ea188b973a454fc89650a9f8dd122ed5a23208248778641d8b48f827e9c790
   languageName: node
   linkType: hard
 
