@@ -102,6 +102,9 @@ body {
     background-color: var(--color8);
     color: var(--color7);
 
+    font-family: var(--w-typography-font-family);
+    font-size: 14px;
+
     margin: 0;
     line-height: 1.5;
 
