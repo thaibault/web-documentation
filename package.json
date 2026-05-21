@@ -108,7 +108,7 @@
     "web-internationalization": "^2.0.30",
     "weboptimizer": "^3.0.24",
     "webpack-dev-server": "^5.2.4",
-    "website-utilities": "^1.0.426"
+    "website-utilities": "^1.0.428"
   },
   "engines": {
     "node": ">=24",
