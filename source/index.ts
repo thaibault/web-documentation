@@ -26,9 +26,11 @@ import {
     getAll,
     getText,
     globalContext,
+    interruptableScrollTo,
     Logger,
     Mapping,
     NOOP,
+    timeout,
     wrap
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
@@ -216,8 +218,6 @@ export class WebDocumentation<
     }
     // endregion
     // region protected methods
-    /// region event handler
-    /// endregion
     /**
      * Extends given options by default options.
      */
@@ -280,7 +280,26 @@ export class WebDocumentation<
         this.tableOfContentDomNode.append(createDomNodes(listItems))
 
         this.tableOfContentLinkDomNodes =
-            this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>('a')
+            this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>(
+                this.options.selectors.tableOfContentLinks
+            )
+
+        for (const domNode of this.tableOfContentLinkDomNodes)
+            this.addSecureEventListener(
+                domNode,
+                'click',
+                (event) => {
+                    event.preventDefault()
+
+                    const selector = event.target.getAttribute('href')
+                    if (selector) {
+                        const targetDomNode =
+                            this.hostDomNode.querySelector(selector)
+                        if (targetDomNode)
+                            interruptableScrollTo({targetDomNode})
+                    }
+                }
+            )
 
         this.tableOfContentDomNode.style.display = 'initial'
     }
