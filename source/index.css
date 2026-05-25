@@ -18,13 +18,13 @@ endregion */
 
 :root {
     /* region extra small dimension */
-    @custom-media --w-extra-extra-small (min-width: 360px);
-    @custom-media --w-extra-small (min-width: 500px);
+    @custom-media --wu-extra-extra-small (min-width: 360px);
+    @custom-media --wu-extra-small (min-width: 500px);
     /* endregion */
     /* region default media query dimensions */
-    @custom-media --w-small (min-width: 768px);
-    @custom-media --w-medium (min-width: 992px);
-    @custom-media --w-large (min-width: 1200px);
+    @custom-media --wu-small (min-width: 768px);
+    @custom-media --wu-medium (min-width: 992px);
+    @custom-media --wu-large (min-width: 1200px);
     /* endregion */
 }
 
@@ -89,7 +89,7 @@ body {
 
         background-image: url("image/arrowDown.png");
         background-position: 0 0;
-        height: var(--w-default-space);
+        height: var(--wu-default-space);
         width: 20px;
     }
     /* stylelint-enable at-rule-no-unknown */
@@ -102,7 +102,7 @@ body {
     background-color: var(--color8);
     color: var(--color7);
 
-    font-family: var(--w-typography-font-family);
+    font-family: var(--wu-typography-font-family);
     font-size: 14px;
 
     margin: 0;
@@ -120,7 +120,7 @@ body {
         position: relative;
 
         margin: 0 auto;
-        padding: var(--w-default-space) calc(var(--w-default-space) / 2);
+        padding: var(--wu-default-space) calc(var(--wu-default-space) / 2);
     }
     /** endregion */
     /** region headline */
@@ -132,7 +132,7 @@ body {
     h6 {
         color: var(--color8);
 
-        font-family: var(--w-typography-font-family-headline);
+        font-family: var(--wu-typography-font-family-headline);
         font-size: 2em;
 
         letter-spacing: -1px;
@@ -302,7 +302,7 @@ body {
 
             display: none;
             float: right;
-            margin-left: var(--w-default-space);
+            margin-left: var(--wu-default-space);
             margin-top: 39px;
         }
         /* region download buttons */
@@ -318,7 +318,7 @@ body {
             font-size: 1.2em;
             font-weight: bolder;
             height: 66px;
-            margin-right: calc(var(--w-default-space) / 2);
+            margin-right: calc(var(--wu-default-space) / 2);
             overflow: hidden;
             padding-top: 29px;
             text-align: center;
@@ -374,7 +374,7 @@ body {
 
         .section__home {
             p {
-                margin: var(--w-default-space) 0 0 0;
+                margin: var(--wu-default-space) 0 0 0;
             }
 
             code {
@@ -391,7 +391,7 @@ body {
 
                 border: 1px solid var(--color4);
 
-                margin: var(--w-default-space) 0 0 0;
+                margin: var(--wu-default-space) 0 0 0;
             }
 
             .show-example-wrapper {
@@ -401,15 +401,15 @@ body {
                 border-top: 0;
 
                 margin-top: -14px;
-                padding: calc(var(--w-default-space) / 2);
+                padding: calc(var(--wu-default-space) / 2);
 
                 h3 {
                     color: var(--color5);
-                    font-family: var(--w-typography-font-family);
+                    font-family: var(--wu-typography-font-family);
                     font-size: 0.9em;
                     font-weight: bold;
                     letter-spacing: 1px;
-                    margin-bottom: calc(var(--w-default-space) / 2);
+                    margin-bottom: calc(var(--wu-default-space) / 2);
                     margin-top: 0;
                 }
 
@@ -422,14 +422,14 @@ body {
     /* endregion */
     /* region responsive */
     /** region extra extra small */
-    @media (--w-extra-extra-small) {
+    @media (--wu-extra-extra-small) {
         /** region extra small */
-        @media (--w-extra-small) {
+        @media (--wu-extra-small) {
             .header__inner__links__api-link span {
                 display: initial;
             }
 
-            @media (--w-small) {
+            @media (--wu-small) {
                 /* region small */
                 /** region headline */
                 h2 {
@@ -464,7 +464,7 @@ body {
                 }
                 /* endregion */
                 /* region medium */
-                @media (--w-medium) {
+                @media (--wu-medium) {
                     .top-link { right: 45px; }
 
                     .section__home code {
