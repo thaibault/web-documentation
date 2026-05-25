@@ -30,7 +30,6 @@ import {
     Logger,
     Mapping,
     NOOP,
-    timeout,
     wrap
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
@@ -291,7 +290,8 @@ export class WebDocumentation<
                 (event) => {
                     event.preventDefault()
 
-                    const selector = event.target.getAttribute('href')
+                    const selector =
+                        (event.target as Element | null)?.getAttribute('href')
                     if (selector) {
                         const targetDomNode =
                             this.hostDomNode.querySelector(selector)
