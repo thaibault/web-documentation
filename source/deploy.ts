@@ -17,7 +17,7 @@
     endregion
 */
 // region imports
-import archiver from 'archiver'
+import {ZipArchive} from 'archiver'
 import {execSync, ExecSyncOptionsWithStringEncoding} from 'child_process'
 import {
     camelCaseToDelimited,
@@ -393,7 +393,7 @@ const createDistributionBundle = async (): Promise<null | string> => {
         return result
     }
 
-    const archive = archiver('zip', {zlib: {level: 9}})
+    const archive = new ZipArchive({zlib: {level: 9}})
     archive.pipe(createWriteStream(distributionBundleFilePath))
 
     const promise = new Promise<void>((

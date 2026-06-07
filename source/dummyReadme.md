@@ -32,17 +32,32 @@ Project status
 Use case
 --------
 
-The main goal of This plugin is providing an generic interface logic like
-controller for calling instance methods or getting property values of an object
-orientated designed plugin. A set of reusable logic elements for building gui
-components is integrated as well.
-<!--deDE:
-    Hauptziel dieses Plugins ist es einen generischen Weg zu bieten indem
-    Objekt Orientierte Plugins verfasst werden können, ohne dabei gegen
-    jQuery's Vorgaben an Plugins zu verstoßen.
-    Desweiteren werden einige wiederverwendbare Logikbausteine zum Bau
-    verschiedener GUI-Komponenten mitgeliefert.
--->
+You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
+
+- Primitive types
+    - Arrays
+    - Functions
+    - Numbers
+    - Objects
+    - Strings
+    - Date and time
+- Mutual exclusion
+    - Lock management
+    - Semaphore management
+- Backend
+    - CLIs
+    - Filesystem
+    - Processes
+- Frontend
+    - Cookies
+    - DOM
+    - Data-Transfer
+- JSON-based Expressions
+- Logging
+- Scopes
+- Testing
+- Typescript
+- URLs
 
 <!--Place for automatic generated table of contents.-->
 <div class="doc-toc" style="display:none">
@@ -50,82 +65,26 @@ components is integrated as well.
     <h2 id="content">Content</h2>
 </div>
 
-<!--|deDE:Merkmale-->
-Features
---------
-
-<ul>
-    <li>
-        Mutual exclusion support through locking management
-        <!--deDE:Wechselseitiger Ausschluss durch Lock-Management-->
-    </li>
-    <li>
-        Cross browser logging with different log levels
-        <!--deDE:
-            Browserübergreifender Log-Mechanismen mit diversen Log-Levels
-        -->
-    </li>
-    <li>
-        Extending native JavaScript types like strings, arrays or functions
-        <!--deDE:
-            Erweiterung der Standard-JavaScript-Typen wie Strings, Arrays und
-            Funktionen
-        -->
-    </li>
-    <li>
-        A set of helper functions to parse option objects
-        <!--deDE:Hilfsfunktionen um Options-Objekte intelligent zu parsen-->
-    </li>
-    <li>
-        Extended dom tree handling.<!--deDE:Erweitertes DOM-Baum-Management-->
-    </li>
-    <li>
-        Plugin scoped event handling.
-        <!--deDE:Plugineigene Namensräume für Events.-->
-    </li>
-    <li>
-        Generic none-redundant plugin pattern for JavaScript and CoffeeScript
-        <!--deDE:Generischer Plugin-Muster für JavaScript und CoffeeScript-->
-    </li>
-</ul>
-
 <!--|deDE:Installation-->
 Installation
 ------------
 
-```bash
->>> curl \
-        https://raw.githubusercontent.com/thaibault/archinstall/main/archinstall.sh >archinstall.sh && \
-        chmod +x archinstall.sh
-```
-
-### Executable code example
-
-<!--showExample-->
-
-```HTML
-<label>
-    Name:
-    <input type="text" placeholder="Max Musterman" />
-</label>
-```
-
 <!--|deDE:Klassische Dom-Integration-->
 ### Classical dom injection
 
-You can simply download the compiled version as zip file here and inject it
-after needed dependencies:
+You can install via package manager, simply download the compiled version as
+zip file here and inject or request via cdn in HTML:
 <!--deDE:
-    Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
-    Script-Tag in deine Webseite integrieren:
+    Sie können das Paket über den Paketmanager installieren oder einfach die
+    kompilierte Version als ZIP-Datei hier herunterladen und in HTML einbinden
+    oder über ein CDN abrufen:
 -->
 
+```bash
+npm install clientnode
+```
+
 ```HTML
-<script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"
-></script>
 <!--Inject downloaded file:
 <script src="index.js"></script>
 -->
@@ -144,112 +103,9 @@ want.
     Dadurch können verschiedene Module-Bundler genutzt werden.
 -->
 
-<!--|deDE:Paket-Management und Modul-Komposition-->
-### Package managed and module bundled
-
-If you are using npm as package manager you can simply add this tool to your
-**package.json** as dependency:
-<!--deDE:
-    Nutzt du npm als Paket-Manager, dann solltest du einfach deine
-    <strong>package.json</strong> erweitern:
--->
-
-```JSON
-...
-"dependencies": {
-    ...
-    "clientnode": "latest",
-    ...
-},
-...
-```
-
-After updating your packages you can simply depend on this script and let
-a module bundler do the hard stuff or access it via an exported variable name
-in given context.
-<!--deDE:
-    Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
-    JavaScript-Module importieren oder die exportierte Variable im gegebenen
-    Context referenzieren.
--->
-
-```JavaScript
-...
-import Tools from 'clientnode'
-clas Plugin extends Tools...
-Tools({logging: true}).log('test') // shows "test" in console
-// or
-import {$} from 'clientnode'
-$.Tools().isEquivalentDom('<div>', '<script>') // false
-// or
-{makeArray} = require('clientnode').default
-makeArray(2) // [2]
-// or
-$ = require('clientnode').$
-$.Tools().isEquivalentDom('<div>', '<script>') // false
-...
-```
-
-<!--|deDE:Plugin-Vorlage-->
-Plugin pattern
---------------
-
-Use as extension for object orientated, node and browser compatible (optionally
-jQuery) plugin using inheritance and dom node as return value reference. This
-plugin pattern gives their instance back if no dom node is provided. Direct
-initializing the plugin without providing a dom node is also provided.
-Note: if you want to use it as jQuery (or another or even custom) plugin you
-have to provide "$" globally before loading this module.
-<!--deDE:
-    Einsatz von "$.Tools" um Objekt orientierte, node und Browser kompatible
-    (optional jQuery) Plugins zu implementieren, indem von "$.Tools" geerbt
-    wird und der durch jQuery erweiterte DOM-Knoten als return-Wert
-    referenziert wird. Sollte kein DOM-Knoten an die $-Funktion übergeben
-    worden sein, gibt dieser Pattern seine Instanz zurück.
-    Beachte: Wenn das Modul als jQuery (oder anderem potentiell eigenen) Plugin
-    einer bereits bestehenden Instanz hinzugefügt werden soll muss dieses unter
-    "$" global verfügbar sein bevor das Modul geladen wird.
--->
-
-```JavaScript
-'use strict'
-import {$} from 'clientnode'
-/**
- * This plugin holds all needed methods to extend input fields to select
- * numbers very smart.
- * @extends clientnode:Tools
- * @property static:_name - Defines this class name to allow retrieving them
- * after name mangling.
- * @property _options - Options extended by the options given to the
- * initializer method.
- */
-export default class Example extends $.Tools.class {
-    static _name = 'Example';
-    /* eslint-disable jsdoc/require-description-complete-sentence */
-    /**
-     * Initializes the plugin. Later needed dom nodes are grabbed.
-     * @param options - An options object.
-     * @returns Returns $'s extended current dom node.
-     */
-    initialize(options = {}) {
-    /* eslint-enable jsdoc/require-description-complete-sentence */
-        this._options = {/*Default options here*/}
-        super.initialize(options)
-        return this.$domNode
-    }
-}
-$.fn.Example = function() {
-    return $.Tools().controller(Example, arguments, this)
-}
-```
-
-Initialisation with given dom node and without:
-<!--deDE:Aufruf mit und ohne übergebenen DOM-Knoten:-->
-
-```JavaScript
-const $domNode = $('#domNode').Example({firstOption: 'value'});
-const exampleInstance = $.Example({firstOption: 'value'});
-```
+<!--|deDE:Nutzung-->
+Usage
+-----
 
 Function call from previous generated instance via dom node or instance
 reference:
@@ -259,8 +115,5 @@ reference:
 -->
 
 ```JavaScript
-const returnValue = $('#domNode').Example('method', 'anArgument')
-const returnValue = $('#domNode').Example().method('anArgument')
-const exampleInstance = $.Example({firstOption: 'value'})
-const returnValue = exampleInstance.method('anArgument')
+console.log('TEST')
 ```
