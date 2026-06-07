@@ -24,17 +24,18 @@ export default (options) => {
     marked.setOptions(options)
     // Include an id attribute when emitting headings (h1, h2, h3, ...).
     marked.use(gfmHeadingId(
-        {prefix: 'doc-'},
-        {
-            hooks: {
-                postprocess(html) {
-                    const headings = getHeadingList()
+        {prefix: 'doc-'}/* TODO,
 
-                    /*
-                        NOTE: We do not wrap with an initial UL tag since H1
-                        should be ignored. It is only existing once for SEO
-                        purposes.
-                    */
+    {
+        hooks: {
+            postprocess(html) {
+                const headings = getHeadingList()
+
+
+                    NOTE: We do not wrap with an initial UL tag since H1
+                    should be ignored. It is only existing once for SEO
+                    purposes.
+                * /
                     return `
                         ${headings.map(({
                             id,
@@ -45,7 +46,7 @@ export default (options) => {
                     `
                 }
             }
-        }
+        }*/
     ))
     // Favors self-closing xhtml tags.
     marked.use(markedXhtml())

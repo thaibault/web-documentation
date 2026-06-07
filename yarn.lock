@@ -7746,9 +7746,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1411":
-  version: 4.0.1411
-  resolution: "clientnode@npm:4.0.1411"
+"clientnode@npm:^4.0.1413":
+  version: 4.0.1413
+  resolution: "clientnode@npm:4.0.1413"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -7763,7 +7763,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/fbb3ef444cdae01f82655effc6e2f943de0d5a1a2842819a614731fa1afe269f886b695f2a9d11649f842cb3968bfafcade18504d4200977f187c5f4ebdc8a74
+  checksum: 10c0/aef4a7e81508efb7f48cfba0436711313e1dfb931672880cb65e406f827c83079a0652db126254558a6e47c0f896cc1f25926e29830d1527d1bbd53121aa7521
   languageName: node
   linkType: hard
 
@@ -18432,7 +18432,7 @@ __metadata:
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
     bootstrap-icons: "npm:^1.13.1"
-    clientnode: "npm:^4.0.1411"
+    clientnode: "npm:^4.0.1413"
     css-loader: "npm:^7.1.4"
     cssnano: "npm:^8.0.1"
     default-gateway: "npm:^7.2.2"
