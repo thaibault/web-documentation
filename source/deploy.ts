@@ -61,7 +61,7 @@ interface SCOPE_TYPE extends Mapping<unknown> {
     version: string
 }
 // endregion
-const log = new Logger({name: 'web-documentation.deploy'})
+const log = new Logger({name: 'web-documentation.deploy', level: 'debug'})
 // region globals
 /// region locations
 const DOCUMENTATION_BUILD_PATH = resolve('./build/')
