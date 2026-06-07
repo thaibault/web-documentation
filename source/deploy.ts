@@ -574,12 +574,15 @@ const main = async (): Promise<void> => {
         HAS_API_DOCUMENTATION =
             Boolean(SCOPE.scripts) &&
             Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
-        if (HAS_API_DOCUMENTATION)
+        if (HAS_API_DOCUMENTATION) {
+            log.info('API documentation creation script detected.')
             try {
                 log.debug(run('yarn document'))
-            } catch {
+            } catch (error) {
+                log.error(error)
                 HAS_API_DOCUMENTATION = false
             }
+        }
 
         log.debug(run('git checkout gh-pages'))
         log.debug(run('git pull'))
