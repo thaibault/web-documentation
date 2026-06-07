@@ -76,7 +76,9 @@ export class WebDocumentation<
             }}"
         >
             <web-internationalization
-                options="{selectors: {knownTranslation: '.doc-toc'}}"
+                options="{selectors: {
+                    knownTranslation: '.wd-table-of-contents'
+                }}"
             >
                 <slot>Please provide a template to transclude.</slot>
             </web-internationalization>
@@ -97,8 +99,8 @@ export class WebDocumentation<
                 '.section__home h1, .section__home h2, ' +
                 '.section__home h3, .section__home h4, ' +
                 '.section__home h5, .section__home h6',
-            tableOfContent: '.doc-toc',
-            tableOfContentLinks: '.doc-toc ul li a[href^="#"]'
+            tableOfContent: '.wd-table-of-contents',
+            tableOfContentLinks: '.wd-table-of-contents ul li a[href^="#"]'
         },
 
         showExample: {
@@ -170,7 +172,7 @@ export class WebDocumentation<
      * @param reason - Why an update has been triggered.
      * @param resolveRendering - Indicates whether rendering should be resolved
      * finally. Should be set to "false" via super calls in inherited render
-     * methods which do further dom manipulations afterwards and resolve the
+     * methods which do further dom manipulations afterward and resolve the
      * rendering process by their own.
      * @returns A promise resolving when rendering has finished. A promise may
      * be needed for classes inheriting from this class.
@@ -253,8 +255,6 @@ export class WebDocumentation<
             if (first)
                 firstLevel = newLevel
 
-            console.log('A', newLevel)
-
             if (newLevel > level)
                 listItemsHTML += '<ul>'
             else if (newLevel < level)
@@ -277,7 +277,14 @@ export class WebDocumentation<
             level += 1
         }
 
-        this.tableOfContentDomNode.append(createDomNodes(listItemsHTML))
+        for (const domNode of this.tableOfContentDomNode.childNodes)
+            if (
+                domNode.nodeType === Node.COMMENT_NODE &&
+                domNode.nodeValue === 'wd-table-of-contents'
+            ) {
+                domNode.after(createDomNodes(listItemsHTML))
+                domNode.remove()
+            }
 
         this.tableOfContentLinkDomNodes =
             this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>(
@@ -302,7 +309,8 @@ export class WebDocumentation<
                 }
             )
 
-        this.tableOfContentDomNode.style.display = 'initial'
+        if (this.tableOfContentDomNode.style.display === 'none')
+            this.tableOfContentDomNode.style.display = 'initial'
     }
     /**
      * This method makes dotes after code lines which are too long. This
