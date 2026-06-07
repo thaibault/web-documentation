@@ -6,6 +6,8 @@ import {markedXhtml} from 'marked-xhtml'
 
 const {getLanguage, highlight} = highlightJSModule
 
+const TOC_INDICATOR_HTML = '<!--wd-table-of-contents-->'
+
 const marked = new Marked(
     markedHighlight({
         /*
@@ -24,29 +26,26 @@ export default (options) => {
     marked.setOptions(options)
     // Include an id attribute when emitting headings (h1, h2, h3, ...).
     marked.use(gfmHeadingId(
-        {prefix: 'doc-'}/* TODO,
-
-    {
-        hooks: {
-            postprocess(html) {
-                const headings = getHeadingList()
-
-
-                    NOTE: We do not wrap with an initial UL tag since H1
-                    should be ignored. It is only existing once for SEO
-                    purposes.
-                * /
-                    return `
-                        ${headings.map(({
-                            id,
-                            raw,
-                            level
-                        }) => `<li><a href="#${id}">${raw}</a></li>`)}
-                        ${html}
+        {prefix: 'wd-heading-'},
+        {
+            hooks: {
+                postprocess(html) {
+                    const headings = getHeadingList()
+                    const tableOfContents = `
+                        <ul>${
+                            headings
+                                .map(({id, raw, level}) =>
+                                    `<li><a href="#${id}">${raw}</a></li>`
+                                )
+                                .join('\n')
+                        }
+                        </ul>
                     `
+
+                    return html.replace(TOC_INDICATOR_HTML, tableOfContents)
                 }
             }
-        }*/
+        }
     ))
     // Favors self-closing xhtml tags.
     marked.use(markedXhtml())
