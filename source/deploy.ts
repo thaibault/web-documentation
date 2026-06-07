@@ -497,7 +497,11 @@ const tidyUp = async (): Promise<void> => {
         HAS_API_DOCUMENTATION &&
         !(await isDirectory(oldAPIDocumentationDirectoryPath))
     )
-        run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+        try {
+            run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+        } catch (error) {
+            log.warn(error)
+        }
 
     if (!run('git branch').includes('* main'))
         log.debug(run('git checkout main'))
@@ -578,8 +582,9 @@ const main = async (): Promise<void> => {
             log.info('API documentation creation script detected.')
             try {
                 log.debug(run('yarn document'))
+                log.info('API documentation created.')
             } catch (error) {
-                log.error(error)
+                log.warn(error)
                 HAS_API_DOCUMENTATION = false
             }
         }
@@ -680,13 +685,19 @@ const main = async (): Promise<void> => {
         log.debug(
             run('corepack install', {cwd: temporaryDocumentationFolderPath})
         )
-        log.debug(run(
-            'yarn install',
-            {
-                cwd: temporaryDocumentationFolderPath,
-                env: {...process.env, NODE_ENV: 'debug'}
-            }
-        ))
+
+        try {
+            log.debug(run(
+                'yarn install',
+                {
+                    cwd: temporaryDocumentationFolderPath,
+                    env: {...process.env, NODE_ENV: 'debug'}
+                }
+            ))
+        } catch (error) {
+            log.warn(error)
+        }
+
         log.debug(run('yarn clear', {cwd: temporaryDocumentationFolderPath}))
 
         await generateAndPushNewDocumentationPage(

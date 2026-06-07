@@ -60,7 +60,7 @@ You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
 - URLs
 
 <!--Place for automatic generated table of contents.-->
-<div class="doc-toc" style="display:none">
+<div class="doc-toc" style="display: none">
     <!--|deDE:Inhalt-->
     <h2 id="content">Content</h2>
 </div>

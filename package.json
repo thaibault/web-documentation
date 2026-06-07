@@ -204,7 +204,7 @@
         "ejs": {
           "options": {
             "locals": {
-              "API_DOCUMENTATION_PATH": "/apiDocumentation/",
+              "API_DOCUMENTATION_PATH": "/api/",
               "CONTENT": "source/dummyReadme.md",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "LANGUAGES": {
