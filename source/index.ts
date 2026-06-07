@@ -237,7 +237,8 @@ export class WebDocumentation<
         if (!this.tableOfContentDomNode)
             return
 
-        let listItems = '<ul>'
+        let listItemsHTML = ''
+
         let level = 0
         let firstLevel = 0
         let first = true
@@ -252,12 +253,14 @@ export class WebDocumentation<
             if (first)
                 firstLevel = newLevel
 
-            if (newLevel > level)
-                listItems += '<ul>'
-            else if (newLevel < level)
-                listItems += '</ul>'
+            console.log('A', newLevel)
 
-            listItems += `
+            if (newLevel > level)
+                listItemsHTML += '<ul>'
+            else if (newLevel < level)
+                listItemsHTML += '</ul>'
+
+            listItemsHTML += `
                 <li>
                     <a href="#${domNode.getAttribute('id') ?? 'unknown'}">
                         ${domNode.innerText}
@@ -270,13 +273,11 @@ export class WebDocumentation<
         }
         // Close remaining inner lists.
         while (level < firstLevel) {
-            listItems += '</ul>'
+            listItemsHTML += '</ul>'
             level += 1
         }
 
-        listItems += '</ul>'
-
-        this.tableOfContentDomNode.append(createDomNodes(listItems))
+        this.tableOfContentDomNode.append(createDomNodes(listItemsHTML))
 
         this.tableOfContentLinkDomNodes =
             this.tableOfContentDomNode.querySelectorAll<HTMLAnchorElement>(

@@ -60,7 +60,9 @@ You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
 - URLs
 
 <!--Place for automatic generated table of contents.-->
-<div class="doc-toc" style="display:none">
+<!--Backend generated one indicator: "# heading"-->
+<!--Clientside generated version indicator:-->
+<div class="doc-toc" style="display: none">
     <!--|deDE:Inhalt-->
     <h2 id="content">Content</h2>
 </div>
@@ -68,9 +70,6 @@ You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
 <!--|deDE:Installation-->
 Installation
 ------------
-
-<!--|deDE:Klassische Dom-Integration-->
-### Classical dom injection
 
 You can install via package manager, simply download the compiled version as
 zip file here and inject or request via cdn in HTML:
