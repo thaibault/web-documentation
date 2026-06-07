@@ -38,8 +38,7 @@ export default (options) => {
                                     `<li><a href="#${id}">${raw}</a></li>`
                                 )
                                 .join('\n')
-                        }
-                        </ul>
+                        }</ul>
                     `
 
                     return html.replace(TOC_INDICATOR_HTML, tableOfContents)
