@@ -119,7 +119,7 @@ _%>
                                 _.API_DOCUMENTATION_PATH &&
                                 _.IS_DIRECTORY(_.API_DOCUMENTATION_PATH)
                             )
-                                START_UP_ANIMATION_NUMBER += 4
+                                START_UP_ANIMATION_NUMBER += 3
                             else
                                 START_UP_ANIMATION_NUMBER += 2
                             START_UP_ANIMATION_NUMBER += 1
@@ -163,7 +163,6 @@ _%>
                                 _.API_DOCUMENTATION_PATH &&
                                 _.IS_DIRECTORY(_.API_DOCUMENTATION_PATH)
                             ) {
-                                START_UP_ANIMATION_NUMBER -= 1
                         _%>
                                 <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                                 <a
@@ -183,7 +182,7 @@ _%>
                                         <i class="bi bi-arrow-right"></i>
                                     </lang-replacement>
                                 </a>
-                        <%_     START_UP_ANIMATION_NUMBER += 4 + numberOfLanguageLinks
+                        <%_     START_UP_ANIMATION_NUMBER += 3 + numberOfLanguageLinks
                             } else
                                 START_UP_ANIMATION_NUMBER += 2 + numberOfLanguageLinks
                         _%>
