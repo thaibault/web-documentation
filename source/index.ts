@@ -191,7 +191,7 @@ export class WebDocumentation<
             NOTE: We have to render examples first to avoid having dots in
             example code.
         */
-        this._showExamples()
+        await this._showExamples()
 
         this._makeCodeEllipsis()
 
@@ -398,7 +398,7 @@ export class WebDocumentation<
     /**
      * Shows marked example codes directly in browser.
      */
-    _showExamples(): void {
+    async _showExamples(): Promise<void> {
         for (const domNode of getAll(this.hostDomNode))
             if (domNode.nodeName === this.options.showExample.domNodeName) {
                 const match: null | RegExpMatchArray =
@@ -418,6 +418,7 @@ export class WebDocumentation<
 
                     try {
                         let domNode: HTMLElement | string = ''
+                        let reInjectScripts = false
                         if (match.length > 2 && match[2])
                             if (
                                 ['javascript', 'javascripts', 'js']
@@ -439,18 +440,39 @@ export class WebDocumentation<
                                 domNode.innerText = code
                             } else if (match[2].toLowerCase() === 'hidden')
                                 domNode = code
-                            else
+                            else {
                                 domNode = createDomNodes(format(
-                                    this.options.showExample.htmlWrapper,
-                                    code
+                                    this.options.showExample.htmlWrapper, code
                                 ))
-                        else
+                                reInjectScripts = true
+                            }
+                        else {
                             domNode = createDomNodes(format(
-                                this.options.showExample.htmlWrapper,
-                                code
+                                this.options.showExample.htmlWrapper, code
                             ))
+                            reInjectScripts = true
+                        }
 
                         codeDomNode.after(domNode)
+
+                        if (reInjectScripts) {
+                            /*
+                                Injected script tags are not executed by
+                                default. So we need to reinject those.
+                            */
+                            for (const scriptDomNode of domNode.querySelectorAll('script')) {
+                                // const newScriptDomNode = scriptDomNode.cloneNode(true)
+                                const newScriptDomNode = document.createElement('script')
+                                for (const name of scriptDomNode.getAttributeNames())
+                                    newScriptDomNode.setAttribute(name, scriptDomNode.getAttribute(name))
+                                newScriptDomNode.textContent = scriptDomNode.textContent
+                                const promise = new Promise((resolve) => {
+                                    newScriptDomNode.addEventListener('load', resolve)
+                                })
+                                scriptDomNode.parentNode.replaceChild(newScriptDomNode, scriptDomNode)
+                                await promise
+                            }
+                        }
                     } catch (error) {
                         log.critical(
                             `Error while integrating code "${code}":`,
@@ -459,7 +481,6 @@ export class WebDocumentation<
                     }
                 }
             }
-
 
         this.onExamplesLoaded()
     }

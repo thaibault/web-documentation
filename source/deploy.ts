@@ -451,7 +451,8 @@ const isFileIgnored = async (filePath: string): Promise<boolean> => (
  */
 const copyRepositoryFile = async (
     sourcePath: string, targetPath: string, file: File
-): Promise<false | undefined> => {
+): Promise<false | undefined> =>
+{
     if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
         return false
 

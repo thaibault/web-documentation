@@ -82,14 +82,28 @@ zip file here and inject or request via cdn in HTML:
 npm install clientnode
 ```
 
+<!--showExample-->
+
 ```HTML
-<!--Inject downloaded file:
-<script src="index.js"></script>
--->
-<!--Or integrate via cdn:-->
-<script
-    src="https://torben.website/clientnode/data/distributionBundle/index.js"
-></script>
+<script src="https://unpkg.com/clientnode@latest/dist/bundle/index.js">
+</script>
+
+<div id="first-example-playground"></div>
+```
+
+<!--showExample:JavaScript-->
+
+```JavaScript
+const domNode = clientnode.createDomNodes('<p>some content to animate</p>');
+
+const endless = () => {
+    clientnode.fadeIn(domNode)
+        .then(() => clientnode.fadeOut(domNode))
+        .then(endless)
+};
+endless();
+
+document.querySelector('#first-example-playground').appendChild(domNode);
 ```
 
 The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
@@ -105,13 +119,25 @@ want.
 Usage
 -----
 
-Function call from previous generated instance via dom node or instance
-reference:
-<!--deDE:
-    Aufruf einer Plugin-Methode anhand der zuvor generierten Instanz bzw. über
-    den zurückgegebene DOM-Knoten:
--->
+Execute a JSON based expression:
+<!--deDE:Ausführung eines JSON basierten Ausdrucks:-->
+
+<!--showExample-->
+
+```HTML
+<div id="second-example-playground"></div>
+```
+
+<!--showExample:JavaScript-->
 
 ```JavaScript
-console.log('TEST')
+document.querySelector('#second-example-playground').innerText =
+    clientnode.evaluateExpression(
+        {
+            $operator: '+',
+            operand1: 2,
+            operand2: {$select: 'some.data.in.scope'}
+        },
+        {some: {data: {in: {scope: 3}}}}
+    );
 ```
