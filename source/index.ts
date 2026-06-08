@@ -439,7 +439,7 @@ export class WebDocumentation<
                                 domNode.setAttribute('type', 'text/css')
                                 domNode.innerText = code
                             } else if (match[2].toLowerCase() === 'hidden')
-                                domNode = code
+                                domNode = createDomNodes(code)
                             else {
                                 domNode = createDomNodes(format(
                                     this.options.showExample.htmlWrapper, code
@@ -455,24 +455,37 @@ export class WebDocumentation<
 
                         codeDomNode.after(domNode)
 
-                        if (reInjectScripts) {
+                        if (reInjectScripts)
                             /*
                                 Injected script tags are not executed by
                                 default. So we need to reinject those.
                             */
-                            for (const scriptDomNode of domNode.querySelectorAll('script')) {
-                                // const newScriptDomNode = scriptDomNode.cloneNode(true)
-                                const newScriptDomNode = document.createElement('script')
-                                for (const name of scriptDomNode.getAttributeNames())
-                                    newScriptDomNode.setAttribute(name, scriptDomNode.getAttribute(name))
-                                newScriptDomNode.textContent = scriptDomNode.textContent
+                            for (const scriptDomNode of
+                                domNode.querySelectorAll('script')
+                            ) {
+                                const newScriptDomNode =
+                                    document.createElement('script')
+                                for (const name of
+                                    scriptDomNode.getAttributeNames()
+                                )
+                                    newScriptDomNode.setAttribute(
+                                        name,
+                                        scriptDomNode.getAttribute(name) as
+                                            string
+                                    )
+                                newScriptDomNode.textContent =
+                                    scriptDomNode.textContent
                                 const promise = new Promise((resolve) => {
-                                    newScriptDomNode.addEventListener('load', resolve)
+                                    newScriptDomNode.addEventListener(
+                                        'load', resolve
+                                    )
                                 })
-                                scriptDomNode.parentNode.replaceChild(newScriptDomNode, scriptDomNode)
+                                if (scriptDomNode.parentNode)
+                                    scriptDomNode.parentNode.replaceChild(
+                                        newScriptDomNode, scriptDomNode
+                                    )
                                 await promise
                             }
-                        }
                     } catch (error) {
                         log.critical(
                             `Error while integrating code "${code}":`,
