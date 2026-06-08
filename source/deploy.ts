@@ -88,7 +88,7 @@ const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
         }
     },
     /*
-        NOTE: We habe to disable offline features since the domains cache is
+        NOTE: We have to disable offline features since the domains cache is
         already in use for the main home page.
     */
     offline: null
@@ -179,7 +179,7 @@ const stream2buffer = async (stream: Stream): Promise<Buffer> => {
  * @param temporaryDocumentationFolderPath - Location where to build
  * documentation build.
  * @param distributionBundleFilePath - Location where to save the exported
- * build artefacts.
+ * build artifacts.
  * @returns A promise resolving when build process has finished.
  */
 const generateAndPushNewDocumentationPage = async (
@@ -259,6 +259,7 @@ const generateAndPushNewDocumentationPage = async (
         ...parameters,
         CONTENT,
         API_DOCUMENTATION_PATH: apiDocumentationPath,
+        HAS_API_DOCUMENTATION,
         DISTRIBUTION_BUNDLE_FILE_PATH:
             await isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
                 relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
@@ -721,7 +722,7 @@ const main = async (): Promise<void> => {
             Boolean(SCOPE.scripts) &&
             Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
         )
-            // Prepare build artefacts for further local usage.
+            // Prepare build artifacts for further local usage.
             log.debug(run('yarn build'))
     }
 }

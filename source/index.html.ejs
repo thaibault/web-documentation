@@ -115,10 +115,7 @@ _%>
                                 numberOfLanguageLinks = _.LANGUAGES.length
                                 START_UP_ANIMATION_NUMBER += numberOfLanguageLinks
                             }
-                            if (
-                                _.API_DOCUMENTATION_PATH &&
-                                _.IS_DIRECTORY(_.API_DOCUMENTATION_PATH)
-                            )
+                            if (_.HAS_API_DOCUMENTATION)
                                 START_UP_ANIMATION_NUMBER += 3
                             else
                                 START_UP_ANIMATION_NUMBER += 2
@@ -158,12 +155,8 @@ _%>
                                         class="header__inner__links__lang tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                         href="#lang-<%- language %>"
                                     ><%- language.slice(0, 2) %></a>
-                        <%_      }
-                            if (
-                                _.API_DOCUMENTATION_PATH &&
-                                _.IS_DIRECTORY(_.API_DOCUMENTATION_PATH)
-                            ) {
-                        _%>
+                                <%_ } _%>
+                            <%_ if (_.HAS_API_DOCUMENTATION) { _%>
                                 <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                                 <a
                                     class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
