@@ -438,9 +438,10 @@ export class WebDocumentation<
                                     .createElement('style')
                                 domNode.setAttribute('type', 'text/css')
                                 domNode.innerText = code
-                            } else if (match[2].toLowerCase() === 'hidden')
+                            } else if (match[2].toLowerCase() === 'hidden') {
                                 domNode = createDomNodes(code)
-                            else {
+                                reInjectScripts = true
+                            } else {
                                 domNode = createDomNodes(format(
                                     this.options.showExample.htmlWrapper, code
                                 ))
