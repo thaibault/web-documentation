@@ -18392,9 +18392,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.595":
-  version: 0.0.595
-  resolution: "web-component-wrapper@npm:0.0.595"
+"web-component-wrapper@npm:^0.0.596":
+  version: 0.0.596
+  resolution: "web-component-wrapper@npm:0.0.596"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -18413,7 +18413,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/bfc3a3db5d432c69a10a202213d5966ed96a29fd130299f0cab5091f2f9f11f4ad19e55bff86554ef26aa75589dd1177ab83053ec76389d04228b768b62fcd12
+  checksum: 10c0/23ea79ff06362af4fd5de4b4bb2eee04d3a59b14ddc5714753d93bf6683942c98a254f29bcc1e10efdc9677e0c4676b87b6a79da4dffc16a746e88b64112746e
   languageName: node
   linkType: hard
 
@@ -18475,19 +18475,19 @@ __metadata:
     typescript-eslint: "npm:^8.61.0"
     ua-parser-js: "npm:^2.0.10"
     unzipper: "npm:^0.12.3"
-    web-component-wrapper: "npm:^0.0.595"
-    web-internationalization: "npm:^2.0.38"
+    web-component-wrapper: "npm:^0.0.596"
+    web-internationalization: "npm:^2.0.39"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.4"
-    website-utilities: "npm:^1.0.440"
+    website-utilities: "npm:^1.0.442"
   bin:
     web-documentation: build/deploy.js
   languageName: unknown
   linkType: soft
 
-"web-internationalization@npm:^2.0.38":
-  version: 2.0.38
-  resolution: "web-internationalization@npm:2.0.38"
+"web-internationalization@npm:^2.0.39":
+  version: 2.0.39
+  resolution: "web-internationalization@npm:2.0.39"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -18496,7 +18496,7 @@ __metadata:
   peerDependenciesMeta:
     "@babel/runtime":
       optional: true
-  checksum: 10c0/d3383126667e1ef48dbb2c5b7b58ddd1f4e953409fb4293b9838b45b1b974de6d04abe17aba38e675454909040174c52d478f13aff4fd867b84fcfbda3428e65
+  checksum: 10c0/ab8871e38f820c58e1629401df3f69cbc51376dd1010ba54c989e71d82eeafe079c2356dd18f7a57c553a36e3365675dcd1c700090da27a12133544a34067b2d
   languageName: node
   linkType: hard
 
@@ -18814,9 +18814,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.440":
-  version: 1.0.440
-  resolution: "website-utilities@npm:1.0.440"
+"website-utilities@npm:^1.0.442":
+  version: 1.0.442
+  resolution: "website-utilities@npm:1.0.442"
   peerDependencies:
     "@babel/runtime": "*"
     bootstrap-icons: "*"
@@ -18829,7 +18829,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/d5c6faf545296b231a3d13d2945ca231a308e4ff1d3530a50904a26afb3786d68fcbd8c888c8a960e021f2e3d5e69fca831c485a1e2cc984a0fa589d0df1d4fc
+  checksum: 10c0/1de550d1b942ebac4020e48c1c72b785be1ef01a351ef0c48c6ed893f4c7bd363ba931b65074dd753b32ad7696273702ea145efc2d7dd5099406e52507f38569
   languageName: node
   linkType: hard
 

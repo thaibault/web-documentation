@@ -115,6 +115,23 @@ body {
     }
 }
 
+.wu-scroll-to-top {
+    right: 45px;
+    z-index: 4;
+}
+/* NOTE: We need to combine with generic link color transition. */
+.wd a.wu-scroll-to-top {
+    transition-property: bottom, opacity, color;
+}
+
+.wu-scroll-to-top.wu-scroll-up {
+    bottom: calc(2 * 34px);
+}
+
+.wu-scroll-to-top.wu-scroll-down {
+    bottom: 34px;
+}
+
 .wd {
     /** region grid */
     .wd-header__inner,
@@ -161,21 +178,8 @@ body {
         }
     }
 
-    a:hover { color: var(--color11); }
-
-    .wu {
-        .wu-scroll-to-top {
-            right: 45px;
-            z-index: 4;
-        }
-
-        .wu-scroll-to-top.wu-scroll-up {
-            bottom: calc(2 * 34px);
-        }
-
-        .wu-scroll-to-top.wu-scroll-down {
-            bottom: 34px;
-        }
+    a:hover {
+        color: var(--color11);
     }
     /** endregion */
     /** region image */
