@@ -31,28 +31,34 @@ endregion */
 body {
     /* region constants */
     /** region color */
-    --background-color: #fff; /* white */
+    --background-color: #fff; /* pure white */
 
     --header-background-color: #333; /* gray */
     --header-background-gradient: linear-gradient(
         to bottom,
         var(--header-background-color),
-        #212121 /* dark gray */
+        var(--headline-color)
     );
     --header-font-color: var(--background-color);
 
-    --font-color: var(--header-background-color);
+    --surface-color: #fbfbfc; /* light white */
+    --surface-border-color: #ddd; /* light gray */
 
-    --color2: #fbfbfc;
-    --color3: #f7f7f9;
-    --color4: #ddd;
-    --color5: #cbcbcd;
-    --color6: #797979;
-    --color7: #333;
-    --color8: #212121;
-    --color9: black;
-    --color10: #0090ff;
-    --color11: #0069ba;
+    --shadow-color: black;
+
+    --font-color: var(--header-background-color);
+    --headline-color: #212121; /* light black */
+
+    --link-color: #0090ff; /* light blue */
+    --link-hover-color: #0069ba; /* dark blue */
+
+    --footer-background-color: var(--header-background-color);
+    --footer-background-gradient: linear-gradient(
+        from bottom,
+        var(--header-background-color),
+        var(--headline-color)
+    );
+    --footer-font-color: var(--header-font-color);
     /** endregion */
     /* endregion */
     /* region custom properties */
@@ -106,11 +112,6 @@ body {
     /* stylelint-enable at-rule-no-unknown */
     /* endregion */
     /* region global */
-    /*
-        NOTE: If we swap these lines to order alphabetical bodies background
-        color does not get overwritten.
-    */
-    background-color: var(--color8);
     color: var(--font-color);
 
     font-family: var(--wu-typography-font-family);
@@ -172,7 +173,7 @@ body {
     h4,
     h5,
     h6 {
-        color: var(--color8);
+        color: var(--headline-color);
 
         font-family: var(--wu-typography-font-family-headline);
         font-size: 2em;
@@ -185,7 +186,7 @@ body {
     /* endregion */
     /* region link */
     a {
-        color: var(--color10);
+        color: var(--link-color);
         outline: none !important;
         text-shadow: none;
         transition: color 0.5s ease, background-color 0.5s ease;
@@ -201,13 +202,13 @@ body {
     }
 
     a:hover {
-        color: var(--color11);
+        color: var(--link-hover-color);
     }
     /* endregion */
     /* region header */
     .wd-header {
-        background-image:
-            linear-gradient(to bottom, var(--color7), var(--color8));
+        background-color: var(--header-background-color);
+        background-image: var(--header-background-gradient);
         width: 100%;
     }
 
@@ -215,9 +216,9 @@ body {
         padding: 50px 10px 30px;
 
         .wd-header__inner__forkme-banner {
-            background-color: var(--color10);
+            background-color: var(--link-color);
             border-radius: 0 0 2px 2px;
-            box-shadow: 0 0 10px var(--color9);
+            box-shadow: 0 0 10px var(--shadow-color);
             color: var(--header-font-color);
             display: block;
             font-weight: 700;
@@ -228,7 +229,7 @@ body {
             z-index: 10;
 
             &:hover {
-                background-color: var(--color11);
+                background-color: var(--link-hover-color);
                 color: var(--header-font-color);
             }
         }
@@ -247,11 +248,11 @@ body {
         .wd-header__inner__tagline {
             border: none;
             color: var(--header-font-color);
-            text-shadow: var(--color9) 0 0 10px;
+            text-shadow: var(--shadow-color) 0 0 10px;
 
             a {
                 color: var(--header-font-color);
-                text-shadow: var(--color9) 0 0 10px;
+                text-shadow: var(--shadow-color) 0 0 10px;
             }
         }
 
@@ -283,7 +284,7 @@ body {
         }
 
         .wd-header__inner__links__lang {
-            color: var(--color6);
+            color: var(--link-color);
             font-size: 1.3rem;
 
             float: right;
@@ -292,11 +293,15 @@ body {
             padding-top: 35px;
 
             &.current {
-                color: var(--color7);
+                color: var(--font-color);
+
+                &:hover {
+                    color: var(--font-color);
+                }
             }
 
             &:hover {
-                color: var(--color8);
+                color: var(--link-hover-color);
             }
         }
 
@@ -343,16 +348,26 @@ body {
     }
     /* endregion */
     /* region footer */
-    .wd-footer__inner {
-        width: 100%;
-        padding-left: 0;
-        padding-right: 0;
+    .wd-footer {
+        background-color: var(--footer-background-color);
+        background-image: var(--footer-background-gradient);
 
-        text-align: center;
-        font-size: 0.9rem;
+        .wd-footer__inner {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
 
-        p { color: var(--color3); }
-        a:hover { color: var(--color11); }
+            text-align: center;
+            font-size: 0.9rem;
+
+            p {
+                color: var(--footer-font-color);
+            }
+
+            a:hover {
+                color: var(--link-hover-color);
+            }
+        }
     }
     /* endregion */
     /* region section */
@@ -394,24 +409,23 @@ body {
                 color: #333;
                 overflow: auto;
 
-                background-color: var(--color2);
+                background-color: var(--surface-color);
 
-                border: 1px solid var(--color4);
+                border: 1px solid var(--surface-border-color);
 
                 margin: var(--wu-default-space) 0 0 0;
             }
 
             .wd-show-example-wrapper {
-                background-color: var(--color2);
+                background-color: var(--surface-color);
 
-                border: 1px solid var(--color4);
+                border: 1px solid var(--surface-border-color);
                 border-top: 0;
 
                 margin-top: -14px;
                 padding: calc(var(--wu-default-space) / 2);
 
                 h3 {
-                    color: var(--color5);
                     font-family: var(--wu-typography-font-family);
                     font-size: 0.9em;
                     font-weight: bold;
@@ -440,7 +454,7 @@ body {
                 /* region small */
                 /** region headline */
                 h2 {
-                    border-bottom: 1px dashed var(--color4);
+                    border-bottom: 1px dashed var(--surface-border-color);
                     padding-bottom: 10px;
                 }
                 /** endregion */
