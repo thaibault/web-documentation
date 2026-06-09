@@ -244,6 +244,7 @@
         }
       }
     },
+    "offline": null,
     "path": {
       "source": {
         "asset": {

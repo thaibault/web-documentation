@@ -83,31 +83,31 @@ _%>
             </div>
         </div>
 
-        <web-documentation>
+        <web-documentation class="wd wu">
             <!--region header-->
-            <header class="header">
-                <div class="header__inner">
+            <header class="wd-header">
+                <div class="wd-header__inner">
                     <a
-                        class="header__inner__forkme-banner wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                        class="wd-header__inner__forkme-banner wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
                         href="<%- _.SOURCE_URL %>"
                     >
                         View on GitHub
                         <!--deDE:GitHub-Projekt-->
                         <!--frFR:GitHub-Project-->
                         <i
-                            class="header__inner__forkme-banner__icon-github"
+                            class="wd-header__inner__forkme-banner__icon-github"
                         ></i>
                     </a>
                     <h1
-                        class="header__inner__title wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                        class="wd-header__inner__title wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
                     ><a href="<%- _.URL %>"><%- _.NAME %></a>
                     <h2
-                        class="header__inner__tagline wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                        class="wd-header__inner__tagline wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
                     >
                         <%- _.TAGLINE %>
                         <br />
                     </h2>
-                    <div class="header__inner__links">
+                    <div class="wd-header__inner__links">
                         <!--NOTE: These elements are shown in reverse order.-->
                         <%_
                             let numberOfLanguageLinks = 0
@@ -123,28 +123,28 @@ _%>
                         _%>
                         <%_ if (_.DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
                             <a
-                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                 href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
                             >src.zip</a>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
-                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                 href="<%- `${_.URL}/${_.DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
                             >app.zip</a>
                         <%_ } else { _%>
                             <a
-                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                 href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
                             >.zip</a>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
-                                class="header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                 href="https://github.com/thaibault/<%- _.NAME %>/tarball/main"
                             >.tar.gz</a>
                         <%_ }
                         START_UP_ANIMATION_NUMBER -= 1 _%>
                         <i
-                            class="header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            class="wd-header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         ></i>
                         <%_
                             if (numberOfLanguageLinks)
@@ -152,14 +152,14 @@ _%>
                                     START_UP_ANIMATION_NUMBER -= 1
                         _%>
                                     <a
-                                        class="header__inner__links__lang tools-hidden-on-javascript-disabled wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                        class="wd-header__inner__links__lang wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                         href="#lang-<%- language %>"
                                     ><%- language.slice(0, 2) %></a>
                                 <%_ } _%>
                             <%_ if (_.HAS_API_DOCUMENTATION) { _%>
                                 <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                                 <a
-                                    class="header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                                    class="wd-header__inner__links__api-link wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                                     href="<%- _.URL %>/<%- _.API_DOCUMENTATION_PATH %>"
                                 >
                                     <lang-replace>
@@ -183,10 +183,10 @@ _%>
                 </div>
             </header>
             <!--endregion-->
-            <main class="wu-router-outlet section">
+            <main class="wu-router-outlet wd-section">
                 <!--region home-->
                 <section
-                    class="section__inner section__home"
+                    class="wd-section__inner wd-section__home"
                     data-website-utilities-section="home"
                 >
                     <%_
@@ -207,7 +207,7 @@ _%>
                 <!--endregion-->
                 <!--region about this website-->
                 <section
-                    class="section__inner section__about-this-website"
+                    class="wd-section__inner wd-section__about-this-website"
                     data-website-utilities-section="about-this-website"
                 >
                     <h2 id="about-this-website">
@@ -262,8 +262,8 @@ _%>
             </main>
             <!--endregion-->
             <!--region footer-->
-            <footer class="footer">
-                <div class="footer__inner">
+            <footer class="wd-footer">
+                <div class="wd-footer__inner">
                     <%_ START_UP_ANIMATION_NUMBER += 1 _%>
                     <p
                         class="wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"

@@ -113,10 +113,13 @@ body {
     ::before {
         box-sizing: border-box;
     }
+}
+
+.wd {
     /** region grid */
-    .header__inner,
-    .section__inner,
-    .footer__inner {
+    .wd-header__inner,
+    .wd-section__inner,
+    .wd-footer__inner {
         position: relative;
 
         margin: 0 auto;
@@ -160,7 +163,7 @@ body {
 
     a:hover { color: var(--color11); }
 
-    website-utilities {
+    .wu {
         .wu-scroll-to-top {
             right: 45px;
             z-index: 4;
@@ -197,20 +200,16 @@ body {
     }
     /* endregion */
     /* region header */
-    .header {
+    .wd-header {
         background-image:
-            linear-gradient(
-                to bottom,
-                var(--color7),
-                var(--color8)
-            );
+            linear-gradient(to bottom, var(--color7), var(--color8));
         width: 100%;
     }
 
-    .header__inner {
+    .wd-header__inner {
         padding: 50px 10px 30px;
 
-        .header__inner__forkme-banner {
+        .wd-header__inner__forkme-banner {
             background-color: var(--color10);
             border-radius: 0 0 2px 2px;
             box-shadow: 0 0 10px var(--color9);
@@ -229,7 +228,7 @@ body {
             }
         }
 
-        .header__inner__forkme-banner__icon-github {
+        .wd-header__inner__forkme-banner__icon-github {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-blacktocat;
             /* stylelint-enable at-rule-no-unknown */
@@ -239,8 +238,8 @@ body {
             margin-top: -6px;
         }
 
-        .header__inner__title,
-        .header__inner__tagline {
+        .wd-header__inner__title,
+        .wd-header__inner__tagline {
             border: none;
             color: var(--color1);
             text-shadow: var(--color9) 0 0 10px;
@@ -251,13 +250,13 @@ body {
             }
         }
 
-        .header__inner__tagline {
+        .wd-header__inner__tagline {
             background: none;
             font-size: 2em;
             font-weight: 300;
         }
 
-        .header__inner__links {
+        .wd-header__inner__links {
             bottom: -40px;
             height: 70px;
             padding: 0;
@@ -267,7 +266,7 @@ body {
             z-index: 10;
         }
 
-        .header__inner__links__api-link {
+        .wd-header__inner__links__api-link {
             float: left;
 
             margin-left: 10px;
@@ -278,7 +277,7 @@ body {
             }
         }
 
-        .header__inner__links__lang {
+        .wd-header__inner__links__lang {
             color: var(--color6);
 
             float: right;
@@ -295,7 +294,7 @@ body {
             }
         }
 
-        .header__inner__links__download-arrow {
+        .wd-header__inner__links__download-arrow {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-download;
             /* stylelint-enable at-rule-no-unknown */
@@ -307,7 +306,7 @@ body {
         }
         /* region download buttons */
 
-        .header__inner__links__download {
+        .wd-header__inner__links__download {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-archiv-gray;
             /* stylelint-enable at-rule-no-unknown */
@@ -325,7 +324,7 @@ body {
             width: 80px;
         }
 
-        .header__inner__links__download:hover {
+        .wd-header__inner__links__download:hover {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-archiv-blue;
             /* stylelint-enable at-rule-no-unknown */
@@ -338,7 +337,7 @@ body {
     }
     /* endregion */
     /* region footer */
-    .footer__inner {
+    .wd-footer__inner {
         padding-left: 0;
         padding-right: 0;
         text-align: center;
@@ -349,12 +348,12 @@ body {
     }
     /* endregion */
     /* region section */
-    .section {
+    .wd-section {
         background-color: var(--color1);
         overflow: auto;
         overflow-wrap: break-word;
 
-        .section__about-this-website {
+        .wd-section__about-this-website {
             a[href="#home"] {
                 display: inline-block;
                 float: left;
@@ -368,11 +367,11 @@ body {
             }
         }
 
-        .section__inner {
+        .wd-section__inner {
             padding-top: 40px;
         }
 
-        .section__home {
+        .wd-section__home {
             p {
                 margin: var(--wu-default-space) 0 0 0;
             }
@@ -394,7 +393,7 @@ body {
                 margin: var(--wu-default-space) 0 0 0;
             }
 
-            .show-example-wrapper {
+            .wd-show-example-wrapper {
                 background-color: var(--color2);
 
                 border: 1px solid var(--color4);
@@ -425,7 +424,7 @@ body {
     @media (--wu-extra-extra-small) {
         /** region extra small */
         @media (--wu-extra-small) {
-            .header__inner__links__api-link span {
+            .wd-header__inner__links__api-link span {
                 display: initial;
             }
 
@@ -438,36 +437,26 @@ body {
                 }
                 /** endregion */
 
-                .header__inner,
-                .section__inner,
-                .footer__inner { width: 715px; }
+                .wd-header__inner,
+                .wd-section__inner,
+                .wd-footer__inner { width: 715px; }
 
-                .header__inner__links {
+                .wd-header__inner__links {
                     width: 706px;
                 }
 
-                .section__home {
+                .wd-section__home {
                     code {
                         font-size: 0.8em;
                         width: 695px;
                     }
 
-                    .show-example-wrapper { width: 100%; }
-                }
-
-                .top-link {
-                    bottom: 34px;
-                    position: fixed;
-                    right: 5px;
-                    visibility: visible;
-                    z-index: 4;
+                    .wd-show-example-wrapper { width: 100%; }
                 }
                 /* endregion */
                 /* region medium */
                 @media (--wu-medium) {
-                    .top-link { right: 45px; }
-
-                    .section__home code {
+                    .wd-section__home code {
                         font-size: 0.9em;
                     }
                 }
