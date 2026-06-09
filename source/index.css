@@ -31,7 +31,18 @@ endregion */
 body {
     /* region constants */
     /** region color */
-    --color1: #fff;
+    --background-color: #fff; /* white */
+
+    --header-background-color: #333; /* gray */
+    --header-background-gradient: linear-gradient(
+        to bottom,
+        var(--header-background-color),
+        #212121 /* dark gray */
+    );
+    --header-font-color: var(--background-color);
+
+    --font-color: var(--header-background-color);
+
     --color2: #fbfbfc;
     --color3: #f7f7f9;
     --color4: #ddd;
@@ -100,10 +111,10 @@ body {
         color does not get overwritten.
     */
     background-color: var(--color8);
-    color: var(--color7);
+    color: var(--font-color);
 
     font-family: var(--wu-typography-font-family);
-    font-size: 14px;
+    font-size: 19px;
 
     margin: 0;
     line-height: 1.5;
@@ -112,6 +123,12 @@ body {
     ::after,
     ::before {
         box-sizing: border-box;
+    }
+}
+
+.wd-no-javascript {
+    .wu-window-loading-cover, .wd-header__inner__links__lang {
+        display: none;
     }
 }
 
@@ -133,7 +150,12 @@ body {
 }
 
 .wd {
-    /** region grid */
+    lang-replacement,
+    lang-alternative:not([active]),
+    .wi-hide {
+        display: none !important;
+    }
+    /* region grid */
     .wd-header__inner,
     .wd-section__inner,
     .wd-footer__inner {
@@ -142,8 +164,8 @@ body {
         margin: 0 auto;
         padding: var(--wu-default-space) calc(var(--wu-default-space) / 2);
     }
-    /** endregion */
-    /** region headline */
+    /* endregion */
+    /* region headline */
     h1,
     h2,
     h3,
@@ -160,8 +182,8 @@ body {
     }
     h1 { font-size: 4em; }
     h2 { font-size: 3em; }
-    /** endregion */
-    /** region link */
+    /* endregion */
+    /* region link */
     a {
         color: var(--color10);
         outline: none !important;
@@ -181,27 +203,6 @@ body {
     a:hover {
         color: var(--color11);
     }
-    /** endregion */
-    /** region image */
-    /*** region generic */
-    /* stylelint-disable at-rule-no-unknown */
-    [class^="icon-"],
-    [class*=" icon-"],
-    .icon { @mixin icon; }
-    /* stylelint-disable selector-class-pattern */
-    .icon- {
-        &blacktocat { @mixin icon-blacktocat; }
-        &blue-archiv { @mixin icon-archiv-blue; }
-        &download { @mixin icon-download; }
-        &gray-archiv { @mixin icon-archiv-gray; }
-    }
-    /* stylelint-enable selector-class-pattern */
-    /* stylelint-enable at-rule-no-unknown */
-    /*** endregion */
-    /** endregion */
-    lang-replacement, .wi-hide {
-        display: none;
-    }
     /* endregion */
     /* region header */
     .wd-header {
@@ -217,7 +218,7 @@ body {
             background-color: var(--color10);
             border-radius: 0 0 2px 2px;
             box-shadow: 0 0 10px var(--color9);
-            color: var(--color1);
+            color: var(--header-font-color);
             display: block;
             font-weight: 700;
             padding: 10px;
@@ -228,7 +229,7 @@ body {
 
             &:hover {
                 background-color: var(--color11);
-                color: var(--color1);
+                color: var(--header-font-color);
             }
         }
 
@@ -245,11 +246,11 @@ body {
         .wd-header__inner__title,
         .wd-header__inner__tagline {
             border: none;
-            color: var(--color1);
+            color: var(--header-font-color);
             text-shadow: var(--color9) 0 0 10px;
 
             a {
-                color: var(--color1);
+                color: var(--header-font-color);
                 text-shadow: var(--color9) 0 0 10px;
             }
         }
@@ -283,6 +284,7 @@ body {
 
         .wd-header__inner__links__lang {
             color: var(--color6);
+            font-size: 1.3rem;
 
             float: right;
 
@@ -315,10 +317,10 @@ body {
             @mixin icon-archiv-gray;
             /* stylelint-enable at-rule-no-unknown */
 
-            color: var(--color1);
+            color: var(--header-font-color);
             display: block;
             float: right;
-            font-size: 1.2em;
+            font-size: 1.1rem;
             font-weight: bolder;
             height: 66px;
             margin-right: calc(var(--wu-default-space) / 2);
@@ -333,7 +335,7 @@ body {
             @mixin icon-archiv-blue;
             /* stylelint-enable at-rule-no-unknown */
 
-            color: var(--color1);
+            color: var(--header-font-color);
             height: 66px;
             width: 80px;
         }
@@ -342,10 +344,12 @@ body {
     /* endregion */
     /* region footer */
     .wd-footer__inner {
+        width: 100%;
         padding-left: 0;
         padding-right: 0;
+
         text-align: center;
-        width: 100%;
+        font-size: 0.9rem;
 
         p { color: var(--color3); }
         a:hover { color: var(--color11); }
@@ -353,7 +357,7 @@ body {
     /* endregion */
     /* region section */
     .wd-section {
-        background-color: var(--color1);
+        background-color: var(--background-color);
         overflow: auto;
         overflow-wrap: break-word;
 

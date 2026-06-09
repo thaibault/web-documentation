@@ -17,7 +17,7 @@ const getStartUpAnimationNumber = () => {
     return START_UP_ANIMATION_NUMBER
 }
 _%>
-<html class="wu-no-javascript" lang="en">
+<html class="wd-no-javascript" lang="en">
     <!--region head-->
     <head>
         <meta charset="utf-8">
@@ -39,16 +39,16 @@ _%>
         <script>
             AUTO_DEFINE_WEB_DOCUMENTATION = true
 
-            window.document.documentElement.classList.remove('wu-no-javascript')
-            window.document.documentElement.classList.add('wu-javascript')
+            window.document.documentElement.classList.remove('wd-no-javascript')
+            window.document.documentElement.classList.add('wd-javascript')
         </script>
     </head>
     <!--endregion-->
     <!--region body-->
-    <body class="wu-no-javascript">
+    <body class="wd-no-javascript">
         <script>
-            window.document.body.classList.remove('wu-no-javascript')
-            window.document.body.classList.add('wu-javascript')
+            window.document.body.classList.remove('wd-no-javascript')
+            window.document.body.classList.add('wd-javascript')
         </script>
 
         <div class="wu-window-loading-cover">
@@ -100,6 +100,7 @@ _%>
                     </a>
                     <h1
                         class="wd-header__inner__title wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
+                        id="home"
                     ><a href="<%- _.URL %>"><%- _.NAME %></a>
                     <h2
                         class="wd-header__inner__tagline wu-start-up-animation-number-<%- getStartUpAnimationNumber() %>"
@@ -276,7 +277,7 @@ _%>
                             after language switches.
                         */ _%>
                         <a href="https://torben.website"> thaibault</a>
-                        &middot; &copy; 2013 Torben Sickert &middot;
+                        &middot; &copy; 2026 Torben Sickert &middot;
                         <a href="#about-this-website">
                             about this website
                             <!--deDE:Impressum-->
