@@ -77,7 +77,7 @@ export class WebDocumentation<
         >
             <web-internationalization
                 options="{selectors: {
-                    knownTranslation: '.wd-table-of-contents'
+                    knownTranslation: '.wd-table-of-contents ul li'
                 }}"
             >
                 <slot>Please provide a template to transclude.</slot>
