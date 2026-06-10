@@ -31,17 +31,15 @@ endregion */
 body {
     /* region constants */
     /** region color */
-    --background-color: #fff; /* pure white */
+    --background-color: white; /* pure white */
 
     --header-background-color: #333; /* gray */
     --header-background-gradient: linear-gradient(
-        to bottom,
-        var(--header-background-color),
-        var(--headline-color)
+        to bottom, var(--header-background-color), var(--headline-color)
     );
     --header-font-color: var(--background-color);
 
-    --surface-color: #fbfbfc; /* light white */
+    --surface-color: #fcffff; /* blueish white */
     --surface-border-color: #ddd; /* light gray */
 
     --shadow-color: black;
@@ -49,16 +47,16 @@ body {
     --font-color: var(--header-background-color);
     --headline-color: #212121; /* light black */
 
-    --link-color: #0090ff; /* light blue */
-    --link-hover-color: #0069ba; /* dark blue */
+    --link-color: #0078d4; /* blue */
+    --link-hover-color: #003a67; /* dark blue */
 
-    --footer-background-color: var(--header-background-color);
+    --footer-background-color: var(--surface-color);
     --footer-background-gradient: linear-gradient(
-        from bottom,
-        var(--header-background-color),
-        var(--headline-color)
+        to bottom, var(--background-color), var(--surface-color)
     );
-    --footer-font-color: var(--header-font-color);
+    --footer-font-color: var(--font-color);
+    --footer-link-color: var(--link-color);
+    --footer-link-hover-color: var(--link-hover-color);
     /** endregion */
     /* endregion */
     /* region custom properties */
@@ -125,6 +123,7 @@ body {
     ::before {
         box-sizing: border-box;
     }
+    /* endregion */
 }
 
 .wd-no-javascript {
@@ -134,8 +133,21 @@ body {
 }
 
 .wu-scroll-to-top {
+    display: none;
+
+    font-size: 0.9rem;
+
     right: 45px;
     z-index: 4;
+
+    @media (--wu-extra-extra-small) {
+        @media (--wu-extra-small) {
+            @media (--wu-small) {
+                /* Bigger devices get a scroll top button. */
+                display: block;
+            }
+        }
+    }
 }
 /* NOTE: We need to combine with generic link color transition. */
 .wd a.wu-scroll-to-top {
@@ -364,8 +376,12 @@ body {
                 color: var(--footer-font-color);
             }
 
-            a:hover {
-                color: var(--link-hover-color);
+            a {
+                color: var(--footer-link-color);
+
+                &:hover {
+                    color: var(--footer-link-hover-color);
+                }
             }
         }
     }
@@ -399,6 +415,10 @@ body {
                 margin: var(--wu-default-space) 0 0 0;
             }
 
+            pre {
+                margin-bottom: 14px;
+            }
+
             code {
                 display: block;
                 padding: 9.5px;
@@ -427,8 +447,7 @@ body {
 
                 h3 {
                     font-family: var(--wu-typography-font-family);
-                    font-size: 0.9em;
-                    font-weight: bold;
+                    font-size: 0.7em;
                     letter-spacing: 1px;
                     margin-bottom: calc(var(--wu-default-space) / 2);
                     margin-top: 0;
