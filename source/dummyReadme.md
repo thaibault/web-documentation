@@ -28,7 +28,6 @@ Project status
 
 [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=for-the-badge&logo=codesandbox)](https://githubbox.com/thaibault/clientnode)
 
-<!--|deDE:Einsatz-->
 Use case
 --------
 
@@ -60,7 +59,7 @@ You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
 - URLs
 
 <!--Place for automatic generated table of contents.-->
-<div class="wd-table-of-contents" style="display: none">
+<div class="wd-table-of-contents">
     <h2 id="content">Content<!--deDE:Inhalt--></h2>
     <!--wd-table-of-contents-->
 </div>

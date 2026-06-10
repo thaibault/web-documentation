@@ -7753,9 +7753,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1421":
-  version: 4.0.1421
-  resolution: "clientnode@npm:4.0.1421"
+"clientnode@npm:^4.0.1422":
+  version: 4.0.1422
+  resolution: "clientnode@npm:4.0.1422"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -7770,7 +7770,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/85d8349c77072477fff101f541e568a3227ca290733ce35ed15df1c5f80b8ac3c201bac390535fde911423507e7aa05bfd9d59fa27c16fa2f4d41ce9df0ff163
+  checksum: 10c0/218f7acd6cf9b3c7330f5f3e585ea7e1c03d5bc483617b52fd76866326cab4a7d194b7d068c1542d6d30a12f32d809e05c5fc04499cb21a3804d93706a387b83
   languageName: node
   linkType: hard
 
@@ -18439,7 +18439,7 @@ __metadata:
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
     bootstrap-icons: "npm:^1.13.1"
-    clientnode: "npm:^4.0.1421"
+    clientnode: "npm:^4.0.1422"
     css-loader: "npm:^7.1.4"
     cssnano: "npm:^8.0.1"
     default-gateway: "npm:^7.2.2"
@@ -18476,7 +18476,7 @@ __metadata:
     ua-parser-js: "npm:^2.0.10"
     unzipper: "npm:^0.12.3"
     web-component-wrapper: "npm:^0.0.596"
-    web-internationalization: "npm:^2.0.39"
+    web-internationalization: "npm:^2.0.41"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.4"
     website-utilities: "npm:^1.0.442"
@@ -18485,9 +18485,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"web-internationalization@npm:^2.0.39":
-  version: 2.0.39
-  resolution: "web-internationalization@npm:2.0.39"
+"web-internationalization@npm:^2.0.41":
+  version: 2.0.41
+  resolution: "web-internationalization@npm:2.0.41"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -18496,7 +18496,7 @@ __metadata:
   peerDependenciesMeta:
     "@babel/runtime":
       optional: true
-  checksum: 10c0/ab8871e38f820c58e1629401df3f69cbc51376dd1010ba54c989e71d82eeafe079c2356dd18f7a57c553a36e3365675dcd1c700090da27a12133544a34067b2d
+  checksum: 10c0/0986a97ab6acbaa09f7f11ffda02a63f579d144ad210c4ebdf8d4bf82681b025be06f7d9cf33b29fbe16dc16c99a7f1dbdfe03121c8179da7f27697bd11473a5
   languageName: node
   linkType: hard
 
