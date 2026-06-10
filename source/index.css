@@ -32,24 +32,18 @@ body {
     /* region constants */
     /** region color */
     --background-color: white; /* pure white */
-
     --header-background-color: #333; /* gray */
     --header-background-gradient: linear-gradient(
         to bottom, var(--header-background-color), var(--headline-color)
     );
     --header-font-color: var(--background-color);
-
     --surface-color: #fcffff; /* blueish white */
     --surface-border-color: #ddd; /* light gray */
-
     --shadow-color: black;
-
     --font-color: var(--header-background-color);
     --headline-color: #212121; /* light black */
-
     --link-color: #0078d4; /* blue */
     --link-hover-color: #003a67; /* dark blue */
-
     --footer-background-color: var(--surface-color);
     --footer-background-gradient: linear-gradient(
         to bottom, var(--background-color), var(--surface-color)
