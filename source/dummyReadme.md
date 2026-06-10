@@ -61,8 +61,7 @@ You need utilities for:<!--deDE:Sie benötigen Hilfsfunktionen für:-->
 
 <!--Place for automatic generated table of contents.-->
 <div class="wd-table-of-contents" style="display: none">
-    <!--|deDE:Inhalt-->
-    <h2 id="content">Content</h2>
+    <h2 id="content">Content<!--deDE:Inhalt--></h2>
     <!--wd-table-of-contents-->
 </div>
 
