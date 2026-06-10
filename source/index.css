@@ -31,17 +31,32 @@ endregion */
 body {
     /* region constants */
     /** region color */
-    --color1: #fff;
-    --color2: #fbfbfc;
-    --color3: #f7f7f9;
-    --color4: #ddd;
-    --color5: #cbcbcd;
-    --color6: #797979;
-    --color7: #333;
-    --color8: #212121;
-    --color9: black;
-    --color10: #0090ff;
-    --color11: #0069ba;
+    --background-color: white; /* pure white */
+
+    --header-background-color: #333; /* gray */
+    --header-background-gradient: linear-gradient(
+        to bottom, var(--header-background-color), var(--headline-color)
+    );
+    --header-font-color: var(--background-color);
+
+    --surface-color: #fcffff; /* blueish white */
+    --surface-border-color: #ddd; /* light gray */
+
+    --shadow-color: black;
+
+    --font-color: var(--header-background-color);
+    --headline-color: #212121; /* light black */
+
+    --link-color: #0078d4; /* blue */
+    --link-hover-color: #003a67; /* dark blue */
+
+    --footer-background-color: var(--surface-color);
+    --footer-background-gradient: linear-gradient(
+        to bottom, var(--background-color), var(--surface-color)
+    );
+    --footer-font-color: var(--font-color);
+    --footer-link-color: var(--link-color);
+    --footer-link-hover-color: var(--link-hover-color);
     /** endregion */
     /* endregion */
     /* region custom properties */
@@ -95,15 +110,10 @@ body {
     /* stylelint-enable at-rule-no-unknown */
     /* endregion */
     /* region global */
-    /*
-        NOTE: If we swap these lines to order alphabetical bodies background
-        color does not get overwritten.
-    */
-    background-color: var(--color8);
-    color: var(--color7);
+    color: var(--font-color);
 
     font-family: var(--wu-typography-font-family);
-    font-size: 14px;
+    font-size: 19px;
 
     margin: 0;
     line-height: 1.5;
@@ -113,24 +123,69 @@ body {
     ::before {
         box-sizing: border-box;
     }
-    /** region grid */
-    .header__inner,
-    .section__inner,
-    .footer__inner {
+    /* endregion */
+}
+
+.wd-no-javascript {
+    .wu-window-loading-cover, .wd-header__inner__links__lang {
+        display: none;
+    }
+}
+
+.wu-scroll-to-top {
+    display: none;
+
+    font-size: 0.9rem;
+
+    right: 45px;
+    z-index: 4;
+
+    @media (--wu-extra-extra-small) {
+        @media (--wu-extra-small) {
+            @media (--wu-small) {
+                /* Bigger devices get a scroll top button. */
+                display: block;
+            }
+        }
+    }
+}
+/* NOTE: We need to combine with generic link color transition. */
+.wd a.wu-scroll-to-top {
+    transition-property: bottom, opacity, color;
+}
+
+.wu-scroll-to-top.wu-scroll-up {
+    bottom: calc(2 * 34px);
+}
+
+.wu-scroll-to-top.wu-scroll-down {
+    bottom: 34px;
+}
+
+.wd {
+    lang-replacement,
+    lang-alternative:not([active]),
+    .wi-hide {
+        display: none !important;
+    }
+    /* region grid */
+    .wd-header__inner,
+    .wd-section__inner,
+    .wd-footer__inner {
         position: relative;
 
         margin: 0 auto;
         padding: var(--wu-default-space) calc(var(--wu-default-space) / 2);
     }
-    /** endregion */
-    /** region headline */
+    /* endregion */
+    /* region headline */
     h1,
     h2,
     h3,
     h4,
     h5,
     h6 {
-        color: var(--color8);
+        color: var(--headline-color);
 
         font-family: var(--wu-typography-font-family-headline);
         font-size: 2em;
@@ -140,10 +195,10 @@ body {
     }
     h1 { font-size: 4em; }
     h2 { font-size: 3em; }
-    /** endregion */
-    /** region link */
+    /* endregion */
+    /* region link */
     a {
-        color: var(--color10);
+        color: var(--link-color);
         outline: none !important;
         text-shadow: none;
         transition: color 0.5s ease, background-color 0.5s ease;
@@ -158,63 +213,25 @@ body {
         }
     }
 
-    a:hover { color: var(--color11); }
-
-    website-utilities {
-        .wu-scroll-to-top {
-            right: 45px;
-            z-index: 4;
-        }
-
-        .wu-scroll-to-top.wu-scroll-up {
-            bottom: calc(2 * 34px);
-        }
-
-        .wu-scroll-to-top.wu-scroll-down {
-            bottom: 34px;
-        }
-    }
-    /** endregion */
-    /** region image */
-    /*** region generic */
-    /* stylelint-disable at-rule-no-unknown */
-    [class^="icon-"],
-    [class*=" icon-"],
-    .icon { @mixin icon; }
-    /* stylelint-disable selector-class-pattern */
-    .icon- {
-        &blacktocat { @mixin icon-blacktocat; }
-        &blue-archiv { @mixin icon-archiv-blue; }
-        &download { @mixin icon-download; }
-        &gray-archiv { @mixin icon-archiv-gray; }
-    }
-    /* stylelint-enable selector-class-pattern */
-    /* stylelint-enable at-rule-no-unknown */
-    /*** endregion */
-    /** endregion */
-    lang-replacement, .wi-hide {
-        display: none;
+    a:hover {
+        color: var(--link-hover-color);
     }
     /* endregion */
     /* region header */
-    .header {
-        background-image:
-            linear-gradient(
-                to bottom,
-                var(--color7),
-                var(--color8)
-            );
+    .wd-header {
+        background-color: var(--header-background-color);
+        background-image: var(--header-background-gradient);
         width: 100%;
     }
 
-    .header__inner {
+    .wd-header__inner {
         padding: 50px 10px 30px;
 
-        .header__inner__forkme-banner {
-            background-color: var(--color10);
+        .wd-header__inner__forkme-banner {
+            background-color: var(--link-color);
             border-radius: 0 0 2px 2px;
-            box-shadow: 0 0 10px var(--color9);
-            color: var(--color1);
+            box-shadow: 0 0 10px var(--shadow-color);
+            color: var(--header-font-color);
             display: block;
             font-weight: 700;
             padding: 10px;
@@ -224,12 +241,12 @@ body {
             z-index: 10;
 
             &:hover {
-                background-color: var(--color11);
-                color: var(--color1);
+                background-color: var(--link-hover-color);
+                color: var(--header-font-color);
             }
         }
 
-        .header__inner__forkme-banner__icon-github {
+        .wd-header__inner__forkme-banner__icon-github {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-blacktocat;
             /* stylelint-enable at-rule-no-unknown */
@@ -239,25 +256,25 @@ body {
             margin-top: -6px;
         }
 
-        .header__inner__title,
-        .header__inner__tagline {
+        .wd-header__inner__title,
+        .wd-header__inner__tagline {
             border: none;
-            color: var(--color1);
-            text-shadow: var(--color9) 0 0 10px;
+            color: var(--header-font-color);
+            text-shadow: var(--shadow-color) 0 0 10px;
 
             a {
-                color: var(--color1);
-                text-shadow: var(--color9) 0 0 10px;
+                color: var(--header-font-color);
+                text-shadow: var(--shadow-color) 0 0 10px;
             }
         }
 
-        .header__inner__tagline {
+        .wd-header__inner__tagline {
             background: none;
             font-size: 2em;
             font-weight: 300;
         }
 
-        .header__inner__links {
+        .wd-header__inner__links {
             bottom: -40px;
             height: 70px;
             padding: 0;
@@ -267,7 +284,7 @@ body {
             z-index: 10;
         }
 
-        .header__inner__links__api-link {
+        .wd-header__inner__links__api-link {
             float: left;
 
             margin-left: 10px;
@@ -278,8 +295,9 @@ body {
             }
         }
 
-        .header__inner__links__lang {
-            color: var(--color6);
+        .wd-header__inner__links__lang {
+            color: var(--link-color);
+            font-size: 1.3rem;
 
             float: right;
 
@@ -287,15 +305,19 @@ body {
             padding-top: 35px;
 
             &.current {
-                color: var(--color7);
+                color: var(--font-color);
+
+                &:hover {
+                    color: var(--font-color);
+                }
             }
 
             &:hover {
-                color: var(--color8);
+                color: var(--link-hover-color);
             }
         }
 
-        .header__inner__links__download-arrow {
+        .wd-header__inner__links__download-arrow {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-download;
             /* stylelint-enable at-rule-no-unknown */
@@ -307,15 +329,15 @@ body {
         }
         /* region download buttons */
 
-        .header__inner__links__download {
+        .wd-header__inner__links__download {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-archiv-gray;
             /* stylelint-enable at-rule-no-unknown */
 
-            color: var(--color1);
+            color: var(--header-font-color);
             display: block;
             float: right;
-            font-size: 1.2em;
+            font-size: 1.1rem;
             font-weight: bolder;
             height: 66px;
             margin-right: calc(var(--wu-default-space) / 2);
@@ -325,12 +347,12 @@ body {
             width: 80px;
         }
 
-        .header__inner__links__download:hover {
+        .wd-header__inner__links__download:hover {
             /* stylelint-disable at-rule-no-unknown */
             @mixin icon-archiv-blue;
             /* stylelint-enable at-rule-no-unknown */
 
-            color: var(--color1);
+            color: var(--header-font-color);
             height: 66px;
             width: 80px;
         }
@@ -338,23 +360,39 @@ body {
     }
     /* endregion */
     /* region footer */
-    .footer__inner {
-        padding-left: 0;
-        padding-right: 0;
-        text-align: center;
-        width: 100%;
+    .wd-footer {
+        background-color: var(--footer-background-color);
+        background-image: var(--footer-background-gradient);
 
-        p { color: var(--color3); }
-        a:hover { color: var(--color11); }
+        .wd-footer__inner {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+
+            text-align: center;
+            font-size: 0.9rem;
+
+            p {
+                color: var(--footer-font-color);
+            }
+
+            a {
+                color: var(--footer-link-color);
+
+                &:hover {
+                    color: var(--footer-link-hover-color);
+                }
+            }
+        }
     }
     /* endregion */
     /* region section */
-    .section {
-        background-color: var(--color1);
+    .wd-section {
+        background-color: var(--background-color);
         overflow: auto;
         overflow-wrap: break-word;
 
-        .section__about-this-website {
+        .wd-section__about-this-website {
             a[href="#home"] {
                 display: inline-block;
                 float: left;
@@ -368,13 +406,17 @@ body {
             }
         }
 
-        .section__inner {
+        .wd-section__inner {
             padding-top: 40px;
         }
 
-        .section__home {
+        .wd-section__home {
             p {
                 margin: var(--wu-default-space) 0 0 0;
+            }
+
+            pre {
+                margin-bottom: 14px;
             }
 
             code {
@@ -387,27 +429,25 @@ body {
                 color: #333;
                 overflow: auto;
 
-                background-color: var(--color2);
+                background-color: var(--surface-color);
 
-                border: 1px solid var(--color4);
+                border: 1px solid var(--surface-border-color);
 
                 margin: var(--wu-default-space) 0 0 0;
             }
 
-            .show-example-wrapper {
-                background-color: var(--color2);
+            .wd-show-example-wrapper {
+                background-color: var(--surface-color);
 
-                border: 1px solid var(--color4);
+                border: 1px solid var(--surface-border-color);
                 border-top: 0;
 
                 margin-top: -14px;
                 padding: calc(var(--wu-default-space) / 2);
 
                 h3 {
-                    color: var(--color5);
                     font-family: var(--wu-typography-font-family);
-                    font-size: 0.9em;
-                    font-weight: bold;
+                    font-size: 0.7em;
                     letter-spacing: 1px;
                     margin-bottom: calc(var(--wu-default-space) / 2);
                     margin-top: 0;
@@ -425,7 +465,7 @@ body {
     @media (--wu-extra-extra-small) {
         /** region extra small */
         @media (--wu-extra-small) {
-            .header__inner__links__api-link span {
+            .wd-header__inner__links__api-link span {
                 display: initial;
             }
 
@@ -433,41 +473,31 @@ body {
                 /* region small */
                 /** region headline */
                 h2 {
-                    border-bottom: 1px dashed var(--color4);
+                    border-bottom: 1px dashed var(--surface-border-color);
                     padding-bottom: 10px;
                 }
                 /** endregion */
 
-                .header__inner,
-                .section__inner,
-                .footer__inner { width: 715px; }
+                .wd-header__inner,
+                .wd-section__inner,
+                .wd-footer__inner { width: 715px; }
 
-                .header__inner__links {
+                .wd-header__inner__links {
                     width: 706px;
                 }
 
-                .section__home {
+                .wd-section__home {
                     code {
                         font-size: 0.8em;
                         width: 695px;
                     }
 
-                    .show-example-wrapper { width: 100%; }
-                }
-
-                .top-link {
-                    bottom: 34px;
-                    position: fixed;
-                    right: 5px;
-                    visibility: visible;
-                    z-index: 4;
+                    .wd-show-example-wrapper { width: 100%; }
                 }
                 /* endregion */
                 /* region medium */
                 @media (--wu-medium) {
-                    .top-link { right: 45px; }
-
-                    .section__home code {
+                    .wd-section__home code {
                         font-size: 0.9em;
                     }
                 }

@@ -50,7 +50,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1064.0",
+    "@aws-sdk/client-s3": "^3.1065.0",
     "@babel/eslint-parser": "^7.29.7",
     "@babel/runtime": "^7.29.7",
     "@eslint/js": "^10.0.1",
@@ -104,11 +104,11 @@
     "typescript-eslint": "^8.61.0",
     "ua-parser-js": "^2.0.10",
     "unzipper": "^0.12.3",
-    "web-component-wrapper": "^0.0.595",
-    "web-internationalization": "^2.0.38",
+    "web-component-wrapper": "^0.0.596",
+    "web-internationalization": "^2.0.39",
     "weboptimizer": "^3.0.24",
     "webpack-dev-server": "^5.2.4",
-    "website-utilities": "^1.0.440"
+    "website-utilities": "^1.0.442"
   },
   "engines": {
     "node": ">=24",
@@ -244,6 +244,7 @@
         }
       }
     },
+    "offline": null,
     "path": {
       "source": {
         "asset": {

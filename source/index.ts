@@ -90,15 +90,15 @@ export class WebDocumentation<
     static _defaultOptions: DefaultOptions = {
         selectors: {
             aboutThisWebsiteLink: 'a[href="#about-this-website"]',
-            aboutThisWebsiteSection: '.section__about-this-website',
+            aboutThisWebsiteSection: '.wd-section__about-this-website',
 
             codeWrapper: 'pre',
             code: 'code',
 
             headlines:
-                '.section__home h1, .section__home h2, ' +
-                '.section__home h3, .section__home h4, ' +
-                '.section__home h5, .section__home h6',
+                '.wd-section__home h1, .wd-section__home h2, ' +
+                '.wd-section__home h3, .wd-section__home h4, ' +
+                '.wd-section__home h5, .wd-section__home h6',
             tableOfContent: '.wd-table-of-contents',
             tableOfContentLinks: '.wd-table-of-contents ul li a[href^="#"]'
         },
@@ -106,7 +106,7 @@ export class WebDocumentation<
         showExample: {
             domNodeName: '#comment',
             htmlWrapper: `
-                <div class="show-example-wrapper">
+                <div class="wd-show-example-wrapper">
                     <h3>
                         Example:
                         <!--deDE:Beispiel:-->
