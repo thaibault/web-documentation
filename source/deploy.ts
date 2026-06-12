@@ -53,7 +53,7 @@ interface MAKE_TEMPORARY_FILE_OPTIONS {
 }
 interface SCOPE_TYPE extends Mapping<unknown> {
     description?: string
-    documentationWebsite?: PlainObject
+    webDocumentation?: PlainObject
     files?: Array<string>
     main?: string
     name: string
@@ -237,7 +237,7 @@ const generateAndPushNewDocumentationPage = async (
 
     let parameters: Mapping<unknown> = {}
     for (const [key, value] of Object.entries(
-        SCOPE.documentationWebsite || {}
+        SCOPE.webDocumentation || {}
     ))
         parameters[camelCaseToDelimited(key).toUpperCase()] = value
     if (!parameters.TAGLINE && SCOPE.description)
