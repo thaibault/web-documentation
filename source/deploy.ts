@@ -45,6 +45,13 @@ import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
 // region types
+export interface WebDocumentationConfiguration {
+    name?: string
+    languages?: Array<string>
+    tagline?: string
+    trackingCode?: string
+}
+
 interface MAKE_TEMPORARY_FILE_OPTIONS {
     directory: boolean
     encoding?: BufferEncoding | null
@@ -53,7 +60,7 @@ interface MAKE_TEMPORARY_FILE_OPTIONS {
 }
 interface SCOPE_TYPE extends Mapping<unknown> {
     description?: string
-    webDocumentation?: PlainObject
+    webDocumentation?: WebDocumentationConfiguration
     files?: Array<string>
     main?: string
     name: string
