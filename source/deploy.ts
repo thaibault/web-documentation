@@ -31,7 +31,6 @@ import {
     Mapping,
     optionalRequire,
     PositiveEvaluationResult,
-    PlainObject,
     represent,
     walkDirectoryRecursively
 } from 'clientnode'
