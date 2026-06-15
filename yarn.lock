@@ -18386,9 +18386,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.600":
-  version: 0.0.600
-  resolution: "web-component-wrapper@npm:0.0.600"
+"web-component-wrapper@npm:^0.0.602":
+  version: 0.0.602
+  resolution: "web-component-wrapper@npm:0.0.602"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -18407,7 +18407,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/75a17a5ef12da1c564c3dc816f5bac460d79a61bfea94162cc85404f621652fffd9ad57f99bbfc8eb7a9ad594bf0d81d7c39d5095fd590144afccfc01225d5b8
+  checksum: 10c0/8aeb6886aa4fdd08a33ad8eb64ba83afad643924b96b71cec3344b62b5708e9acfa4c67f6b94f2ac73c6c1490b10cb3045c8fc6e5a4b6244bdd1d7b0b53793f0
   languageName: node
   linkType: hard
 
@@ -18469,19 +18469,19 @@ __metadata:
     typescript-eslint: "npm:^8.61.0"
     ua-parser-js: "npm:^2.0.10"
     unzipper: "npm:^0.12.3"
-    web-component-wrapper: "npm:^0.0.600"
-    web-internationalization: "npm:^2.0.41"
+    web-component-wrapper: "npm:^0.0.602"
+    web-internationalization: "npm:^2.0.42"
     weboptimizer: "npm:^3.0.24"
     webpack-dev-server: "npm:^5.2.5"
-    website-utilities: "npm:^1.0.442"
+    website-utilities: "npm:^1.0.443"
   bin:
     web-documentation: build/deploy.js
   languageName: unknown
   linkType: soft
 
-"web-internationalization@npm:^2.0.41":
-  version: 2.0.41
-  resolution: "web-internationalization@npm:2.0.41"
+"web-internationalization@npm:^2.0.42":
+  version: 2.0.42
+  resolution: "web-internationalization@npm:2.0.42"
   peerDependencies:
     "@babel/runtime": "*"
     clientnode: "*"
@@ -18490,7 +18490,7 @@ __metadata:
   peerDependenciesMeta:
     "@babel/runtime":
       optional: true
-  checksum: 10c0/0986a97ab6acbaa09f7f11ffda02a63f579d144ad210c4ebdf8d4bf82681b025be06f7d9cf33b29fbe16dc16c99a7f1dbdfe03121c8179da7f27697bd11473a5
+  checksum: 10c0/2adce4ea78227cfddfd7aad06672a9f721dafb57cd938bf96b1b49eb877c2657530b8b2baeb70be8511a2df105812ec62b87a60b59aa8c62882207a4112b05e3
   languageName: node
   linkType: hard
 
@@ -18808,9 +18808,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.442":
-  version: 1.0.442
-  resolution: "website-utilities@npm:1.0.442"
+"website-utilities@npm:^1.0.443":
+  version: 1.0.443
+  resolution: "website-utilities@npm:1.0.443"
   peerDependencies:
     "@babel/runtime": "*"
     bootstrap-icons: "*"
@@ -18823,7 +18823,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/1de550d1b942ebac4020e48c1c72b785be1ef01a351ef0c48c6ed893f4c7bd363ba931b65074dd753b32ad7696273702ea145efc2d7dd5099406e52507f38569
+  checksum: 10c0/4e3144cdcfb49e805151230787124645567bfbb9fdb8bee9b3dbe4fbc6df14acf2a48b8955779bec3242093849a89082efd168ab571f74a9392ddc798283b697
   languageName: node
   linkType: hard
 

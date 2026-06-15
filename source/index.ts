@@ -33,9 +33,9 @@ import {
     wrap
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
-import {property} from 'web-component-wrapper/decorator'
+import {property} from 'web-component-wrapper/compatible/decorator'
 import {WebComponentAPI} from 'web-component-wrapper/type'
-import {Web} from 'web-component-wrapper/Web'
+import {Web} from 'web-component-wrapper/compatible/Web'
 import {api as websiteUtilitiesAPI} from 'website-utilities'
 import {api as webInternationalizationAPI} from 'web-internationalization'
 
@@ -424,7 +424,15 @@ export class WebDocumentation<
                                 ['javascript', 'javascripts', 'js']
                                     .includes(match[2].toLowerCase())
                             )
-                                new Function(code)()
+                                try {
+                                    new Function(code)()
+                                } catch (error) {
+                                    log.warn(
+                                        'Error occurred during running ' +
+                                        `code "${code}":`,
+                                        error
+                                    )
+                                }
                             else if ([
                                 'css', 'cascadingstylesheet',
                                 'cascadingstylesheets', 'stylesheet',

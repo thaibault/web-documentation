@@ -92,16 +92,16 @@ npm install clientnode
 <!--showExample:JavaScript-->
 
 ```JavaScript
-const domNode = clientnode.createDomNodes('<p>some content to animate</p>');
+const domNode = clientnode.createDomNodes('<p>some content to animate</p>')
 
 const endless = () => {
     clientnode.fadeIn(domNode)
         .then(() => clientnode.fadeOut(domNode))
         .then(endless)
-};
-endless();
+}
+endless()
 
-document.querySelector('#first-example-playground').appendChild(domNode);
+document.querySelector('#first-example-playground').appendChild(domNode)
 ```
 
 The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
@@ -137,5 +137,5 @@ document.querySelector('#second-example-playground').innerText =
             operand2: {$select: 'some.data.in.scope'}
         },
         {some: {data: {in: {scope: 3}}}}
-    );
+    )
 ```
