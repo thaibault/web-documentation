@@ -423,12 +423,9 @@ export class WebDocumentation<
                             if (
                                 ['javascript', 'javascripts', 'js']
                                     .includes(match[2].toLowerCase())
-                            ) {
-                                domNode = (globalContext.document as Document)
-                                    .createElement('script')
-                                domNode.setAttribute('type', 'text/javascript')
-                                domNode.innerText = code
-                            } else if ([
+                            )
+                                new Function(code)()
+                            else if ([
                                 'css', 'cascadingstylesheet',
                                 'cascadingstylesheets', 'stylesheet',
                                 'stylesheets', 'sheet', 'sheets', 'style',
@@ -454,7 +451,8 @@ export class WebDocumentation<
                             reInjectScripts = true
                         }
 
-                        codeDomNode.after(domNode)
+                        if (domNode)
+                            codeDomNode.after(domNode)
 
                         if (reInjectScripts)
                             /*
