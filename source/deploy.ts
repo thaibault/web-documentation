@@ -344,23 +344,8 @@ const generateAndPushNewDocumentationPage = async (
  * @returns Path to build distribution bundle or "null" of building failed.
  */
 const createDistributionBundle = async (): Promise<null | string> => {
-    if (
-        SCOPE.scripts &&
-        (
-            SCOPE.scripts['build:bundle:compatible'] ||
-            SCOPE.scripts['build:bundle'] ||
-            SCOPE.scripts.build
-        )
-    ) {
-        const buildCommand =
-            'yarn ' +
-            (
-                SCOPE.scripts['build:bundle:compatible'] ?
-                    'build:bundle:compatible' :
-                    SCOPE.scripts['build:bundle'] ?
-                        'build:bundle' :
-                        'build'
-            )
+    if (SCOPE.scripts && SCOPE.scripts.build) {
+        const buildCommand = `yarn ${SCOPE.scripts.build}`
         log.info(`Build distribution bundle via "${buildCommand}".`)
         log.debug(run(buildCommand))
     }
