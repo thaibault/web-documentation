@@ -50,14 +50,13 @@ export interface WebDocumentationConfiguration {
     tagline?: string
     trackingCode?: string
 }
-
-interface MAKE_TEMPORARY_FILE_OPTIONS {
+interface MakeTemporaryFileOptions {
     directory: boolean
     encoding?: BufferEncoding | null
     extension: string
     prefix: string
 }
-interface SCOPE_TYPE extends Mapping<unknown> {
+interface PackageConfiguration extends Mapping<unknown> {
     description?: string
     webDocumentation?: WebDocumentationConfiguration
     files?: Array<string>
@@ -105,7 +104,8 @@ const DOCUMENTATION_WEBSITE_REPOSITORY =
     // `git@github.com:thaibault/${DOCUMENTATION_WEBSITE_NAME}`
     `https://github.com/thaibault/${DOCUMENTATION_WEBSITE_NAME}.git`
 const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
-let SCOPE: SCOPE_TYPE = {name: '__dummy__', version: '1.0.0'}
+let PACKAGE_CONFIGURATION: PackageConfiguration =
+    {name: '__dummy__', version: '1.0.0'}
 let HAS_API_DOCUMENTATION = false
 // endregion
 // region functions
@@ -116,9 +116,9 @@ let HAS_API_DOCUMENTATION = false
  * @returns Determined file path.
  */
 const makeTemporaryFile = async (
-    givenOptions: Partial<MAKE_TEMPORARY_FILE_OPTIONS> = {}
+    givenOptions: Partial<MakeTemporaryFileOptions> = {}
 ): Promise<string> => {
-    const options: MAKE_TEMPORARY_FILE_OPTIONS = {
+    const options: MakeTemporaryFileOptions = {
         directory: false,
         encoding: 'utf8',
         extension: '',
@@ -243,13 +243,13 @@ const generateAndPushNewDocumentationPage = async (
 
     let parameters: Mapping<unknown> = {}
     for (const [key, value] of Object.entries(
-        SCOPE.webDocumentation || {}
+        PACKAGE_CONFIGURATION.webDocumentation || {}
     ))
         parameters[camelCaseToDelimited(key).toUpperCase()] = value
-    if (!parameters.TAGLINE && SCOPE.description)
-        parameters.TAGLINE = SCOPE.description
-    if (!parameters.NAME && SCOPE.name)
-        parameters.NAME = SCOPE.name
+    if (!parameters.TAGLINE && PACKAGE_CONFIGURATION.description)
+        parameters.TAGLINE = PACKAGE_CONFIGURATION.description
+    if (!parameters.NAME && PACKAGE_CONFIGURATION.name)
+        parameters.NAME = PACKAGE_CONFIGURATION.name
 
     log.debug(`Found parameters "${represent(parameters)}" to render.`)
 
@@ -278,7 +278,8 @@ const generateAndPushNewDocumentationPage = async (
 
     const serializedParameters: string =
         JSON.stringify(evaluateDynamicData(
-            BUILD_DOCUMENTATION_PAGE_CONFIGURATION, {parameters, ...SCOPE}
+            BUILD_DOCUMENTATION_PAGE_CONFIGURATION,
+            {parameters, ...PACKAGE_CONFIGURATION}
         ))
     const parametersFilePath: string =
         await makeTemporaryFile({extension: '.json'})
@@ -286,7 +287,7 @@ const generateAndPushNewDocumentationPage = async (
 
     const evaluationResult: EvaluationResult = evaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE,
-        {parameters, parametersFilePath, ...SCOPE}
+        {parameters, parametersFilePath, ...PACKAGE_CONFIGURATION}
     )
 
     if (evaluationResult.error)
@@ -343,8 +344,8 @@ const generateAndPushNewDocumentationPage = async (
  * @returns Path to build distribution bundle or "null" of building failed.
  */
 const createDistributionBundle = async (): Promise<null | string> => {
-    if (SCOPE.scripts && SCOPE.scripts.build) {
-        const buildCommand = `yarn ${SCOPE.scripts.build}`
+    if (PACKAGE_CONFIGURATION.scripts?.build) {
+        const buildCommand = `yarn ${PACKAGE_CONFIGURATION.scripts.build}`
         log.info(`Build distribution bundle via "${buildCommand}".`)
         log.debug(run(buildCommand))
     }
@@ -353,9 +354,9 @@ const createDistributionBundle = async (): Promise<null | string> => {
     const distributionBundleFilePath: string =
         await makeTemporaryFile({extension: '.zip'})
 
-    const filePaths = SCOPE.files || []
-    if (SCOPE.main)
-        filePaths.push(SCOPE.main)
+    const filePaths = PACKAGE_CONFIGURATION.files || []
+    if (PACKAGE_CONFIGURATION.main)
+        filePaths.push(PACKAGE_CONFIGURATION.main)
 
     if (filePaths.length === 0)
         return null
@@ -527,10 +528,12 @@ const main = async (): Promise<void> => {
         run('git branch').includes('* main') &&
         run('git branch --all').includes('gh-pages')
     ) {
-        SCOPE = optionalRequire(resolve('./package.json')) || SCOPE
+        PACKAGE_CONFIGURATION =
+            optionalRequire(resolve('./package.json')) ||
+            PACKAGE_CONFIGURATION
 
         const evaluationResult: EvaluationResult = evaluate(
-            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, SCOPE
+            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, PACKAGE_CONFIGURATION
         )
 
         if (evaluationResult.error)
@@ -568,8 +571,10 @@ const main = async (): Promise<void> => {
         }
 
         HAS_API_DOCUMENTATION =
-            Boolean(SCOPE.scripts) &&
-            Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'document')
+            Boolean(PACKAGE_CONFIGURATION.scripts) &&
+            Object.prototype.hasOwnProperty.call(
+                PACKAGE_CONFIGURATION.scripts, 'document'
+            )
         if (HAS_API_DOCUMENTATION) {
             log.info('API documentation creation script detected.')
             try {
@@ -710,8 +715,10 @@ const main = async (): Promise<void> => {
             /* eslint-disable @typescript-eslint/no-unnecessary-condition */
             RUN_FINAL_BUILD &&
             /* eslint-enable @typescript-eslint/no-unnecessary-condition */
-            Boolean(SCOPE.scripts) &&
-            Object.prototype.hasOwnProperty.call(SCOPE.scripts, 'build')
+            Boolean(PACKAGE_CONFIGURATION.scripts) &&
+            Object.prototype.hasOwnProperty.call(
+                PACKAGE_CONFIGURATION.scripts, 'build'
+            )
         )
             // Prepare build artifacts for further local usage.
             log.debug(run('yarn build'))
