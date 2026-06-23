@@ -33,9 +33,9 @@ import {
     wrap
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
-import {property} from 'web-component-wrapper/compatible/decorator'
+import {property} from 'web-component-wrapper/decorator'
 import {WebComponentAPI} from 'web-component-wrapper/type'
-import {Web} from 'web-component-wrapper/compatible/Web'
+import {Web} from 'web-component-wrapper/Web'
 import {api as websiteUtilitiesAPI} from 'website-utilities'
 import {api as webInternationalizationAPI} from 'web-internationalization'
 
@@ -417,7 +417,7 @@ export class WebDocumentation<
                         code = codeDomNode.innerText
 
                     try {
-                        let domNode: HTMLElement | string = ''
+                        let domNode: HTMLElement | null = null
                         let reInjectScripts = false
                         if (match.length > 2 && match[2])
                             if (
@@ -425,7 +425,17 @@ export class WebDocumentation<
                                     .includes(match[2].toLowerCase())
                             )
                                 try {
+                                    /*
+                                        eslint-disable
+                                        @typescript-eslint/no-implied-eval,
+                                        @typescript-eslint/no-unsafe-call
+                                    */
                                     new Function(code)()
+                                    /*
+                                        eslint-enable
+                                        @typescript-eslint/no-implied-eval,
+                                        @typescript-eslint/no-unsafe-call
+                                    */
                                 } catch (error) {
                                     log.warn(
                                         'Error occurred during running ' +
@@ -459,40 +469,41 @@ export class WebDocumentation<
                             reInjectScripts = true
                         }
 
-                        if (domNode)
+                        if (domNode) {
                             codeDomNode.after(domNode)
 
-                        if (reInjectScripts)
-                            /*
-                                Injected script tags are not executed by
-                                default. So we need to reinject those.
-                            */
-                            for (const scriptDomNode of
-                                domNode.querySelectorAll('script')
-                            ) {
-                                const newScriptDomNode =
-                                    document.createElement('script')
-                                for (const name of
-                                    scriptDomNode.getAttributeNames()
-                                )
-                                    newScriptDomNode.setAttribute(
-                                        name,
-                                        scriptDomNode.getAttribute(name) as
-                                            string
+                            if (reInjectScripts)
+                                /*
+                                    Injected script tags are not executed by
+                                    default. So we need to reinject those.
+                                */
+                                for (const scriptDomNode of
+                                    domNode.querySelectorAll('script')
+                                ) {
+                                    const newScriptDomNode =
+                                        document.createElement('script')
+                                    for (const name of
+                                        scriptDomNode.getAttributeNames()
                                     )
-                                newScriptDomNode.textContent =
-                                    scriptDomNode.textContent
-                                const promise = new Promise((resolve) => {
-                                    newScriptDomNode.addEventListener(
-                                        'load', resolve
-                                    )
-                                })
-                                if (scriptDomNode.parentNode)
-                                    scriptDomNode.parentNode.replaceChild(
-                                        newScriptDomNode, scriptDomNode
-                                    )
-                                await promise
-                            }
+                                        newScriptDomNode.setAttribute(
+                                            name,
+                                            scriptDomNode.getAttribute(name) as
+                                                string
+                                        )
+                                    newScriptDomNode.textContent =
+                                        scriptDomNode.textContent
+                                    const promise = new Promise((resolve) => {
+                                        newScriptDomNode.addEventListener(
+                                            'load', resolve
+                                        )
+                                    })
+                                    if (scriptDomNode.parentNode)
+                                        scriptDomNode.parentNode.replaceChild(
+                                            newScriptDomNode, scriptDomNode
+                                        )
+                                    await promise
+                                }
+                        }
                     } catch (error) {
                         log.critical(
                             `Error while integrating code "${code}":`,

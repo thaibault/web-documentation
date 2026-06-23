@@ -150,6 +150,10 @@
     },
     "library": false,
     "module": {
+      "aliases": {
+        "web-component-wrapper/decorator$": "web-component-wrapper/compatible/decorator",
+        "web-component-wrapper/Web": "web-component-wrapper/compatible/Web"
+      },
       "enforceDeduplication": true,
       "html": {
         "options": {
