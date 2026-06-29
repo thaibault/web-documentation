@@ -279,7 +279,7 @@ const generateAndPushNewDocumentationPage = async (
     const serializedParameters: string =
         JSON.stringify(evaluateDynamicData(
             BUILD_DOCUMENTATION_PAGE_CONFIGURATION,
-            {parameters, ...PACKAGE_CONFIGURATION}
+            {scope: {parameters, ...PACKAGE_CONFIGURATION}}
         ))
     const parametersFilePath: string =
         await makeTemporaryFile({extension: '.json'})
