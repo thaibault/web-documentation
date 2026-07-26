@@ -33,7 +33,7 @@ _%>
             <%_ } _%>>
         <%_ } _%>
         <title><%- _.NAME %></title>
-        <%- _.include(
+        <%- await _.include(
             'web-component-wrapper/polyfill.html', {webComponents: false}
         ) %>
         <script>
@@ -194,13 +194,13 @@ _%>
                         let content = ''
                     if (_.CONTENT && !_.CONTENT.trim().startsWith('<!--html-->'))
                         if (_.CONTENT.endsWith('.html'))
-                            content = _.READ_FILE(_.CONTENT, _.configuration.encoding)
+                            content = await _.READ_FILE(_.CONTENT, _.configuration.encoding)
                         else if (_.CONTENT.endsWith('.md'))
-                            content = _.RENDER_MARKDOWN(_.READ_FILE(
+                            content = await _.RENDER_MARKDOWN(await _.READ_FILE(
                                 _.CONTENT, _.configuration.encoding
                             ))
                         else
-                            content = _.RENDER_MARKDOWN(_.CONTENT)
+                            content = await _.RENDER_MARKDOWN(_.CONTENT)
                     _%>
 
                     <%- content %>
@@ -257,7 +257,7 @@ _%>
                             </lang-replacement>
                         </a>
                     </p>
-                    <%- _.include('legal-notes') %>
+                    <%- await _.include('legal-notes') %>
                 </section>
                 <!--endregion-->
             </main>

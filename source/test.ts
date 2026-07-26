@@ -15,6 +15,7 @@
 */
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
+
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
 import WebDocumentation, {api} from './index'

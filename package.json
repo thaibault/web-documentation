@@ -26,6 +26,7 @@
   ],
   "main": "source/index.html.ejs",
   "bin": "build/deploy.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/web-documentation"
@@ -51,9 +52,9 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1068.0",
-    "@babel/eslint-parser": "^7.29.7",
-    "@babel/runtime": "^7.29.7",
+    "@aws-sdk/client-s3": "^3.1095.0",
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/runtime": "^8.0.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/archiver": "^8.0.0",
@@ -61,55 +62,55 @@
     "@types/html-minifier": "^4.0.6",
     "@types/jsdom": "^28.0.3",
     "@types/marked": "^6.0.0",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.1.1",
     "@types/unzipper": "^0.10.11",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.61.0",
-    "@typescript-eslint/parser": "^8.61.0",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.1",
-    "clientnode": "^4.0.1423",
+    "clientnode": "^4.0.1472",
     "css-loader": "^7.1.4",
     "cssnano": "^8.0.2",
     "default-gateway": "^7.2.2",
-    "errorreporter": "^1.0.349",
-    "eslint": "^10.5.0",
+    "errorreporter": "^1.0.355",
+    "eslint": "^10.8.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^63.0.2",
-    "favicons": "^7.3.0",
+    "eslint-plugin-jsdoc": "^63.3.0",
+    "favicons": "^7.3.1",
     "favicons-webpack-plugin": "^6.0.1",
     "highlight.js": "^11.11.1",
     "jest": "30.4.2",
     "jsdoc": "^4.0.5",
     "legal-notes": "^1.0.29",
-    "marked": "^18.0.5",
+    "marked": "^18.0.7",
     "marked-gfm-heading-id": "^4.1.4",
     "marked-highlight": "^2.2.4",
     "marked-xhtml": "^1.0.15",
     "mini-css-extract-plugin": "^2.10.2",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.23",
     "postcss-fontpath": "^1.0.0",
     "postcss-import": "^16.1.1",
     "postcss-loader": "^8.2.1",
     "postcss-mixins": "^12.1.2",
     "postcss-nested": "^7.0.2",
-    "postcss-preset-env": "^11.3.1",
+    "postcss-preset-env": "^11.3.2",
     "postcss-scss": "^4.0.9",
     "postcss-sprites": "^4.2.1",
     "postcss-url": "^10.1.4",
     "prop-types": "^15.8.1",
     "style-loader": "^4.0.0",
-    "stylelint": "^17.13.0",
+    "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript-eslint": "^8.61.0",
+    "typescript-eslint": "^8.65.0",
     "ua-parser-js": "^2.0.10",
-    "unzipper": "^0.12.3",
-    "web-component-wrapper": "^0.0.602",
-    "web-internationalization": "^2.0.42",
-    "weboptimizer": "^3.0.24",
-    "webpack-dev-server": "^5.2.5",
-    "website-utilities": "^1.0.443"
+    "unzipper": "^0.12.5",
+    "web-component-wrapper": "^0.0.607",
+    "web-internationalization": "^2.0.45",
+    "weboptimizer": "^4.0.40",
+    "webpack-dev-server": "^6.0.0",
+    "website-utilities": "^1.0.458"
   },
   "engines": {
     "node": ">=24",
@@ -146,6 +147,16 @@
       "entry": {
         "#": "errorreporter\": [\"ua-parser-js\", \"errorreporter\"]",
         "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {index: ['./index.css', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js', './index']}"
+      },
+      "external": {
+        "#": "Externalize other's pre-build libraries for the test target so jest resolves the published bundles at runtime instead of re-bundling them.",
+        "implicit": {
+          "pattern": {
+            "include": {
+              "__evaluate__": "['@jest/globals'].concat(2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? /^(?:clientnode|web-component-wrapper|website-utilities|web-internationalization|errorreporter)(?:$|\\/)/ : [])"
+            }
+          }
+        }
       }
     },
     "library": false,
@@ -165,19 +176,9 @@
         }
       },
       "optimizer": {
-        "babelMinify": {
-          "#": "To provide a logging output we need to exclude this feature.",
-          "bundle": {
-            "transform": {
-              "removeConsole": false
-            }
-          },
-          "#1": "Avoids wrong this binding in some callbacks with class bound closure (e.g. in \"performStartUpEffects -> animate -> always\".",
-          "module": null
-        },
         "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
         "cssnano": {
-          "__evaluate__": "self.debug ? null : {preset: [optionalRequire('cssnano-preset-default'), {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
+          "__await_evaluate__": "module.optionalImport('cssnano-preset-default').then((module) => self.debug ? null : {preset: [module?.default, {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]})"
         },
         "htmlMinifier": {
           "ignoreCustomComments": [
@@ -191,6 +192,19 @@
               "__evaluate__": "/^showExample(?::[a-zA-Z]+)?$/"
             }
           ]
+        },
+        "terser": {
+          "terserOptions": {
+            "compress": {
+              "#": "To provide a logging output we need to exclude this feature.",
+              "drop_console": {
+                "__evaluate__": "false"
+              },
+              "drop_debugger": {
+                "__evaluate__": "false"
+              }
+            }
+          }
         }
       },
       "preprocessor": {
@@ -199,8 +213,8 @@
             "plugins": {
               "pre": {
                 "__append__": [
-                  "require('postcss-mixins')",
-                  "require('postcss-nested')"
+                  "module.optionalImport('postcss-mixins').then((module) => module?.default)",
+                  "module.optionalImport('postcss-nested').then((module) => module?.default)"
                 ]
               }
             }
@@ -217,6 +231,7 @@
                 "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'web-documentation' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
               },
               "MARKED_OPTIONS": {
+                "async": true,
                 "#": "If true, add <br> on a single line break (copies GitHub behavior on comments, but not on rendered markdown files). Requires gfm be true.",
                 "breaks": false,
                 "#1": "If true, use approved GitHub Flavored Markdown (GFM) specification.",
@@ -227,14 +242,11 @@
                 "silent": false
               },
               "NAME": "web-documentation",
-              "IS_DIRECTORY": {
-                "__evaluate__": "filesystem.isDirectorySync"
-              },
               "READ_FILE": {
-                "__evaluate__": "fs.readFileSync"
+                "__evaluate__": "fs.promises.readFile"
               },
               "RENDER_MARKDOWN": {
-                "__evaluate__": "require(path.resolve(currentPath, 'source/renderMarkdown.mjs')).default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS)"
+                "__await_evaluate__": "module.optionalImport(path.resolve(currentPath, 'source/renderMarkdown.mjs')).then((module) => module?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS))"
               },
               "META_TAGS": [],
               "SOURCE_URL": {
@@ -276,13 +288,9 @@
         "javaScript": {
           "pattern": {
             "#": "This is how we can make our main exported artefact executable.",
-            "__evaluate__": "`#!/usr/bin/env node\n// -*- coding: utf-8 -*-\n${self.generic.assetPattern.javaScript.pattern}{1}`"
+            "__evaluate__": "`#!/usr/bin/env node\n// -*- coding: utf-8 -*-\n{1}`"
           }
         }
-      },
-      "exportFormat": {
-        "external": "commonjs2",
-        "self": "commonjs2"
       },
       "files": {
         "defaultHTML": {
@@ -298,15 +306,17 @@
       },
       "module": {
         "optimizer": {
-          "babelMinify": {
-            "#": "To provide a logging output we need to exclude this feature.",
-            "bundle": {
-              "transform": {
-                "removeConsole": false
+          "terser": {
+            "terserOptions": {
+              "compress": {
+                "#": "To provide a logging output we need to exclude this feature.",
+                "drop_console": {
+                  "__evaluate__": "false"
+                },
+                "drop_debugger": {
+                  "__evaluate__": "false"
+                }
               }
-            },
-            "module": {
-              "removeConsole": false
             }
           }
         }
