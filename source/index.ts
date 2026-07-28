@@ -423,19 +423,21 @@ export class WebDocumentation<
                             if (
                                 ['javascript', 'javascripts', 'js']
                                     .includes(match[2].toLowerCase())
-                            )
+                            ) {
+                                /*
+                                    NOTE: We'r using a data URI to import the
+                                    code as a module.
+                                */
+                                const encodedCode =
+                                    encodeURIComponent(code)
+                                const dataURI =
+                                    'data:text/javascript;charset=utf-8,' +
+                                    encodedCode
                                 try {
-                                    /*
-                                        eslint-disable
-                                        @typescript-eslint/no-implied-eval,
-                                        @typescript-eslint/no-unsafe-call
-                                    */
-                                    new Function(code)()
-                                    /*
-                                        eslint-enable
-                                        @typescript-eslint/no-implied-eval,
-                                        @typescript-eslint/no-unsafe-call
-                                    */
+                                    await import(
+                                        /* webpackIgnore: true */
+                                        dataURI
+                                    )
                                 } catch (error) {
                                     log.warn(
                                         'Error occurred during running ' +
@@ -443,7 +445,7 @@ export class WebDocumentation<
                                         error
                                     )
                                 }
-                            else if ([
+                            } else if ([
                                 'css', 'cascadingstylesheet',
                                 'cascadingstylesheets', 'stylesheet',
                                 'stylesheets', 'sheet', 'sheets', 'style',
