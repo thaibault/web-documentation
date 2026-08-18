@@ -17,20 +17,23 @@
     endregion
 */
 // region imports
+import type {
+    EvaluationResult, File, Mapping, PositiveEvaluationResult
+} from 'clientnode'
+import type {ExecSyncOptionsWithStringEncoding} from 'child_process'
+import type {Stream} from 'stream'
+
 import {ZipArchive} from 'archiver'
-import {execSync, ExecSyncOptionsWithStringEncoding} from 'child_process'
+import {execSync} from 'child_process'
 import {
     camelCaseToDelimited,
     evaluate,
     evaluateDynamicData,
-    EvaluationResult,
-    File,
+    importFilesystemAPI,
     isDirectory,
     isFile,
     Logger,
-    Mapping,
     optionalRequire,
-    PositiveEvaluationResult,
     represent,
     walkDirectoryRecursively
 } from 'clientnode'
@@ -40,7 +43,6 @@ import {
 } from 'fs/promises'
 import {tmpdir} from 'node:os'
 import {basename, dirname, extname, join, relative, resolve} from 'path'
-import {Stream} from 'stream'
 import {Extract} from 'unzipper'
 // endregion
 // region types
@@ -66,6 +68,8 @@ interface PackageConfiguration extends Mapping<unknown> {
     version: string
 }
 // endregion
+await importFilesystemAPI()
+
 const log = new Logger({name: 'web-documentation.deploy', level: 'debug'})
 // region globals
 /// region locations
