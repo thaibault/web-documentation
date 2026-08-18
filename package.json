@@ -15,28 +15,29 @@
   },
   "license": "CC-BY-3.0",
   "author": {
-    "name": "Torben Sickert",
     "email": "info@torben.website",
+    "name": "Torben Sickert",
     "url": "https://torben.website"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thaibault/web-documentation"
+  },
+  "type": "module",
+  "main": "source/index.html.ejs",
+  "bin": "build/deploy.js",
   "files": [
     "build/deploy.js",
     "build/deploy.d.ts",
     "source"
   ],
-  "main": "source/index.html.ejs",
-  "bin": "build/deploy.js",
-  "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/thaibault/web-documentation"
-  },
+  "sideEffects": true,
   "scripts": {
     "build": "yarn build:types; yarn build:web; yarn build:deploy",
     "build:deploy": "weboptimizer build '{__reference__: \"target:deploy\"}'",
-    "build:web": "weboptimizer build",
     "build:stats": "weboptimizer build --profile --json /tmp/stats.json | sed --regexp-extended 's/^Running \".+$//' | sed --regexp-extended 's/^Consolidate module request \".+$//' >/tmp/stats.json && echo 'Results successfully written to \"/tmp/stats.json\".'",
     "build:types": "weboptimizer build:types",
+    "build:web": "weboptimizer build",
     "check": "yarn check:types; yarn lint",
     "check:types": "weboptimizer check:types",
     "clear": "weboptimizer clear",
@@ -52,7 +53,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1098.0",
+    "@aws-sdk/client-s3": "^3.1112.0",
     "@babel/eslint-parser": "^8.0.1",
     "@babel/runtime": "^8.0.0",
     "@eslint/js": "^10.0.1",
@@ -60,42 +61,42 @@
     "@types/archiver": "^8.0.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
-    "@types/jsdom": "^28.0.3",
+    "@types/jsdom": "^30.0.0",
     "@types/marked": "^6.0.0",
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.2.0",
     "@types/unzipper": "^0.10.11",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.65.0",
+    "@typescript-eslint/eslint-plugin": "^8.67.0",
+    "@typescript-eslint/parser": "^8.67.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.1",
-    "clientnode": "^4.0.1482",
+    "clientnode": "^4.0.1484",
     "css-loader": "^7.1.4",
-    "cssnano": "^8.0.2",
+    "cssnano": "^8.0.6",
     "default-gateway": "^7.2.2",
-    "errorreporter": "^1.0.356",
-    "eslint": "^10.8.0",
+    "errorreporter": "^1.0.357",
+    "eslint": "^10.8.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^63.3.2",
+    "eslint-plugin-jsdoc": "^64.2.1",
     "favicons": "^7.3.1",
     "favicons-webpack-plugin": "^6.0.1",
-    "highlight.js": "^11.11.1",
+    "highlight.js": "^11.12.0",
     "jest": "30.4.2",
     "jsdoc": "^4.0.5",
     "legal-notes": "^1.0.29",
-    "marked": "^18.0.7",
+    "marked": "^18.0.10",
     "marked-gfm-heading-id": "^4.1.4",
     "marked-highlight": "^2.2.4",
     "marked-xhtml": "^1.0.15",
     "mini-css-extract-plugin": "^2.10.2",
-    "postcss": "^8.5.25",
+    "postcss": "^8.5.26",
     "postcss-fontpath": "^1.0.0",
-    "postcss-import": "^16.1.1",
+    "postcss-import": "^17.0.0",
     "postcss-loader": "^8.2.1",
     "postcss-mixins": "^12.1.2",
-    "postcss-nested": "^8.0.0",
-    "postcss-preset-env": "^11.3.2",
+    "postcss-nested": "^8.0.1",
+    "postcss-preset-env": "^11.4.0",
     "postcss-scss": "^4.0.9",
     "postcss-sprites": "^4.2.1",
     "postcss-url": "^10.1.4",
@@ -103,35 +104,34 @@
     "style-loader": "^4.0.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript-eslint": "^8.65.0",
+    "typescript-eslint": "^8.67.0",
     "ua-parser-js": "^2.0.10",
     "unzipper": "^0.12.5",
-    "web-component-wrapper": "^0.0.610",
+    "web-component-wrapper": "^0.0.611",
     "web-internationalization": "^2.0.50",
-    "weboptimizer": "^4.0.48",
+    "weboptimizer": "^4.0.53",
     "webpack-dev-server": "^6.0.0",
     "website-utilities": "^1.0.464"
+  },
+  "resolutions": {
+    "colors": "1.4.0",
+    "globals@npm:^11.1.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
+    "globals@npm:^14.0.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
+    "globals@npm:^9.18.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch"
   },
   "engines": {
     "node": ">=24",
     "npm": ">=11",
     "yarn": ">=4"
   },
-  "resolutions": {
-    "colors": "1.4.0",
-    "globals@npm:^14.0.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
-    "globals@npm:^11.1.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch",
-    "globals@npm:^9.18.0": "patch:globals@npm%3A11.12.0#~/.yarn/patches/globals-npm-11.12.0-1fa7f41a6c.patch"
-  },
-  "sideEffects": true,
   "webOptimizer": {
     "build": {
       "definitions": {
-        "TRACKING_CODE": {
-          "__evaluate__": "`'${self.module.preprocessor.html.options.locals.TRACKING_CODE}'`"
-        },
         "LANGUAGES": {
           "__evaluate__": "`['${self.module.preprocessor.html.options.locals.LANGUAGES.join(\"', '\")}']`"
+        },
+        "TRACKING_CODE": {
+          "__evaluate__": "`'${self.module.preprocessor.html.options.locals.TRACKING_CODE}'`"
         }
       }
     },
@@ -224,23 +224,24 @@
           "options": {
             "locals": {
               "API_DOCUMENTATION_PATH": "api/",
-              "HAS_API_DOCUMENTATION": true,
               "CONTENT": "source/dummyReadme.md",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
+              "HAS_API_DOCUMENTATION": true,
               "LANGUAGES": {
                 "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'web-documentation' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"
               },
               "MARKED_OPTIONS": {
-                "async": true,
                 "#": "If true, add <br> on a single line break (copies GitHub behavior on comments, but not on rendered markdown files). Requires gfm be true.",
-                "breaks": false,
                 "#1": "If true, use approved GitHub Flavored Markdown (GFM) specification.",
-                "gfm": true,
                 "#2": "If true, conform to the original markdown.pl as much as possible. Don't fix original markdown bugs or behavior. Turns off and overrides gfm.",
-                "pedantic": false,
                 "#3": "If true, the parser does not throw any exception.",
+                "async": true,
+                "breaks": false,
+                "gfm": true,
+                "pedantic": false,
                 "silent": false
               },
+              "META_TAGS": [],
               "NAME": "web-documentation",
               "READ_FILE": {
                 "__evaluate__": "fs.promises.readFile"
@@ -248,7 +249,6 @@
               "RENDER_MARKDOWN": {
                 "__await_evaluate__": "module.optionalImport(path.resolve(currentPath, 'source/renderMarkdown.mjs')).then((module) => module?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS))"
               },
-              "META_TAGS": [],
               "SOURCE_URL": {
                 "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.options.locals.NAME}`"
               },
