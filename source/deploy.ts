@@ -33,7 +33,7 @@ import {
     isDirectory,
     isFile,
     Logger,
-    optionalRequire,
+    optionalImport,
     represent,
     walkDirectoryRecursively
 } from 'clientnode'
@@ -533,7 +533,10 @@ const main = async (): Promise<void> => {
         run('git branch --all').includes('gh-pages')
     ) {
         PACKAGE_CONFIGURATION =
-            optionalRequire(resolve('./package.json')) ||
+            (
+                await optionalImport(resolve('./package.json')) as
+                    {default: PackageConfiguration}
+            )?.default ||
             PACKAGE_CONFIGURATION
 
         const evaluationResult: EvaluationResult = evaluate(
