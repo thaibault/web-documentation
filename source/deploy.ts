@@ -534,8 +534,9 @@ const main = async (): Promise<void> => {
     ) {
         PACKAGE_CONFIGURATION =
             (
-                await optionalImport(resolve('./package.json')) as
-                    {default: PackageConfiguration}
+                await optionalImport(
+                    resolve('./package.json'), {with: {type: 'json'}}
+                ) as {default: PackageConfiguration}
             )?.default ||
             PACKAGE_CONFIGURATION
 
