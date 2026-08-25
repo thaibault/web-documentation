@@ -53,7 +53,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1112.0",
+    "@aws-sdk/client-s3": "^3.1118.0",
     "@babel/eslint-parser": "^8.0.1",
     "@babel/runtime": "^8.0.0",
     "@eslint/js": "^10.0.1",
@@ -63,20 +63,20 @@
     "@types/html-minifier": "^4.0.6",
     "@types/jsdom": "^30.0.0",
     "@types/marked": "^6.0.0",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.3.0",
     "@types/unzipper": "^0.10.11",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.67.0",
-    "@typescript-eslint/parser": "^8.67.0",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.1",
-    "clientnode": "^4.0.1484",
+    "clientnode": "^4.0.1499",
     "css-loader": "^7.1.4",
-    "cssnano": "^8.0.6",
+    "cssnano": "^8.0.8",
     "default-gateway": "^7.2.2",
     "errorreporter": "^1.0.357",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^64.2.1",
     "favicons": "^7.3.1",
@@ -85,7 +85,7 @@
     "jest": "30.4.2",
     "jsdoc": "^4.0.5",
     "legal-notes": "^1.0.29",
-    "marked": "^18.0.10",
+    "marked": "^18.0.11",
     "marked-gfm-heading-id": "^4.1.4",
     "marked-highlight": "^2.2.4",
     "marked-xhtml": "^1.0.15",
@@ -96,7 +96,7 @@
     "postcss-loader": "^8.2.1",
     "postcss-mixins": "^12.1.2",
     "postcss-nested": "^8.0.1",
-    "postcss-preset-env": "^11.4.0",
+    "postcss-preset-env": "^11.5.0",
     "postcss-scss": "^4.0.9",
     "postcss-sprites": "^4.2.1",
     "postcss-url": "^10.1.4",
@@ -104,12 +104,12 @@
     "style-loader": "^4.0.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript-eslint": "^8.67.0",
+    "typescript-eslint": "^8.68.0",
     "ua-parser-js": "^2.0.10",
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.611",
     "web-internationalization": "^2.0.50",
-    "weboptimizer": "^4.0.53",
+    "weboptimizer": "^4.0.63",
     "webpack-dev-server": "^6.0.0",
     "website-utilities": "^1.0.464"
   },
@@ -170,6 +170,7 @@
         "options": {
           "sources": {
             "urlFilter": {
+              "#": "Do not process any referenced resource in HTML.",
               "__evaluate__": "() => false"
             }
           }
@@ -178,7 +179,7 @@
       "optimizer": {
         "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
         "cssnano": {
-          "__await_evaluate__": "module.optionalImport('cssnano-preset-default').then((module) => self.debug ? null : {preset: [module?.default, {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]})"
+          "__async_evaluate__": "self.debug ? null : {preset: [(await module.optionalImport('cssnano-preset-default'))?.default, {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
         },
         "htmlMinifier": {
           "ignoreCustomComments": [
@@ -244,10 +245,10 @@
               "META_TAGS": [],
               "NAME": "web-documentation",
               "READ_FILE": {
-                "__evaluate__": "fs.promises.readFile"
+                "__evaluate__": "fs.readFile"
               },
               "RENDER_MARKDOWN": {
-                "__await_evaluate__": "module.optionalImport(path.resolve(currentPath, 'source/renderMarkdown.mjs')).then((module) => module?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS))"
+                "__async_evaluate__": "(await module.optionalImport(path.resolve(currentPath, 'source/renderMarkdown.mjs')))?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS)"
               },
               "SOURCE_URL": {
                 "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.options.locals.NAME}`"

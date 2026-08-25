@@ -291,7 +291,7 @@ const generateAndPushNewDocumentationPage = async (
 
     const evaluationResult: EvaluationResult = evaluate(
         BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE,
-        {parameters, parametersFilePath, ...PACKAGE_CONFIGURATION}
+        {scope: {parameters, parametersFilePath, ...PACKAGE_CONFIGURATION}}
     )
 
     if (evaluationResult.error)
@@ -534,14 +534,23 @@ const main = async (): Promise<void> => {
     ) {
         PACKAGE_CONFIGURATION =
             (
+                /*
+                    eslint-disable
+                    @typescript-eslint/no-unnecessary-type-assertion
+                */
                 await optionalImport(
                     resolve('./package.json'), {with: {type: 'json'}}
-                ) as {default: PackageConfiguration}
+                ) as {default?: PackageConfiguration} | null
+                /*
+                    eslint-enable
+                    @typescript-eslint/no-unnecessary-type-assertion
+                */
             )?.default ||
             PACKAGE_CONFIGURATION
 
         const evaluationResult: EvaluationResult = evaluate(
-            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``, PACKAGE_CONFIGURATION
+            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``,
+            {scope: PACKAGE_CONFIGURATION}
         )
 
         if (evaluationResult.error)
