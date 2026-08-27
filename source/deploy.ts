@@ -28,6 +28,7 @@ import {execSync} from 'child_process'
 import {
     camelCaseToDelimited,
     evaluate,
+    evaluateAsyncDynamicData,
     evaluateDynamicData,
     importFilesystemAPI,
     isDirectory,
@@ -280,11 +281,16 @@ const generateAndPushNewDocumentationPage = async (
         if (typeof value === 'string')
             parameters[key] = value.replace('!', '#%%%#')
 
-    const serializedParameters: string =
-        JSON.stringify(evaluateDynamicData(
-            BUILD_DOCUMENTATION_PAGE_CONFIGURATION,
-            {scope: {parameters, ...PACKAGE_CONFIGURATION}}
-        ))
+    const evaluationOptions =
+        {scope: {parameters, ...PACKAGE_CONFIGURATION}}
+    const serializedParameters: string = JSON.stringify(
+        await evaluateAsyncDynamicData(
+            evaluateDynamicData(
+                BUILD_DOCUMENTATION_PAGE_CONFIGURATION, evaluationOptions
+            ),
+            evaluationOptions
+        )
+    )
     const parametersFilePath: string =
         await makeTemporaryFile({extension: '.json'})
     await writeFile(parametersFilePath, serializedParameters)
