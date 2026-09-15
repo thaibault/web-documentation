@@ -108,7 +108,7 @@
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.614",
     "web-internationalization": "^2.0.54",
-    "weboptimizer": "^4.0.83",
+    "weboptimizer": "^4.0.84",
     "webpack-dev-server": "^6.0.0",
     "website-utilities": "^1.0.467"
   },
