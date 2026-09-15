@@ -426,7 +426,7 @@ export class WebDocumentation<
                                     .includes(match[2].toLowerCase())
                             ) {
                                 /*
-                                    NOTE: We'r using a data URI to import the
+                                    NOTE: We're using a data URI to import the
                                     code as a module.
                                 */
                                 const encodedCode =
