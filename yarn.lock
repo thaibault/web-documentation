@@ -7730,7 +7730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:4.0.1516, clientnode@npm:^4.0.1516":
+"clientnode@npm:4.0.1516":
   version: 4.0.1516
   resolution: "clientnode@npm:4.0.1516"
   peerDependencies:
@@ -7745,6 +7745,24 @@ __metadata:
     prop-types:
       optional: true
   checksum: 10c0/bde9145af85a24aca108721e41498c09a43a8e211c98202d4ab545b03b23372c7db1d7c5819f906d43d426e90e089f251fd2906e2aa64f927f27ea86824f988f
+  languageName: node
+  linkType: hard
+
+"clientnode@npm:^4.0.1517":
+  version: 4.0.1517
+  resolution: "clientnode@npm:4.0.1517"
+  peerDependencies:
+    "@types/prop-types": "*"
+    node-fetch: "*"
+    prop-types: "*"
+  peerDependenciesMeta:
+    "@types/prop-types":
+      optional: true
+    node-fetch:
+      optional: true
+    prop-types:
+      optional: true
+  checksum: 10c0/c3cacc62b1e34c9dd83b1329a1fdc60d21c2aa37ffe5637d201a1b195fc8bdba56a6af7a70dfb5ec1c421f5b7b4459f3d4b71043407130911056b502b183e5d1
   languageName: node
   linkType: hard
 
@@ -9102,15 +9120,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"errorreporter@npm:^1.0.358":
-  version: 1.0.358
-  resolution: "errorreporter@npm:1.0.358"
+"errorreporter@npm:^1.0.359":
+  version: 1.0.359
+  resolution: "errorreporter@npm:1.0.359"
   peerDependencies:
     ua-parser-js: "*"
   peerDependenciesMeta:
     ua-parser-js:
       optional: true
-  checksum: 10c0/d121fc85d0b664a836f641d2a8f4fed5d650aea0d54c8b50c704469697666f501ca9415b2adf6adfeda5cc97d9cea1e8c89cca0678e83ee90751a3975751f978
+  checksum: 10c0/671a7e166268e3accd5b932ec43d33c3df7b31d366797f965fdd253b83aad4ace99d6e912f3bb49fbec4f9c50208b156c3745e6ac920ad9a2c62297ce4e5aca5
   languageName: node
   linkType: hard
 
@@ -17715,9 +17733,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.613":
-  version: 0.0.613
-  resolution: "web-component-wrapper@npm:0.0.613"
+"web-component-wrapper@npm:^0.0.614":
+  version: 0.0.614
+  resolution: "web-component-wrapper@npm:0.0.614"
   peerDependencies:
     "@types/react": "*"
     "@types/react-dom": "*"
@@ -17733,7 +17751,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/c9c3096f065a0a5dcdee08daf5e159720d7e594dd5c362ee6a5e46ed1120bab3df3a249df2f89f48a0f06bcdf3bd25e04f6b37c2cda37bc83a8405bb24a4aa89
+  checksum: 10c0/8d92bcd96d3c1ad4edadacdcde2b775211edb04621454fc2c4b616789f4525f1ffacdb5d0b6ace9af12198c2cbe14b09140c840628f3af3a977fa77f551a559c
   languageName: node
   linkType: hard
 
@@ -17758,11 +17776,11 @@ __metadata:
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
     bootstrap-icons: "npm:^1.13.1"
-    clientnode: "npm:^4.0.1516"
+    clientnode: "npm:^4.0.1517"
     css-loader: "npm:^7.1.5"
     cssnano: "npm:^9.0.4"
     default-gateway: "npm:^7.2.2"
-    errorreporter: "npm:^1.0.358"
+    errorreporter: "npm:^1.0.359"
     eslint: "npm:^10.10.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^64.4.0"
@@ -17794,7 +17812,7 @@ __metadata:
     typescript-eslint: "npm:^8.70.0"
     ua-parser-js: "npm:^2.0.10"
     unzipper: "npm:^0.12.5"
-    web-component-wrapper: "npm:^0.0.613"
+    web-component-wrapper: "npm:^0.0.614"
     web-internationalization: "npm:^2.0.54"
     weboptimizer: "npm:^4.0.83"
     webpack-dev-server: "npm:^6.0.0"

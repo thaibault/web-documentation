@@ -316,7 +316,6 @@ body {
             @mixin icon-download;
             /* stylelint-enable at-rule-no-unknown */
 
-            display: none;
             float: right;
             margin-left: var(--wu-default-space);
             margin-top: 39px;
