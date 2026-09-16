@@ -199,14 +199,22 @@ const generateAndPushNewDocumentationPage = async (
 ): Promise<void> => {
     log.info('Generate document website artefacts.')
 
-    if (distributionBundleFilePath) {
-        log.info('Prepare distribution files.')
+    /*
+        NOTE: We have to determine the bundles final location before rendering
+        since the check for its existence has to run against the just build
+        artifact and not against a potential leftover from a previous run.
+    */
+    const newDistributionBundleFilePath: null | string =
+        distributionBundleFilePath ?
+            join(
+                temporaryDocumentationFolderPath,
+                relative('./', DOCUMENTATION_BUILD_PATH),
+                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH)
+            ) :
+            null
 
-        const newDistributionBundleFilePath = join(
-            temporaryDocumentationFolderPath,
-            relative('./', DOCUMENTATION_BUILD_PATH),
-            relative('./', DISTRIBUTION_BUNDLE_FILE_PATH)
-        )
+    if (distributionBundleFilePath && newDistributionBundleFilePath) {
+        log.info('Prepare distribution files.')
 
         await mkdir(dirname(newDistributionBundleFilePath), {recursive: true})
         await copyFile(
@@ -272,7 +280,8 @@ const generateAndPushNewDocumentationPage = async (
         API_DOCUMENTATION_PATH: apiDocumentationPath,
         HAS_API_DOCUMENTATION,
         DISTRIBUTION_BUNDLE_FILE_PATH:
-            await isFile(DISTRIBUTION_BUNDLE_FILE_PATH) ?
+            newDistributionBundleFilePath &&
+            await isFile(newDistributionBundleFilePath) ?
                 relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
                 null
     }
@@ -581,19 +590,6 @@ const main = async (): Promise<void> => {
             )
 
             process.exitCode = 1
-        }
-
-        if (
-            distributionBundleFilePath &&
-            await isFile(distributionBundleFilePath)
-        ) {
-            const targetFilePath =
-                join(DATA_PATH, basename(distributionBundleFilePath))
-
-            await mkdir(DATA_PATH, {recursive: true})
-            await copyFile(distributionBundleFilePath, targetFilePath)
-
-            LOCATIONS_TO_TIDY_UP.push(targetFilePath)
         }
 
         HAS_API_DOCUMENTATION =
