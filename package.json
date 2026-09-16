@@ -53,7 +53,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1131.0",
+    "@aws-sdk/client-s3": "^3.1132.0",
     "@babel/eslint-parser": "^8.0.5",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
@@ -74,10 +74,10 @@
     "css-loader": "^7.1.5",
     "cssnano": "^9.0.4",
     "default-gateway": "^7.2.2",
-    "errorreporter": "^1.0.359",
+    "errorreporter": "^1.0.360",
     "eslint": "^10.10.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^64.4.0",
+    "eslint-plugin-jsdoc": "^64.5.0",
     "favicons": "^7.3.1",
     "favicons-webpack-plugin": "^6.0.1",
     "highlight.js": "^11.12.0",
@@ -108,7 +108,7 @@
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.614",
     "web-internationalization": "^2.0.54",
-    "weboptimizer": "^4.0.84",
+    "weboptimizer": "^4.0.85",
     "webpack-dev-server": "^6.0.0",
     "website-utilities": "^1.0.467"
   },

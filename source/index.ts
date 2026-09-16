@@ -495,15 +495,60 @@ export class WebDocumentation<
                                         )
                                     newScriptDomNode.textContent =
                                         scriptDomNode.textContent
-                                    const promise = new Promise((resolve) => {
-                                        newScriptDomNode.addEventListener(
-                                            'load', resolve
+                                    /*
+                                        NOTE: Inline scripts are executed
+                                        synchronously while being inserted and
+                                        never fire a "load" (or "error") event.
+                                        So we have to wait for externally
+                                        referenced scripts only. Waiting for an
+                                        inline script would block forever.
+                                    */
+                                    const scriptFilePath =
+                                        newScriptDomNode.getAttribute('src')
+                                    /*
+                                        NOTE: A script which was never inserted
+                                        will never be loaded. So we have
+                                        nothing to wait for.
+                                    */
+                                    if (!scriptDomNode.parentNode) {
+                                        log.warn(
+                                            'Skipping example script ' +
+                                            `"${scriptFilePath ?? 'inline'}" ` +
+                                            'since it is not part of the ' +
+                                            'document anymore.'
                                         )
-                                    })
-                                    if (scriptDomNode.parentNode)
-                                        scriptDomNode.parentNode.replaceChild(
-                                            newScriptDomNode, scriptDomNode
-                                        )
+
+                                        continue
+                                    }
+                                    let promise = Promise.resolve()
+                                    if (scriptFilePath) {
+                                        const errorMessage =
+                                            'Failed to load example script ' +
+                                            `"${scriptFilePath}".`
+                                        promise = new Promise<void>((
+                                            resolve, reject
+                                        ) => {
+                                            newScriptDomNode.addEventListener(
+                                                'load',
+                                                () => {
+                                                    resolve()
+                                                }
+                                            )
+                                            newScriptDomNode.addEventListener(
+                                                'error',
+                                                () => {
+                                                    reject(new Error(
+                                                        errorMessage
+                                                    ))
+                                                }
+                                            )
+                                        })
+                                    }
+
+                                    scriptDomNode.parentNode.replaceChild(
+                                        newScriptDomNode, scriptDomNode
+                                    )
+
                                     await promise
                                 }
                         }
@@ -512,6 +557,8 @@ export class WebDocumentation<
                             `Error while integrating code "${code}":`,
                             String(error)
                         )
+
+                        throw error
                     }
                 }
             }

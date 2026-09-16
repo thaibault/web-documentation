@@ -60,9 +60,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-s3@npm:^3.1131.0":
-  version: 3.1131.0
-  resolution: "@aws-sdk/client-s3@npm:3.1131.0"
+"@aws-sdk/client-s3@npm:^3.1132.0":
+  version: 3.1132.0
+  resolution: "@aws-sdk/client-s3@npm:3.1132.0"
   dependencies:
     "@aws-sdk/checksums": "npm:^3.1001.0"
     "@aws-sdk/core": "npm:^3.978.0"
@@ -75,7 +75,7 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.11.3"
     "@smithy/types": "npm:^4.17.2"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/cc2f330f39d16183f2c4ce3380e19bee73680a1f80bb426c9b63ba945066f2b001fecfa4d5e48d4abc930a3bc2c7bbe1d25cbbe71e9c0ed0aab3262ba7bf2a9c
+  checksum: 10c0/da438283d7c0aad82464b2e438b3cc822e1f6ab175b4375494c6913f864108c4256046d816369567706247ccca7e86f76c47d47f837d25d45ebbe22129e3a34a
   languageName: node
   linkType: hard
 
@@ -9128,15 +9128,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"errorreporter@npm:^1.0.359":
-  version: 1.0.359
-  resolution: "errorreporter@npm:1.0.359"
+"errorreporter@npm:^1.0.360":
+  version: 1.0.360
+  resolution: "errorreporter@npm:1.0.360"
   peerDependencies:
     ua-parser-js: "*"
   peerDependenciesMeta:
     ua-parser-js:
       optional: true
-  checksum: 10c0/671a7e166268e3accd5b932ec43d33c3df7b31d366797f965fdd253b83aad4ace99d6e912f3bb49fbec4f9c50208b156c3745e6ac920ad9a2c62297ce4e5aca5
+  checksum: 10c0/d9d4dc39ae0b53edb324cbf51cf7b91dfafefc158c8941103246d879eed50450e42c86f0136225feda1838fdce22240b6508ec3ba542b36a8f3bdd051b7e4879
   languageName: node
   linkType: hard
 
@@ -9322,9 +9322,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^64.4.0":
-  version: 64.4.0
-  resolution: "eslint-plugin-jsdoc@npm:64.4.0"
+"eslint-plugin-jsdoc@npm:^64.5.0":
+  version: 64.5.0
+  resolution: "eslint-plugin-jsdoc@npm:64.5.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.97.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -9343,7 +9343,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/2a091d96427f1e57ee7194db5c0bc2d6a5663dd6d2dcc99065abbc9cf1e1dd1b17160a8089b43cf4416b228aba98a1bf9ef28db932812e77ef6435ec3119ec10
+  checksum: 10c0/bb3250ad497eb421d3a589ed48fc0d1cf7b0d7f750057203a7ce32a7d0f231742c6c73017c6293965d12407d58b6e8b2d956adb9f7e9b669b4e235fe086a3e39
   languageName: node
   linkType: hard
 
@@ -17779,7 +17779,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web-documentation@workspace:."
   dependencies:
-    "@aws-sdk/client-s3": "npm:^3.1131.0"
+    "@aws-sdk/client-s3": "npm:^3.1132.0"
     "@babel/eslint-parser": "npm:^8.0.5"
     "@eslint/js": "npm:^10.0.1"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
@@ -17800,10 +17800,10 @@ __metadata:
     css-loader: "npm:^7.1.5"
     cssnano: "npm:^9.0.4"
     default-gateway: "npm:^7.2.2"
-    errorreporter: "npm:^1.0.359"
+    errorreporter: "npm:^1.0.360"
     eslint: "npm:^10.10.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^64.4.0"
+    eslint-plugin-jsdoc: "npm:^64.5.0"
     favicons: "npm:^7.3.1"
     favicons-webpack-plugin: "npm:^6.0.1"
     highlight.js: "npm:^11.12.0"
@@ -17834,7 +17834,7 @@ __metadata:
     unzipper: "npm:^0.12.5"
     web-component-wrapper: "npm:^0.0.614"
     web-internationalization: "npm:^2.0.54"
-    weboptimizer: "npm:^4.0.84"
+    weboptimizer: "npm:^4.0.85"
     webpack-dev-server: "npm:^6.0.0"
     website-utilities: "npm:^1.0.467"
   bin:
@@ -17864,9 +17864,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.84":
-  version: 4.0.84
-  resolution: "weboptimizer@npm:4.0.84"
+"weboptimizer@npm:^4.0.85":
+  version: 4.0.85
+  resolution: "weboptimizer@npm:4.0.85"
   dependencies:
     "@babel/core": "npm:^8.0.5"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
@@ -18012,7 +18012,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: index.js
-  checksum: 10c0/2760659b971b431a25496c2bdbe2beb295c3ee898f263ba6d6aaa25ed78f135a4c39ca2a540b37a7f0463456668ff1c51ead01722e34ead4bd24cde2411ee315
+  checksum: 10c0/644e41fd3912139e809a00ef605649ef76ab0f0245f53442a91f0f44139fc809076236458b6d4c805a58c85467ba398d0eea7d5280c7409a11f5e045275dd49a
   languageName: node
   linkType: hard
 
