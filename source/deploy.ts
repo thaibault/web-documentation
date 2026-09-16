@@ -355,9 +355,8 @@ const generateAndPushNewDocumentationPage = async (
  */
 const createDistributionBundle = async (): Promise<null | string> => {
     if (PACKAGE_CONFIGURATION.scripts?.build) {
-        const buildCommand = `yarn ${PACKAGE_CONFIGURATION.scripts.build}`
-        log.info(`Build distribution bundle via "${buildCommand}".`)
-        log.debug(run(buildCommand))
+        log.info('Build distribution bundle via "yarn build".')
+        log.debug(run('yarn build'))
     }
 
     log.info('Pack to a zip archive.')
@@ -386,11 +385,15 @@ const createDistributionBundle = async (): Promise<null | string> => {
                             resolve(filePath, path)
                         )
                     ))
-                else {
+                else if (await isFile(filePath)) {
                     log.debug(`Add "${filePath}" to distribution bundle.`)
 
                     result.push(filePath)
-                }
+                } else
+                    log.warn(
+                        `Skip missing file "${filePath}" declared in package ` +
+                        'configuration.'
+                    )
         }
 
         return result
