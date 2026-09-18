@@ -440,7 +440,7 @@ export class WebDocumentation<
                                         dataURI
                                     )
                                 } catch (error) {
-                                    log.warn(
+                                    void log.warn(
                                         'Error occurred during running ' +
                                         `code "${code}":`,
                                         error
@@ -511,7 +511,7 @@ export class WebDocumentation<
                                         nothing to wait for.
                                     */
                                     if (!scriptDomNode.parentNode) {
-                                        log.warn(
+                                        void log.warn(
                                             'Skipping example script ' +
                                             `"${scriptFilePath ?? 'inline'}" ` +
                                             'since it is not part of the ' +
@@ -553,7 +553,7 @@ export class WebDocumentation<
                                 }
                         }
                     } catch (error) {
-                        log.critical(
+                        void log.critical(
                             `Error while integrating code "${code}":`,
                             String(error)
                         )
