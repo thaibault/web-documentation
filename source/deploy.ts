@@ -197,7 +197,7 @@ const generateAndPushNewDocumentationPage = async (
     temporaryDocumentationFolderPath: string,
     distributionBundleFilePath: null | string
 ): Promise<void> => {
-    log.info('Generate document website artefacts.')
+    void log.info('Generate document website artefacts.')
 
     /*
         NOTE: We have to determine the bundles final location before rendering
@@ -214,7 +214,7 @@ const generateAndPushNewDocumentationPage = async (
             null
 
     if (distributionBundleFilePath && newDistributionBundleFilePath) {
-        log.info('Prepare distribution files.')
+        void log.info('Prepare distribution files.')
 
         await mkdir(dirname(newDistributionBundleFilePath), {recursive: true})
         await copyFile(
@@ -244,7 +244,7 @@ const generateAndPushNewDocumentationPage = async (
         })
     }
 
-    log.info('Prepare favicon file.')
+    void log.info('Prepare favicon file.')
     const faviconPath = 'favicon.png'
     if (await isFile(faviconPath))
         await copyFile(
@@ -252,7 +252,7 @@ const generateAndPushNewDocumentationPage = async (
             `${temporaryDocumentationFolderPath}/source/image/favicon.ico`
         )
 
-    log.info('Render html.')
+    void log.info('Render html.')
 
     let parameters: Mapping<unknown> = {}
     for (const [key, value] of Object.entries(
@@ -264,7 +264,7 @@ const generateAndPushNewDocumentationPage = async (
     if (!parameters.NAME && PACKAGE_CONFIGURATION.name)
         parameters.NAME = PACKAGE_CONFIGURATION.name
 
-    log.debug(`Found parameters "${represent(parameters)}" to render.`)
+    void log.debug(`Found parameters "${represent(parameters)}" to render.`)
 
     let apiDocumentationPath: null | string = null
     if (HAS_API_DOCUMENTATION) {
@@ -315,9 +315,9 @@ const generateAndPushNewDocumentationPage = async (
     const buildDocumentationPageCommand =
         (evaluationResult as PositiveEvaluationResult).result
 
-    log.debug(`Use final parameters "${serializedParameters}".`)
-    log.info(`Run "${buildDocumentationPageCommand}".`)
-    log.debug(run(
+    void log.debug(`Use final parameters "${serializedParameters}".`)
+    void log.info(`Run "${buildDocumentationPageCommand}".`)
+    void log.debug(run(
         buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath}
     ))
     await rm(parametersFilePath)
@@ -332,7 +332,7 @@ const generateAndPushNewDocumentationPage = async (
         ))
             await rm(filePath, {recursive: true})
 
-    log.info('Copy all build artefacts.')
+    void log.info('Copy all build artefacts.')
 
     const documentationBuildFolderPath = join(
         temporaryDocumentationFolderPath,
@@ -347,16 +347,16 @@ const generateAndPushNewDocumentationPage = async (
     await rm(temporaryDocumentationFolderPath, {recursive: true})
 
     if (!checkRun('git config user.email'))
-        log.debug(run('git config user.email "github_actor@example.com"'))
+        void log.debug(run('git config user.email "github_actor@example.com"'))
     if (!checkRun('git config user.name'))
-        log.debug(run('git config user.name "github_actor"'))
+        void log.debug(run('git config user.name "github_actor"'))
 
-    log.debug(run('git add --all'))
-    log.debug(
+    void log.debug(run('git add --all'))
+    void log.debug(
         run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)
     )
-    log.debug(run('git push'))
-    log.debug(run('git checkout main'))
+    void log.debug(run('git push'))
+    void log.debug(run('git checkout main'))
 }
 /**
  * Creates a distribution bundle file as zip archiv.
@@ -364,11 +364,11 @@ const generateAndPushNewDocumentationPage = async (
  */
 const createDistributionBundle = async (): Promise<null | string> => {
     if (PACKAGE_CONFIGURATION.scripts?.build) {
-        log.info('Build distribution bundle via "yarn build".')
-        log.debug(run('yarn build'))
+        void log.info('Build distribution bundle via "yarn build".')
+        void log.debug(run('yarn build'))
     }
 
-    log.info('Pack to a zip archive.')
+    void log.info('Pack to a zip archive.')
     const distributionBundleFilePath: string =
         await makeTemporaryFile({extension: '.zip'})
 
@@ -395,11 +395,11 @@ const createDistributionBundle = async (): Promise<null | string> => {
                         )
                     ))
                 else if (await isFile(filePath)) {
-                    log.debug(`Add "${filePath}" to distribution bundle.`)
+                    void log.debug(`Add "${filePath}" to distribution bundle.`)
 
                     result.push(filePath)
                 } else
-                    log.warn(
+                    void log.warn(
                         `Skip missing file "${filePath}" declared in package ` +
                         'configuration.'
                     )
@@ -419,7 +419,7 @@ const createDistributionBundle = async (): Promise<null | string> => {
         })
 
         archive.on('warning', (error: Error): void => {
-            log.warn(error)
+            void log.warn(error)
         })
 
         archive.on('progress', ({entries: {total, processed}}): void => {
@@ -471,7 +471,7 @@ const copyRepositoryFile = async (
 
     targetPath = join(targetPath, relative(sourcePath, file.path))
 
-    log.debug(`Copy "${file.path}" to "${targetPath}".`)
+    void log.debug(`Copy "${file.path}" to "${targetPath}".`)
 
     if (file.stats?.isFile())
         await copyFile(file.path, targetPath)
@@ -491,7 +491,7 @@ const addReadme = async (file: File): Promise<false | undefined> => {
         return false
 
     if (basename(file.name, extname(file.name)) === 'readme') {
-        log.info(`Handle "${file.path}".`)
+        void log.info(`Handle "${file.path}".`)
 
         if (CONTENT)
             CONTENT += '\n'
@@ -515,11 +515,11 @@ const tidyUp = async (): Promise<void> => {
         try {
             run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
         } catch (error) {
-            log.warn(error)
+            void log.warn(error)
         }
 
     if (!run('git branch').includes('* main'))
-        log.debug(run('git checkout main'))
+        void log.debug(run('git checkout main'))
 }
 /**
  * Main procedure.
@@ -527,24 +527,24 @@ const tidyUp = async (): Promise<void> => {
  */
 const main = async (): Promise<void> => {
     if (!run('git branch --all').includes('gh-pages')) {
-        log.debug(run('git fetch --all'))
+        void log.debug(run('git fetch --all'))
         try {
             /*
                 NOTE: The issue here that other configuration might
                 automatically add a new line at the end of the package manifest
                 file.
             */
-            log.debug(run('git checkout package.json'))
+            void log.debug(run('git checkout package.json'))
         } catch (_error) {
             // Do nothing regardless of an error.
         }
-        log.debug(run('git checkout gh-pages'))
+        void log.debug(run('git checkout gh-pages'))
     }
 
     if (!run('git branch').includes('* main'))
-        log.debug(run('git checkout main'))
+        void log.debug(run('git checkout main'))
 
-    log.debug(run('git pull'))
+    void log.debug(run('git pull'))
 
     if (
         run('git branch').includes('* main') &&
@@ -577,7 +577,9 @@ const main = async (): Promise<void> => {
         API_DOCUMENTATION_PATH_SUFFIX =
             (evaluationResult as PositiveEvaluationResult).result
 
-        log.info('Read and Compile all markdown files and transform to html.')
+        void log.info(
+            'Read and Compile all markdown files and transform to html.'
+        )
 
         await walkDirectoryRecursively('./', addReadme)
 
@@ -585,7 +587,7 @@ const main = async (): Promise<void> => {
         try {
             distributionBundleFilePath = await createDistributionBundle()
         } catch (error) {
-            log.error(
+            void log.error(
                 'Error occurred during building distribution bundle:', error
             )
 
@@ -598,18 +600,18 @@ const main = async (): Promise<void> => {
                 PACKAGE_CONFIGURATION.scripts, 'document'
             )
         if (HAS_API_DOCUMENTATION) {
-            log.info('API documentation creation script detected.')
+            void log.info('API documentation creation script detected.')
             try {
-                log.debug(run('yarn document'))
-                log.info('API documentation created.')
+                void log.debug(run('yarn document'))
+                void log.info('API documentation created.')
             } catch (error) {
-                log.warn(error)
+                void log.warn(error)
                 HAS_API_DOCUMENTATION = false
             }
         }
 
-        log.debug(run('git checkout gh-pages'))
-        log.debug(run('git pull'))
+        void log.debug(run('git checkout gh-pages'))
+        void log.debug(run('git pull'))
 
         const apiDocumentationDirectoryPath: string =
             resolve(API_DOCUMENTATION_PATHS[1])
@@ -637,7 +639,7 @@ const main = async (): Promise<void> => {
             /* eslint-enable @typescript-eslint/no-unnecessary-condition */
             await isDirectory(localDocumentationWebsitePath)
         ) {
-            log.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
+            void log.info(`Copy local existing ${DOCUMENTATION_WEBSITE_NAME}.`)
 
             await walkDirectoryRecursively(
                 localDocumentationWebsitePath,
@@ -667,7 +669,7 @@ const main = async (): Promise<void> => {
 
                     NOTE: Mounting "node_modules" folder needs root privileges.
                 * /
-                log.debug(run(`
+                void log.debug(run(`
                     cp \
                         --dereference \
                         --recursive \
@@ -679,12 +681,12 @@ const main = async (): Promise<void> => {
 
             */
         } else {
-            log.info(
+            void log.info(
                 `No local existing ${DOCUMENTATION_WEBSITE_NAME} found`,
                 'getting it remotely.'
             )
 
-            log.debug(
+            void log.debug(
                 run(
                     'unset GIT_WORK_TREE; git clone ' +
                     `'${DOCUMENTATION_WEBSITE_REPOSITORY}'`,
@@ -697,16 +699,16 @@ const main = async (): Promise<void> => {
             )
         }
 
-        log.debug(
+        void log.debug(
             run('corepack enable', {cwd: temporaryDocumentationFolderPath})
         )
 
-        log.debug(
+        void log.debug(
             run('corepack install', {cwd: temporaryDocumentationFolderPath})
         )
 
         try {
-            log.debug(run(
+            void log.debug(run(
                 'yarn install',
                 {
                     cwd: temporaryDocumentationFolderPath,
@@ -714,10 +716,12 @@ const main = async (): Promise<void> => {
                 }
             ))
         } catch (error) {
-            log.warn(error)
+            void log.warn(error)
         }
 
-        log.debug(run('yarn clear', {cwd: temporaryDocumentationFolderPath}))
+        void log.debug(
+            run('yarn clear', {cwd: temporaryDocumentationFolderPath})
+        )
 
         await generateAndPushNewDocumentationPage(
             temporaryDocumentationFolderPath, distributionBundleFilePath
@@ -743,7 +747,7 @@ const main = async (): Promise<void> => {
             )
         )
             // Prepare build artifacts for further local usage.
-            log.debug(run('yarn build'))
+            void log.debug(run('yarn build'))
     }
 }
 // endregion
