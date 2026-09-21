@@ -10,14 +10,14 @@
     "project"
   ],
   "bugs": {
-    "email": "info@torben.website",
+    "email": "info@tsickert.com",
     "url": "https://github.com/thaibault/wbe-documentation/issues"
   },
   "license": "CC-BY-3.0",
   "author": {
-    "email": "info@torben.website",
+    "email": "info@tsickert.com",
     "name": "Torben Sickert",
-    "url": "https://torben.website"
+    "url": "https://tsickert.com"
   },
   "repository": {
     "type": "git",
@@ -255,7 +255,7 @@
               },
               "TAGLINE": "generic documentation website pattern",
               "URL": {
-                "__evaluate__": "`https://torben.website/${self.module.preprocessor.html.options.locals.NAME}`"
+                "__evaluate__": "`https://tsickert.com/${self.module.preprocessor.html.options.locals.NAME}`"
               }
             }
           }
