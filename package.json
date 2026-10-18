@@ -178,7 +178,7 @@
       "optimizer": {
         "#": "We have to add disable \"mergeRules\" since it removes header link color over writing.",
         "cssnano": {
-          "__async_evaluate__": "self.debug ? null : {preset: [(await module.optionalImport('cssnano-preset-default'))?.default, {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
+          "__async_evaluate__": "self.debug ? null : {preset: ['default', {autoprefixer: false, discardUnused: !self.library, mergeRules: false}]}"
         },
         "htmlMinifier": {
           "ignoreCustomComments": [
