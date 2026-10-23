@@ -292,6 +292,8 @@ export class WebDocumentation<
                 this.options.selectors.tableOfContentLinks
             )
 
+        console.log('A', this.tableOfContentLinkDomNodes)
+
         for (const domNode of this.tableOfContentLinkDomNodes)
             this.addSecureEventListener(
                 domNode,
