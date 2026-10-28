@@ -1,6 +1,6 @@
 {
   "name": "web-documentation",
-  "version": "1.0.67",
+  "version": "1.0.68",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
@@ -21,11 +21,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thaibault/web-documentation"
+    "url": "git+https://github.com/thaibault/web-documentation.git"
   },
   "type": "module",
   "main": "source/index.html.ejs",
-  "bin": "build/deploy.js",
+  "bin": {
+    "web-documentation": "build/deploy.js"
+  },
   "files": [
     "build/deploy.js",
     "build/deploy.d.ts",
