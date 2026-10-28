@@ -25,7 +25,9 @@
   },
   "type": "module",
   "main": "source/index.html.ejs",
-  "bin": "build/deploy.js",
+  "bin": {
+    "web-documentation": "build/deploy.js"
+  },
   "files": [
     "build/deploy.js",
     "build/deploy.d.ts",
