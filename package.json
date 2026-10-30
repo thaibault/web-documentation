@@ -25,9 +25,7 @@
   },
   "type": "module",
   "main": "source/index.html.ejs",
-  "bin": {
-    "web-documentation": "build/deploy.js"
-  },
+  "bin": "build/deploy.js",
   "files": [
     "build/deploy.js",
     "build/deploy.d.ts",
@@ -110,7 +108,7 @@
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.619",
     "web-internationalization": "^2.0.58",
-    "weboptimizer": "^4.0.91",
+    "weboptimizer": "^4.0.96",
     "webpack-dev-server": "^6.1.0",
     "website-utilities": "^1.0.474"
   },
