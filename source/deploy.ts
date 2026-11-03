@@ -17,510 +17,55 @@
     endregion
 */
 // region imports
-import type {
-    EvaluationResult, File, Mapping, PositiveEvaluationResult
-} from 'clientnode'
-import type {ExecSyncOptionsWithStringEncoding} from 'child_process'
-import type {Stream} from 'stream'
+import type {File} from 'clientnode'
 
-import {ZipArchive} from 'archiver'
-import {execSync} from 'child_process'
+import type {DeploymentState, PackageConfiguration} from './deployHelper'
+
 import {
-    camelCaseToDelimited,
-    evaluate,
-    evaluateAsyncDynamicData,
-    evaluateDynamicData,
     importFilesystemAPI,
     isDirectory,
-    isFile,
-    Logger,
     optionalImport,
-    represent,
     walkDirectoryRecursively
 } from 'clientnode'
-import {createReadStream, createWriteStream} from 'fs'
-import {
-    copyFile, mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile
-} from 'fs/promises'
-import {tmpdir} from 'node:os'
-import {basename, dirname, extname, join, relative, resolve} from 'path'
-import {Extract} from 'unzipper'
-// endregion
-// region types
-export interface WebDocumentationConfiguration {
-    name?: string
-    languages?: Array<string>
-    tagline?: string
-    trackingCode?: string
-}
-interface MakeTemporaryFileOptions {
-    directory: boolean
-    encoding?: BufferEncoding | null
-    extension: string
-    prefix: string
-}
-interface PackageConfiguration extends Mapping<unknown> {
-    description?: string
-    webDocumentation?: WebDocumentationConfiguration
-    files?: Array<string>
-    main?: string
-    name: string
-    scripts?: Mapping
-    version: string
-}
-// endregion
-await importFilesystemAPI()
+import {rename, rm} from 'fs/promises'
+import {resolve} from 'path'
 
-const log = new Logger({name: 'web-documentation.deploy', level: 'debug'})
+import {
+    API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE,
+    API_DOCUMENTATION_PATHS,
+    copyRepositoryFile,
+    createDistributionBundle,
+    DATA_PATH,
+    evaluatePathTemplate,
+    generateAndPushNewDocumentationPage,
+    hasAPIDocumentationScript,
+    log,
+    makeTemporaryFile,
+    readReadmes,
+    run,
+    tidyUp
+} from './deployHelper'
+// endregion
+export type {WebDocumentationConfiguration} from './deployHelper'
+
+await importFilesystemAPI()
 // region globals
-/// region locations
-const DOCUMENTATION_BUILD_PATH = resolve('./build/')
-const DATA_PATH = resolve('./data/')
-const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
-let API_DOCUMENTATION_PATH_SUFFIX = '${name}/${version}/'
-const DISTRIBUTION_BUNDLE_FILE_PATH = join(DATA_PATH, 'distributionBundle.zip')
-const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
-    join(DATA_PATH, 'distributionBundle')
-const LOCATIONS_TO_TIDY_UP: Array<string> = []
-/// endregion
 const ALLOW_LOCAL_DOCUMENTATION_WEBSITE = true
 const RUN_FINAL_BUILD = false
-const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
-    '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
-const BUILD_DOCUMENTATION_PAGE_CONFIGURATION = {
-    module: {
-        preprocessor: {
-            ejs: {
-                options: {
-                    locals: {__evaluate__: 'parameters'}
-                }
-            }
-        }
-    },
-    /*
-        NOTE: We have to disable offline features since the domains cache is
-        already in use for the main home page.
-    */
-    offline: null
-}
-let CONTENT = ''
 const DOCUMENTATION_WEBSITE_NAME = 'web-documentation'
 const DOCUMENTATION_WEBSITE_REPOSITORY =
     // `git@github.com:thaibault/${DOCUMENTATION_WEBSITE_NAME}`
     `https://github.com/thaibault/${DOCUMENTATION_WEBSITE_NAME}.git`
-const PROJECT_PAGE_COMMIT_MESSAGE = 'Update project homepage content.'
-let PACKAGE_CONFIGURATION: PackageConfiguration =
-    {name: '__dummy__', version: '1.0.0'}
-let HAS_API_DOCUMENTATION = false
+
+const STATE: DeploymentState = {
+    apiDocumentationPathSuffix: API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE,
+    content: '',
+    hasAPIDocumentation: false,
+    locationsToTidyUp: [],
+    packageConfiguration: {name: '__dummy__', version: '1.0.0'}
+}
 // endregion
 // region functions
-/**
- * Creates temporary directories or provides temporary not yet used file
- * locations.
- * @param givenOptions - Defines options to influence the file path creation.
- * @returns Determined file path.
- */
-const makeTemporaryFile = async (
-    givenOptions: Partial<MakeTemporaryFileOptions> = {}
-): Promise<string> => {
-    const options: MakeTemporaryFileOptions = {
-        directory: false,
-        encoding: 'utf8',
-        extension: '',
-        prefix: 'DW',
-        ...givenOptions
-    }
-
-    const directoryPath: string =
-        await mkdtemp(join(tmpdir(), options.prefix), options.encoding)
-
-    if (options.directory)
-        return directoryPath
-
-    return join(directoryPath, `${options.prefix}${options.extension}`)
-}
-/**
- * Provides generic shell execution for given commands. When errors occur (none
- * zero return code) they will result in a thrown exception.
- * @param command - To execute.
- * @param options - To be forward the node's native "execSync" function.
- * @returns The resulting stdout. You need to forward them to console to make
- * it visible.
- */
-const run = (
-    command: string, options: Partial<ExecSyncOptionsWithStringEncoding> = {}
-): string =>
-    execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
-/**
- * Checks if given command throws an error or not.
- * @param parameters - Parameters for "run" function.
- * @returns Boolean indicating whether given command runs successful or not.
- */
-const checkRun = (
-    ...parameters: Parameters<typeof run>
-): boolean => {
-    try {
-        run(...parameters)
-        return true
-    } catch (_error) {
-        return false
-    }
-}
-
-/**
- * Converts a given stream into a buffer.
- * @param stream - To Convert.
- * @returns Converted buffer.
- */
-const stream2buffer = async (stream: Stream): Promise<Buffer> => {
-    return new Promise<Buffer>((resolve, reject) => {
-        const chunks: Array<Uint8Array> = []
-        stream.on('data', (chunk: Uint8Array) => chunks.push(chunk))
-        stream.on('end', () => {
-            resolve(Buffer.concat(chunks))
-        })
-        stream.on('error', (error: Error) => {
-            reject(error)
-        })
-    })
-}
-/**
- * Renders a new index.html file and copies new assets to generate a new
- * documentation homepage.
- * @param temporaryDocumentationFolderPath - Location where to build
- * documentation build.
- * @param distributionBundleFilePath - Location where to save the exported
- * build artifacts.
- * @returns A promise resolving when build process has finished.
- */
-const generateAndPushNewDocumentationPage = async (
-    temporaryDocumentationFolderPath: string,
-    distributionBundleFilePath: null | string
-): Promise<void> => {
-    void log.info('Generate document website artefacts.')
-
-    /*
-        NOTE: We have to determine the bundles final location before rendering
-        since the check for its existence has to run against the just build
-        artifact and not against a potential leftover from a previous run.
-    */
-    const newDistributionBundleFilePath: null | string =
-        distributionBundleFilePath ?
-            join(
-                temporaryDocumentationFolderPath,
-                relative('./', DOCUMENTATION_BUILD_PATH),
-                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH)
-            ) :
-            null
-
-    if (distributionBundleFilePath && newDistributionBundleFilePath) {
-        void log.info('Prepare distribution files.')
-
-        await mkdir(dirname(newDistributionBundleFilePath), {recursive: true})
-        await copyFile(
-            distributionBundleFilePath, newDistributionBundleFilePath
-        )
-        await rm(distributionBundleFilePath)
-
-        const newDistributionBundleDirectoryPath = join(
-            temporaryDocumentationFolderPath,
-            relative('./', DOCUMENTATION_BUILD_PATH),
-            relative('./', DISTRIBUTION_BUNDLE_DIRECTORY_PATH)
-        )
-
-        await mkdir(newDistributionBundleDirectoryPath, {recursive: true})
-
-        await new Promise<void>((
-            resolve: () => void, reject: (reason: Error) => void
-        ) => {
-            createReadStream(newDistributionBundleFilePath)
-                .pipe(Extract({path: newDistributionBundleDirectoryPath}))
-                .on('close', () => {
-                    resolve()
-                })
-                .on('error', (error: Error) => {
-                    reject(error)
-                })
-        })
-    }
-
-    void log.info('Prepare favicon file.')
-    const faviconPath = 'favicon.png'
-    if (await isFile(faviconPath))
-        await copyFile(
-            faviconPath,
-            `${temporaryDocumentationFolderPath}/source/image/favicon.ico`
-        )
-
-    void log.info('Render html.')
-
-    let parameters: Mapping<unknown> = {}
-    for (const [key, value] of Object.entries(
-        PACKAGE_CONFIGURATION.webDocumentation || {}
-    ))
-        parameters[camelCaseToDelimited(key).toUpperCase()] = value
-    if (!parameters.TAGLINE && PACKAGE_CONFIGURATION.description)
-        parameters.TAGLINE = PACKAGE_CONFIGURATION.description
-    if (!parameters.NAME && PACKAGE_CONFIGURATION.name)
-        parameters.NAME = PACKAGE_CONFIGURATION.name
-
-    void log.debug(`Found parameters "${represent(parameters)}" to render.`)
-
-    let apiDocumentationPath: null | string = null
-    if (HAS_API_DOCUMENTATION) {
-        apiDocumentationPath =
-            API_DOCUMENTATION_PATHS[1] + API_DOCUMENTATION_PATH_SUFFIX
-        if (!(await isDirectory(apiDocumentationPath)))
-            apiDocumentationPath = API_DOCUMENTATION_PATHS[1]
-    }
-
-    parameters = {
-        ...parameters,
-        CONTENT,
-        API_DOCUMENTATION_PATH: apiDocumentationPath,
-        HAS_API_DOCUMENTATION,
-        DISTRIBUTION_BUNDLE_FILE_PATH:
-            newDistributionBundleFilePath &&
-            await isFile(newDistributionBundleFilePath) ?
-                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
-                null
-    }
-
-    for (const [key, value] of Object.entries(parameters))
-        if (typeof value === 'string')
-            parameters[key] = value.replace('!', '#%%%#')
-
-    const evaluationOptions =
-        {scope: {parameters, ...PACKAGE_CONFIGURATION}}
-    const serializedParameters: string = JSON.stringify(
-        await evaluateAsyncDynamicData(
-            evaluateDynamicData(
-                BUILD_DOCUMENTATION_PAGE_CONFIGURATION, evaluationOptions
-            ),
-            evaluationOptions
-        )
-    )
-    const parametersFilePath: string =
-        await makeTemporaryFile({extension: '.json'})
-    await writeFile(parametersFilePath, serializedParameters)
-
-    const evaluationResult: EvaluationResult = evaluate(
-        BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE,
-        {scope: {parameters, parametersFilePath, ...PACKAGE_CONFIGURATION}}
-    )
-
-    if (evaluationResult.error)
-        throw new Error(evaluationResult.error)
-
-    const buildDocumentationPageCommand =
-        (evaluationResult as PositiveEvaluationResult).result
-
-    void log.debug(`Use final parameters "${serializedParameters}".`)
-    void log.info(`Run "${buildDocumentationPageCommand}".`)
-    void log.debug(run(
-        buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath}
-    ))
-    await rm(parametersFilePath)
-
-    for (const filePath of await readdir('./'))
-        if (!(
-            [
-                resolve(temporaryDocumentationFolderPath),
-                resolve(API_DOCUMENTATION_PATHS[1])
-            ].includes(resolve(filePath)) ||
-            await isFileIgnored(filePath)
-        ))
-            await rm(filePath, {recursive: true})
-
-    void log.info('Copy all build artefacts.')
-
-    const documentationBuildFolderPath = join(
-        temporaryDocumentationFolderPath,
-        relative('./', DOCUMENTATION_BUILD_PATH)
-    )
-    await walkDirectoryRecursively(
-        documentationBuildFolderPath,
-        (file: File): Promise<false | undefined> =>
-            copyRepositoryFile(documentationBuildFolderPath, './', file)
-    )
-
-    await rm(temporaryDocumentationFolderPath, {recursive: true})
-
-    if (!checkRun('git config user.email'))
-        void log.debug(run('git config user.email "github_actor@example.com"'))
-    if (!checkRun('git config user.name'))
-        void log.debug(run('git config user.name "github_actor"'))
-
-    void log.debug(run('git add --all'))
-    void log.debug(
-        run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)
-    )
-    void log.debug(run('git push'))
-    void log.debug(run('git checkout main'))
-}
-/**
- * Creates a distribution bundle file as zip archiv.
- * @returns Path to build distribution bundle or "null" of building failed.
- */
-const createDistributionBundle = async (): Promise<null | string> => {
-    if (PACKAGE_CONFIGURATION.scripts?.build) {
-        void log.info('Build distribution bundle via "yarn build".')
-        void log.debug(run('yarn build'))
-    }
-
-    void log.info('Pack to a zip archive.')
-    const distributionBundleFilePath: string =
-        await makeTemporaryFile({extension: '.zip'})
-
-    const filePaths = PACKAGE_CONFIGURATION.files || []
-    if (PACKAGE_CONFIGURATION.main)
-        filePaths.push(PACKAGE_CONFIGURATION.main)
-
-    if (filePaths.length === 0)
-        return null
-
-    const determineFilePaths = async (
-        filePaths: Array<string>
-    ): Promise<Array<string>> => {
-        let result: Array<string> = []
-
-        for (let filePath of filePaths) {
-            filePath = resolve(filePath)
-
-            if (!(await isFileIgnored(filePath)))
-                if (await isDirectory(filePath))
-                    result = result.concat(await determineFilePaths(
-                        (await readdir(filePath)).map((path: string): string =>
-                            resolve(filePath, path)
-                        )
-                    ))
-                else if (await isFile(filePath)) {
-                    void log.debug(`Add "${filePath}" to distribution bundle.`)
-
-                    result.push(filePath)
-                } else
-                    void log.warn(
-                        `Skip missing file "${filePath}" declared in package ` +
-                        'configuration.'
-                    )
-        }
-
-        return result
-    }
-
-    const archive = new ZipArchive({zlib: {level: 9}})
-    archive.pipe(createWriteStream(distributionBundleFilePath))
-
-    const promise = new Promise<void>((
-        resolve: () => void, reject: (reason: Error) => void
-    ): void => {
-        archive.on('error', (error: Error): void => {
-            reject(error)
-        })
-
-        archive.on('warning', (error: Error): void => {
-            void log.warn(error)
-        })
-
-        archive.on('progress', ({entries: {total, processed}}): void => {
-            if (total === processed)
-                resolve()
-        })
-    })
-
-    for (const filePath of await determineFilePaths(filePaths))
-        archive.append(
-            await stream2buffer(createReadStream(filePath)),
-            {name: relative('./', filePath)}
-        )
-
-    await archive.finalize()
-
-    await promise
-
-    return distributionBundleFilePath
-}
-/**
- * Checks if given file path points to a file which should not be distributed
- * for generic reasons.
- * @param filePath - File path to check.
- * @returns Promise wrapping indicating boolean.
- */
-const isFileIgnored = async (filePath: string): Promise<boolean> => (
-    basename(filePath, extname(filePath)).startsWith('.') &&
-    !basename(filePath).startsWith('.yarn') ||
-    basename(filePath, extname(filePath)) === 'dummyDocumentation' ||
-    await isDirectory(filePath) &&
-    ['node_modules', 'build'].includes(basename(filePath)) ||
-    await isFile(filePath) &&
-    basename(filePath) === 'params.json'
-)
-
-/**
- * Copy the website documentation design repository.
- * @param sourcePath - Location to copy from.
- * @param targetPath - Location where to copy given source.
- * @param file - Location to copy.
- * @returns Promise resolving when finished coping.
- */
-const copyRepositoryFile = async (
-    sourcePath: string, targetPath: string, file: File
-): Promise<false | undefined> => {
-    if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
-        return false
-
-    targetPath = join(targetPath, relative(sourcePath, file.path))
-
-    void log.debug(`Copy "${file.path}" to "${targetPath}".`)
-
-    if (file.stats?.isFile())
-        await copyFile(file.path, targetPath)
-    else
-        await mkdir(targetPath)
-}
-
-/**
- * Merges all readme file.
- * @param file - File to check if it is a readme and should be added to the
- * output content.
- * @returns False or "null" indicating whether the readme file should be
- * ignored.
- */
-const addReadme = async (file: File): Promise<false | undefined> => {
-    if (await isFileIgnored(file.path))
-        return false
-
-    if (basename(file.name, extname(file.name)) === 'readme') {
-        void log.info(`Handle "${file.path}".`)
-
-        if (CONTENT)
-            CONTENT += '\n'
-
-        CONTENT += await readFile(file.path, 'utf8')
-    }
-}
-/**
- * Removes build files.
- * @returns A promise resolving to nothing when finished.
- */
-const tidyUp = async (): Promise<void> => {
-    for (const path of LOCATIONS_TO_TIDY_UP)
-        await rm(path, {recursive: true})
-
-    const oldAPIDocumentationDirectoryPath = resolve(API_DOCUMENTATION_PATHS[1])
-    if (
-        HAS_API_DOCUMENTATION &&
-        !(await isDirectory(oldAPIDocumentationDirectoryPath))
-    )
-        try {
-            run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
-        } catch (error) {
-            void log.warn(error)
-        }
-
-    if (!run('git branch').includes('* main'))
-        void log.debug(run('git checkout main'))
-}
 /**
  * Main procedure.
  * @returns A promise resolving to nothing when finished.
@@ -550,7 +95,7 @@ const main = async (): Promise<void> => {
         run('git branch').includes('* main') &&
         run('git branch --all').includes('gh-pages')
     ) {
-        PACKAGE_CONFIGURATION =
+        STATE.packageConfiguration =
             (
                 /*
                     eslint-disable
@@ -564,28 +109,22 @@ const main = async (): Promise<void> => {
                     @typescript-eslint/no-unnecessary-type-assertion
                 */
             )?.default ||
-            PACKAGE_CONFIGURATION
+            STATE.packageConfiguration
 
-        const evaluationResult: EvaluationResult = evaluate(
-            `\`${API_DOCUMENTATION_PATH_SUFFIX}\``,
-            {scope: PACKAGE_CONFIGURATION}
+        STATE.apiDocumentationPathSuffix = evaluatePathTemplate(
+            STATE.apiDocumentationPathSuffix, STATE.packageConfiguration
         )
-
-        if (evaluationResult.error)
-            throw new Error(evaluationResult.error)
-
-        API_DOCUMENTATION_PATH_SUFFIX =
-            (evaluationResult as PositiveEvaluationResult).result
 
         void log.info(
             'Read and Compile all markdown files and transform to html.'
         )
 
-        await walkDirectoryRecursively('./', addReadme)
+        STATE.content = await readReadmes('./')
 
         let distributionBundleFilePath: null | string = null
         try {
-            distributionBundleFilePath = await createDistributionBundle()
+            distributionBundleFilePath =
+                await createDistributionBundle(STATE.packageConfiguration)
         } catch (error) {
             void log.error(
                 'Error occurred during building distribution bundle:', error
@@ -594,19 +133,16 @@ const main = async (): Promise<void> => {
             process.exitCode = 1
         }
 
-        HAS_API_DOCUMENTATION =
-            Boolean(PACKAGE_CONFIGURATION.scripts) &&
-            Object.prototype.hasOwnProperty.call(
-                PACKAGE_CONFIGURATION.scripts, 'document'
-            )
-        if (HAS_API_DOCUMENTATION) {
+        STATE.hasAPIDocumentation =
+            hasAPIDocumentationScript(STATE.packageConfiguration)
+        if (STATE.hasAPIDocumentation) {
             void log.info('API documentation creation script detected.')
             try {
                 void log.debug(run('yarn document'))
                 void log.info('API documentation created.')
             } catch (error) {
                 void log.warn(error)
-                HAS_API_DOCUMENTATION = false
+                STATE.hasAPIDocumentation = false
             }
         }
 
@@ -624,7 +160,7 @@ const main = async (): Promise<void> => {
                 apiDocumentationDirectoryPath
             )
 
-            LOCATIONS_TO_TIDY_UP.push(apiDocumentationDirectoryPath)
+            STATE.locationsToTidyUp.push(apiDocumentationDirectoryPath)
         }
 
         let temporaryDocumentationFolderPath = await makeTemporaryFile({
@@ -724,7 +260,7 @@ const main = async (): Promise<void> => {
         )
 
         await generateAndPushNewDocumentationPage(
-            temporaryDocumentationFolderPath, distributionBundleFilePath
+            temporaryDocumentationFolderPath, distributionBundleFilePath, STATE
         )
 
         // region tidy up
@@ -741,9 +277,9 @@ const main = async (): Promise<void> => {
             /* eslint-disable @typescript-eslint/no-unnecessary-condition */
             RUN_FINAL_BUILD &&
             /* eslint-enable @typescript-eslint/no-unnecessary-condition */
-            Boolean(PACKAGE_CONFIGURATION.scripts) &&
+            Boolean(STATE.packageConfiguration.scripts) &&
             Object.prototype.hasOwnProperty.call(
-                PACKAGE_CONFIGURATION.scripts, 'build'
+                STATE.packageConfiguration.scripts, 'build'
             )
         )
             // Prepare build artifacts for further local usage.
@@ -755,6 +291,6 @@ const main = async (): Promise<void> => {
 try {
     await main()
 } catch (error) {
-    await tidyUp()
+    await tidyUp(STATE)
     throw error
 }

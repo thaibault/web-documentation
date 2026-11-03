@@ -14,12 +14,34 @@
     endregion
 */
 // region imports
-import type {Mapping} from 'clientnode'
+import type {File, Mapping} from 'clientnode'
 
-import {beforeAll, describe, expect, jest, test} from '@jest/globals'
+import {
+    afterAll, beforeAll, describe, expect, jest, test
+} from '@jest/globals'
 
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
+import {importFilesystemAPI} from 'clientnode'
+import {mkdir, readFile, rm, stat, writeFile} from 'fs/promises'
+import {basename, dirname, join} from 'path'
+import {Readable} from 'stream'
+import {Open} from 'unzipper'
+
+import {
+    checkRun,
+    copyRepositoryFile,
+    createDistributionBundle,
+    determineDistributionFilePaths,
+    determineRenderParameters,
+    evaluatePathTemplate,
+    hasAPIDocumentationScript,
+    isFileIgnored,
+    makeTemporaryFile,
+    readReadmes,
+    run,
+    stream2buffer
+} from './deployHelper'
 import WebDocumentation, {api} from './index'
 import createMarkdownRenderer from './renderMarkdown'
 // endregion
@@ -38,6 +60,20 @@ if (!('innerText' in HTMLElement.prototype))
             this.textContent = value
         }
     })
+/*
+    NOTE: jsdom does not provide "setImmediate" which is used by the streams of
+    the zip archive library.
+*/
+if (typeof globalThis.setImmediate === 'undefined') {
+    const context = globalThis as unknown as Mapping<unknown>
+    context.setImmediate = (
+        callback: (...parameters: Array<unknown>) => void,
+        ...parameters: Array<unknown>
+    ) => setTimeout(callback, 0, ...parameters)
+    context.clearImmediate = (id: ReturnType<typeof setTimeout>) => {
+        clearTimeout(id)
+    }
+}
 // endregion
 // region fixtures
 const FIXTURE = `
@@ -470,6 +506,346 @@ describe('renderMarkdown', () => {
 
         expect(renderWithoutBreaks('a\nb')).toStrictEqual('<p>a\nb</p>\n')
         expect(renderWithBreaks('a\nb')).toStrictEqual('<p>a<br/>b</p>\n')
+    })
+    // endregion
+})
+describe('deployHelper', () => {
+    let directoryPath = ''
+
+    /**
+     * Creates given files (with their parent directories) in the temporary
+     * test directory.
+     * @param files - Mapping from relative file paths to their content.
+     * @returns A promise resolving when all files have been written.
+     */
+    const createFiles = async (files: Mapping): Promise<void> => {
+        for (const [path, content] of Object.entries(files)) {
+            const filePath = join(directoryPath, path)
+
+            await mkdir(dirname(filePath), {recursive: true})
+            await writeFile(filePath, content)
+        }
+    }
+    /**
+     * Creates a file object as provided by directory traversing.
+     * @param path - Location to describe.
+     * @returns Corresponding file object.
+     */
+    const toFile = async (path: string): Promise<File> => ({
+        directoryPath: dirname(path),
+        directoryEntry: null,
+        error: null,
+        name: basename(path),
+        path,
+        stats: await stat(path)
+    })
+
+    beforeAll(async () => {
+        await importFilesystemAPI()
+
+        directoryPath = await makeTemporaryFile({directory: true})
+    })
+
+    afterAll(async () => {
+        await rm(directoryPath, {recursive: true})
+    })
+    // region tests
+    describe('makeTemporaryFile', () => {
+        test('should create temporary directories', async () => {
+            const path = await makeTemporaryFile({
+                directory: true, prefix: 'DWTest'
+            })
+
+            expect(basename(path).startsWith('DWTest')).toStrictEqual(true)
+            expect((await stat(path)).isDirectory()).toStrictEqual(true)
+
+            await rm(path, {recursive: true})
+        })
+
+        test('should provide unused file paths', async () => {
+            const path = await makeTemporaryFile({extension: '.json'})
+
+            expect(basename(path)).toStrictEqual('DW.json')
+            await expect(stat(path)).rejects.toThrow()
+            expect((await stat(dirname(path))).isDirectory())
+                .toStrictEqual(true)
+
+            await rm(dirname(path), {recursive: true})
+        })
+    })
+
+    describe('run', () => {
+        test('should return standard output', () => {
+            expect(run('echo test')).toStrictEqual('test\n')
+            expect(run('pwd', {cwd: directoryPath}).trim())
+                .toContain(basename(directoryPath))
+        })
+
+        test('should throw on failing commands', () => {
+            expect(() => run('exit 1', {stdio: 'ignore'})).toThrow()
+        })
+
+        test('checkRun should indicate success', () => {
+            expect(checkRun('true')).toStrictEqual(true)
+            expect(checkRun('false', {stdio: 'ignore'})).toStrictEqual(false)
+        })
+    })
+
+    describe('stream2buffer', () => {
+        test('should concatenate all chunks', async () => {
+            expect((await stream2buffer(Readable.from([
+                Buffer.from('a'), Buffer.from('b')
+            ]))).toString()).toStrictEqual('ab')
+        })
+
+        test('should reject on stream errors', async () => {
+            const stream = new Readable({
+                read() {
+                    this.destroy(new Error('broken'))
+                }
+            })
+
+            await expect(stream2buffer(stream)).rejects.toThrow('broken')
+        })
+    })
+
+    describe('isFileIgnored', () => {
+        beforeAll(async () => {
+            await createFiles({
+                'build/file.js': '',
+                'node_modules/file.js': '',
+                'params.json': '{}',
+                'readme.md': ''
+            })
+        })
+
+        test('should ignore hidden files except yarn ones', async () => {
+            expect(await isFileIgnored('.git')).toStrictEqual(true)
+            expect(await isFileIgnored('.eslintrc.json')).toStrictEqual(true)
+            expect(await isFileIgnored('.yarnrc.yml')).toStrictEqual(false)
+            expect(await isFileIgnored('.yarn')).toStrictEqual(false)
+        })
+
+        test('should ignore dummy documentation', async () => {
+            expect(await isFileIgnored('dummyDocumentation.md'))
+                .toStrictEqual(true)
+        })
+
+        test('should ignore build artefacts', async () => {
+            expect(await isFileIgnored(join(directoryPath, 'build')))
+                .toStrictEqual(true)
+            expect(await isFileIgnored(join(directoryPath, 'node_modules')))
+                .toStrictEqual(true)
+            expect(await isFileIgnored(join(directoryPath, 'params.json')))
+                .toStrictEqual(true)
+        })
+
+        test('should accept regular files', async () => {
+            expect(await isFileIgnored(join(directoryPath, 'readme.md')))
+                .toStrictEqual(false)
+            // Only existing directories are ignored by name.
+            expect(await isFileIgnored(join(directoryPath, 'missing/build')))
+                .toStrictEqual(false)
+        })
+    })
+
+    describe('copyRepositoryFile', () => {
+        let sourcePath = ''
+        let targetPath = ''
+
+        beforeAll(async () => {
+            sourcePath = join(directoryPath, 'copySource')
+            targetPath = join(directoryPath, 'copyTarget')
+
+            await createFiles({
+                'copySource/file.txt': 'content',
+                'copySource/readme.md': '# Readme',
+                'copySource/sub/.hidden': ''
+            })
+            await mkdir(targetPath)
+        })
+
+        test('should copy files', async () => {
+            expect(await copyRepositoryFile(
+                sourcePath,
+                targetPath,
+                await toFile(join(sourcePath, 'file.txt'))
+            )).toBeUndefined()
+
+            expect(await readFile(join(targetPath, 'file.txt'), 'utf8'))
+                .toStrictEqual('content')
+        })
+
+        test('should create directories', async () => {
+            await copyRepositoryFile(
+                sourcePath, targetPath, await toFile(join(sourcePath, 'sub'))
+            )
+
+            expect((await stat(join(targetPath, 'sub'))).isDirectory())
+                .toStrictEqual(true)
+        })
+
+        test('should skip readme and ignored files', async () => {
+            expect(await copyRepositoryFile(
+                sourcePath,
+                targetPath,
+                await toFile(join(sourcePath, 'readme.md'))
+            )).toStrictEqual(false)
+            expect(await copyRepositoryFile(
+                sourcePath,
+                targetPath,
+                await toFile(join(sourcePath, 'sub/.hidden'))
+            )).toStrictEqual(false)
+
+            await expect(stat(join(targetPath, 'readme.md'))).rejects
+                .toThrow()
+        })
+    })
+
+    describe('readReadmes', () => {
+        test('should merge all not ignored readme files', async () => {
+            const path = join(directoryPath, 'readmes')
+            await createFiles({
+                'readmes/readme.md': 'main',
+                'readmes/sub/readme.txt': 'sub',
+                'readmes/sub/other.md': 'other',
+                'readmes/node_modules/readme.md': 'dependency'
+            })
+
+            const content = await readReadmes(path)
+
+            expect(content.split('\n').sort())
+                .toStrictEqual(['main', 'sub'])
+        })
+
+        test('should provide empty content without readme files', async () => {
+            const path = join(directoryPath, 'noReadmes')
+            await createFiles({'noReadmes/file.txt': ''})
+
+            expect(await readReadmes(path)).toStrictEqual('')
+        })
+    })
+
+    describe('determineDistributionFilePaths', () => {
+        test('should expand directories and skip missing files', async () => {
+            const path = join(directoryPath, 'distribution')
+            await createFiles({
+                'distribution/index.js': '',
+                'distribution/lib/a.js': '',
+                'distribution/lib/node_modules/b.js': '',
+                'distribution/lib/.hidden': ''
+            })
+
+            expect((await determineDistributionFilePaths([
+                join(path, 'index.js'),
+                join(path, 'lib'),
+                join(path, 'missing.js')
+            ])).sort()).toStrictEqual([
+                join(path, 'index.js'), join(path, 'lib/a.js')
+            ])
+        })
+    })
+
+    describe('createDistributionBundle', () => {
+        let path = ''
+        const workingDirectoryPath = process.cwd()
+
+        beforeAll(async () => {
+            path = join(directoryPath, 'bundle')
+            await createFiles({
+                'bundle/index.js': 'main',
+                'bundle/lib/a.js': 'a'
+            })
+
+            // NOTE: Archive entries are named relative to working directory.
+            process.chdir(path)
+        })
+
+        afterAll(() => {
+            process.chdir(workingDirectoryPath)
+        })
+
+        test('should pack declared files', async () => {
+            const files = ['lib']
+            const bundleFilePath = await createDistributionBundle({
+                files, main: 'index.js', name: 'test', version: '1.0.0'
+            })
+
+            expect(bundleFilePath).not.toBeNull()
+            // Given configuration should not be modified.
+            expect(files).toStrictEqual(['lib'])
+
+            const directory = await Open.file(bundleFilePath as string)
+
+            expect(directory.files.map(({path}) => path).sort())
+                .toStrictEqual(['index.js', 'lib/a.js'])
+            expect((await directory.files.find(({path}) =>
+                path === 'index.js'
+            )?.buffer())?.toString()).toStrictEqual('main')
+
+            await rm(dirname(bundleFilePath as string), {recursive: true})
+        })
+
+        test('should provide nothing without files to pack', async () => {
+            expect(await createDistributionBundle({
+                name: 'test', version: '1.0.0'
+            })).toBeNull()
+        })
+    })
+
+    describe('determineRenderParameters', () => {
+        test('should derive parameters from package configuration', () => {
+            expect(determineRenderParameters({
+                description: 'Description',
+                name: 'test',
+                version: '1.0.0',
+                webDocumentation: {
+                    languages: ['enUS', 'deDE'],
+                    trackingCode: 'UA-0'
+                }
+            })).toStrictEqual({
+                LANGUAGES: ['enUS', 'deDE'],
+                NAME: 'test',
+                TAGLINE: 'Description',
+                TRACKING_CODE: 'UA-0'
+            })
+        })
+
+        test('should prefer explicit documentation values', () => {
+            expect(determineRenderParameters({
+                description: 'Description',
+                name: 'test',
+                version: '1.0.0',
+                webDocumentation: {name: 'Test', tagline: 'Tagline'}
+            })).toStrictEqual({NAME: 'Test', TAGLINE: 'Tagline'})
+        })
+    })
+
+    describe('evaluatePathTemplate', () => {
+        test('should evaluate against package configuration', () => {
+            expect(evaluatePathTemplate(
+                '${name}/${version}/', {name: 'test', version: '1.0.0'}
+            )).toStrictEqual('test/1.0.0/')
+        })
+
+        test('should throw on invalid templates', () => {
+            expect(() => evaluatePathTemplate(
+                '${unknown.property}', {name: 'test', version: '1.0.0'}
+            )).toThrow()
+        })
+    })
+
+    describe('hasAPIDocumentationScript', () => {
+        test('should detect document scripts', () => {
+            expect(hasAPIDocumentationScript({
+                name: 'test', scripts: {document: 'jsdoc'}, version: '1.0.0'
+            })).toStrictEqual(true)
+            expect(hasAPIDocumentationScript({
+                name: 'test', scripts: {build: 'tsc'}, version: '1.0.0'
+            })).toStrictEqual(false)
+            expect(hasAPIDocumentationScript({name: 'test', version: '1.0.0'}))
+                .toStrictEqual(false)
+        })
     })
     // endregion
 })
