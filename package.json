@@ -141,6 +141,16 @@
         ]
       }
     },
+    "extensions": {
+      "file": {
+        "alias": {
+          "#": "Allows the test bundle to import \"renderMarkdown.mjs\" which has to stay plain javascript since the html preprocessor imports it natively.",
+          ".js": {
+            "__append__": ".mjs"
+          }
+        }
+      }
+    },
     "injection": {
       "chunks": false,
       "entry": {

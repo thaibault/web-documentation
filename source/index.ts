@@ -29,12 +29,10 @@ import {
     extend,
     format,
     getAll,
-    getText,
     globalContext,
     interruptableScrollTo,
     Logger,
-    NOOP,
-    wrap
+    NOOP
 } from 'clientnode'
 import {func, object} from 'clientnode/property-types'
 import {property} from 'web-component-wrapper/decorator'
@@ -247,8 +245,9 @@ export class WebDocumentation<
         let first = true
 
         for (const domNode of this.headlineDomNodes ?? []) {
-            if (closest(domNode, '.show-example-wrapper'))
-                return
+            // Skip headlines belonging to rendered examples.
+            if (closest(domNode, '.wd-show-example-wrapper'))
+                continue
 
             const newLevel: number =
                 parseInt(domNode.nodeName.replace(/\D/g, ''))
@@ -292,8 +291,6 @@ export class WebDocumentation<
                 this.options.selectors.tableOfContentLinks
             )
 
-        console.log('A', this.tableOfContentLinkDomNodes)
-
         for (const domNode of this.tableOfContentLinkDomNodes)
             this.addSecureEventListener(
                 domNode,
@@ -323,30 +320,43 @@ export class WebDocumentation<
         const lengthLimit = 89 // 79
 
         for (const domNode of this.codeDomNodes ?? []) {
-            let newContent = ''
             const codeLines: Array<string> = domNode.innerHTML.split('\n')
 
-            let subIndex = 0
-            for (const value of codeLines) {
-                /*
-                    NOTE: Wrap a div object to grantee that $ will accept the
-                    input.
-                */
+            let changed = false
+            for (const [index, value] of codeLines.entries()) {
                 const excess: number =
-                    getText(createDomNodes(`<div>${value}</div>`)).length -
+                    (
+                        createDomNodes<HTMLElement>(`<div>${value}</div>`)
+                            .textContent
+                    ).length -
                     lengthLimit
-                if (excess > 0)
-                    newContent += this._replaceExcessWithDots(value, excess)
-                else
-                    newContent += value
-                if (subIndex + 1 !== codeLines.length)
-                    newContent += '\n'
 
-                subIndex += 1
+                /*
+                    NOTE: Markup spanning multiple lines (e.g. highlighted
+                    block comments) can not be shortened per line without
+                    breaking it.
+                */
+                if (excess > 0 && this._hasBalancedTags(value)) {
+                    codeLines[index] =
+                        this._replaceExcessWithDots(value, excess)
+                    changed = true
+                }
             }
 
-            domNode.innerHTML = newContent
+            if (changed)
+                domNode.innerHTML = codeLines.join('\n')
         }
+    }
+    /**
+     * Checks whether all opened tags in given html snippet are closed again.
+     * @param content - HTML snippet to check.
+     * @returns Indicates whether given snippet is self-contained.
+     */
+    _hasBalancedTags(content: string): boolean {
+        const openingTags = content.match(/<[a-zA-Z][^>]*[^/]>|<[a-zA-Z]>/g)
+        const closingTags = content.match(/<\/[a-zA-Z][^>]*>/g)
+
+        return (openingTags?.length ?? 0) === (closingTags?.length ?? 0)
     }
     /**
      * Replaces given html content with a shorter version trimmed by given
@@ -356,47 +366,49 @@ export class WebDocumentation<
      * @returns Returns the trimmed content.
      */
     _replaceExcessWithDots(content: string, excess: number): string {
-        // Add space for ending dots.
-        excess += '...'.length
-        let newContent = ''
-        const contentDomNodes =
-            getAll(createDomNodes(`<wrapper>${content}</wrapper>`))
-        contentDomNodes.reverse()
-        for (const domNode of contentDomNodes) {
-            const wrapper = createDomNodes<HTMLElement>('<wrapper><wrapper>')
-            wrap(domNode, wrapper)
+        const wrapper = createDomNodes<HTMLElement>(`<div>${content}</div>`)
 
-            const textContent = domNode.textContent || ''
+        /*
+            Removes given amount of characters from the end of given node's
+            text. Only text nodes are shortened to ensure that no HTML tag
+            will be broken.
+        */
+        const shorten = (domNode: Node, excess: number): number => {
+            const childDomNodes = Array.from(domNode.childNodes).reverse()
+            for (const childDomNode of childDomNodes) {
+                if (excess <= 0)
+                    break
 
-            let contentSnippet = wrapper.innerHTML
-            if (!contentSnippet)
-                contentSnippet = textContent
+                // NOTE: Comments do not contribute to the visible text.
+                if (
+                    childDomNode.nodeType !== Node.ELEMENT_NODE &&
+                    childDomNode.nodeType !== Node.TEXT_NODE
+                )
+                    continue
 
-            if (excess)
-                if (textContent.length < excess) {
+                const textContent = childDomNode.textContent ?? ''
+
+                if (textContent.length <= excess) {
                     excess -= textContent.length
-                    contentSnippet = ''
-                } else if (textContent.length >= excess) {
-                    /*
-                        NOTE: We have to ensure that no HTML tag will be
-                        shortened: We work on "textContent" property only.
-                    */
-                    domNode.textContent =
-                        textContent.substring(
-                            0, textContent.length - excess - 1
-                        ) +
-                        '...'
-
+                    childDomNode.remove()
+                } else if (childDomNode.nodeType === Node.TEXT_NODE) {
+                    childDomNode.textContent = textContent.substring(
+                        0, textContent.length - excess
+                    )
                     excess = 0
+                } else
+                    excess = shorten(childDomNode, excess)
+            }
 
-                    contentSnippet = wrapper.innerHTML
-                    if (!contentSnippet)
-                        contentSnippet = domNode.textContent
-                }
-            newContent = contentSnippet + newContent
+            return excess
         }
 
-        return newContent
+        // Add space for ending dots.
+        shorten(wrapper, excess + '...'.length)
+
+        wrapper.append('...')
+
+        return wrapper.innerHTML
     }
     /**
      * Shows marked example codes directly in browser.
@@ -409,7 +421,11 @@ export class WebDocumentation<
                         new RegExp(this.options.showExample.pattern)
                     )
                 const codeDomNode = domNode.nextSibling as HTMLElement | null
-                if (match && codeDomNode) {
+                // NOTE: Only a directly following element can hold code.
+                if (
+                    match &&
+                    codeDomNode?.nodeType === Node.ELEMENT_NODE
+                ) {
                     const codeWrapper: HTMLElement | null =
                         codeDomNode.querySelector(
                             this.options.selectors.codeWrapper
