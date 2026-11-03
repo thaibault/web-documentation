@@ -8,21 +8,26 @@ const {getLanguage, highlight} = highlightJSModule
 
 const TOC_INDICATOR_HTML = '<!--wd-table-of-contents-->'
 
-const marked = new Marked(
-    markedHighlight({
-        /*
-            A string to prefix the className in a <code> block. Useful for
-            syntax highlighting.
-        */
-        langPrefix: 'language-',
-        highlight: (code, lang, info) =>
-            highlight(
-                code, {language: getLanguage(lang) ? lang : 'plaintext'}
-            ).value
-    })
-)
-
+/*
+    NOTE: Each renderer gets its own instance since configuring a shared one
+    would register all plugins again and leak given options into previously
+    created renderers.
+*/
 export default (options) => {
+    const marked = new Marked(
+        markedHighlight({
+            /*
+                A string to prefix the className in a <code> block. Useful for
+                syntax highlighting.
+            */
+            langPrefix: 'language-',
+            highlight: (code, lang, info) =>
+                highlight(
+                    code, {language: getLanguage(lang) ? lang : 'plaintext'}
+                ).value
+        })
+    )
+
     marked.setOptions(options)
 
     // Include an id attribute when emitting headings (h1, h2, h3, ...).
