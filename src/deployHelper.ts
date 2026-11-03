@@ -86,7 +86,7 @@ export const log =
     NOTE: Locations are relative to the current working directory at usage
     time (the project to deploy).
 */
-export const DOCUMENTATION_BUILD_PATH = 'build'
+export const DOCUMENTATION_BUILD_PATH = 'dist'
 export const DATA_PATH = 'data'
 export const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
 export const API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE = '${name}/${version}/'
@@ -214,7 +214,12 @@ export const isFileIgnored = async (filePath: string): Promise<boolean> => (
 export const copyRepositoryFile = async (
     sourcePath: string, targetPath: string, file: File
 ): Promise<false | undefined> => {
-    if (await isFileIgnored(file.path) || basename(file.name) === 'readme.md')
+    if (
+        await isFileIgnored(file.path) ||
+        basename(file.name) === 'readme.md' ||
+        // NOTE: Skip stale build artefacts of given documentation website.
+        resolve(file.path) === resolve(sourcePath, DOCUMENTATION_BUILD_PATH)
+    )
         return false
 
     targetPath = join(targetPath, relative(sourcePath, file.path))
@@ -465,7 +470,7 @@ export const generateAndPushNewDocumentationPage = async (
     if (await isFile(faviconPath))
         await copyFile(
             faviconPath,
-            `${temporaryDocumentationFolderPath}/source/image/favicon.ico`
+            `${temporaryDocumentationFolderPath}/src/image/favicon.ico`
         )
 
     void log.info('Render html.')

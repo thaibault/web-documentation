@@ -703,6 +703,7 @@ describe('deployHelper', () => {
             targetPath = join(directoryPath, 'copyTarget')
 
             await createFiles({
+                'copySource/dist/index.html': '',
                 'copySource/file.txt': 'content',
                 'copySource/readme.md': '# Readme',
                 'copySource/sub/.hidden': ''
@@ -740,6 +741,9 @@ describe('deployHelper', () => {
                 sourcePath,
                 targetPath,
                 await toFile(join(sourcePath, 'sub/.hidden'))
+            )).toStrictEqual(false)
+            expect(await copyRepositoryFile(
+                sourcePath, targetPath, await toFile(join(sourcePath, 'dist'))
             )).toStrictEqual(false)
 
             await expect(stat(join(targetPath, 'readme.md'))).rejects
@@ -912,10 +916,10 @@ describe('deployHelper', () => {
                 [`${name}/project/node_modules/dependency/index.js`]: '',
                 [`${name}/project/readme.md`]: '# Old',
                 [`${name}/project/source.ts`]: '',
-                [`${name}/website/build/index.html`]: 'page',
-                [`${name}/website/build/readme.md`]: 'skipped',
-                [`${name}/website/build/style/main.css`]: 'style',
-                [`${name}/website/source/image/logo.png`]: ''
+                [`${name}/website/dist/index.html`]: 'page',
+                [`${name}/website/dist/readme.md`]: 'skipped',
+                [`${name}/website/dist/style/main.css`]: 'style',
+                [`${name}/website/src/image/logo.png`]: ''
             })
 
             return {
