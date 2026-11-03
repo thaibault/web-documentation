@@ -26,6 +26,7 @@ import {ZipArchive} from 'archiver'
 import {execSync} from 'child_process'
 import {
     camelCaseToDelimited,
+    copy,
     evaluate,
     evaluateAsyncDynamicData,
     evaluateDynamicData,
@@ -81,8 +82,12 @@ export const log =
     new Logger({name: 'web-documentation.deploy', level: 'debug'})
 // region globals
 /// region locations
-export const DOCUMENTATION_BUILD_PATH = resolve('./build/')
-export const DATA_PATH = resolve('./data/')
+/*
+    NOTE: Locations are relative to the current working directory at usage
+    time (the project to deploy).
+*/
+export const DOCUMENTATION_BUILD_PATH = 'build'
+export const DATA_PATH = 'data'
 export const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
 export const API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE = '${name}/${version}/'
 export const DISTRIBUTION_BUNDLE_FILE_PATH =
@@ -150,14 +155,18 @@ export const run = (
     execSync(command, {encoding: 'utf-8', shell: '/bin/bash', ...options})
 /**
  * Checks if given command throws an error or not.
- * @param parameters - Parameters for "run" function.
+ * @param command - To execute.
+ * @param options - To be forward the node's native "execSync" function.
+ * @param runCommand - Function to execute given command with.
  * @returns Boolean indicating whether given command runs successful or not.
  */
 export const checkRun = (
-    ...parameters: Parameters<typeof run>
+    command: string,
+    options: Partial<ExecSyncOptionsWithStringEncoding> = {},
+    runCommand: typeof run = run
 ): boolean => {
     try {
-        run(...parameters)
+        runCommand(command, options)
         return true
     } catch (_error) {
         return false
@@ -395,12 +404,14 @@ export const hasAPIDocumentationScript = (
  * @param distributionBundleFilePath - Location where to save the exported
  * build artifacts.
  * @param state - Collected deployment state.
+ * @param runCommand - Function to execute shell commands with.
  * @returns A promise resolving when build process has finished.
  */
 export const generateAndPushNewDocumentationPage = async (
     temporaryDocumentationFolderPath: string,
     distributionBundleFilePath: null | string,
-    state: DeploymentState
+    state: DeploymentState,
+    runCommand: typeof run = run
 ): Promise<void> => {
     void log.info('Generate document website artefacts.')
 
@@ -492,8 +503,12 @@ export const generateAndPushNewDocumentationPage = async (
         {scope: {parameters, ...state.packageConfiguration}}
     const serializedParameters: string = JSON.stringify(
         await evaluateAsyncDynamicData(
+            /*
+                NOTE: Evaluation replaces dynamic values in place so we have
+                to keep the template configuration untouched.
+            */
             evaluateDynamicData(
-                BUILD_DOCUMENTATION_PAGE_CONFIGURATION, evaluationOptions
+                copy(BUILD_DOCUMENTATION_PAGE_CONFIGURATION), evaluationOptions
             ),
             evaluationOptions
         )
@@ -519,7 +534,7 @@ export const generateAndPushNewDocumentationPage = async (
 
     void log.debug(`Use final parameters "${serializedParameters}".`)
     void log.info(`Run "${buildDocumentationPageCommand}".`)
-    void log.debug(run(
+    void log.debug(runCommand(
         buildDocumentationPageCommand, {cwd: temporaryDocumentationFolderPath}
     ))
     await rm(parametersFilePath)
@@ -548,24 +563,29 @@ export const generateAndPushNewDocumentationPage = async (
 
     await rm(temporaryDocumentationFolderPath, {recursive: true})
 
-    if (!checkRun('git config user.email'))
-        void log.debug(run('git config user.email "github_actor@example.com"'))
-    if (!checkRun('git config user.name'))
-        void log.debug(run('git config user.name "github_actor"'))
+    if (!checkRun('git config user.email', {}, runCommand))
+        void log.debug(
+            runCommand('git config user.email "github_actor@example.com"')
+        )
+    if (!checkRun('git config user.name', {}, runCommand))
+        void log.debug(runCommand('git config user.name "github_actor"'))
 
-    void log.debug(run('git add --all'))
-    void log.debug(
-        run(`git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`)
-    )
-    void log.debug(run('git push'))
-    void log.debug(run('git checkout main'))
+    void log.debug(runCommand('git add --all'))
+    void log.debug(runCommand(
+        `git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`
+    ))
+    void log.debug(runCommand('git push'))
+    void log.debug(runCommand('git checkout main'))
 }
 /**
  * Removes build files.
  * @param state - Collected deployment state.
+ * @param runCommand - Function to execute shell commands with.
  * @returns A promise resolving to nothing when finished.
  */
-export const tidyUp = async (state: DeploymentState): Promise<void> => {
+export const tidyUp = async (
+    state: DeploymentState, runCommand: typeof run = run
+): Promise<void> => {
     for (const path of state.locationsToTidyUp)
         await rm(path, {recursive: true})
 
@@ -576,12 +596,12 @@ export const tidyUp = async (state: DeploymentState): Promise<void> => {
         !(await isDirectory(oldAPIDocumentationDirectoryPath))
     )
         try {
-            run(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
+            runCommand(`git checkout '${oldAPIDocumentationDirectoryPath}'`)
         } catch (error) {
             void log.warn(error)
         }
 
-    if (!run('git branch').includes('* main'))
-        void log.debug(run('git checkout main'))
+    if (!runCommand('git branch').includes('* main'))
+        void log.debug(runCommand('git checkout main'))
 }
 // endregion
