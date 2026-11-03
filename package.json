@@ -111,7 +111,7 @@
     "web-internationalization": "^2.0.59",
     "weboptimizer": "^4.0.102",
     "webpack-dev-server": "^6.1.0",
-    "website-utilities": "^1.0.481"
+    "website-utilities": "^1.0.482"
   },
   "resolutions": {
     "colors": "1.4.0",

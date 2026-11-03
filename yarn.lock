@@ -17806,7 +17806,7 @@ __metadata:
     web-internationalization: "npm:^2.0.59"
     weboptimizer: "npm:^4.0.102"
     webpack-dev-server: "npm:^6.1.0"
-    website-utilities: "npm:^1.0.481"
+    website-utilities: "npm:^1.0.482"
   bin:
     web-documentation: dist/deploy.js
   languageName: unknown
@@ -18135,9 +18135,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.481":
-  version: 1.0.481
-  resolution: "website-utilities@npm:1.0.481"
+"website-utilities@npm:^1.0.482":
+  version: 1.0.482
+  resolution: "website-utilities@npm:1.0.482"
   peerDependencies:
     bootstrap-icons: "*"
     clientnode: "*"
@@ -18147,7 +18147,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: dist/deploy.js
-  checksum: 10c0/596d6009cb4834062f6f162ac180b906ea5bc62fc591bf91a9593b9737e4e3fb824b57851e87164d31c7b0bd8ea1b357b26507c08ddc7f9f7398fd04d72f6b06
+  checksum: 10c0/ceb4081d4a4803fe683044803e2ae31dfbacfa07dd81d3aeb62e5a3fccc897022b07f384abf577217facb4dd8c473b6f39fd8327a23ce47e5b11098257a340bb
   languageName: node
   linkType: hard
 
