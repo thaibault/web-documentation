@@ -23,8 +23,9 @@ import {
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
 import {importFilesystemAPI} from 'clientnode'
+import {readFileSync} from 'fs'
 import {mkdir, readFile, rm, stat, writeFile} from 'fs/promises'
-import {basename, dirname, join} from 'path'
+import {basename, dirname, join, resolve} from 'path'
 import {Readable} from 'stream'
 import {Open} from 'unzipper'
 
@@ -35,12 +36,14 @@ import {
     determineDistributionFilePaths,
     determineRenderParameters,
     evaluatePathTemplate,
+    generateAndPushNewDocumentationPage,
     hasAPIDocumentationScript,
     isFileIgnored,
     makeTemporaryFile,
     readReadmes,
     run,
-    stream2buffer
+    stream2buffer,
+    tidyUp
 } from './deployHelper'
 import WebDocumentation, {api} from './index'
 import createMarkdownRenderer from './renderMarkdown'
@@ -73,6 +76,47 @@ if (typeof globalThis.setImmediate === 'undefined') {
     context.clearImmediate = (id: ReturnType<typeof setTimeout>) => {
         clearTimeout(id)
     }
+}
+/*
+    NOTE: Capture all log output to keep test output clean and to be able to
+    assert expected log messages. Loggers write directly to the standard output
+    when available and use the console otherwise.
+*/
+const LOG_MESSAGES: Array<string> = []
+
+beforeAll(() => {
+    for (const name of ['debug', 'error', 'info', 'log', 'warn'] as const)
+        jest.spyOn(console, name).mockImplementation((
+            ...parameters: Array<unknown>
+        ) => {
+            LOG_MESSAGES.push(parameters.map(String).join(' '))
+        })
+
+    jest.spyOn(process.stdout, 'write').mockImplementation((
+        chunk: string | Uint8Array, ...parameters: Array<unknown>
+    ): boolean => {
+        LOG_MESSAGES.push(String(chunk))
+
+        // NOTE: Loggers wait until their output has been written.
+        const callback = parameters.find((parameter) =>
+            typeof parameter === 'function'
+        ) as (() => void) | undefined
+        callback?.()
+
+        return true
+    })
+})
+
+afterAll(() => {
+    jest.restoreAllMocks()
+})
+/**
+ * Checks whether a log message containing given text has been emitted.
+ * @param text - Text to search for.
+ */
+const expectLogged = (text: string) => {
+    expect(LOG_MESSAGES.some((message) => message.includes(text)))
+        .toStrictEqual(true)
 }
 // endregion
 // region fixtures
@@ -228,6 +272,7 @@ describe('WebDocumentation', () => {
             */
             expect(root.querySelectorAll('.script-example script'))
                 .toHaveLength(1)
+            expectLogged('Skipping example script "inline"')
         })
 
         test('should ignore unrelated comments', () => {
@@ -743,6 +788,7 @@ describe('deployHelper', () => {
             ])).sort()).toStrictEqual([
                 join(path, 'index.js'), join(path, 'lib/a.js')
             ])
+            expectLogged(`Skip missing file "${join(path, 'missing.js')}"`)
         })
     })
 
@@ -845,6 +891,306 @@ describe('deployHelper', () => {
             })).toStrictEqual(false)
             expect(hasAPIDocumentationScript({name: 'test', version: '1.0.0'}))
                 .toStrictEqual(false)
+        })
+    })
+
+    describe('generateAndPushNewDocumentationPage', () => {
+        const workingDirectoryPath = process.cwd()
+
+        /**
+         * Creates a project to deploy and a documentation website to render.
+         * @param name - Unique name to separate test locations.
+         * @returns Paths of created project and website.
+         */
+        const prepare = async (
+            name: string
+        ): Promise<{projectPath: string, websitePath: string}> => {
+            await createFiles({
+                [`${name}/project/.git/HEAD`]: 'ref',
+                [`${name}/project/api/index.html`]: 'api',
+                [`${name}/project/favicon.png`]: 'icon',
+                [`${name}/project/node_modules/dependency/index.js`]: '',
+                [`${name}/project/readme.md`]: '# Old',
+                [`${name}/project/source.ts`]: '',
+                [`${name}/website/build/index.html`]: 'page',
+                [`${name}/website/build/readme.md`]: 'skipped',
+                [`${name}/website/build/style/main.css`]: 'style',
+                [`${name}/website/source/image/logo.png`]: ''
+            })
+
+            return {
+                projectPath: join(directoryPath, name, 'project'),
+                websitePath: join(directoryPath, name, 'website')
+            }
+        }
+        /**
+         * Creates a mocked command runner which captures the rendering
+         * parameters handed over to the documentation website build.
+         * @param failingCommands - Commands which should fail.
+         * @returns Mocked runner and captured rendering parameters.
+         */
+        const createRunCommand = (failingCommands: Array<string> = []) => {
+            const result: {parameters: Mapping<unknown> | null} =
+                {parameters: null}
+
+            const runCommand = jest.fn<typeof run>((command: string) => {
+                if (failingCommands.includes(command))
+                    throw new Error(`Command "${command}" failed.`)
+
+                const parametersFilePath =
+                    /__reference__: "([^"]+)"/.exec(command)?.[1]
+                if (parametersFilePath)
+                    result.parameters = (JSON.parse(
+                        readFileSync(parametersFilePath, 'utf8')
+                    ) as {
+                        module: {
+                            preprocessor: {
+                                ejs: {options: {locals: Mapping<unknown>}}
+                            }
+                        }
+                    }).module.preprocessor.ejs.options.locals
+
+                return ''
+            })
+
+            return {result, runCommand}
+        }
+        /**
+         * Determines all commands given mocked runner was called with.
+         * @param runCommand - Mocked runner.
+         * @returns List of commands.
+         */
+        const getCommands = (
+            runCommand: ReturnType<typeof createRunCommand>['runCommand']
+        ): Array<string> =>
+            runCommand.mock.calls.map(([command]) => command)
+
+        afterAll(() => {
+            process.chdir(workingDirectoryPath)
+        })
+
+        test('should render, copy artefacts and push', async () => {
+            const {projectPath, websitePath} = await prepare('generate')
+            await createFiles({
+                'generate/project/api/test/1.0.0/index.html': 'api',
+                'generate/bundleSource/index.js': 'main'
+            })
+
+            process.chdir(join(directoryPath, 'generate/bundleSource'))
+            const bundleFilePath = await createDistributionBundle({
+                main: 'index.js', name: 'test', version: '1.0.0'
+            })
+
+            process.chdir(projectPath)
+
+            const {result, runCommand} =
+                createRunCommand(['git config user.email'])
+
+            await generateAndPushNewDocumentationPage(
+                websitePath,
+                bundleFilePath,
+                {
+                    apiDocumentationPathSuffix: 'test/1.0.0/',
+                    content: '# Readme!',
+                    hasAPIDocumentation: true,
+                    locationsToTidyUp: [],
+                    packageConfiguration: {
+                        description: 'Description!',
+                        name: 'test',
+                        version: '1.0.0'
+                    }
+                },
+                runCommand
+            )
+
+            process.chdir(workingDirectoryPath)
+            // region rendering
+            expect(result.parameters).toStrictEqual({
+                API_DOCUMENTATION_PATH: 'api/test/1.0.0/',
+                CONTENT: '# Readme#%%%#',
+                DISTRIBUTION_BUNDLE_FILE_PATH: 'data/distributionBundle.zip',
+                HAS_API_DOCUMENTATION: true,
+                NAME: 'test',
+                TAGLINE: 'Description#%%%#'
+            })
+
+            const buildCall = runCommand.mock.calls.find(([command]) =>
+                command.startsWith('yarn build:web')
+            )
+            expect(buildCall?.[1]).toStrictEqual({cwd: websitePath})
+            // endregion
+            // region commands
+            expect(getCommands(runCommand).filter((command) =>
+                !command.startsWith('yarn build:web')
+            )).toStrictEqual([
+                'git config user.email',
+                'git config user.email "github_actor@example.com"',
+                'git config user.name',
+                'git add --all',
+                'git commit --message "Update project homepage content." ' +
+                '--all',
+                'git push',
+                'git checkout main'
+            ])
+            // endregion
+            // region files
+            expect(await readFile(join(projectPath, 'index.html'), 'utf8'))
+                .toStrictEqual('page')
+            expect(
+                await readFile(join(projectPath, 'style/main.css'), 'utf8')
+            ).toStrictEqual('style')
+            expect(await readFile(
+                join(projectPath, 'data/distributionBundle/index.js'), 'utf8'
+            )).toStrictEqual('main')
+            expect((await stat(join(
+                projectPath, 'data/distributionBundle.zip'
+            ))).isFile()).toStrictEqual(true)
+
+            // Former project files have been replaced.
+            for (const path of ['readme.md', 'source.ts', 'favicon.png'])
+                await expect(stat(join(projectPath, path))).rejects.toThrow()
+            // Ignored files and api documentation have been kept.
+            for (const path of [
+                '.git/HEAD',
+                'api/test/1.0.0/index.html',
+                'node_modules/dependency/index.js'
+            ])
+                expect((await stat(join(projectPath, path))).isFile())
+                    .toStrictEqual(true)
+
+            await expect(stat(websitePath)).rejects.toThrow()
+            await expect(stat(bundleFilePath as string)).rejects.toThrow()
+            // endregion
+        })
+
+        test('should handle missing bundle and api version', async () => {
+            const {projectPath, websitePath} = await prepare('generateMinimal')
+
+            process.chdir(projectPath)
+
+            const {result, runCommand} = createRunCommand()
+
+            await generateAndPushNewDocumentationPage(
+                websitePath,
+                null,
+                {
+                    apiDocumentationPathSuffix: 'test/1.0.0/',
+                    content: '',
+                    hasAPIDocumentation: true,
+                    locationsToTidyUp: [],
+                    packageConfiguration: {name: 'test', version: '1.0.0'}
+                },
+                runCommand
+            )
+
+            process.chdir(workingDirectoryPath)
+
+            expect(result.parameters).toMatchObject({
+                API_DOCUMENTATION_PATH: 'api/',
+                DISTRIBUTION_BUNDLE_FILE_PATH: null,
+                NAME: 'test'
+            })
+            // Existing git identity is kept.
+            expect(getCommands(runCommand)).not.toContain(
+                'git config user.email "github_actor@example.com"'
+            )
+            await expect(stat(join(projectPath, 'data'))).rejects.toThrow()
+        })
+
+        test('should skip api documentation if not available', async () => {
+            const {projectPath, websitePath} = await prepare('generateNoAPI')
+
+            process.chdir(projectPath)
+
+            const {result, runCommand} = createRunCommand()
+
+            await generateAndPushNewDocumentationPage(
+                websitePath,
+                null,
+                {
+                    apiDocumentationPathSuffix: 'test/1.0.0/',
+                    content: '',
+                    hasAPIDocumentation: false,
+                    locationsToTidyUp: [],
+                    packageConfiguration: {name: 'test', version: '1.0.0'}
+                },
+                runCommand
+            )
+
+            process.chdir(workingDirectoryPath)
+
+            expect(result.parameters).toMatchObject({
+                API_DOCUMENTATION_PATH: null, HAS_API_DOCUMENTATION: false
+            })
+        })
+    })
+
+    describe('tidyUp', () => {
+        const workingDirectoryPath = process.cwd()
+        let path = ''
+
+        beforeAll(async () => {
+            path = join(directoryPath, 'tidyUp')
+            await mkdir(path)
+
+            process.chdir(path)
+        })
+
+        afterAll(() => {
+            process.chdir(workingDirectoryPath)
+        })
+
+        test('should remove locations and restore state', async () => {
+            await createFiles({'tidyUp/temporary/file.txt': ''})
+            const apiDocumentationPath = resolve('api')
+
+            const runCommand = jest.fn<typeof run>((command: string) => {
+                if (command === 'git branch')
+                    return '  main\n* gh-pages\n'
+
+                if (command.startsWith('git checkout \''))
+                    throw new Error('Nothing to checkout.')
+
+                return ''
+            })
+
+            await tidyUp(
+                {
+                    apiDocumentationPathSuffix: '',
+                    content: '',
+                    hasAPIDocumentation: true,
+                    locationsToTidyUp: [join(path, 'temporary')],
+                    packageConfiguration: {name: 'test', version: '1.0.0'}
+                },
+                runCommand
+            )
+
+            await expect(stat(join(path, 'temporary'))).rejects.toThrow()
+            expect(runCommand.mock.calls.map(([command]) => command))
+                .toStrictEqual([
+                    `git checkout '${apiDocumentationPath}'`,
+                    'git branch',
+                    'git checkout main'
+                ])
+            expectLogged('Nothing to checkout.')
+        })
+
+        test('should do nothing on main branch', async () => {
+            const runCommand = jest.fn<typeof run>(() => '* main\n')
+
+            await tidyUp(
+                {
+                    apiDocumentationPathSuffix: '',
+                    content: '',
+                    hasAPIDocumentation: false,
+                    locationsToTidyUp: [],
+                    packageConfiguration: {name: 'test', version: '1.0.0'}
+                },
+                runCommand
+            )
+
+            expect(runCommand.mock.calls.map(([command]) => command))
+                .toStrictEqual(['git branch'])
         })
     })
     // endregion
