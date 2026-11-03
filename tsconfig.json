@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "rootDir": "source/",
+        "rootDir": "src/",
         "declaration": true,
-        "declarationDir": "build/"
+        "declarationDir": "dist/"
     },
     "extends": "./node_modules/weboptimizer/tsconfig.application.json",
-    "include": ["source/**/*.ts"]
+    "include": ["src/**/*.ts"]
 }

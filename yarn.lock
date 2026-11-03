@@ -8133,9 +8133,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1529":
-  version: 4.0.1529
-  resolution: "clientnode@npm:4.0.1529"
+"clientnode@npm:^4.0.1530":
+  version: 4.0.1530
+  resolution: "clientnode@npm:4.0.1530"
   peerDependencies:
     "@types/prop-types": "*"
     node-fetch: "*"
@@ -8147,7 +8147,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/f644a590e81acd7d10389e97129c138b07ee2ad05893dff3e1fac2996bb74c4454707b7688d2ae772bad52039a7f730a72bf8f5157786459bf82ced892224b5f
+  checksum: 10c0/3aa080f17cdaaa3dac38a0a9d68ef9669efed29d6cb2ee4b310525d3274b676d7f1fafc0ebc880a72d08ee1fa6432269248c3d1dda2c08f8b8ded5dfb01e8bd9
   languageName: node
   linkType: hard
 
@@ -17784,7 +17784,7 @@ __metadata:
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
     archiver: "npm:^8.0.0"
     bootstrap-icons: "npm:^1.13.2"
-    clientnode: "npm:^4.0.1529"
+    clientnode: "npm:^4.0.1530"
     css-loader: "npm:^7.1.5"
     cssnano: "npm:^9.9.0"
     default-gateway: "npm:^7.2.2"
@@ -17822,11 +17822,11 @@ __metadata:
     unzipper: "npm:^0.12.5"
     web-component-wrapper: "npm:^0.0.620"
     web-internationalization: "npm:^2.0.59"
-    weboptimizer: "npm:^4.0.99"
+    weboptimizer: "npm:^4.0.100"
     webpack-dev-server: "npm:^6.1.0"
-    website-utilities: "npm:^1.0.479"
+    website-utilities: "npm:^1.0.480"
   bin:
-    web-documentation: build/deploy.js
+    web-documentation: dist/deploy.js
   languageName: unknown
   linkType: soft
 
@@ -17848,9 +17848,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.99":
-  version: 4.0.99
-  resolution: "weboptimizer@npm:4.0.99"
+"weboptimizer@npm:^4.0.100":
+  version: 4.0.100
+  resolution: "weboptimizer@npm:4.0.100"
   dependencies:
     "@babel/core": "npm:^8.0.10"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
@@ -17995,7 +17995,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/4c9b79b88188592f9201768de59a6f86bbd86398e74f7954ccb3980df921ed00ccc5114f9c2ec068ddfa660abb16173691c7b225687c3c17e28a28603dbac942
+  checksum: 10c0/ca14987946194ba30f7c502ecd922d643d5bc24c0dea200751d98541305cf0845001a1b96b6fe643b48c34429bb641ccec3897f9b4d4e6772a7b7c2c61d1bf9e
   languageName: node
   linkType: hard
 
@@ -18153,9 +18153,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"website-utilities@npm:^1.0.479":
-  version: 1.0.479
-  resolution: "website-utilities@npm:1.0.479"
+"website-utilities@npm:^1.0.480":
+  version: 1.0.480
+  resolution: "website-utilities@npm:1.0.480"
   peerDependencies:
     bootstrap-icons: "*"
     clientnode: "*"
@@ -18165,7 +18165,7 @@ __metadata:
       optional: true
   bin:
     website-utilities: deploy.js
-  checksum: 10c0/46c58b6b02fd165489f3adbfb5666240290319724bcb71f5f6a24aac99b9a8d02163e9e633cfe42cdc2db6b7e2fca7e17800266c333c19517df9e444d91f5e21
+  checksum: 10c0/90c300b2084fb15db92ace235968042767f934356880faa9041d23880f41f8d92ea73c1d0e7c7ffdaf38d210e424341f73bfd1906f81cfc9ee1f8e555048cbae
   languageName: node
   linkType: hard
 

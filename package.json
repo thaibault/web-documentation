@@ -24,15 +24,13 @@
     "url": "git+https://github.com/thaibault/web-documentation.git"
   },
   "type": "module",
-  "main": "source/index.html.ejs",
-  "bin": {
-    "web-documentation": "build/deploy.js"
-  },
+  "main": "src/index.html.ejs",
+  "bin": "dist/deploy.js",
   "files": [
-    "build/deploy.js",
-    "build/deploy.d.ts",
-    "build/deployHelper.d.ts",
-    "source"
+    "dist/deploy.js",
+    "dist/deploy.d.ts",
+    "dist/deployHelper.d.ts",
+    "src"
   ],
   "sideEffects": true,
   "scripts": {
@@ -73,7 +71,7 @@
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.2",
-    "clientnode": "^4.0.1529",
+    "clientnode": "^4.0.1530",
     "css-loader": "^7.1.5",
     "cssnano": "^9.9.0",
     "default-gateway": "^7.2.2",
@@ -111,9 +109,9 @@
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.620",
     "web-internationalization": "^2.0.59",
-    "weboptimizer": "^4.0.99",
+    "weboptimizer": "^4.0.100",
     "webpack-dev-server": "^6.1.0",
-    "website-utilities": "^1.0.479"
+    "website-utilities": "^1.0.480"
   },
   "resolutions": {
     "colors": "1.4.0",
@@ -237,7 +235,7 @@
           "options": {
             "locals": {
               "API_DOCUMENTATION_PATH": "api/",
-              "CONTENT": "source/dummyReadme.md",
+              "CONTENT": "src/dummyReadme.md",
               "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "HAS_API_DOCUMENTATION": true,
               "LANGUAGES": {
@@ -261,7 +259,7 @@
                 "__async_evaluate__": "Promise.resolve(fs.readFile)"
               },
               "RENDER_MARKDOWN": {
-                "__async_evaluate__": "(await module.optionalImport(path.resolve(currentPath, 'source/renderMarkdown.mjs')))?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS)"
+                "__async_evaluate__": "(await module.optionalImport(path.resolve(currentPath, 'src/renderMarkdown.mjs')))?.default(self.module.preprocessor.ejs.options.locals.MARKED_OPTIONS)"
               },
               "SOURCE_URL": {
                 "__evaluate__": "`https://github.com/thaibault/${self.module.preprocessor.html.options.locals.NAME}`"
