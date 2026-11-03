@@ -343,6 +343,74 @@ describe('WebDocumentation', () => {
             getBoundingClientRect.mockRestore()
         })
 
+        test('should nest lists according to headline levels', () => {
+            interface Item {
+                text: string
+                children: Array<Item>
+            }
+            const toTree = (listDomNode: Element): Array<Item> =>
+                Array.from(listDomNode.children).map((itemDomNode) => {
+                    const nestedListDomNode =
+                        itemDomNode.querySelector(':scope > ul')
+
+                    return {
+                        text: itemDomNode.querySelector(':scope > a')
+                            ?.textContent.trim() ?? '',
+                        children: nestedListDomNode ?
+                            toTree(nestedListDomNode) :
+                            []
+                    }
+                })
+
+            const tableOfContentDomNode = root.tableOfContentDomNode
+            const headlineDomNodes = root.headlineDomNodes
+
+            const domNode = document.createElement('div')
+            domNode.innerHTML = `
+                <div class="wd-table-of-contents">
+                    <h2 id="content">Content</h2>
+                    <!--wd-table-of-contents-->
+                </div>
+                <h1 id="a">A</h1>
+                <h2 id="b">B</h2>
+                <h3 id="c">C</h3>
+                <h1 id="d">D</h1>
+                <h3 id="e">E</h3>
+                <h2 id="f">F</h2>
+            `
+            root.tableOfContentDomNode =
+                domNode.querySelector('.wd-table-of-contents')
+            root.headlineDomNodes = domNode.querySelectorAll('h1, h2, h3')
+
+            root._generateTableOfContentsLinks()
+
+            const listDomNode =
+                root.tableOfContentDomNode?.querySelector(':scope > ul')
+
+            expect(listDomNode).not.toBeNull()
+            expect(toTree(listDomNode as Element)).toStrictEqual([
+                {
+                    text: 'A',
+                    children: [{
+                        text: 'B',
+                        children: [{text: 'C', children: []}]
+                    }]
+                },
+                {
+                    text: 'D',
+                    children: [
+                        {text: 'E', children: []},
+                        {text: 'F', children: []}
+                    ]
+                }
+            ])
+            // Lists are only nested inside items.
+            expect(domNode.querySelector('ul > ul')).toBeNull()
+
+            root.tableOfContentDomNode = tableOfContentDomNode
+            root.headlineDomNodes = headlineDomNodes
+        })
+
         test('should do nothing without table of contents', () => {
             const tableOfContentLinkDomNodes = root.tableOfContentLinkDomNodes
             const tableOfContentDomNode = root.tableOfContentDomNode
