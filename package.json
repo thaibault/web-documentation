@@ -29,6 +29,7 @@
   "files": [
     "build/deploy.js",
     "build/deploy.d.ts",
+    "build/deployHelper.d.ts",
     "source"
   ],
   "sideEffects": true,
@@ -158,11 +159,11 @@
         "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {index: ['./index.css', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js', './index']}"
       },
       "external": {
-        "#": "Externalize other's pre-build libraries for the test target so jest resolves the published bundles at runtime instead of re-bundling them.",
+        "#": "Externalize other's pre-build libraries and node only archive libraries for the test target so jest resolves them at runtime instead of re-bundling them. NOTE: Bundling \"archiver\" pulls in \"async\" which marks the whole test bundle as ignored for coverage.",
         "implicit": {
           "pattern": {
             "include": {
-              "__evaluate__": "['@jest/globals'].concat(2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? /^(?:clientnode|web-component-wrapper|website-utilities|web-internationalization|errorreporter)(?:$|\\/)/ : [])"
+              "__evaluate__": "['@jest/globals'].concat(2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? /^(?:archiver|clientnode|errorreporter|unzipper|web-component-wrapper|web-internationalization|website-utilities)(?:$|\\/)/ : [])"
             }
           }
         }
