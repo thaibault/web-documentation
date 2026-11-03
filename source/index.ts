@@ -239,42 +239,59 @@ export class WebDocumentation<
             return
 
         let listItemsHTML = ''
-
-        let level = 0
-        let firstLevel = 0
-        let first = true
+        // Headline levels of all currently opened lists.
+        const levels: Array<number> = []
 
         for (const domNode of this.headlineDomNodes ?? []) {
-            // Skip headlines belonging to rendered examples.
-            if (closest(domNode, '.wd-show-example-wrapper'))
+            /*
+                Skip headlines belonging to rendered examples or to the table
+                of contents itself.
+            */
+            if (
+                closest(domNode, '.wd-show-example-wrapper') ||
+                closest(domNode, this.options.selectors.tableOfContent)
+            )
                 continue
 
             const newLevel: number =
                 parseInt(domNode.nodeName.replace(/\D/g, ''))
 
-            if (first)
-                firstLevel = newLevel
-
-            if (newLevel > level)
+            if (levels.length === 0 || newLevel > levels[levels.length - 1]) {
+                // Open a new (nested) list inside the still opened item.
                 listItemsHTML += '<ul>'
-            else if (newLevel < level)
-                listItemsHTML += '</ul>'
+                levels.push(newLevel)
+            } else {
+                listItemsHTML += '</li>'
+
+                // Close all deeper lists including their parent items.
+                while (
+                    levels.length > 1 &&
+                    newLevel <= levels[levels.length - 2]
+                ) {
+                    listItemsHTML += '</ul></li>'
+                    levels.pop()
+                }
+
+                levels[levels.length - 1] = newLevel
+            }
 
             listItemsHTML += `
                 <li>
                     <a href="#${domNode.getAttribute('id') ?? 'unknown'}">
                         ${domNode.innerText}
                     </a>
-                </li>
             `
-
-            level = newLevel
-            first = false
         }
-        // Close remaining inner lists.
-        while (level < firstLevel) {
+        // Close remaining item and all opened lists.
+        if (levels.length > 0) {
+            listItemsHTML += '</li>'
+
+            while (levels.length > 1) {
+                listItemsHTML += '</ul></li>'
+                levels.pop()
+            }
+
             listItemsHTML += '</ul>'
-            level += 1
         }
 
         for (const domNode of this.tableOfContentDomNode.childNodes)
