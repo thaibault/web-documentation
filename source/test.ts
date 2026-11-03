@@ -395,5 +395,13 @@ describe('renderMarkdown', () => {
     test('should favor self-closing tags', () => {
         expect(html).toContain('<hr/>')
     })
+
+    test('should isolate renderers from each other', () => {
+        const renderWithoutBreaks = createMarkdownRenderer({breaks: false})
+        const renderWithBreaks = createMarkdownRenderer({breaks: true})
+
+        expect(renderWithoutBreaks('a\nb')).toStrictEqual('<p>a\nb</p>\n')
+        expect(renderWithBreaks('a\nb')).toStrictEqual('<p>a<br/>b</p>\n')
+    })
     // endregion
 })
