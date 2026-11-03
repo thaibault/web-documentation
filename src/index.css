@@ -13,8 +13,8 @@ endregion */
 
 @import 'highlight.js/styles/github.css';
 
-@import 'website-utilities/fonts.compiled.css';
-@import 'website-utilities/index.compiled.css';
+@import 'website-utilities/dist/fonts.css';
+@import 'website-utilities/dist/index.css';
 
 :root {
     /* region extra small dimension */
