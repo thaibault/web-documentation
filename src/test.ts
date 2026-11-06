@@ -1030,6 +1030,8 @@ describe('deployHelper', () => {
                 'git config user.email',
                 'git config user.email "github_actor@example.com"',
                 'git config user.name',
+                'git add --all --force -- \'data\' \'index.html\' ' +
+                '\'style\'',
                 'git add --all',
                 'git commit --message "Update project homepage content." ' +
                 '--all',
