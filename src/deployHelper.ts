@@ -560,10 +560,23 @@ export const generateAndPushNewDocumentationPage = async (
         temporaryDocumentationFolderPath,
         relative('./', DOCUMENTATION_BUILD_PATH)
     )
+    const copiedTopLevelPaths: Array<string> = []
     await walkDirectoryRecursively(
         documentationBuildFolderPath,
-        (file: File): Promise<false | undefined> =>
-            copyRepositoryFile(documentationBuildFolderPath, './', file)
+        async (file: File): Promise<false | undefined> => {
+            const result = await copyRepositoryFile(
+                documentationBuildFolderPath, './', file
+            )
+
+            if (
+                result !== false &&
+                resolve(dirname(file.path)) ===
+                    resolve(documentationBuildFolderPath)
+            )
+                copiedTopLevelPaths.push(file.name)
+
+            return result
+        }
     )
 
     await rm(temporaryDocumentationFolderPath, {recursive: true})
@@ -575,6 +588,18 @@ export const generateAndPushNewDocumentationPage = async (
     if (!checkRun('git config user.name', {}, runCommand))
         void log.debug(runCommand('git config user.name "github_actor"'))
 
+    /*
+        NOTE: Force adding build artefacts since a (stale) project specific
+        ignore file (e.g. "*.js") would silently drop them otherwise.
+    */
+    if (copiedTopLevelPaths.length > 0)
+        void log.debug(runCommand(
+            'git add --all --force -- ' +
+            copiedTopLevelPaths
+                .sort()
+                .map((path) => `'${path.replace(/'/g, `'\\''`)}'`)
+                .join(' ')
+        ))
     void log.debug(runCommand('git add --all'))
     void log.debug(runCommand(
         `git commit --message "${PROJECT_PAGE_COMMIT_MESSAGE}" --all`
