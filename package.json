@@ -1,6 +1,6 @@
 {
   "name": "web-documentation",
-  "version": "1.0.72",
+  "version": "1.0.73",
   "description": "Declarative multilanguage documentation website generator",
   "keywords": [
     "documentation",
@@ -25,7 +25,9 @@
   },
   "type": "module",
   "main": "src/index.html.ejs",
-  "bin": "dist/deploy.js",
+  "bin": {
+    "web-documentation": "dist/deploy.js"
+  },
   "files": [
     "dist/deploy.js",
     "dist/deploy.d.ts",
