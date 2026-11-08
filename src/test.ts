@@ -676,7 +676,7 @@ describe('deployHelper', () => {
                 .toStrictEqual(true)
         })
 
-        test('should ignore build artefacts', async () => {
+        test('should ignore build artifacts', async () => {
             expect(await isFileIgnored(join(directoryPath, 'build')))
                 .toStrictEqual(true)
             expect(await isFileIgnored(join(directoryPath, 'node_modules')))
@@ -973,7 +973,7 @@ describe('deployHelper', () => {
             process.chdir(workingDirectoryPath)
         })
 
-        test('should render, copy artefacts and push', async () => {
+        test('should render, copy artifacts and push', async () => {
             const {projectPath, websitePath} = await prepare('generate')
             await createFiles({
                 'generate/project/api/test/1.0.0/index.html': 'api',

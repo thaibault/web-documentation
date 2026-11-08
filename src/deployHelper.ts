@@ -217,7 +217,7 @@ export const copyRepositoryFile = async (
     if (
         await isFileIgnored(file.path) ||
         basename(file.name) === 'readme.md' ||
-        // NOTE: Skip stale build artefacts of given documentation website.
+        // NOTE: Skip stale build artifacts of given documentation website.
         resolve(file.path) === resolve(sourcePath, DOCUMENTATION_BUILD_PATH)
     )
         return false
@@ -418,7 +418,7 @@ export const generateAndPushNewDocumentationPage = async (
     state: DeploymentState,
     runCommand: typeof run = run
 ): Promise<void> => {
-    void log.info('Generate document website artefacts.')
+    void log.info('Generate document website artifacts.')
 
     /*
         NOTE: We have to determine the bundles final location before rendering
@@ -554,7 +554,7 @@ export const generateAndPushNewDocumentationPage = async (
         ))
             await rm(filePath, {recursive: true})
 
-    void log.info('Copy all build artefacts.')
+    void log.info('Copy all build artifacts.')
 
     const documentationBuildFolderPath = join(
         temporaryDocumentationFolderPath,
@@ -589,7 +589,7 @@ export const generateAndPushNewDocumentationPage = async (
         void log.debug(runCommand('git config user.name "github_actor"'))
 
     /*
-        NOTE: Force adding build artefacts since a (stale) project specific
+        NOTE: Force adding build artifacts since a (stale) project specific
         ignore file (e.g. "*.js") would silently drop them otherwise.
     */
     if (copiedTopLevelPaths.length > 0)
