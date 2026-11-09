@@ -7038,7 +7038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-istanbul@npm:^8.0.0":
+"babel-plugin-istanbul@npm:^8.0.0, babel-plugin-istanbul@npm:^8.0.2":
   version: 8.0.2
   resolution: "babel-plugin-istanbul@npm:8.0.2"
   dependencies:
@@ -17990,7 +17990,7 @@ __metadata:
     unzipper: "npm:^0.12.5"
     web-component-wrapper: "npm:^0.0.620"
     web-internationalization: "npm:^2.0.59"
-    weboptimizer: "npm:^4.0.106"
+    weboptimizer: "npm:^4.0.108"
     webpack-dev-server: "npm:^6.1.0"
     website-utilities: "npm:^1.0.484"
   bin:
@@ -18016,9 +18016,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.106":
-  version: 4.0.106
-  resolution: "weboptimizer@npm:4.0.106"
+"weboptimizer@npm:^4.0.108":
+  version: 4.0.108
+  resolution: "weboptimizer@npm:4.0.108"
   dependencies:
     "@babel/core": "npm:^8.1.0"
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
@@ -18028,6 +18028,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^8.0.7"
     "@typescript/native": "npm:typescript@^7.0.2"
     babel-loader: "npm:^10.1.1"
+    babel-plugin-istanbul: "npm:^8.0.2"
     babel-plugin-polyfill-corejs3: "npm:^1.0.0"
     babel-plugin-transform-rewrite-imports: "npm:^1.5.4"
     clientnode: "npm:4.0.1531"
@@ -18160,7 +18161,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/83f1a4d4a272cc7b6e7b5c63a4f9eb904b09db4053314d6187ffa0ecf1508f12acc74c71b39eca06e54c59b3f37c5fc6a2ade4e1f64249fce2a92241b594330c
+  checksum: 10c0/3a5690ca601d0dd816fb7f0b45e227476ba3ed0eb877d0ed60463ab5a800623444ca0ef4c817f05fcb60c2468ac3053ead07f7e07ccca2632d263d1f8f4e5af7
   languageName: node
   linkType: hard
 
