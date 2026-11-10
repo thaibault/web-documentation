@@ -41,7 +41,7 @@
     "build:web": "weboptimizer build",
     "check": "yarn check:types && yarn lint",
     "check:types": "weboptimizer check:types",
-    "clear": "weboptimizer clear",
+    "clear": "weboptimizer clear && rm src/image/sprite.png &>/dev/null || true",
     "document": "weboptimizer document",
     "lint": "weboptimizer lint",
     "prepare": "yarn build",
