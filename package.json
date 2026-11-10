@@ -41,7 +41,7 @@
     "build:web": "weboptimizer build",
     "check": "yarn check:types && yarn lint",
     "check:types": "weboptimizer check:types",
-    "clear": "weboptimizer clear && rm -f src/image/sprite.png",
+    "clear": "weboptimizer clear",
     "document": "weboptimizer document",
     "lint": "weboptimizer lint",
     "prepare": "yarn build",
@@ -109,7 +109,7 @@
     "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.620",
     "web-internationalization": "^2.0.59",
-    "weboptimizer": "^4.0.109",
+    "weboptimizer": "^4.0.110",
     "webpack-dev-server": "^6.1.0",
     "website-utilities": "^1.0.484"
   },
