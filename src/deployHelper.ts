@@ -48,8 +48,10 @@ import {Extract} from 'unzipper'
 export interface WebDocumentationConfiguration {
     name?: string
     languages?: Array<string>
+    sourceURL?: string
     tagline?: string
     trackingCode?: string
+    url?: string
 }
 export interface MakeTemporaryFileOptions {
     directory: boolean
@@ -61,6 +63,7 @@ export interface PackageConfiguration extends Mapping<unknown> {
     description?: string
     webDocumentation?: WebDocumentationConfiguration
     files?: Array<string>
+    homepage?: string
     main?: string
     name: string
     scripts?: Mapping
@@ -349,6 +352,36 @@ export const createDistributionBundle = async (
     return distributionBundleFilePath
 }
 /**
+ * Derives a browsable source code url from given package repository
+ * declaration.
+ * @param repository - Repository declaration as string (url or shorthand like
+ * "github:user/project") or object holding an "url" property.
+ * @returns Determined url or "null" if nothing could be derived.
+ */
+export const determineSourceURL = (repository: unknown): null | string => {
+    let url: unknown = repository
+    if (url !== null && typeof url === 'object')
+        url = (url as {url?: unknown}).url
+
+    if (typeof url !== 'string' || !url.trim())
+        return null
+
+    url = url.trim()
+        .replace(/^git\+/, '')
+        .replace(/^git@([^:]+):/, 'https://$1/')
+        .replace(/^(?:git|ssh):\/\/(?:[^@/]+@)?/, 'https://')
+        .replace(/^github:/, 'https://github.com/')
+        .replace(/^gitlab:/, 'https://gitlab.com/')
+        .replace(/^bitbucket:/, 'https://bitbucket.org/')
+        .replace(/\.git$/, '')
+
+    if (/^[^/:]+\/[^/:]+$/.test(url as string))
+        // NOTE: Shorthand "user/project" refers to GitHub.
+        return `https://github.com/${url as string}`
+
+    return /^https?:\/\//.test(url as string) ? url as string : null
+}
+/**
  * Determines parameters to render the documentation website with.
  * @param packageConfiguration - Package configuration to derive parameters
  * from.
@@ -368,6 +401,13 @@ export const determineRenderParameters = (
         parameters.TAGLINE = packageConfiguration.description
     if (!parameters.NAME && packageConfiguration.name)
         parameters.NAME = packageConfiguration.name
+    if (!parameters.URL && packageConfiguration.homepage)
+        parameters.URL = packageConfiguration.homepage.replace(/\/+$/, '')
+    if (!parameters.SOURCE_URL) {
+        const sourceURL = determineSourceURL(packageConfiguration.repository)
+        if (sourceURL)
+            parameters.SOURCE_URL = sourceURL
+    }
 
     return parameters
 }

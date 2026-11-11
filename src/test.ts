@@ -35,6 +35,7 @@ import {
     createDistributionBundle,
     determineDistributionFilePaths,
     determineRenderParameters,
+    determineSourceURL,
     evaluatePathTemplate,
     generateAndPushNewDocumentationPage,
     hasAPIDocumentationScript,
@@ -868,6 +869,59 @@ describe('deployHelper', () => {
                 version: '1.0.0',
                 webDocumentation: {name: 'Test', tagline: 'Tagline'}
             })).toStrictEqual({NAME: 'Test', TAGLINE: 'Tagline'})
+        })
+
+        test('should derive urls from homepage and repository', () => {
+            expect(determineRenderParameters({
+                homepage: 'https://example.com/test/',
+                name: 'test',
+                repository: {
+                    type: 'git', url: 'git+https://github.com/user/test.git'
+                },
+                version: '1.0.0'
+            })).toStrictEqual({
+                NAME: 'test',
+                SOURCE_URL: 'https://github.com/user/test',
+                URL: 'https://example.com/test'
+            })
+        })
+
+        test('should prefer explicit urls', () => {
+            expect(determineRenderParameters({
+                homepage: 'https://example.com/test',
+                name: 'test',
+                repository: 'user/test',
+                version: '1.0.0',
+                webDocumentation: {
+                    sourceURL: 'https://git.example.com/test',
+                    url: 'https://docs.example.com'
+                }
+            })).toStrictEqual({
+                NAME: 'test',
+                SOURCE_URL: 'https://git.example.com/test',
+                URL: 'https://docs.example.com'
+            })
+        })
+    })
+
+    describe('determineSourceURL', () => {
+        test('should derive browsable urls', () => {
+            const github = 'https://github.com/user/test'
+            const gitlab = 'https://gitlab.com/user/test'
+
+            for (const [repository, expected] of [
+                [undefined, null],
+                ['', null],
+                [{url: 'git+https://github.com/user/test.git'}, github],
+                [gitlab, gitlab],
+                ['git@github.com:user/test.git', github],
+                ['git+ssh://git@github.com/user/test.git', github],
+                ['github:user/test', github],
+                ['gitlab:user/test', gitlab],
+                ['user/test', github],
+                ['file:../test', null]
+            ] as Array<[unknown, null | string]>)
+                expect(determineSourceURL(repository)).toStrictEqual(expected)
         })
     })
 
