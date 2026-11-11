@@ -125,7 +125,7 @@ _%>
                         <%_ if (_.DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
                             <a
                                 class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
+                                href="<%- _.SOURCE_URL %>/zipball/main"
                             >src.zip</a>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
@@ -135,12 +135,12 @@ _%>
                         <%_ } else { _%>
                             <a
                                 class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="https://github.com/thaibault/<%- _.NAME %>/zipball/main"
+                                href="<%- _.SOURCE_URL %>/zipball/main"
                             >.zip</a>
                             <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                             <a
                                 class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="https://github.com/thaibault/<%- _.NAME %>/tarball/main"
+                                href="<%- _.SOURCE_URL %>/tarball/main"
                             >.tar.gz</a>
                         <%_ }
                         START_UP_ANIMATION_NUMBER -= 1 _%>
@@ -217,19 +217,20 @@ _%>
                         <!--frFR:Mentions légales-->
                     </h2>
                     <p>
-                        Provider of<!--deDE:Anbieter von--><!--frFR:Fournisseur de--><a href="https://tsickert.com/<%- _.NAME %>">https://tsickert.com/<%- _.NAME %></a>:
+                        Provider of<!--deDE:Anbieter von--><!--frFR:Fournisseur de--><a href="<%- _.URL %>"><%- _.URL %></a>:
                         <br>
                         Torben Sickert
                         <br>
                         Waldstraße 29
                         <br>
-                        791194 Gundelfingen i.Br.
+                        79194 Gundelfingen i.Br.
                         <br>
                         Phone:
                         <!--deDE:Tel.:-->
                         <!--frFR:Téléphone:-->
                         <a href="tel:004917610248185">
                             +49 (0) 176 <span>/</span> 10 248 185
+                        </a>
                         <br>
                         Email:
                         <!--deDE:E-Mail:-->
