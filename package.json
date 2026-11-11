@@ -124,6 +124,13 @@
     "npm": ">=12",
     "yarn": ">=4"
   },
+  "webDocumentation": {
+    "languages": [
+      "enUS",
+      "deDE",
+      "frFR"
+    ]
+  },
   "webOptimizer": {
     "build": {
       "definitions": {
