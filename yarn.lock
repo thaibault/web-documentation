@@ -17878,6 +17878,7 @@ __metadata:
   resolution: "web-documentation@workspace:."
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.1165.0"
+    "@babel/core": "npm:^8.1.0"
     "@babel/eslint-parser": "npm:^8.0.7"
     "@eslint/js": "npm:^10.0.1"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
