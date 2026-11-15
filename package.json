@@ -25,9 +25,7 @@
   },
   "type": "module",
   "main": "src/index.html.ejs",
-  "bin": {
-    "web-documentation": "dist/deploy.js"
-  },
+  "bin": "dist/deploy.js",
   "files": [
     "dist/deploy.js",
     "dist/deploy.d.ts",
@@ -215,15 +213,17 @@
             }
           ]
         },
-        "terser": {
-          "terserOptions": {
-            "compress": {
-              "#": "To provide a logging output we need to exclude this feature.",
-              "drop_console": {
-                "__evaluate__": "false"
-              },
-              "drop_debugger": {
-                "__evaluate__": "false"
+        "javaScript": {
+          "minify": {
+            "options": {
+              "compress": {
+                "#": "To provide a logging output we need to exclude this feature.",
+                "drop_console": {
+                  "__evaluate__": "false"
+                },
+                "drop_debugger": {
+                  "__evaluate__": "false"
+                }
               }
             }
           }
@@ -329,15 +329,17 @@
       },
       "module": {
         "optimizer": {
-          "terser": {
-            "terserOptions": {
-              "compress": {
-                "#": "To provide a logging output we need to exclude this feature.",
-                "drop_console": {
-                  "__evaluate__": "false"
-                },
-                "drop_debugger": {
-                  "__evaluate__": "false"
+          "javaScript": {
+            "minify": {
+              "options": {
+                "compress": {
+                  "#": "To provide a logging output we need to exclude this feature.",
+                  "drop_console": {
+                    "__evaluate__": "false"
+                  },
+                  "drop_debugger": {
+                    "__evaluate__": "false"
+                  }
                 }
               }
             }
