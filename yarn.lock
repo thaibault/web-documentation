@@ -7988,25 +7988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:4.0.1531":
-  version: 4.0.1531
-  resolution: "clientnode@npm:4.0.1531"
-  peerDependencies:
-    "@types/prop-types": "*"
-    node-fetch: "*"
-    prop-types: "*"
-  peerDependenciesMeta:
-    "@types/prop-types":
-      optional: true
-    node-fetch:
-      optional: true
-    prop-types:
-      optional: true
-  checksum: 10c0/693139f69b4524e070ef58f26aa460290858ce2fbfd4addeb59e7c0d63d199098cf8b6f93b170609295339ed69dac3a171591b357f0179e0d35afd4d98e9fc7a
-  languageName: node
-  linkType: hard
-
-"clientnode@npm:^4.0.1532":
+"clientnode@npm:4.0.1532, clientnode@npm:^4.0.1532":
   version: 4.0.1532
   resolution: "clientnode@npm:4.0.1532"
   peerDependencies:
@@ -10730,9 +10712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-minifier@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "html-minifier@npm:5.1.0"
+"html-minifier@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "html-minifier@npm:5.2.0"
   dependencies:
     commander: "npm:^15.1.0"
     entities: "npm:^9.0.0"
@@ -10747,7 +10729,7 @@ __metadata:
   bin:
     hm: cli.js
     html-minifier: cli.js
-  checksum: 10c0/ad5e037459b2b3a20a6e0b0e6a857724be341ea78a1d9a6f1be1f9b24243be65904046a0104616070367756001041114bc04ed33ab99542a49fc28b1eb135253
+  checksum: 10c0/db24402765bedc89894dffd9359c3341059e846766d5fdcf4e0dded453de8078248a0154507a310cd05955170f4ac7aa317527166aa1ce11875d82931cdab1f2
   languageName: node
   linkType: hard
 
@@ -12417,10 +12399,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"legal-notes@npm:^1.0.33":
-  version: 1.0.33
-  resolution: "legal-notes@npm:1.0.33"
-  checksum: 10c0/666ea82d5a85a3e359c16057b236ba9e582bdd62c5aee8a9d2add9096877d3ac11370540a32e556ecd57dea852ee08a987d7ddea9de00e7cba9e5c122e8b8a97
+"legal-notes@npm:^1.0.34":
+  version: 1.0.34
+  resolution: "legal-notes@npm:1.0.34"
+  checksum: 10c0/bd71240d363298abc6369646fd30d346644de8ed45ace4e0d5158e1cd25224b40c94db43b547dbba84e2513e09ef3e4aff5fe00721229beee0b0b0c569361de7
   languageName: node
   linkType: hard
 
@@ -17572,7 +17554,7 @@ __metadata:
     highlight.js: "npm:^11.12.0"
     jest: "npm:30.5.2"
     jsdoc: "npm:^4.0.5"
-    legal-notes: "npm:^1.0.33"
+    legal-notes: "npm:^1.0.34"
     marked: "npm:^18.2.0"
     marked-gfm-heading-id: "npm:^4.1.4"
     marked-highlight: "npm:^2.2.4"
@@ -17597,7 +17579,7 @@ __metadata:
     unzipper: "npm:^0.12.5"
     web-component-wrapper: "npm:^0.0.624"
     web-internationalization: "npm:^2.0.60"
-    weboptimizer: "npm:^4.0.120"
+    weboptimizer: "npm:^4.0.121"
     webpack-dev-server: "npm:^6.1.0"
     website-utilities: "npm:^1.0.488"
   bin:
@@ -17628,9 +17610,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.120":
-  version: 4.0.120
-  resolution: "weboptimizer@npm:4.0.120"
+"weboptimizer@npm:^4.0.121":
+  version: 4.0.121
+  resolution: "weboptimizer@npm:4.0.121"
   dependencies:
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
     "@babel/plugin-transform-class-properties": "npm:^8.0.1"
@@ -17642,13 +17624,13 @@ __metadata:
     babel-plugin-istanbul: "npm:8.0.2"
     babel-plugin-polyfill-corejs3: "npm:^1.0.0"
     babel-plugin-transform-rewrite-imports: "npm:^1.5.4"
-    clientnode: "npm:4.0.1531"
+    clientnode: "npm:4.0.1532"
     ejs: "npm:^7.0.2"
     exports-loader: "npm:^5.0.0"
     extract-loader: "npm:^5.1.0"
     glob-all: "npm:^3.3.1"
     html-loader: "npm:^5.1.0"
-    html-minifier: "npm:^5.1.0"
+    html-minifier: "npm:^5.2.0"
     html-webpack-plugin: "npm:^5.6.8"
     imports-loader: "npm:^5.0.0"
     jest-environment-jsdom: "npm:^30.5.2"
@@ -17772,7 +17754,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/d258e71feddd32d30e0116d366840089048544aa2692ad9a8402c3a5c2e926ac4b8c87dbd89e53b058e8bd9f55c97bfb0df34394625d6c57cc608ba4d4218899
+  checksum: 10c0/522a58c44dd3516c72ea5310b4fe649a1bdbfe61cafe0d8e9753fff7a2b148574c08d16fde656f4ab66ad4bb20a5acb855af5f0d1656f7be83f02b5cff968f52
   languageName: node
   linkType: hard
 
