@@ -25,9 +25,7 @@
   },
   "type": "module",
   "main": "src/index.html.ejs",
-  "bin": {
-    "web-documentation": "dist/deploy.js"
-  },
+  "bin": "dist/deploy.js",
   "files": [
     "dist/deploy.js",
     "dist/deploy.d.ts",
@@ -60,7 +58,7 @@
     "@babel/core": "^8.1.2",
     "@babel/eslint-parser": "^8.1.2",
     "@eslint/js": "^10.0.1",
-    "@stylistic/eslint-plugin": "^6.0.0",
+    "@stylistic/eslint-plugin": "^6.0.1",
     "@types/archiver": "^8.0.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
