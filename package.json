@@ -25,9 +25,7 @@
   },
   "type": "module",
   "main": "src/index.html.ejs",
-  "bin": {
-    "web-documentation": "dist/deploy.js"
-  },
+  "bin": "dist/deploy.js",
   "files": [
     "dist/deploy.js",
     "dist/deploy.d.ts",
