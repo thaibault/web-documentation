@@ -165,7 +165,12 @@ describe('WebDocumentation', () => {
 
     beforeAll(async () => {
         api.register()
-        root = document.createElement('web-documentation') as WebDocumentation
+        const element = document.createElement('web-documentation')
+        if (!(element instanceof WebDocumentation))
+            throw new Error(
+                '"web-documentation" is not registered as "WebDocumentation".'
+            )
+        root = element
         root.innerHTML = FIXTURE
         root.onExamplesLoaded = onExamplesLoaded
         document.body.appendChild(root)
