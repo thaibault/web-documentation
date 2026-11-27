@@ -26,14 +26,10 @@ import {importFilesystemAPI} from 'clientnode'
 import {readFileSync} from 'fs'
 import {mkdir, readFile, rm, stat, writeFile} from 'fs/promises'
 import {basename, dirname, join, resolve} from 'path'
-import {Readable} from 'stream'
-import {Open} from 'unzipper'
 
 import {
     checkRun,
     copyRepositoryFile,
-    createDistributionBundle,
-    determineDistributionFilePaths,
     determineRenderParameters,
     determineSourceURL,
     evaluatePathTemplate,
@@ -43,7 +39,6 @@ import {
     makeTemporaryFile,
     readReadmes,
     run,
-    stream2buffer,
     tidyUp
 } from './deployHelper'
 import WebDocumentation, {api} from './index'
@@ -64,20 +59,6 @@ if (!('innerText' in HTMLElement.prototype))
             this.textContent = value
         }
     })
-/*
-    NOTE: jsdom does not provide "setImmediate" which is used by the streams of
-    the zip archive library.
-*/
-if (typeof globalThis.setImmediate === 'undefined') {
-    const context = globalThis as unknown as Mapping<unknown>
-    context.setImmediate = (
-        callback: (...parameters: Array<unknown>) => void,
-        ...parameters: Array<unknown>
-    ) => setTimeout(callback, 0, ...parameters)
-    context.clearImmediate = (id: ReturnType<typeof setTimeout>) => {
-        clearTimeout(id)
-    }
-}
 /*
     NOTE: Capture all log output to keep test output clean and to be able to
     assert expected log messages. Loggers write directly to the standard output
@@ -642,24 +623,6 @@ describe('deployHelper', () => {
         })
     })
 
-    describe('stream2buffer', () => {
-        test('should concatenate all chunks', async () => {
-            expect((await stream2buffer(Readable.from([
-                Buffer.from('a'), Buffer.from('b')
-            ]))).toString()).toStrictEqual('ab')
-        })
-
-        test('should reject on stream errors', async () => {
-            const stream = new Readable({
-                read() {
-                    this.destroy(new Error('broken'))
-                }
-            })
-
-            await expect(stream2buffer(stream)).rejects.toThrow('broken')
-        })
-    })
-
     describe('isFileIgnored', () => {
         beforeAll(async () => {
             await createFiles({
@@ -778,74 +741,6 @@ describe('deployHelper', () => {
             await createFiles({'noReadmes/file.txt': ''})
 
             expect(await readReadmes(path)).toStrictEqual('')
-        })
-    })
-
-    describe('determineDistributionFilePaths', () => {
-        test('should expand directories and skip missing files', async () => {
-            const path = join(directoryPath, 'distribution')
-            await createFiles({
-                'distribution/index.js': '',
-                'distribution/lib/a.js': '',
-                'distribution/lib/node_modules/b.js': '',
-                'distribution/lib/.hidden': ''
-            })
-
-            expect((await determineDistributionFilePaths([
-                join(path, 'index.js'),
-                join(path, 'lib'),
-                join(path, 'missing.js')
-            ])).sort()).toStrictEqual([
-                join(path, 'index.js'), join(path, 'lib/a.js')
-            ])
-            expectLogged(`Skip missing file "${join(path, 'missing.js')}"`)
-        })
-    })
-
-    describe('createDistributionBundle', () => {
-        let path = ''
-        const workingDirectoryPath = process.cwd()
-
-        beforeAll(async () => {
-            path = join(directoryPath, 'bundle')
-            await createFiles({
-                'bundle/index.js': 'main',
-                'bundle/lib/a.js': 'a'
-            })
-
-            // NOTE: Archive entries are named relative to working directory.
-            process.chdir(path)
-        })
-
-        afterAll(() => {
-            process.chdir(workingDirectoryPath)
-        })
-
-        test('should pack declared files', async () => {
-            const files = ['lib']
-            const bundleFilePath = await createDistributionBundle({
-                files, main: 'index.js', name: 'test', version: '1.0.0'
-            })
-
-            expect(bundleFilePath).not.toBeNull()
-            // Given configuration should not be modified.
-            expect(files).toStrictEqual(['lib'])
-
-            const directory = await Open.file(bundleFilePath as string)
-
-            expect(directory.files.map(({path}) => path).sort())
-                .toStrictEqual(['index.js', 'lib/a.js'])
-            expect((await directory.files.find(({path}) =>
-                path === 'index.js'
-            )?.buffer())?.toString()).toStrictEqual('main')
-
-            await rm(dirname(bundleFilePath as string), {recursive: true})
-        })
-
-        test('should provide nothing without files to pack', async () => {
-            expect(await createDistributionBundle({
-                name: 'test', version: '1.0.0'
-            })).toBeNull()
         })
     })
 
@@ -1035,13 +930,7 @@ describe('deployHelper', () => {
         test('should render, copy artifacts and push', async () => {
             const {projectPath, websitePath} = await prepare('generate')
             await createFiles({
-                'generate/project/api/test/1.0.0/index.html': 'api',
-                'generate/bundleSource/index.js': 'main'
-            })
-
-            process.chdir(join(directoryPath, 'generate/bundleSource'))
-            const bundleFilePath = await createDistributionBundle({
-                main: 'index.js', name: 'test', version: '1.0.0'
+                'generate/project/api/test/1.0.0/index.html': 'api'
             })
 
             process.chdir(projectPath)
@@ -1051,7 +940,6 @@ describe('deployHelper', () => {
 
             await generateAndPushNewDocumentationPage(
                 websitePath,
-                bundleFilePath,
                 {
                     apiDocumentationPathSuffix: 'test/1.0.0/',
                     content: '# Readme!',
@@ -1071,7 +959,6 @@ describe('deployHelper', () => {
             expect(result.parameters).toStrictEqual({
                 API_DOCUMENTATION_PATH: 'api/test/1.0.0/',
                 CONTENT: '# Readme#%%%#',
-                DISTRIBUTION_BUNDLE_FILE_PATH: 'data/distributionBundle.zip',
                 HAS_API_DOCUMENTATION: true,
                 NAME: 'test',
                 TAGLINE: 'Description#%%%#'
@@ -1089,8 +976,7 @@ describe('deployHelper', () => {
                 'git config user.email',
                 'git config user.email "github_actor@example.com"',
                 'git config user.name',
-                'git add --all --force -- \'data\' \'index.html\' ' +
-                '\'style\'',
+                'git add --all --force -- \'index.html\' \'style\'',
                 'git add --all',
                 'git commit --message "Update project homepage content." ' +
                 '--all',
@@ -1104,12 +990,6 @@ describe('deployHelper', () => {
             expect(
                 await readFile(join(projectPath, 'style/main.css'), 'utf8')
             ).toStrictEqual('style')
-            expect(await readFile(
-                join(projectPath, 'data/distributionBundle/index.js'), 'utf8'
-            )).toStrictEqual('main')
-            expect((await stat(join(
-                projectPath, 'data/distributionBundle.zip'
-            ))).isFile()).toStrictEqual(true)
 
             // Former project files have been replaced.
             for (const path of ['readme.md', 'source.ts', 'favicon.png'])
@@ -1124,11 +1004,10 @@ describe('deployHelper', () => {
                     .toStrictEqual(true)
 
             await expect(stat(websitePath)).rejects.toThrow()
-            await expect(stat(bundleFilePath as string)).rejects.toThrow()
             // endregion
         })
 
-        test('should handle missing bundle and api version', async () => {
+        test('should handle missing api version', async () => {
             const {projectPath, websitePath} = await prepare('generateMinimal')
 
             process.chdir(projectPath)
@@ -1137,7 +1016,6 @@ describe('deployHelper', () => {
 
             await generateAndPushNewDocumentationPage(
                 websitePath,
-                null,
                 {
                     apiDocumentationPathSuffix: 'test/1.0.0/',
                     content: '',
@@ -1151,15 +1029,12 @@ describe('deployHelper', () => {
             process.chdir(workingDirectoryPath)
 
             expect(result.parameters).toMatchObject({
-                API_DOCUMENTATION_PATH: 'api/',
-                DISTRIBUTION_BUNDLE_FILE_PATH: null,
-                NAME: 'test'
+                API_DOCUMENTATION_PATH: 'api/', NAME: 'test'
             })
             // Existing git identity is kept.
             expect(getCommands(runCommand)).not.toContain(
                 'git config user.email "github_actor@example.com"'
             )
-            await expect(stat(join(projectPath, 'data'))).rejects.toThrow()
         })
 
         test('should skip api documentation if not available', async () => {
@@ -1171,7 +1046,6 @@ describe('deployHelper', () => {
 
             await generateAndPushNewDocumentationPage(
                 websitePath,
-                null,
                 {
                     apiDocumentationPathSuffix: 'test/1.0.0/',
                     content: '',

@@ -64,7 +64,7 @@ Features included:
 - Executable live examples for HTML, CSS and JavaScript code blocks.<!--deDE:Ausführbare Live-Beispiele für HTML-, CSS- und JavaScript-Codeblöcke.--><!--frFR:Exemples interactifs exécutables pour les blocs de code HTML, CSS et JavaScript.-->
 - Generated table of contents and syntax highlighting.<!--deDE:Automatisch erzeugtes Inhaltsverzeichnis und Syntaxhervorhebung.--><!--frFR:Table des matières générée et coloration syntaxique.-->
 - Versioned API documentation if your project provides a "document" script.<!--deDE:Versionierte API-Dokumentation, sofern Ihr Projekt ein "document"-Skript bereitstellt.--><!--frFR:Documentation d'API versionnée si votre projet fournit un script "document".-->
-- Downloadable ZIP bundle of your distributed files.<!--deDE:Herunterladbares ZIP-Archiv Ihrer ausgelieferten Dateien.--><!--frFR:Archive ZIP téléchargeable de vos fichiers distribués.-->
+- Download links to the source code and to the release page of your project.<!--deDE:Download-Links zum Quellcode und zur Release-Seite Ihres Projekts.--><!--frFR:Liens de téléchargement vers le code source et vers la page des releases de votre projet.-->
 - Ready to use GitHub action for continuous deployment.<!--deDE:Einsatzbereite GitHub-Action für kontinuierliche Veröffentlichung.--><!--frFR:Action GitHub prête à l'emploi pour un déploiement continu.-->
 
 <div class="wd-table-of-contents">
@@ -84,10 +84,8 @@ Running "web-documentation" inside your project performs these steps:
 1. Checks out and pulls branch "main".<!--deDE:Wechselt auf den Branch "main" und aktualisiert ihn.--><!--frFR:Bascule sur la branche "main" et la met à jour.-->
 2. Merges all "readme.*" files found in your project ("node_modules" and
    "build" excluded) into one markdown document.<!--deDE:Fügt alle im Projekt gefundenen "readme.*"-Dateien (ohne "node_modules" und "build") zu einem Markdown-Dokument zusammen.--><!--frFR:Fusionne tous les fichiers "readme.*" du projet (hors "node_modules" et "build") en un seul document markdown.-->
-3. Runs "yarn build" if present and zips all files listed in "files" and
-   "main" of your "package.json".<!--deDE:Führt "yarn build" aus, falls vorhanden, und packt alle in "files" und "main" Ihrer "package.json" gelisteten Dateien in ein ZIP-Archiv.--><!--frFR:Exécute "yarn build" s'il existe et compresse tous les fichiers listés dans "files" et "main" de votre "package.json".-->
-4. Runs "yarn document" if present to generate the API documentation.<!--deDE:Führt "yarn document" aus, falls vorhanden, um die API-Dokumentation zu erzeugen.--><!--frFR:Exécute "yarn document" s'il existe pour générer la documentation d'API.-->
-5. Fetches this website template (from a sibling folder "../web-documentation"
+3. Runs "yarn document" if present to generate the API documentation.<!--deDE:Führt "yarn document" aus, falls vorhanden, um die API-Dokumentation zu erzeugen.--><!--frFR:Exécute "yarn document" s'il existe pour générer la documentation d'API.-->
+4. Fetches this website template (from a sibling folder "../web-documentation"
    or from GitHub), renders your content into it and commits the result to
    branch "gh-pages".<!--deDE:Lädt diese Webseiten-Vorlage (aus dem Nachbarordner "../web-documentation" oder von GitHub), rendert Ihren Inhalt hinein und committet das Ergebnis in den Branch "gh-pages".--><!--frFR:Récupère ce modèle de site (depuis le dossier voisin "../web-documentation" ou depuis GitHub), y injecte votre contenu et commite le résultat sur la branche "gh-pages".-->
 
@@ -179,20 +177,23 @@ Everything is optional. Add a "webDocumentation" section to your
   documentation and download links. Defaults to the "homepage" of your
   "package.json".<!--deDE:"url": Öffentliche Adresse der generierten Webseite, verwendet für den Titel, die API-Dokumentation und Download-Links. Standardmäßig die "homepage" Ihrer "package.json".--><!--frFR:"url": Adresse publique du site généré, utilisée pour le titre, la documentation d'API et les liens de téléchargement. Par défaut la "homepage" de votre "package.json".-->
 
-Source download links follow the GitHub archive scheme
-("&lt;sourceURL&gt;/zipball/main"). Without "url" and "homepage" the
+Download links follow the GitHub scheme ("&lt;sourceURL&gt;/zipball/main" for
+the source code and "&lt;sourceURL&gt;/releases" for released build artifacts).
+Without "url" and "homepage" the
 website falls back to "https://tsickert.com/&lt;name&gt;", without
 "sourceURL" and "repository" to "https://github.com/thaibault/&lt;name&gt;".
 <!--deDE:
-    Quellcode-Download-Links folgen dem GitHub-Archivschema
-    ("&lt;sourceURL&gt;/zipball/main"). Ohne "url" und "homepage"
+    Download-Links folgen dem GitHub-Schema ("&lt;sourceURL&gt;/zipball/main"
+    für den Quellcode und "&lt;sourceURL&gt;/releases" für veröffentlichte
+    Build-Artefakte). Ohne "url" und "homepage"
     verwendet die Webseite "https://tsickert.com/&lt;name&gt;", ohne
     "sourceURL" und "repository"
     "https://github.com/thaibault/&lt;name&gt;".
 -->
 <!--frFR:
-    Les liens de téléchargement des sources suivent le schéma d'archive de
-    GitHub ("&lt;sourceURL&gt;/zipball/main"). Sans "url" ni "homepage", le
+    Les liens de téléchargement suivent le schéma de GitHub
+    ("&lt;sourceURL&gt;/zipball/main" pour le code source et
+    "&lt;sourceURL&gt;/releases" pour les artefacts de build publiés). Sans "url" ni "homepage", le
     site utilise "https://tsickert.com/&lt;name&gt;", sans "sourceURL" ni
     "repository" "https://github.com/thaibault/&lt;name&gt;".
 -->

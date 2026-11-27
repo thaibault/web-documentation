@@ -34,8 +34,6 @@ import {
     API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE,
     API_DOCUMENTATION_PATHS,
     copyRepositoryFile,
-    createDistributionBundle,
-    DATA_PATH,
     evaluatePathTemplate,
     generateAndPushNewDocumentationPage,
     hasAPIDocumentationScript,
@@ -120,18 +118,6 @@ const main = async (): Promise<void> => {
         )
 
         STATE.content = await readReadmes('./')
-
-        let distributionBundleFilePath: null | string = null
-        try {
-            distributionBundleFilePath =
-                await createDistributionBundle(STATE.packageConfiguration)
-        } catch (error) {
-            void log.error(
-                'Error occurred during building distribution bundle:', error
-            )
-
-            process.exitCode = 1
-        }
 
         STATE.hasAPIDocumentation =
             hasAPIDocumentationScript(STATE.packageConfiguration)
@@ -260,14 +246,12 @@ const main = async (): Promise<void> => {
         )
 
         await generateAndPushNewDocumentationPage(
-            temporaryDocumentationFolderPath, distributionBundleFilePath, STATE
+            temporaryDocumentationFolderPath, STATE
         )
 
         // region tidy up
         for (const path of [
-            apiDocumentationDirectoryPath,
-            DATA_PATH,
-            temporaryDocumentationFolderPath
+            apiDocumentationDirectoryPath, temporaryDocumentationFolderPath
         ])
             if (await isDirectory(path))
                 await rm(path, {recursive: true})

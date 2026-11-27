@@ -61,18 +61,15 @@
     "@babel/eslint-parser": "^8.1.2",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^6.0.1",
-    "@types/archiver": "^8.0.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",
     "@types/jsdom": "^30.0.0",
     "@types/marked": "^6.0.0",
     "@types/node": "^26.6.10",
-    "@types/unzipper": "^0.10.11",
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.74.0",
     "@typescript-eslint/parser": "^8.74.0",
     "@webcomponents/webcomponentsjs": "^2.8.1",
-    "archiver": "^8.0.0",
     "bootstrap-icons": "^1.13.2",
     "clientnode": "^4.0.1533",
     "core-js": "^3.51.0",
@@ -111,7 +108,6 @@
     "stylelint-config-standard": "^41.1.0",
     "typescript-eslint": "^8.74.0",
     "ua-parser-js": "^2.0.10",
-    "unzipper": "^0.12.5",
     "web-component-wrapper": "^0.0.625",
     "web-internationalization": "^2.0.61",
     "weboptimizer": "^4.0.125",
@@ -168,11 +164,11 @@
         "__evaluate__": "2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? {testBundle: './test.ts'} : {index: ['./index.css', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js', './index']}"
       },
       "external": {
-        "#": "Externalize other's pre-build libraries and node only archive libraries for the test target so jest resolves them at runtime instead of re-bundling them. NOTE: Bundling \"archiver\" pulls in \"async\" which marks the whole test bundle as ignored for coverage.",
+        "#": "Externalize other's pre-build libraries for the test target so jest resolves them at runtime instead of re-bundling them.",
         "implicit": {
           "pattern": {
             "include": {
-              "__evaluate__": "['@jest/globals'].concat(2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? /^(?:archiver|clientnode|errorreporter|unzipper|web-component-wrapper|web-internationalization|website-utilities)(?:$|\\/)/ : [])"
+              "__evaluate__": "['@jest/globals'].concat(2 < self.givenCommandLineArguments.length && self.givenCommandLineArguments[2].startsWith('test') ? /^(?:clientnode|errorreporter|web-component-wrapper|web-internationalization|website-utilities)(?:$|\\/)/ : [])"
             }
           }
         }
@@ -247,7 +243,6 @@
             "locals": {
               "API_DOCUMENTATION_PATH": "api/",
               "CONTENT": "node_modules/clientnode/readme.md",
-              "DISTRIBUTION_BUNDLE_FILE_PATH": "dummyDistributionBundle.zip",
               "HAS_API_DOCUMENTATION": true,
               "LANGUAGES": {
                 "__evaluate__": "self.module.preprocessor.html.options.locals.NAME === 'web-documentation' ? ['enUS', 'deDE', 'frFR'] : ['enUS']"

@@ -122,28 +122,16 @@ _%>
                                 START_UP_ANIMATION_NUMBER += 2
                             START_UP_ANIMATION_NUMBER += 1
                         _%>
-                        <%_ if (_.DISTRIBUTION_BUNDLE_FILE_PATH) { _%>
-                            <a
-                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="<%- _.SOURCE_URL %>/zipball/main"
-                            >src.zip</a>
-                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                            <a
-                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="<%- `${_.URL}/${_.DISTRIBUTION_BUNDLE_FILE_PATH}` %>"
-                            >app.zip</a>
-                        <%_ } else { _%>
-                            <a
-                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="<%- _.SOURCE_URL %>/zipball/main"
-                            >.zip</a>
-                            <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
-                            <a
-                                class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
-                                href="<%- _.SOURCE_URL %>/tarball/main"
-                            >.tar.gz</a>
-                        <%_ }
-                        START_UP_ANIMATION_NUMBER -= 1 _%>
+                        <a
+                            class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="<%- _.SOURCE_URL %>/zipball/main"
+                        >src.zip</a>
+                        <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
+                        <a
+                            class="wd-header__inner__links__download wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
+                            href="<%- _.SOURCE_URL %>/releases"
+                        >release</a>
+                        <%_ START_UP_ANIMATION_NUMBER -= 1 _%>
                         <i
                             class="wd-header__inner__links__download-arrow wu-start-up-animation-number-<%- START_UP_ANIMATION_NUMBER %>"
                         ></i>

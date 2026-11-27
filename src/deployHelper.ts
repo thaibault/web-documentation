@@ -20,9 +20,7 @@ import type {
     EvaluationResult, File, Mapping, PositiveEvaluationResult
 } from 'clientnode'
 import type {ExecSyncOptionsWithStringEncoding} from 'child_process'
-import type {Stream} from 'stream'
 
-import {ZipArchive} from 'archiver'
 import {execSync} from 'child_process'
 import {
     camelCaseToDelimited,
@@ -36,13 +34,11 @@ import {
     represent,
     walkDirectoryRecursively
 } from 'clientnode'
-import {createReadStream, createWriteStream} from 'fs'
 import {
     copyFile, mkdir, mkdtemp, readdir, readFile, rm, writeFile
 } from 'fs/promises'
 import {tmpdir} from 'node:os'
 import {basename, dirname, extname, join, relative, resolve} from 'path'
-import {Extract} from 'unzipper'
 // endregion
 // region types
 export interface WebDocumentationConfiguration {
@@ -90,13 +86,8 @@ export const log =
     time (the project to deploy).
 */
 export const DOCUMENTATION_BUILD_PATH = 'dist'
-export const DATA_PATH = 'data'
 export const API_DOCUMENTATION_PATHS = ['apiDocumentation/', 'api/']
 export const API_DOCUMENTATION_PATH_SUFFIX_TEMPLATE = '${name}/${version}/'
-export const DISTRIBUTION_BUNDLE_FILE_PATH =
-    join(DATA_PATH, 'distributionBundle.zip')
-export const DISTRIBUTION_BUNDLE_DIRECTORY_PATH =
-    join(DATA_PATH, 'distributionBundle')
 /// endregion
 export const BUILD_DOCUMENTATION_PAGE_COMMAND_TEMPLATE =
     '`yarn build:web \'{__reference__: "${parametersFilePath}"}\'`'
@@ -176,23 +167,6 @@ export const checkRun = (
     }
 }
 /**
- * Converts a given stream into a buffer.
- * @param stream - To Convert.
- * @returns Converted buffer.
- */
-export const stream2buffer = async (stream: Stream): Promise<Buffer> => {
-    return new Promise<Buffer>((resolve, reject) => {
-        const chunks: Array<Uint8Array> = []
-        stream.on('data', (chunk: Uint8Array) => chunks.push(chunk))
-        stream.on('end', () => {
-            resolve(Buffer.concat(chunks))
-        })
-        stream.on('error', (error: Error) => {
-            reject(error)
-        })
-    })
-}
-/**
  * Checks if given file path points to a file which should not be distributed
  * for generic reasons.
  * @param filePath - File path to check.
@@ -260,96 +234,6 @@ export const readReadmes = async (directoryPath: string): Promise<string> => {
     )
 
     return content
-}
-/**
- * Determines all files to distribute by expanding given file and directory
- * paths.
- * @param filePaths - File and directory paths to expand.
- * @returns Absolute paths of all files to distribute.
- */
-export const determineDistributionFilePaths = async (
-    filePaths: Array<string>
-): Promise<Array<string>> => {
-    let result: Array<string> = []
-
-    for (let filePath of filePaths) {
-        filePath = resolve(filePath)
-
-        if (!(await isFileIgnored(filePath)))
-            if (await isDirectory(filePath))
-                result = result.concat(await determineDistributionFilePaths(
-                    (await readdir(filePath)).map((path: string): string =>
-                        resolve(filePath, path)
-                    )
-                ))
-            else if (await isFile(filePath)) {
-                void log.debug(`Add "${filePath}" to distribution bundle.`)
-
-                result.push(filePath)
-            } else
-                void log.warn(
-                    `Skip missing file "${filePath}" declared in package ` +
-                    'configuration.'
-                )
-    }
-
-    return result
-}
-/**
- * Creates a distribution bundle file as zip archiv.
- * @param packageConfiguration - Package configuration describing files to
- * distribute.
- * @returns Path to build distribution bundle or "null" if there is nothing to
- * distribute.
- */
-export const createDistributionBundle = async (
-    packageConfiguration: PackageConfiguration
-): Promise<null | string> => {
-    if (packageConfiguration.scripts?.build) {
-        void log.info('Build distribution bundle via "yarn build".')
-        void log.debug(run('yarn build'))
-    }
-
-    const filePaths = [...(packageConfiguration.files || [])]
-    if (packageConfiguration.main)
-        filePaths.push(packageConfiguration.main)
-
-    if (filePaths.length === 0)
-        return null
-
-    void log.info('Pack to a zip archive.')
-    const distributionBundleFilePath: string =
-        await makeTemporaryFile({extension: '.zip'})
-
-    const archive = new ZipArchive({zlib: {level: 9}})
-    const outputStream = createWriteStream(distributionBundleFilePath)
-
-    // NOTE: The archive is complete when its output has been flushed.
-    const promise = new Promise<void>((
-        resolve: () => void, reject: (reason: Error) => void
-    ): void => {
-        outputStream.on('close', resolve)
-        outputStream.on('error', reject)
-        archive.on('error', reject)
-    })
-
-    archive.on('warning', (error: Error): void => {
-        void log.warn(error)
-    })
-
-    archive.pipe(outputStream)
-
-    for (const filePath of await determineDistributionFilePaths(filePaths))
-        archive.append(
-            await stream2buffer(createReadStream(filePath)),
-            {name: relative('./', filePath)}
-        )
-
-    await archive.finalize()
-
-    await promise
-
-    return distributionBundleFilePath
 }
 /**
  * Derives a browsable source code url from given package repository
@@ -446,64 +330,16 @@ export const hasAPIDocumentationScript = (
  * documentation homepage.
  * @param temporaryDocumentationFolderPath - Location where to build
  * documentation build.
- * @param distributionBundleFilePath - Location where to save the exported
- * build artifacts.
  * @param state - Collected deployment state.
  * @param runCommand - Function to execute shell commands with.
  * @returns A promise resolving when build process has finished.
  */
 export const generateAndPushNewDocumentationPage = async (
     temporaryDocumentationFolderPath: string,
-    distributionBundleFilePath: null | string,
     state: DeploymentState,
     runCommand: typeof run = run
 ): Promise<void> => {
     void log.info('Generate document website artifacts.')
-
-    /*
-        NOTE: We have to determine the bundles final location before rendering
-        since the check for its existence has to run against the just build
-        artifact and not against a potential leftover from a previous run.
-    */
-    const newDistributionBundleFilePath: null | string =
-        distributionBundleFilePath ?
-            join(
-                temporaryDocumentationFolderPath,
-                relative('./', DOCUMENTATION_BUILD_PATH),
-                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH)
-            ) :
-            null
-
-    if (distributionBundleFilePath && newDistributionBundleFilePath) {
-        void log.info('Prepare distribution files.')
-
-        await mkdir(dirname(newDistributionBundleFilePath), {recursive: true})
-        await copyFile(
-            distributionBundleFilePath, newDistributionBundleFilePath
-        )
-        await rm(distributionBundleFilePath)
-
-        const newDistributionBundleDirectoryPath = join(
-            temporaryDocumentationFolderPath,
-            relative('./', DOCUMENTATION_BUILD_PATH),
-            relative('./', DISTRIBUTION_BUNDLE_DIRECTORY_PATH)
-        )
-
-        await mkdir(newDistributionBundleDirectoryPath, {recursive: true})
-
-        await new Promise<void>((
-            resolve: () => void, reject: (reason: Error) => void
-        ) => {
-            createReadStream(newDistributionBundleFilePath)
-                .pipe(Extract({path: newDistributionBundleDirectoryPath}))
-                .on('close', () => {
-                    resolve()
-                })
-                .on('error', (error: Error) => {
-                    reject(error)
-                })
-        })
-    }
 
     void log.info('Prepare favicon file.')
     const faviconPath = 'favicon.png'
@@ -532,12 +368,7 @@ export const generateAndPushNewDocumentationPage = async (
         ...parameters,
         CONTENT: state.content,
         API_DOCUMENTATION_PATH: apiDocumentationPath,
-        HAS_API_DOCUMENTATION: state.hasAPIDocumentation,
-        DISTRIBUTION_BUNDLE_FILE_PATH:
-            newDistributionBundleFilePath &&
-            await isFile(newDistributionBundleFilePath) ?
-                relative('./', DISTRIBUTION_BUNDLE_FILE_PATH) :
-                null
+        HAS_API_DOCUMENTATION: state.hasAPIDocumentation
     }
 
     for (const [key, value] of Object.entries(parameters))
