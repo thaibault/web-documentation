@@ -60,9 +60,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-s3@npm:^3.1177.0":
-  version: 3.1177.0
-  resolution: "@aws-sdk/client-s3@npm:3.1177.0"
+"@aws-sdk/client-s3@npm:^3.1178.0":
+  version: 3.1178.0
+  resolution: "@aws-sdk/client-s3@npm:3.1178.0"
   dependencies:
     "@aws-sdk/checksums": "npm:^3.1002.7"
     "@aws-sdk/core": "npm:^3.981.2"
@@ -75,7 +75,7 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.14.2"
     "@smithy/types": "npm:^4.20.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/7cda6b87c9d1d9ec717612e873a7f433f9e94085ac173366946b7b4fa400ac3448667feac493a34a69f3d3516ae317326e5d1def2373a7740a54b488d0bf2e53
+  checksum: 10c0/d50f1546c1fad2e552ddb49385becffc7b8b07336e86f5396a3d834a56e4611409676ae71388c1e4c71501a8a768ba8030ded1473d5febce4425957196788d76
   languageName: node
   linkType: hard
 
@@ -5472,12 +5472,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^26.6.10":
-  version: 26.6.10
-  resolution: "@types/node@npm:26.6.10"
+"@types/node@npm:^26.6.11":
+  version: 26.6.11
+  resolution: "@types/node@npm:26.6.11"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10c0/d249c40c72ee1e61aeb9633263e5ebf428359206926a2ca12435cf7112e09a49aa5ef7a787e413fdf66b9ad8f41fb474eeb4e18e31e9b49a64033393e888ce56
+  checksum: 10c0/9771f1140557ee98f65de05fdc50a4da8d0e602bbbedf206b41f679f95fb52c9a39d854ad813dc3e4f1fb9a4c22f1b4d324607eb299670c515d3ab093701e815
   languageName: node
   linkType: hard
 
@@ -8926,9 +8926,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^65.5.5":
-  version: 65.5.5
-  resolution: "eslint-plugin-jsdoc@npm:65.5.5"
+"eslint-plugin-jsdoc@npm:^65.5.6":
+  version: 65.5.6
+  resolution: "eslint-plugin-jsdoc@npm:65.5.6"
   dependencies:
     "@es-joy/escodegen": "npm:^5.0.1"
     "@es-joy/jsdoccomment": "npm:~1.2.1"
@@ -8952,7 +8952,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/5b0aae3fe4b421adcf6e63543b6ac11a860d89c310edfae558d93729247e1493228b314a27c1f7bee7e9ded4e121b12995b5a59f7cc17d3e75da2a88656526fc
+  checksum: 10c0/7ed8909f6bf540ad1c4ed7c92718797ccfc4ed12e13ffb7abcde280cf57016cfb48ddbe0146bdf3058878ab746a55ec3454f38b34f838a74354a8ba5eac0896b
   languageName: node
   linkType: hard
 
@@ -16624,7 +16624,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web-documentation@workspace:."
   dependencies:
-    "@aws-sdk/client-s3": "npm:^3.1177.0"
+    "@aws-sdk/client-s3": "npm:^3.1178.0"
     "@babel/core": "npm:^8.1.3"
     "@babel/eslint-parser": "npm:^8.1.2"
     "@eslint/js": "npm:^10.0.1"
@@ -16633,7 +16633,7 @@ __metadata:
     "@types/html-minifier": "npm:^4.0.6"
     "@types/jsdom": "npm:^30.0.0"
     "@types/marked": "npm:^6.0.0"
-    "@types/node": "npm:^26.6.10"
+    "@types/node": "npm:^26.6.11"
     "@types/webpack-env": "npm:^1.18.8"
     "@typescript-eslint/eslint-plugin": "npm:^8.74.0"
     "@typescript-eslint/parser": "npm:^8.74.0"
@@ -16647,7 +16647,7 @@ __metadata:
     errorreporter: "npm:^1.0.368"
     eslint: "npm:^10.15.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^65.5.5"
+    eslint-plugin-jsdoc: "npm:^65.5.6"
     favicons: "npm:^7.3.1"
     favicons-webpack-plugin: "npm:^6.0.1"
     globals: "npm:^17.14.0"
