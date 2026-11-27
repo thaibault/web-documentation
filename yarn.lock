@@ -16678,7 +16678,7 @@ __metadata:
     ua-parser-js: "npm:^2.0.10"
     web-component-wrapper: "npm:^0.0.625"
     web-internationalization: "npm:^2.0.61"
-    weboptimizer: "npm:^4.0.125"
+    weboptimizer: "npm:^4.0.126"
     webpack-dev-server: "npm:^6.1.0"
     website-utilities: "npm:^1.0.489"
   bin:
@@ -16709,9 +16709,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^4.0.125":
-  version: 4.0.125
-  resolution: "weboptimizer@npm:4.0.125"
+"weboptimizer@npm:^4.0.126":
+  version: 4.0.126
+  resolution: "weboptimizer@npm:4.0.126"
   dependencies:
     "@babel/plugin-proposal-decorators": "npm:^8.0.2"
     "@babel/plugin-transform-class-properties": "npm:^8.0.1"
@@ -16852,7 +16852,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: dist/index.js
-  checksum: 10c0/c481a93198aba8beb2737d071536066f734e36942911e4a4d226b13f510dd0a4c33d4e140136f1ec3b5bb8cf2ecf4299332a209343bea21fca6355635f0df958
+  checksum: 10c0/03a2cfab2641f358269acd8bf43bb60b2a6b2a164ed241c8569f82b6309b313fa983205e8b0c551512841d411d74ba18c20d39782204b3132be36803a5c65ddf
   languageName: node
   linkType: hard
 
